@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<GridPane xmlns:fx="http://javafx.com/fxml"
+          fx:controller="com.prueba.demo.principal.LoginFrame"
+          alignment="center" hgap="10" vgap="10">
+
+    <Label text="Nombre:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+    <TextField fx:id="nombreField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+    <Label text="Código de Verificación:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+    <TextField fx:id="codigoField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+    <Button text="Generar Código" fx:id="generarCodigoButton" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+    <Button text="Verificar Código" fx:id="loginButton" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+</GridPane>
