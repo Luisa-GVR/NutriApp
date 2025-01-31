@@ -1,7 +1,7 @@
 package com.prueba.demo.principal;
 
 import com.prueba.demo.model.Food;
-import com.prueba.demo.service.ConsumoAPI;
+import com.prueba.demo.service.APIConsumption;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -19,13 +19,13 @@ public class Principal {
     @FXML private Label totalCarhbohydrate;
 
     // Instancia del servicio para consumir la API
-    private final ConsumoAPI consumoAPI = new ConsumoAPI();
+    private final APIConsumption APIConsumption = new APIConsumption();
 
     @FXML
     public void initialize() {
         // Verificar que los elementos están correctamente inicializados
         if (searchButton != null) {
-            searchButton.setOnAction(event -> buscarAlimento());
+            searchButton.setOnAction(event -> searchFood());
         } else {
             System.out.println("Error: El botón searchButton no está inicializado.");
         }
@@ -36,7 +36,7 @@ public class Principal {
     }
 
 
-    private void buscarAlimento() {
+    private void searchFood() {
         String query = foodSearch.getText();
         if (query.isEmpty()) {
             foodname.setText("Nombre: (Ingrese un alimento)");
@@ -44,15 +44,15 @@ public class Principal {
         }
 
         // Obtener datos desde la API
-        Food alimento = consumoAPI.obtenerInformacionDeAlimentos(query);
+        Food food = APIConsumption.getFoodInfo(query);
 
         // Mostrar los datos en la interfaz
-        if (alimento != null) {
-            foodname.setText("Nombre: " + alimento.getFoodName());
-            calories.setText("Calorías: " + alimento.getCalories());
-            protein.setText("Proteínas: " + alimento.getProtein() + " g");
-            totalFat.setText("Grasas: " + alimento.getTotalFat() + " g");
-            totalCarhbohydrate.setText("Carbohidratos: " + alimento.getTotalCarbohydrate() + " g");
+        if (food != null) {
+            foodname.setText("Nombre: " + food.getFoodName());
+            calories.setText("Calorías: " + food.getCalories());
+            protein.setText("Proteínas: " + food.getProtein() + " g");
+            totalFat.setText("Grasas: " + food.getTotalFat() + " g");
+            totalCarhbohydrate.setText("Carbohidratos: " + food.getTotalCarbohydrate() + " g");
         } else {
             foodname.setText("Nombre: No encontrado");
             calories.setText("Calorías: -");

@@ -1,32 +1,32 @@
 package com.prueba.demo.service.dto;
 
 public class EmailDTO {
-    private String destinatario;
-    private String asunto;
-    private String mensaje;
+    private String addressee;
+    private String subject;
+    private String message;
 
 
-    public String getDestinatario() {
-        return destinatario;
+    public String getAddressee() {
+        return addressee;
     }
 
-    public void setDestinatario(String destinatario) {
-        this.destinatario = destinatario;
+    public void setAddressee(String addressee) {
+        this.addressee = addressee;
     }
 
-    public String getAsunto() {
-        return asunto;
+    public String getSubject() {
+        return subject;
     }
 
-    public void setAsunto(String asunto) {
-        this.asunto = asunto;
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
-    public String getMensaje() {
-        return mensaje;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMensaje(String mensaje) {
-        this.mensaje = mensaje;
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

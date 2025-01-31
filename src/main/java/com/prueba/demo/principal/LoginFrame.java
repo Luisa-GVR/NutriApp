@@ -1,7 +1,7 @@
 package com.prueba.demo.principal;
 
-import com.prueba.demo.model.Usuario;
-import com.prueba.demo.repository.UsuarioRepository;
+import com.prueba.demo.model.User;
+import com.prueba.demo.repository.UserRepository;
 import com.prueba.demo.service.IEmailService;
 import com.prueba.demo.service.dto.EmailDTO;
 import javafx.application.Platform;
@@ -25,85 +25,85 @@ import java.util.Random;
 public class LoginFrame {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UserRepository userRepository;
     @Autowired
     private TemplateEngine templateEngine;
     @Autowired
     private IEmailService iEmailService;
 
-    @FXML private TextField nombreField;
-    @FXML private TextField codigoField;
-    @FXML private Button generarCodigoButton;
+    @FXML private TextField nameField;
+    @FXML private TextField codeField;
+    @FXML private Button generateCodeField;
     @FXML private Button loginButton;
 
-    private String codigoVerificacion;
-    private boolean codigoGenerado = false;
+    private String verificationCode;
+    private boolean generatedCode = false;
 
     @FXML
     private void initialize() {
         // Verificar si ya existe un usuario validado
-        Optional<Usuario> usuarioValido = usuarioRepository.findAll().stream()
-                .filter(Usuario::isValidacion)
+        Optional<User> validUser = userRepository.findAll().stream()
+                .filter(User::isValidation)
                 .findFirst();
 
-        if (usuarioValido.isPresent()) {
-            abrirPrincipal();
+        if (validUser.isPresent()) {
+            openPrincipal();
         }
 
-        generarCodigoButton.setOnAction(event -> {
+        generateCodeField.setOnAction(event -> {
             try {
-                generarCodigoVerificacion();
+                generateCodeVerification();
             } catch (MessagingException e) {
-                mostrarAlerta("Error", "No se pudo enviar el correo.");
+                showAlert("Error", "No se pudo enviar el correo.");
             }
         });
 
-        loginButton.setOnAction(event -> verificarCodigo());
+        loginButton.setOnAction(event -> verifyCode());
     }
 
-    private void generarCodigoVerificacion() throws MessagingException {
+    private void generateCodeVerification() throws MessagingException {
         Random random = new Random();
-        int codigo = 10000 + random.nextInt(90000);
-        codigoVerificacion = String.valueOf(codigo);
-        codigoGenerado = true;
+        int code = 10000 + random.nextInt(90000);
+        verificationCode = String.valueOf(code);
+        generatedCode = true;
 
-        mostrarAlerta("Código Generado", "Envía el código a tu nutrióloga.");
+        showAlert("Código Generado", "Envía el código a tu nutrióloga.");
 
         Context context = new Context();
-        context.setVariable("verificationCode", codigoVerificacion);
+        context.setVariable("verificationCode", verificationCode);
         String contentHTML = templateEngine.process("email", context);
 
         EmailDTO emailDTO = new EmailDTO();
-        emailDTO.setDestinatario("nutriappunison@gmail.com");
-        emailDTO.setAsunto("Código de verificación");
-        emailDTO.setMensaje(contentHTML);
+        emailDTO.setAddressee("nutriappunison@gmail.com");
+        emailDTO.setSubject("Código de verificación");
+        emailDTO.setMessage(contentHTML);
 
         iEmailService.sendMail(emailDTO);
     }
 
-    private void verificarCodigo() {
-        if (!codigoGenerado) {
-            mostrarAlerta("Error", "Genera el código primero.");
+    private void verifyCode() {
+        if (!generatedCode) {
+            showAlert("Error", "Genera el código primero.");
             return;
         }
 
-        String nombre = nombreField.getText();
-        String codigoIngresado = codigoField.getText();
+        String name = nameField.getText();
+        String inputCode = codeField.getText();
 
-        Usuario usuario = new Usuario();
-        usuario.setNombre(nombre);
+        User user = new User();
+        user.setName(name);
 
-        if (codigoIngresado.equals(codigoVerificacion)) {
-            usuario.setValidacion(true);
-            usuarioRepository.save(usuario);
-            mostrarAlerta("Éxito", "Usuario validado correctamente.");
-            abrirPrincipal();
+        if (inputCode.equals(verificationCode)) {
+            user.setValidation(true);
+            userRepository.save(user);
+            showAlert("Éxito", "Usuario validado correctamente.");
+            openPrincipal();
         } else {
-            mostrarAlerta("Error", "Código incorrecto.");
+            showAlert("Error", "Código incorrecto.");
         }
     }
 
-    private void abrirPrincipal() {
+    private void openPrincipal() {
         Platform.runLater(() -> {
             try {
                 // Obtener la ventana actual desde el stage principal
@@ -122,14 +122,14 @@ public class LoginFrame {
                 newStage.show();
             } catch (Exception e) {
                 e.printStackTrace();  // Para obtener más detalles sobre el error
-                mostrarAlerta("Error", "No se pudo abrir la ventana principal.");
+                showAlert("Error", "No se pudo abrir la ventana principal.");
             }
         });
     }
 
 
 
-    private void mostrarAlerta(String titulo, String mensaje) {
+    private void showAlert(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titulo);
         alert.setHeaderText(null);
