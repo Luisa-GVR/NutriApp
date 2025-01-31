@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Código de Verificación</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        p {
+            font-size: 16px;
+        }
+        .code {
+            font-weight: bold;
+            font-size: 24px;
+            color: #333;
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Código de Verificación</h1>
+    <p>Hola,</p>
+    <p>Gracias por registrarte. Por favor, usa el siguiente código para verificar tu aplicacion:</p>
+    <p class="code" th:text="${verificationCode}">Código de verificación aquí</p>
+    <p>Si no solicitaste este código, por favor ignora este correo.</p>
+    <p>Gracias,<br>El equipo de NutriApp</p>
+    <div class="footer">
+        <p>Este es un mensaje automático, por favor no respondas a este correo.</p>
+    </div>
+</div>
+</body>
+</html>
