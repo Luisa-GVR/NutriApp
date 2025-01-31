@@ -1,41 +1,42 @@
 package com.prueba.demo;
 
 import com.prueba.demo.principal.LoginFrame;
-import com.prueba.demo.principal.Principal;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import org.apache.commons.logging.Log;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@Configuration
-@ComponentScan
-@EnableAutoConfiguration
 @SpringBootApplication
-public class DemoApplication {
+public class DemoApplication extends Application {
 
-	public static void main(String[] args) {
-		ConfigurableApplicationContext context = new SpringApplicationBuilder(DemoApplication.class)
-				.headless(false)
-				.run(args);
+	private ConfigurableApplicationContext context;
 
-		// Get the LoginFrame bean
-		LoginFrame loginFrame = context.getBean(LoginFrame.class);
-
-		// The visibility is now handled within LoginFrame after the DB check
+	@Override
+	public void init() {
+		context = new SpringApplicationBuilder(DemoApplication.class)
+				.run();
 	}
 
-	@Bean
-	public LoginFrame loginFrame() {
-		return new LoginFrame();
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/LoginFrame.fxml"));
+		loader.setControllerFactory(context::getBean); // Permite que Spring maneje los controladores
+		Scene scene = new Scene(loader.load());
+
+		primaryStage.setTitle("Login");
+		primaryStage.setScene(scene);
+		primaryStage.show();
+	}
+
+	@Override
+	public void stop() {
+		context.close(); // Cierra el contexto de Spring al cerrar la app
+	}
+
+	public static void main(String[] args) {
+		launch(args); // Inicia JavaFX
 	}
 }

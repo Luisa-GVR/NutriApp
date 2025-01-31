@@ -2,76 +2,63 @@ package com.prueba.demo.principal;
 
 import com.prueba.demo.model.Food;
 import com.prueba.demo.service.ConsumoAPI;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+public class Principal {
 
-public class Principal extends JFrame {
+    // Referencias a los elementos del FXML
+    @FXML private TextField foodSearch;
+    @FXML private Button searchButton;
+    @FXML private Label foodname;
+    @FXML private Label calories;
+    @FXML private Label protein;
+    @FXML private Label totalFat;
+    @FXML private Label totalCarhbohydrate;
 
-    // Consumo de API
-    private ConsumoAPI consumoAPI = new ConsumoAPI();
+    // Instancia del servicio para consumir la API
+    private final ConsumoAPI consumoAPI = new ConsumoAPI();
 
-    // Componentes Swing
-    private JTextField queryField;
-    private JTextArea resultArea;
-    private JButton searchButton;
-
-    public Principal() {
-        // Configuración del JFrame
-        setTitle("Buscar Alimentos");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(600, 400);
-        setLocationRelativeTo(null);
-
-        // Crear los componentes
-        queryField = new JTextField(20); // Campo de texto para buscar alimentos
-        resultArea = new JTextArea(10, 40); // Área de texto para mostrar resultados
-        resultArea.setEditable(false); // No editable
-        searchButton = new JButton("Buscar");
-
-        // Panel para los componentes
-        JPanel panel = new JPanel();
-        panel.setLayout(new FlowLayout());
-        panel.add(new JLabel("Introduce el nombre del alimento:"));
-        panel.add(queryField);
-        panel.add(searchButton);
-
-        // Scroll para el área de texto
-        JScrollPane scrollPane = new JScrollPane(resultArea);
-
-        // Añadir los componentes al JFrame
-        add(panel, BorderLayout.NORTH);
-        add(scrollPane, BorderLayout.CENTER);
-
-        // Evento del botón de búsqueda
-        searchButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                buscarAlimento(queryField.getText());
-            }
-        });
-    }
-
-    // Método para buscar alimento y mostrar los resultados en la interfaz
-    public void buscarAlimento(String query) {
-        Food alimento = consumoAPI.obtenerInformacionDeAlimentos(query); // Suponiendo que la API devuelve un único objeto Food
-
-        // Limpiar el área de resultados
-        resultArea.setText("");
-
-        // Imprimir información del alimento obtenido
-        if (alimento != null) {
-            resultArea.append("Nombre: " + alimento.getFoodName() + "\n");
-            resultArea.append("Calorías: " + alimento.getCalories() + "\n");
-            resultArea.append("Proteínas: " + alimento.getProtein() + " g\n");
-            resultArea.append("Grasas: " + alimento.getTotalFat() + " g\n");
-            resultArea.append("Carbohidratos: " + alimento.getTotalCarbohydrate() + " g\n");
-            resultArea.append("--------------------\n");
+    @FXML
+    public void initialize() {
+        // Verificar que los elementos están correctamente inicializados
+        if (searchButton != null) {
+            searchButton.setOnAction(event -> buscarAlimento());
         } else {
-            resultArea.append("No se encontraron alimentos con esa búsqueda.\n");
+            System.out.println("Error: El botón searchButton no está inicializado.");
+        }
+
+        if (foodSearch == null || foodname == null || calories == null || protein == null || totalFat == null || totalCarhbohydrate == null) {
+            System.out.println("Error: Uno o más elementos FXML no están correctamente inicializados.");
         }
     }
 
+
+    private void buscarAlimento() {
+        String query = foodSearch.getText();
+        if (query.isEmpty()) {
+            foodname.setText("Nombre: (Ingrese un alimento)");
+            return;
+        }
+
+        // Obtener datos desde la API
+        Food alimento = consumoAPI.obtenerInformacionDeAlimentos(query);
+
+        // Mostrar los datos en la interfaz
+        if (alimento != null) {
+            foodname.setText("Nombre: " + alimento.getFoodName());
+            calories.setText("Calorías: " + alimento.getCalories());
+            protein.setText("Proteínas: " + alimento.getProtein() + " g");
+            totalFat.setText("Grasas: " + alimento.getTotalFat() + " g");
+            totalCarhbohydrate.setText("Carbohidratos: " + alimento.getTotalCarbohydrate() + " g");
+        } else {
+            foodname.setText("Nombre: No encontrado");
+            calories.setText("Calorías: -");
+            protein.setText("Proteínas: -");
+            totalFat.setText("Grasas: -");
+            totalCarhbohydrate.setText("Carbohidratos: -");
+        }
+    }
 }

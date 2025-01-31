@@ -102,6 +102,12 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>2.7.0</version>
+				<configuration>
+					<!-- Aquí, se asegura que el JAR generado sea ejecutable -->
+					<mainClass>com.prueba.demo.DemoApplication.java</mainClass> <!-- Aquí va la clase principal ejecutable -->
+
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
