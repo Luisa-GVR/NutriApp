@@ -7,39 +7,44 @@ import com.prueba.demo.model.Food;
 import com.prueba.demo.model.FoodsResponse;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 
 public class APIConsumption {
 
     //Nutritionix, hacerlo mas seguro!
     private static final String API_KEY = "04efb6f3d6527074db8c13c4ac662f40";
+    private static final String API_ID = "7aa68925";
     private static final String URL_BASE = "https://trackapi.nutritionix.com/v2/natural/nutrients";
 
     public Food getFoodInfo(String query) {
         HttpClient client = HttpClient.newHttpClient();
 
-        // Construimos el cuerpo de la solicitud
-        String jsonBody = "{ \"query\": \"" + query + "\" }";  // El query es lo que buscarás (por ejemplo: "apple")
+        String encodedFoodName = URLEncoder.encode(query, StandardCharsets.UTF_8);
+        String requestBody = "{\"query\":\"" + query + "\"}";
 
-        // Creamos la solicitud con la API Key en los encabezados
+        System.out.println("req body: " + requestBody);
+
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(URL_BASE))
-                .header("x-app-id", "7aa68925")
+                .header("x-app-id", API_ID)
                 .header("x-app-key", API_KEY)
                 .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
 
         HttpResponse<String> response = null;
         try {
-            // Enviamos la solicitud y obtenemos la respuesta
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Error al consumir la API", e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
 
         // Convertimos la respuesta a un String
