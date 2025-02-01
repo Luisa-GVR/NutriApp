@@ -18,7 +18,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ValidationFrame{
+public class ValidationFrame {
 
 
     @Autowired
@@ -27,8 +27,12 @@ public class ValidationFrame{
     @Autowired
     private UserRepository userRepository;
 
-    @FXML private TextField codeField;
-    @FXML private Button loginButton;
+    @FXML
+    private TextField codeField;
+    @FXML
+    private Button loginButton;
+    private UserData userData;
+
 
 
     @FXML
@@ -36,6 +40,7 @@ public class ValidationFrame{
         Button button = (Button) event.getSource();
         button.setStyle("-fx-background-color: #5E7922;");
     }
+
     @FXML
     private void handleMouseExited(MouseEvent event) {
         Button button = (Button) event.getSource();
@@ -55,9 +60,7 @@ public class ValidationFrame{
 
     private static String verificationCode; // Código recibido de LoginFrame
 
-    public static void setVerificationCode(String code) {
-        verificationCode = code;
-    }
+
 
     @FXML
     private void initialize() {
@@ -65,15 +68,13 @@ public class ValidationFrame{
     }
 
 
-
-    private void verifyCode() {
+    private void verifyCode() { // No recibe verificationCode como parámetro
         String inputCode = codeField.getText();
 
-        if (inputCode.equals(verificationCode)) {
-
+        if (inputCode.equals(userData.getVerificationCode())) { // Usa userData.getVerificationCode()
             User user = new User();
-            user.setName(getName());
-            user.setEmail(getEmail());
+            user.setName(userData.getName());
+            user.setEmail(userData.getEmail());
             user.setValidation(true);
 
             userRepository.save(user);
@@ -85,7 +86,6 @@ public class ValidationFrame{
         }
     }
 
-
     public void setName(String name) {
         this.name = name;
     }
@@ -93,7 +93,6 @@ public class ValidationFrame{
     public void setEmail(String email) {
         this.email = email;
     }
-
 
 
     private void openPrincipal() {
@@ -129,4 +128,14 @@ public class ValidationFrame{
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
+
+    public static void setVerificationCode(String code) { // Keep this static method
+        verificationCode = code;
+    }
+    public void setUserData(UserData userData) { // ¡Setter para UserData!
+        this.userData = userData;
+    }
+
+
 }
+
