@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -25,8 +26,7 @@ import java.util.Random;
 @Component
 public class LoginFrame {
 
-    @Autowired
-    private UserRepository userRepository;
+
     @Autowired
     private TemplateEngine templateEngine;
     @Autowired
@@ -36,6 +36,8 @@ public class LoginFrame {
     @FXML private TextField codeField;
     @FXML private Button generateCodeField;
     @FXML private Button loginButton;
+
+    @FXML private TextField emailField;
 
     private String verificationCode;
     private boolean generatedCode = false;
@@ -53,8 +55,13 @@ public class LoginFrame {
         button.setStyle("-fx-background-color: #7DA12D;");
     }
 
+    @Autowired
+    private UserRepository userRepository;
     @FXML
     private void initialize() {
+
+
+
         // Verificar si ya existe un usuario validado
         Optional<User> validUser = userRepository.findAll().stream()
                 .filter(User::isValidation)
@@ -66,6 +73,12 @@ public class LoginFrame {
 
         generateCodeField.setOnAction(event -> {
             try {
+
+                if (!isValidEmail(emailField.getText())) {
+                    showAlert("Error", "Correo electrónico inválido. Debe terminar en @gmail.com, @hotmail.com u @outlook.com");
+                    return;
+                }
+
                 generateCodeVerification();
             } catch (MessagingException e) {
                 showAlert("Error", "No se pudo enviar el correo.");
@@ -74,13 +87,21 @@ public class LoginFrame {
 
     }
 
+    private boolean isValidEmail(String email) {
+        if (email == null || email.isEmpty()) {
+            return false;
+        }
+        return email.matches("^[\\w-\\.]+@(?:gmail\\.com|hotmail\\.com|outlook\\.com)$");
+    }
+
+
     private void generateCodeVerification() throws MessagingException {
         Random random = new Random();
         int code = 10000 + random.nextInt(90000);
         verificationCode = String.valueOf(code);
         generatedCode = true;
 
-        showAlert("Código Generado", "Envía el código a tu nutrióloga.");
+        showAlert("Código Generado", "Se ha enviado el código a tu nutrióloga.");
 
         Context context = new Context();
         context.setVariable("verificationCode", verificationCode);
@@ -105,54 +126,36 @@ public class LoginFrame {
             }
         });
     }
+
+    @Autowired
+    private ApplicationContext applicationContext;
+
     private void openValidationFrame() {
         Platform.runLater(() -> {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ValidationFrame.fxml"));
+                loader.setControllerFactory(applicationContext::getBean); // *** Crucial Line ***
                 Scene scene = new Scene(loader.load());
 
                 ValidationFrame validationFrame = loader.getController();
-                validationFrame.setVerificationCode(verificationCode); // Pasar el código
+
+                validationFrame.setVerificationCode(verificationCode);
+                validationFrame.setName(nameField.getText());
+                validationFrame.setEmail(emailField.getText());
 
                 Stage validationStage = new Stage();
                 validationStage.setTitle("Validación");
                 validationStage.setScene(scene);
-
                 validationStage.setResizable(false);
                 validationStage.setMaximized(false);
                 validationStage.setIconified(false);
-
                 validationStage.show();
+
             } catch (Exception e) {
                 e.printStackTrace();
                 showAlert("Error", "No se pudo abrir la ventana de validación.");
             }
         });
-    }
-
-
-
-
-    private void verifyCode() {
-        if (!generatedCode) {
-            showAlert("Error", "Genera el código primero.");
-            return;
-        }
-
-        String name = nameField.getText();
-        String inputCode = codeField.getText();
-
-        User user = new User();
-        user.setName(name);
-
-        if (inputCode.equals(verificationCode)) {
-            user.setValidation(true);
-            userRepository.save(user);
-            showAlert("Éxito", "Usuario validado correctamente.");
-            openPrincipal();
-        } else {
-            showAlert("Error", "Código incorrecto.");
-        }
     }
 
     private void openPrincipal() {
@@ -167,6 +170,8 @@ public class LoginFrame {
 
                 // Cargar la nueva ventana
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/Principal.fxml"));
+                loader.setControllerFactory(applicationContext::getBean); // *** Crucial Line ***
+
                 Scene scene = new Scene(loader.load());
 
                 // Crear un nuevo Stage para la ventana principal

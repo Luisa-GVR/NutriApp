@@ -3,7 +3,7 @@ package com.prueba.demo.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Usuario")
+@Table(name = "Users")
 public class User {
 
     @Id
@@ -12,6 +12,17 @@ public class User {
 
     @Column(name = "name", nullable = false, length = 50)
     private String name;
+
+    @Column(name = "email", nullable = false, length = 50)
+    private String email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     @Column(name = "validation", nullable = false)
     private boolean validation;
