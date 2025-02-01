@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -39,6 +40,19 @@ public class LoginFrame {
     private String verificationCode;
     private boolean generatedCode = false;
 
+
+    @FXML
+    private void handleMouseEntered(MouseEvent event) {
+        Button button = (Button) event.getSource();
+        button.setStyle("-fx-background-color: #5E7922;");
+    }
+
+    @FXML
+    private void handleMouseExited(MouseEvent event) {
+        Button button = (Button) event.getSource();
+        button.setStyle("-fx-background-color: #7DA12D;");
+    }
+
     @FXML
     private void initialize() {
         // Verificar si ya existe un usuario validado
@@ -58,7 +72,6 @@ public class LoginFrame {
             }
         });
 
-        loginButton.setOnAction(event -> verifyCode());
     }
 
     private void generateCodeVerification() throws MessagingException {
@@ -79,7 +92,46 @@ public class LoginFrame {
         emailDTO.setMessage(contentHTML);
 
         iEmailService.sendMail(emailDTO);
+
+        // Cerrar la ventana actual y abrir la de validación
+        closeCurrentWindow();
+        openValidationFrame();
     }
+    private void closeCurrentWindow() {
+        Platform.runLater(() -> {
+            Stage stage = (Stage) generateCodeField.getScene().getWindow();
+            if (stage != null) {
+                stage.close();
+            }
+        });
+    }
+    private void openValidationFrame() {
+        Platform.runLater(() -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ValidationFrame.fxml"));
+                Scene scene = new Scene(loader.load());
+
+                ValidationFrame validationFrame = loader.getController();
+                validationFrame.setVerificationCode(verificationCode); // Pasar el código
+
+                Stage validationStage = new Stage();
+                validationStage.setTitle("Validación");
+                validationStage.setScene(scene);
+
+                validationStage.setResizable(false);
+                validationStage.setMaximized(false);
+                validationStage.setIconified(false);
+
+                validationStage.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+                showAlert("Error", "No se pudo abrir la ventana de validación.");
+            }
+        });
+    }
+
+
+
 
     private void verifyCode() {
         if (!generatedCode) {
@@ -107,7 +159,8 @@ public class LoginFrame {
         Platform.runLater(() -> {
             try {
                 // Obtener la ventana actual desde el stage principal
-                Stage stage = (Stage) loginButton.getScene().getWindow();
+                Stage stage = (Stage) generateCodeField.getScene().getWindow();
+
                 if (stage != null) {
                     stage.close(); // Cerrar la ventana actual
                 }
@@ -116,16 +169,28 @@ public class LoginFrame {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/Principal.fxml"));
                 Scene scene = new Scene(loader.load());
 
+                // Crear un nuevo Stage para la ventana principal
                 Stage newStage = new Stage();
                 newStage.setTitle("Principal");
                 newStage.setScene(scene);
+
+                // Desactivar redimensionamiento, maximización y minimización
+                newStage.setResizable(false);  // Desactiva redimensionamiento
+                newStage.setMaximized(false);  // Desactiva maximización
+                newStage.setIconified(false);  // Desactiva minimización
+
+                // Mostrar la nueva ventana
                 newStage.show();
+
             } catch (Exception e) {
                 e.printStackTrace();  // Para obtener más detalles sobre el error
                 showAlert("Error", "No se pudo abrir la ventana principal.");
             }
         });
     }
+
+
+
 
 
 
