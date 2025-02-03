@@ -44,6 +44,9 @@ public class DashboardFrame {
 
     @FXML
     private void initialize() {
+        rootPane.setMinWidth(900);  // Ancho mínimo
+        rootPane.setMinHeight(520); // Alto mínimo
+
         // Asigna eventos a botones
         profilePane.setVisible(false);
         dietPane.setVisible(false);

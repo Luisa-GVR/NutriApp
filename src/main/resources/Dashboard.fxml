@@ -18,7 +18,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="rootPane" maxWidth="-Infinity" minHeight="520.0" minWidth="900.0" prefHeight="520.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.prueba.demo.principal.DashboardFrame">
+<VBox fx:id="rootPane" maxWidth="-Infinity" minHeight="520.0" minWidth="1000.0" prefHeight="520.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.prueba.demo.principal.DashboardFrame">
    <children>
       <GridPane maxWidth="1.7976931348623157E308" prefWidth="600.0" VBox.vgrow="ALWAYS">
          <columnConstraints>
