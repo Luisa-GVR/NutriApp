@@ -17,7 +17,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.prueba.demo.principal.DashboardFrame">
+<VBox fx:id="vbox" maxWidth="-Infinity" minHeight="520.0" minWidth="900.0" prefHeight="520.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.prueba.demo.principal.DashboardFrame">
    <children>
       <GridPane maxWidth="1.7976931348623157E308" prefWidth="600.0" VBox.vgrow="ALWAYS">
          <columnConstraints>
@@ -28,109 +28,11 @@
             <RowConstraints minHeight="400.0" valignment="CENTER" vgrow="ALWAYS" />
          </rowConstraints>
          <children>
-            <VBox maxWidth="-Infinity" minHeight="-Infinity" prefHeight="200.0" prefWidth="150.0" spacing="10.0" style="-fx-background-color: #262626;">
-               <children>
-                  <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="149.0">
-                     <children>
-                        <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@images/NutriApp64x64.png" />
-                           </image>
-                        </ImageView>
-                        <Label text="NutriApp" textFill="#f9f9f9">
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <Line endX="50.0" startX="-100.0" stroke="#7da12d">
-                     <VBox.margin>
-                        <Insets top="-15.0" />
-                     </VBox.margin>
-                  </Line>
-                  <Button fx:id="dashboardButton" mnemonicParsing="false" onMouseEntered="#mouseEntered" onMouseExited="#mouseExited" style="-fx-background-color: transparent;" text="Dashboard" textFill="#f9f9f9">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                     <graphic>
-                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@images/dashboardIcon.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <VBox.margin>
-                        <Insets left="20.0" />
-                     </VBox.margin>
-                  </Button>
-                  <Button fx:id="profileButton" mnemonicParsing="false" onMouseEntered="#mouseEntered" onMouseExited="#mouseExited" style="-fx-background-color: transparent;" text="Perfil" textFill="#f9f9f9">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                     <graphic>
-                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@images/profile.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <VBox.margin>
-                        <Insets left="20.0" />
-                     </VBox.margin>
-                  </Button>
-                  <Button fx:id="dietButton" mnemonicParsing="false" onMouseEntered="#mouseEntered" onMouseExited="#mouseExited" style="-fx-background-color: transparent;" text="Dieta" textFill="#f9f9f9">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                     <graphic>
-                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@images/foodIcon.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <VBox.margin>
-                        <Insets left="20.0" />
-                     </VBox.margin>
-                  </Button>
-                  <Button fx:id="exerciseButton" mnemonicParsing="false" onMouseEntered="#mouseEntered" onMouseExited="#mouseExited" style="-fx-background-color: transparent;" text="Ejercicio" textFill="#f9f9f9">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                     <graphic>
-                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@images/exerciseIcon.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <VBox.margin>
-                        <Insets left="20.0" />
-                     </VBox.margin>
-                  </Button>
-                  <Button fx:id="reportsButton" mnemonicParsing="false" onMouseEntered="#mouseEntered" onMouseExited="#mouseExited" style="-fx-background-color: transparent;" text="Reportes" textFill="#f9f9f9">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                     <graphic>
-                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@images/reportsIcon.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <VBox.margin>
-                        <Insets left="20.0" />
-                     </VBox.margin>
-                  </Button>
-               </children>
-            </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
                <children>
                   <StackPane alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="520.0" prefWidth="750.0">
                      <children>
-                        <VBox fx:id="dietPane" prefHeight="200.0" prefWidth="100.0" spacing="30.0">
+                        <VBox fx:id="dietPane" opacity="0.0" prefHeight="200.0" prefWidth="100.0" spacing="30.0">
                            <children>
                               <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="631.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5;">
                                  <children>
@@ -239,7 +141,7 @@
                               </VBox>
                            </children>
                         </VBox>
-                        <VBox fx:id="profilePane" prefHeight="200.0" prefWidth="100.0" spacing="30.0" style="-fx-background-color: #f9f9f9;">
+                        <VBox fx:id="profilePane" opacity="0.0" prefHeight="200.0" prefWidth="100.0" spacing="30.0" style="-fx-background-color: #f9f9f9;">
                            <children>
                               <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="50.0" prefWidth="700.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5;">
                                  <children>
@@ -469,7 +371,7 @@
                               </VBox>
                            </children>
                         </VBox>
-                        <VBox fx:id="dashboardPane" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="520.0" prefWidth="750.0" spacing="30.0">
+                        <VBox fx:id="dashboardPane" maxWidth="-Infinity" minHeight="-Infinity" opacity="0.0" prefHeight="520.0" prefWidth="750.0" spacing="30.0">
                            <children>
                               <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="631.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5;">
                                  <children>
@@ -493,8 +395,150 @@
                               </VBox>
                            </children>
                         </VBox>
+                        <VBox fx:id="reportsPane" maxWidth="-Infinity" minHeight="-Infinity" opacity="0.0" prefHeight="520.0" prefWidth="750.0" spacing="30.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="631.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5;">
+                                 <children>
+                                    <Label text="Reportes">
+                                       <font>
+                                          <Font name="System Bold" size="24.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="20.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="20.0" right="20.0" top="20.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <VBox prefHeight="400.0" prefWidth="487.0" spacing="20.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5;">
+                                 <VBox.margin>
+                                    <Insets left="20.0" right="20.0" />
+                                 </VBox.margin>
+                              </VBox>
+                           </children>
+                        </VBox>
+                        <VBox fx:id="exercisePane" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="520.0" prefWidth="750.0" spacing="30.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="631.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5;">
+                                 <children>
+                                    <Label text="Ejercicio">
+                                       <font>
+                                          <Font name="System Bold" size="24.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="20.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="20.0" right="20.0" top="20.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <VBox prefHeight="400.0" prefWidth="487.0" spacing="20.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5;">
+                                 <VBox.margin>
+                                    <Insets left="20.0" right="20.0" />
+                                 </VBox.margin>
+                              </VBox>
+                           </children>
+                        </VBox>
                      </children>
                   </StackPane>
+               </children>
+            </VBox>
+            <VBox fx:id="menuVbox" minHeight="-Infinity" prefHeight="200.0" prefWidth="150.0" spacing="10.0" style="-fx-background-color: #262626;" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="150.0">
+                     <children>
+                        <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/NutriApp64x64.png" />
+                           </image>
+                        </ImageView>
+                        <Label text="NutriApp" textFill="#f9f9f9">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="1.0" prefWidth="150.0" style="-fx-border-color: #7da12d;" />
+                  <Button fx:id="dashboardButton" mnemonicParsing="false" onMouseEntered="#mouseEntered" onMouseExited="#mouseExited" style="-fx-background-color: transparent;" text="Dashboard" textFill="#f9f9f9">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/dashboardIcon.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <VBox.margin>
+                        <Insets left="20.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="profileButton" mnemonicParsing="false" onMouseEntered="#mouseEntered" onMouseExited="#mouseExited" style="-fx-background-color: transparent;" text="Perfil" textFill="#f9f9f9">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/profile.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <VBox.margin>
+                        <Insets left="20.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="dietButton" mnemonicParsing="false" onMouseEntered="#mouseEntered" onMouseExited="#mouseExited" style="-fx-background-color: transparent;" text="Dieta" textFill="#f9f9f9">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/foodIcon.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <VBox.margin>
+                        <Insets left="20.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="exerciseButton" mnemonicParsing="false" onMouseEntered="#mouseEntered" onMouseExited="#mouseExited" style="-fx-background-color: transparent;" text="Ejercicio" textFill="#f9f9f9">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/exerciseIcon.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <VBox.margin>
+                        <Insets left="20.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="reportsButton" mnemonicParsing="false" onMouseEntered="#mouseEntered" onMouseExited="#mouseExited" style="-fx-background-color: transparent;" text="Reportes" textFill="#f9f9f9">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/reportsIcon.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <VBox.margin>
+                        <Insets left="20.0" />
+                     </VBox.margin>
+                  </Button>
                </children>
             </VBox>
          </children>

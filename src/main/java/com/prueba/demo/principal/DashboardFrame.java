@@ -10,24 +10,40 @@ import org.springframework.stereotype.Component;
 @Component
 public class DashboardFrame {
 
+    @FXML private VBox menuVbox;
+
     @FXML private VBox dashboardPane;
     @FXML private VBox profilePane;
     @FXML private VBox dietPane;
+    @FXML private VBox exercisePane;
+    @FXML private VBox reportsPane;
+
     @FXML private Button dashboardButton;
     @FXML private Button profileButton;
     @FXML private Button dietButton;
+    @FXML private Button exerciseButton;
+    @FXML private Button reportsButton;
+
+
 
 
 
     @FXML
     private void initialize() {
+
         // Asigna el evento manualmente al botón
         profilePane.setVisible(false);
         dietPane.setVisible(false);
+        exercisePane.setVisible(false);
+        reportsPane.setVisible(false);
 
         profileButton.setOnAction(event -> showProfile());
         dashboardButton.setOnAction(event -> showDashboard());
         dietButton.setOnAction(event -> showDiet());
+        exerciseButton.setOnAction(event -> showExercise());
+        reportsButton.setOnAction(event -> showReports());
+
+
     }
     //Funcionalidades visuales
     @FXML
@@ -49,22 +65,43 @@ public class DashboardFrame {
     private void showDashboard() {
         hideAll();
         dashboardPane.setVisible(true);
+        menuVbox.setVisible(true);
     }
 
     @FXML
     private void showProfile() {
         hideAll();
         profilePane.setVisible(true);
+        menuVbox.setVisible(true);
+
     }
     @FXML
     private void showDiet() {
         hideAll();
         dietPane.setVisible(true);
+        menuVbox.setVisible(true);
+
+    }
+    @FXML
+    private void showExercise() {
+        hideAll();
+        exercisePane.setVisible(true);
+        menuVbox.setVisible(true);
+
+    }
+    @FXML
+    private void showReports() {
+        hideAll();
+        reportsPane.setVisible(true);
+        menuVbox.setVisible(true);
+
     }
 
     private void hideAll() {
         dashboardPane.setVisible(false);
         profilePane.setVisible(false);
         dietPane.setVisible(false);
+        exercisePane.setVisible(false);
+        reportsPane.setVisible(false);
     }
 }
