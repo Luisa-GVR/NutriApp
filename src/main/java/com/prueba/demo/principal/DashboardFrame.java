@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class DashboardFrame {
 
+    @FXML private VBox menuVbox;
+
     @FXML private VBox dashboardPane;
     @FXML private VBox profilePane;
     @FXML private VBox dietPane;
@@ -21,6 +23,7 @@ public class DashboardFrame {
 
     @FXML
     private void initialize() {
+
         // Asigna el evento manualmente al botón
         profilePane.setVisible(false);
         dietPane.setVisible(false);
@@ -49,17 +52,22 @@ public class DashboardFrame {
     private void showDashboard() {
         hideAll();
         dashboardPane.setVisible(true);
+        menuVbox.setVisible(true);
     }
 
     @FXML
     private void showProfile() {
         hideAll();
         profilePane.setVisible(true);
+        menuVbox.setVisible(true);
+
     }
     @FXML
     private void showDiet() {
         hideAll();
         dietPane.setVisible(true);
+        menuVbox.setVisible(true);
+
     }
 
     private void hideAll() {
