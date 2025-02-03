@@ -32,7 +32,7 @@
                <children>
                   <StackPane alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="520.0" prefWidth="750.0">
                      <children>
-                        <VBox fx:id="dietPane" prefHeight="200.0" prefWidth="100.0" spacing="30.0">
+                        <VBox fx:id="dietPane" opacity="0.0" prefHeight="200.0" prefWidth="100.0" spacing="30.0">
                            <children>
                               <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="631.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5;">
                                  <children>
@@ -141,7 +141,7 @@
                               </VBox>
                            </children>
                         </VBox>
-                        <VBox fx:id="profilePane" prefHeight="200.0" prefWidth="100.0" spacing="30.0" style="-fx-background-color: #f9f9f9;">
+                        <VBox fx:id="profilePane" opacity="0.0" prefHeight="200.0" prefWidth="100.0" spacing="30.0" style="-fx-background-color: #f9f9f9;">
                            <children>
                               <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="50.0" prefWidth="700.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5;">
                                  <children>
@@ -371,7 +371,7 @@
                               </VBox>
                            </children>
                         </VBox>
-                        <VBox fx:id="dashboardPane" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="520.0" prefWidth="750.0" spacing="30.0">
+                        <VBox fx:id="dashboardPane" maxWidth="-Infinity" minHeight="-Infinity" opacity="0.0" prefHeight="520.0" prefWidth="750.0" spacing="30.0">
                            <children>
                               <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="631.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5;">
                                  <children>
@@ -395,13 +395,61 @@
                               </VBox>
                            </children>
                         </VBox>
+                        <VBox fx:id="reportsPane" maxWidth="-Infinity" minHeight="-Infinity" opacity="0.0" prefHeight="520.0" prefWidth="750.0" spacing="30.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="631.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5;">
+                                 <children>
+                                    <Label text="Reportes">
+                                       <font>
+                                          <Font name="System Bold" size="24.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="20.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="20.0" right="20.0" top="20.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <VBox prefHeight="400.0" prefWidth="487.0" spacing="20.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5;">
+                                 <VBox.margin>
+                                    <Insets left="20.0" right="20.0" />
+                                 </VBox.margin>
+                              </VBox>
+                           </children>
+                        </VBox>
+                        <VBox fx:id="exercisePane" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="520.0" prefWidth="750.0" spacing="30.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="631.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5;">
+                                 <children>
+                                    <Label text="Ejercicio">
+                                       <font>
+                                          <Font name="System Bold" size="24.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="20.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="20.0" right="20.0" top="20.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <VBox prefHeight="400.0" prefWidth="487.0" spacing="20.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5;">
+                                 <VBox.margin>
+                                    <Insets left="20.0" right="20.0" />
+                                 </VBox.margin>
+                              </VBox>
+                           </children>
+                        </VBox>
                      </children>
                   </StackPane>
                </children>
             </VBox>
-            <VBox fx:id="menuVbox" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="200.0" prefWidth="150.0" spacing="10.0" style="-fx-background-color: #262626;" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+            <VBox fx:id="menuVbox" minHeight="-Infinity" prefHeight="200.0" prefWidth="150.0" spacing="10.0" style="-fx-background-color: #262626;" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                <children>
-                  <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="149.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="150.0">
                      <children>
                         <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -415,11 +463,7 @@
                         </Label>
                      </children>
                   </HBox>
-                  <Line endX="50.0" startX="-100.0" stroke="#7da12d">
-                     <VBox.margin>
-                        <Insets top="-15.0" />
-                     </VBox.margin>
-                  </Line>
+                  <HBox prefHeight="1.0" prefWidth="150.0" style="-fx-border-color: #7da12d;" />
                   <Button fx:id="dashboardButton" mnemonicParsing="false" onMouseEntered="#mouseEntered" onMouseExited="#mouseExited" style="-fx-background-color: transparent;" text="Dashboard" textFill="#f9f9f9">
                      <font>
                         <Font name="System Bold" size="12.0" />
