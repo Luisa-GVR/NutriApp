@@ -3,7 +3,8 @@
 <?import javafx.scene.control.TextField?>
 
 <?import javafx.scene.layout.AnchorPane?>
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.prueba.demo.principal.Principal">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.prueba.demo.principal.Principal">
     <TextField fx:id="foodSearch" layoutX="20" layoutY="20" />
     <Button fx:id="searchButton" layoutX="20" layoutY="60" text="Buscar" />
     <Label fx:id="foodname" layoutX="20" layoutY="100" />

@@ -10,27 +10,27 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="600.0" maxWidth="1000.0" minHeight="600.0" minWidth="1000.0" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #262626;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.prueba.demo.principal.LoginFrame">
+<AnchorPane minHeight="600.0" minWidth="1000.0" style="-fx-background-color: #262626;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.prueba.demo.principal.LoginFrame">
     <children>
-        <VBox alignment="TOP_CENTER" layoutX="250.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="500.0" spacing="15.0" AnchorPane.bottomAnchor="-50.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="-30.0">
+        <VBox alignment="TOP_CENTER" layoutX="250.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="15.0" style="-fx-scale-x: 1; -fx-scale-y: 1;" AnchorPane.bottomAnchor="-50.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="-30.0">
             <children>
-                <ImageView fitHeight="300.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fitHeight="300.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" style="-fx-scale-x: 1; -fx-scale-y: 1;" VBox.vgrow="ALWAYS">
                     <image>
                         <Image url="@images/NutriApp.png" />
                     </image>
                 </ImageView>
-            <Label text="¡Únete ahora y personaliza tu experiencia!" textFill="WHITE">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="600.0" style="-fx-scale-x: 1; -fx-scale-y: 1;" text="¡Únete ahora y personaliza tu experiencia!" textAlignment="CENTER" textFill="WHITE" VBox.vgrow="ALWAYS">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
             </Label>
-                <Label alignment="CENTER" text="Ingresa tus datos" textAlignment="CENTER" textFill="#7da12d">
+                <Label alignment="CENTER" prefHeight="20.0" prefWidth="602.0" text="Ingresa tus datos" textAlignment="CENTER" textFill="#7da12d" VBox.vgrow="ALWAYS">
                <font>
-                  <Font size="14.0" />
+                  <Font name="System Bold" size="14.0" />
                </font></Label>
-                <TextField fx:id="nameField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="300.0" promptText="Nombre completo" />
-                <TextField id="emailField" fx:id="emailField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="300.0" promptText="Correo" />
-                <Button fx:id="generateCodeField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseExited" prefHeight="25.0" prefWidth="250.0" style="-fx-background-color: #7DA12D;" text="Solicitar código de verificación">
+                <TextField fx:id="nameField" maxWidth="-Infinity" minHeight="25.0" minWidth="300.0" prefHeight="25.0" prefWidth="300.0" promptText="Nombre completo" VBox.vgrow="ALWAYS" />
+                <TextField id="emailField" fx:id="emailField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="25.0" minWidth="300.0" promptText="Correo" VBox.vgrow="ALWAYS" />
+                <Button fx:id="generateCodeField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseExited" style="-fx-background-color: #7DA12D;" text="Solicitar código de verificación" VBox.vgrow="ALWAYS">
                     <font>
                         <Font name="System Bold" size="12.0" />
                     </font>
