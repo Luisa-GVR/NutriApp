@@ -146,9 +146,7 @@ public class LoginFrame {
                 Stage validationStage = new Stage();
                 validationStage.setTitle("Validación");
                 validationStage.setScene(scene);
-                validationStage.setResizable(false);
-                validationStage.setMaximized(false);
-                validationStage.setIconified(false);
+
                 validationStage.show();
 
             } catch (Exception e) {
@@ -169,7 +167,7 @@ public class LoginFrame {
                 }
 
                 // Cargar la nueva ventana
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Principal.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Dashboard.fxml"));
                 loader.setControllerFactory(applicationContext::getBean); // *** Crucial Line ***
 
                 Scene scene = new Scene(loader.load());
@@ -179,10 +177,6 @@ public class LoginFrame {
                 newStage.setTitle("Principal");
                 newStage.setScene(scene);
 
-                // Desactivar redimensionamiento, maximización y minimización
-                newStage.setResizable(false);  // Desactiva redimensionamiento
-                newStage.setMaximized(false);  // Desactiva maximización
-                newStage.setIconified(false);  // Desactiva minimización
 
                 // Mostrar la nueva ventana
                 newStage.show();
