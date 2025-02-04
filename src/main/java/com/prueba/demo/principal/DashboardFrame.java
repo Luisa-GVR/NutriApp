@@ -18,6 +18,7 @@ import java.util.List;
 @Component
 public class DashboardFrame {
 
+
     @FXML private VBox rootPane;
 
     @FXML private VBox menuVbox;

@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -25,28 +26,38 @@ import java.util.Random;
 
 @Component
 public class LoginFrame {
+    //---Variables LoginFrame---
+    //Botones
+    @FXML private Button generateCodeField;
+    //Labels
+    @FXML private Label labelMessage;
 
+    //Text Fields
+    @FXML private TextField nameField;
+    private String originalStyleName;
+    @FXML private TextField emailField;
+    @FXML private String originalStyleEmail;
 
+    //AUTOWIRED
     @Autowired
-    private TemplateEngine templateEngine;
+    private ApplicationContext applicationContext;
     @Autowired
     private IEmailService iEmailService;
+    @Autowired
 
-    @FXML private TextField nameField;
-    @FXML private TextField codeField;
-    @FXML private Button generateCodeField;
-    @FXML private Button loginButton;
+    private TemplateEngine templateEngine;
+    @Autowired
+    private UserRepository userRepository;
 
-    @FXML private TextField emailField;
 
     private String verificationCode;
     private boolean generatedCode = false;
 
-
+    //Métodos front
     @FXML
     private void handleMouseEntered(MouseEvent event) {
         Button button = (Button) event.getSource();
-        button.setStyle("-fx-background-color: #5E7922;");
+        button.setStyle("-fx-background-color: #A3D13C;");
     }
 
     @FXML
@@ -54,46 +65,61 @@ public class LoginFrame {
         Button button = (Button) event.getSource();
         button.setStyle("-fx-background-color: #7DA12D;");
     }
+    private void handleFieldClick() {
+        labelMessage.setText("Ingresa tus datos");
+        labelMessage.setStyle("-fx-text-fill: #7DA12D;");
+        nameField.setStyle(originalStyleName);
+        emailField.setStyle(originalStyleEmail);
+    }
 
-    @Autowired
-    private UserRepository userRepository;
+    @FXML
+    private void validarCampos() {
+//---CHECAR SI LA LOGICA DE ERRORES DEL REGISTRO ESTA COMPLETA---
+        if (emailField.getText().trim().isEmpty() || nameField.getText().trim().isEmpty()) {
+            labelMessage.setStyle("-fx-text-fill: b30000;");
+            labelMessage.setText("Nombre o correo electrónico inválidos. Por favor, verifica e intenta nuevamente");
+            nameField.setStyle(originalStyleName + " -fx-border-color: #b30000;");
+            emailField.setStyle(originalStyleName + " -fx-border-color: #b30000;");
+        }
+    }
+
     @FXML
     private void initialize() {
-
-
-
+        //Variables de estilos originales
+        originalStyleEmail = emailField.getStyle();
+        originalStyleName = nameField.getStyle();
+        //Llamar metodos, para cambiar estilos mediante eventos
+        emailField.setOnMouseClicked(event -> handleFieldClick());
+        nameField.setOnMouseClicked(event -> handleFieldClick());
         // Verificar si ya existe un usuario validado
         Optional<User> validUser = userRepository.findAll().stream()
                 .filter(User::isValidation)
                 .findFirst();
-
         if (validUser.isPresent()) {
             openPrincipal();
         }
-
+        // Configurar evento en el campo de generación de código
         generateCodeField.setOnAction(event -> {
             try {
+                // Validar campos antes de continuar
+                validarCampos();
 
                 if (!isValidEmail(emailField.getText())) {
                     showAlert("Error", "Correo electrónico inválido. Debe terminar en @gmail.com, @hotmail.com u @outlook.com");
                     return;
                 }
-
                 generateCodeVerification();
             } catch (MessagingException e) {
                 showAlert("Error", "No se pudo enviar el correo.");
             }
         });
-
     }
-
     private boolean isValidEmail(String email) {
         if (email == null || email.isEmpty()) {
             return false;
         }
         return email.matches("^[\\w-\\.]+@(?:gmail\\.com|hotmail\\.com|outlook\\.com)$");
     }
-
 
     private void generateCodeVerification() throws MessagingException {
         Random random = new Random();
@@ -126,9 +152,6 @@ public class LoginFrame {
             }
         });
     }
-
-    @Autowired
-    private ApplicationContext applicationContext;
 
     private void openValidationFrame() {
         Platform.runLater(() -> {
@@ -190,12 +213,6 @@ public class LoginFrame {
             }
         });
     }
-
-
-
-
-
-
 
     private void showAlert(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
