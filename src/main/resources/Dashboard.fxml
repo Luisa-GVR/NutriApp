@@ -33,11 +33,11 @@
                <children>
                   <StackPane alignment="TOP_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <VBox fx:id="dietPane" prefHeight="200.0" prefWidth="100.0" spacing="30.0">
+                        <VBox fx:id="dashboardPane" minHeight="-Infinity" prefHeight="520.0" prefWidth="750.0" spacing="30.0">
                            <children>
-                              <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="50.0" prefWidth="631.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5;" VBox.vgrow="ALWAYS">
+                              <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="631.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5;">
                                  <children>
-                                    <Label text="Dieta">
+                                    <Label text="Resumen de tu progreso">
                                        <font>
                                           <Font name="System Bold" size="24.0" />
                                        </font>
@@ -50,102 +50,14 @@
                                     <Insets left="20.0" right="20.0" top="20.0" />
                                  </VBox.margin>
                               </HBox>
-                              <VBox prefHeight="400.0" prefWidth="487.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5;" VBox.vgrow="ALWAYS">
-                                 <children>
-                                    <HBox prefHeight="52.0" prefWidth="631.0" spacing="110.0" VBox.vgrow="NEVER">
-                                       <children>
-                                          <HBox fillHeight="false">
-                                             <children>
-                                                <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="361.0" style="-fx-background-color: #CDCDCD; -fx-background-radius: 5;">
-                                                   <children>
-                                                      <HBox alignment="CENTER" prefHeight="30.0" prefWidth="29.0" style="-fx-background-color: #606060; -fx-background-radius: 5;">
-                                                         <children>
-                                                            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="15.0" prefWidth="15.0" style="-fx-background-radius: 100; -fx-background-color: #CDCDCD;" text="i" textAlignment="CENTER" textFill="#606060">
-                                                               <font>
-                                                                  <Font name="System Bold Italic" size="12.0" />
-                                                               </font>
-                                                            </Label>
-                                                         </children>
-                                                      </HBox>
-                                                      <Label text="Para comenzar a armar tus recetas, configura tus preferencias.">
-                                                         <HBox.margin>
-                                                            <Insets left="5.0" />
-                                                         </HBox.margin>
-                                                         <font>
-                                                            <Font name="System Bold" size="11.0" />
-                                                         </font>
-                                                      </Label>
-                                                   </children>
-                                                </HBox>
-                                             </children>
-                                             <HBox.margin>
-                                                <Insets left="10.0" right="10.0" />
-                                             </HBox.margin>
-                                          </HBox>
-                                          <Button alignment="CENTER" mnemonicParsing="false" style="-fx-background-color: #262626;" text="Configurar tus preferencias" textAlignment="CENTER" textFill="WHITE">
-                                             <font>
-                                                <Font name="System Bold" size="14.0" />
-                                             </font>
-                                             <HBox.margin>
-                                                <Insets />
-                                             </HBox.margin>
-                                          </Button>
-                                       </children>
-                                       <VBox.margin>
-                                          <Insets top="20.0" />
-                                       </VBox.margin>
-                                       <opaqueInsets>
-                                          <Insets />
-                                       </opaqueInsets>
-                                    </HBox>
-                                    <TableView editable="true" fixedCellSize="1.0" prefHeight="340.0" prefWidth="590.0" VBox.vgrow="ALWAYS">
-                                       <columns>
-                                          <TableColumn minWidth="115.0" prefWidth="-1.0" style="-fx-background-color: #7da12d;">
-                                             <graphic>
-                                                <Label minWidth="115.0" prefHeight="24.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Comida" textFill="#f9f9f9" />
-                                             </graphic>
-                                          </TableColumn>
-                                          <TableColumn minWidth="115.0" prefWidth="-1.0" style="-fx-background-color: #7da12d;">
-                                             <graphic>
-                                                <Label minWidth="115.0" prefHeight="24.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Lunes" textFill="#f9f9f9" />
-                                             </graphic>
-                                          </TableColumn>
-                                          <TableColumn minWidth="115.0" prefWidth="-1.0" style="-fx-background-color: #7da12d;">
-                                             <graphic>
-                                                <Label minWidth="115.0" prefHeight="24.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Martes" textFill="#f9f9f9" />
-                                             </graphic>
-                                          </TableColumn>
-                                          <TableColumn minWidth="115.0" prefWidth="-1.0" style="-fx-background-color: #7da12d;">
-                                             <graphic>
-                                                <Label minWidth="115.0" prefHeight="24.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Miércoles" textFill="#f9f9f9" />
-                                             </graphic>
-                                          </TableColumn>
-                                          <TableColumn minWidth="115.0" prefWidth="-1.0" style="-fx-background-color: #7da12d;">
-                                             <graphic>
-                                                <Label minWidth="115.0" prefHeight="24.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Jueves" textFill="#f9f9f9" />
-                                             </graphic>
-                                          </TableColumn>
-                                          <TableColumn minWidth="115.0" prefWidth="-1.0" style="-fx-background-color: #7da12d;">
-                                             <graphic>
-                                                <Label minWidth="115.0" prefHeight="24.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Viernes" textFill="#f9f9f9" />
-                                             </graphic>
-                                          </TableColumn>
-                                       </columns>
-                                       <VBox.margin>
-                                          <Insets bottom="10.0" left="10.0" right="10.0" />
-                                       </VBox.margin>
-                                       <columnResizePolicy>
-                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                       </columnResizePolicy>
-                                    </TableView>
-                                 </children>
+                              <VBox prefHeight="300.0" prefWidth="487.0" spacing="20.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5;" VBox.vgrow="ALWAYS">
                                  <VBox.margin>
                                     <Insets bottom="20.0" left="20.0" right="20.0" />
                                  </VBox.margin>
                               </VBox>
                            </children>
                         </VBox>
-                        <VBox fx:id="profilePane" prefHeight="200.0" prefWidth="100.0" spacing="30.0" style="-fx-background-color: #f9f9f9;">
+                        <VBox fx:id="profilePane" prefHeight="200.0" prefWidth="100.0" spacing="30.0" style="-fx-background-color: #f9f9f9;" visible="false">
                            <children>
                               <HBox alignment="CENTER" maxHeight="50.0" minHeight="-Infinity" prefHeight="50.0" prefWidth="700.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5;" VBox.vgrow="ALWAYS">
                                  <children>
@@ -375,11 +287,11 @@
                               </VBox>
                            </children>
                         </VBox>
-                        <VBox fx:id="dashboardPane" minHeight="-Infinity" prefHeight="520.0" prefWidth="750.0" spacing="30.0">
+                        <VBox fx:id="dietPane" prefHeight="200.0" prefWidth="100.0" spacing="30.0" visible="false">
                            <children>
-                              <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="631.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5;">
+                              <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="50.0" prefWidth="631.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5;" VBox.vgrow="ALWAYS">
                                  <children>
-                                    <Label text="Resumen de tu progreso">
+                                    <Label text="Dieta">
                                        <font>
                                           <Font name="System Bold" size="24.0" />
                                        </font>
@@ -392,18 +304,106 @@
                                     <Insets left="20.0" right="20.0" top="20.0" />
                                  </VBox.margin>
                               </HBox>
-                              <VBox prefHeight="300.0" prefWidth="487.0" spacing="20.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5;" VBox.vgrow="ALWAYS">
+                              <VBox prefHeight="400.0" prefWidth="487.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5;" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <HBox prefHeight="52.0" prefWidth="631.0" spacing="110.0" VBox.vgrow="NEVER">
+                                       <children>
+                                          <HBox fillHeight="false">
+                                             <children>
+                                                <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="361.0" style="-fx-background-color: #CDCDCD; -fx-background-radius: 5;">
+                                                   <children>
+                                                      <HBox alignment="CENTER" prefHeight="30.0" prefWidth="29.0" style="-fx-background-color: #606060; -fx-background-radius: 5;">
+                                                         <children>
+                                                            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="15.0" prefWidth="15.0" style="-fx-background-radius: 100; -fx-background-color: #CDCDCD;" text="i" textAlignment="CENTER" textFill="#606060">
+                                                               <font>
+                                                                  <Font name="System Bold Italic" size="12.0" />
+                                                               </font>
+                                                            </Label>
+                                                         </children>
+                                                      </HBox>
+                                                      <Label text="Para comenzar a armar tus recetas, configura tus preferencias.">
+                                                         <HBox.margin>
+                                                            <Insets left="5.0" />
+                                                         </HBox.margin>
+                                                         <font>
+                                                            <Font name="System Bold" size="11.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                             <HBox.margin>
+                                                <Insets left="10.0" right="10.0" />
+                                             </HBox.margin>
+                                          </HBox>
+                                          <Button alignment="CENTER" mnemonicParsing="false" style="-fx-background-color: #262626;" text="Configurar tus preferencias" textAlignment="CENTER" textFill="WHITE">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets />
+                                             </HBox.margin>
+                                          </Button>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets top="20.0" />
+                                       </VBox.margin>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </HBox>
+                                    <TableView editable="true" fixedCellSize="1.0" prefHeight="340.0" prefWidth="590.0" VBox.vgrow="ALWAYS">
+                                       <columns>
+                                          <TableColumn minWidth="115.0" prefWidth="-1.0" style="-fx-background-color: #7da12d;">
+                                             <graphic>
+                                                <Label minWidth="115.0" prefHeight="24.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Comida" textFill="#f9f9f9" />
+                                             </graphic>
+                                          </TableColumn>
+                                          <TableColumn minWidth="115.0" prefWidth="-1.0" style="-fx-background-color: #7da12d;">
+                                             <graphic>
+                                                <Label minWidth="115.0" prefHeight="24.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Lunes" textFill="#f9f9f9" />
+                                             </graphic>
+                                          </TableColumn>
+                                          <TableColumn minWidth="115.0" prefWidth="-1.0" style="-fx-background-color: #7da12d;">
+                                             <graphic>
+                                                <Label minWidth="115.0" prefHeight="24.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Martes" textFill="#f9f9f9" />
+                                             </graphic>
+                                          </TableColumn>
+                                          <TableColumn minWidth="115.0" prefWidth="-1.0" style="-fx-background-color: #7da12d;">
+                                             <graphic>
+                                                <Label minWidth="115.0" prefHeight="24.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Miércoles" textFill="#f9f9f9" />
+                                             </graphic>
+                                          </TableColumn>
+                                          <TableColumn minWidth="115.0" prefWidth="-1.0" style="-fx-background-color: #7da12d;">
+                                             <graphic>
+                                                <Label minWidth="115.0" prefHeight="24.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Jueves" textFill="#f9f9f9" />
+                                             </graphic>
+                                          </TableColumn>
+                                          <TableColumn minWidth="115.0" prefWidth="-1.0" style="-fx-background-color: #7da12d;">
+                                             <graphic>
+                                                <Label minWidth="115.0" prefHeight="24.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Viernes" textFill="#f9f9f9" />
+                                             </graphic>
+                                          </TableColumn>
+                                       </columns>
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" />
+                                       </VBox.margin>
+                                       <columnResizePolicy>
+                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                       </columnResizePolicy>
+                                    </TableView>
+                                 </children>
                                  <VBox.margin>
                                     <Insets bottom="20.0" left="20.0" right="20.0" />
                                  </VBox.margin>
                               </VBox>
                            </children>
                         </VBox>
-                        <VBox fx:id="reportsPane" minHeight="-Infinity" prefHeight="520.0" prefWidth="750.0" spacing="30.0">
+                        <VBox fx:id="exercisePane" minHeight="-Infinity" prefHeight="520.0" prefWidth="750.0" spacing="30.0" visible="false">
                            <children>
                               <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="631.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5;">
                                  <children>
-                                    <Label text="Reportes">
+                                    <Label text="Ejercicio">
                                        <font>
                                           <Font name="System Bold" size="24.0" />
                                        </font>
@@ -423,11 +423,11 @@
                               </VBox>
                            </children>
                         </VBox>
-                        <VBox fx:id="exercisePane" minHeight="-Infinity" prefHeight="520.0" prefWidth="750.0" spacing="30.0">
+                        <VBox fx:id="reportsPane" minHeight="-Infinity" prefHeight="520.0" prefWidth="750.0" spacing="30.0" visible="false">
                            <children>
                               <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="631.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5;">
                                  <children>
-                                    <Label text="Ejercicio">
+                                    <Label text="Reportes">
                                        <font>
                                           <Font name="System Bold" size="24.0" />
                                        </font>

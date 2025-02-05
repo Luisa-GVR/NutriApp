@@ -24,12 +24,18 @@
                   <Font name="System Bold" size="24.0" />
                </font>
             </Label>
-                <Label alignment="CENTER" prefHeight="20.0" prefWidth="602.0" text="Ingresa tus datos" textAlignment="CENTER" textFill="#7da12d" VBox.vgrow="ALWAYS">
+                <Label fx:id="labelMessage" alignment="CENTER" prefHeight="20.0" prefWidth="602.0" text="Ingresa tus datos" textAlignment="CENTER" textFill="#7da12d" VBox.vgrow="ALWAYS">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font></Label>
-                <TextField fx:id="nameField" maxWidth="-Infinity" minHeight="25.0" minWidth="300.0" prefHeight="25.0" prefWidth="300.0" promptText="Nombre completo" VBox.vgrow="ALWAYS" />
-                <TextField id="emailField" fx:id="emailField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="25.0" minWidth="300.0" promptText="Correo" VBox.vgrow="ALWAYS" />
+                <TextField fx:id="nameField" maxWidth="-Infinity" minHeight="25.0" minWidth="300.0" prefHeight="25.0" prefWidth="300.0" promptText="Nombre completo" style="-fx-border-color: #7da12d; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-color: #262626; -fx-text-fill: #f9f9f9;" VBox.vgrow="ALWAYS">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></TextField>
+                <TextField id="emailField" fx:id="emailField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="25.0" minWidth="300.0" promptText="Correo" style="-fx-border-color: #7da12d; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-color: #262626; -fx-text-fill: #f9f9f9;" VBox.vgrow="ALWAYS">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></TextField>
                 <Button fx:id="generateCodeField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseExited" style="-fx-background-color: #7DA12D;" text="Solicitar código de verificación" VBox.vgrow="ALWAYS">
                     <font>
                         <Font name="System Bold" size="12.0" />
