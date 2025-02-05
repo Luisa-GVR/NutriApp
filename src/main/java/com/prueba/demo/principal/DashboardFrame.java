@@ -1,9 +1,9 @@
 package com.prueba.demo.principal;
 
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -18,29 +18,84 @@ import java.util.List;
 @Component
 public class DashboardFrame {
 
+    //VBox Principal
+    @FXML
+    private VBox rootPane;
 
-    @FXML private VBox rootPane;
+    //Side Menu
+    @FXML
+    private VBox menuVbox;
+    @FXML
+    private Label nutriappLabel;
+    @FXML
+    private ImageView nutriappImage;
+    @FXML
+    private Button dashboardButton;
+    @FXML
+    private Button profileButton;
+    @FXML
+    private Button dietButton;
+    @FXML
+    private Button exerciseButton;
+    @FXML
+    private Button reportsButton;
 
-    @FXML private VBox menuVbox;
+    //Dashboard Pane
+    @FXML
+    private VBox dashboardPane;
+    @FXML
+    private ProgressBar caloriesProgressBar;
+    @FXML
+    private ProgressBar proteinsProgressBar;
+    @FXML
+    private ProgressBar fatsProgressBar;
+    @FXML
+    private ProgressBar carbohydratesProgressBar;
+    @FXML
+    private ProgressBar caloriesBurnedProgressBar;
+    @FXML
+    private ProgressBar timeActivityProgressBar;
+    @FXML
+    private Tooltip caloriesTooltip;
+    @FXML
+    private Tooltip proteinsTooltip;
+    @FXML
+    private Tooltip fatsTooltip;
+    @FXML
+    private Tooltip carbohydratesTooltip;
+    @FXML
+    private Tooltip caloriesBurnedTooltip;
+    @FXML
+    private Tooltip timeActivityTooltip;
 
-    @FXML private VBox dashboardPane;
-    @FXML private VBox profilePane;
-    @FXML private VBox dietPane;
-    @FXML private VBox exercisePane;
-    @FXML private VBox reportsPane;
+    @FXML
+    private TableView<Event> calendarTable;
+    @FXML
+    private TableColumn<Event, String> mondayColumn;
+    @FXML
+    private TableColumn<Event, String> tuesdayColumn;
+    @FXML
+    private TableColumn<Event, String> wednesdayColumn;
+    @FXML
+    private TableColumn<Event, String> thursdayColumn;
+    @FXML
+    private TableColumn<Event, String> fridayColumn;
 
-    @FXML private Label nutriappLabel;
-    @FXML private ImageView nutriappImage;
+    //ProfilePane
+    @FXML
+    private VBox profilePane;
 
+    //DietPane
+    @FXML
+    private VBox dietPane;
 
-    @FXML private Button dashboardButton;
-    @FXML private Button profileButton;
-    @FXML private Button dietButton;
-    @FXML private Button exerciseButton;
-    @FXML private Button reportsButton;
+    //ExercisePane
+    @FXML
+    private VBox exercisePane;
 
-
-
+    //Reports Pane
+    @FXML
+    private VBox reportsPane;
 
 
     @FXML
@@ -54,6 +109,23 @@ public class DashboardFrame {
         exercisePane.setVisible(false);
         reportsPane.setVisible(false);
 
+        // Crear tooltips para cada ProgressBar
+        Tooltip caloriesTooltip = new Tooltip("Progreso de calorías consumidas.");
+        Tooltip proteinsTooltip = new Tooltip("Progreso de proteínas consumidas.");
+        Tooltip fatsTooltip = new Tooltip("Progreso de grasas consumidas.");
+        Tooltip carbohydratesTooltip = new Tooltip("Progreso de carbohidratos consumidos.");
+        Tooltip caloriesBurnedTooltip = new Tooltip("Progreso de calorías quemadas.");
+        Tooltip timeActivityTooltip = new Tooltip("Tiempo total de actividad.");
+
+        // Asociar cada Tooltip con su ProgressBar
+        setTooltipForProgressBar(caloriesProgressBar, caloriesTooltip);
+        setTooltipForProgressBar(proteinsProgressBar, proteinsTooltip);
+        setTooltipForProgressBar(fatsProgressBar, fatsTooltip);
+        setTooltipForProgressBar(caloriesProgressBar, carbohydratesTooltip);
+        setTooltipForProgressBar(caloriesBurnedProgressBar, caloriesBurnedTooltip);
+        setTooltipForProgressBar(timeActivityProgressBar, timeActivityTooltip);
+
+        // Asociar acciones a botones
         profileButton.setOnAction(event -> showProfile());
         dashboardButton.setOnAction(event -> showDashboard());
         dietButton.setOnAction(event -> showDiet());
@@ -63,23 +135,19 @@ public class DashboardFrame {
         // Ajustar tamaño de fuente basado en el tamaño de la ventana
         List<Button> buttons = Arrays.asList(dashboardButton, exerciseButton, dietButton, reportsButton, profileButton);
 
-
-
         for (Button button : buttons) {
             button.sceneProperty().addListener((obs, oldScene, newScene) -> {
                 if (newScene != null) {
-
                     newScene.widthProperty().addListener((obs2, oldVal, newVal) -> {
-
                         double newSize = newVal.doubleValue() * 0.012; // Ajusta el tamaño relativo al ancho
-
-                        // Obtiene la fuente actual y aplica el mismo estilo con el nuevo tamaño
                         Font currentFont = button.getFont();
                         button.setFont(Font.font(currentFont.getFamily(), FontWeight.BOLD, newSize));
                     });
                 }
             });
         }
+
+
 
 
         nutriappLabel.sceneProperty().addListener((obs, oldScene, newScene) -> {
@@ -126,6 +194,24 @@ public class DashboardFrame {
         Node node = (Node) event.getSource();  // Obtiene la referencia al HBox clickeado
         node.setStyle("-fx-background-color: #262626;");  // Cambia el color de fondo a gris
     }
+    private void setTooltipForProgressBar(ProgressBar progressBar, Tooltip tooltip) {
+        Tooltip.install(progressBar, tooltip); // Instalar el Tooltip en la ProgressBar
+
+        progressBar.setOnMouseEntered(event -> {
+            if (!tooltip.isShowing()) {
+                tooltip.show(progressBar, event.getScreenX(), event.getScreenY() + 10);
+            }
+        });
+
+        progressBar.setOnMouseExited(event -> {
+            if (tooltip.isShowing()) {
+                tooltip.hide();
+            }
+        });
+    }
+
+
+
 
 
     @FXML
