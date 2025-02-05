@@ -120,7 +120,7 @@ public class ValidationFrame {
                     currentStage.close(); // Cerrar ventana de validación
                 }
 
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Dashboard.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ProfileFrame.fxml"));  //IMPORTANTE --- SI ALGO FALLA AQUI ES ---
                 loader.setControllerFactory(applicationContext::getBean); // *** Crucial Line ***
 
                 Scene scene = new Scene(loader.load());
