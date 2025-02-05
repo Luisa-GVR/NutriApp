@@ -3,14 +3,14 @@ package com.prueba.demo.model;
 import java.util.List;
 
 public class FoodsResponse {
-    private List<Food> foods;
+    private List<Foods> foods;
 
     // Getter y setter
-    public List<Food> getFoods() {
+    public List<Foods> getFoods() {
         return foods;
     }
 
-    public void setFoods(List<Food> foods) {
+    public void setFoods(List<Foods> foods) {
         this.foods = foods;
     }
 }

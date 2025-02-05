@@ -92,10 +92,8 @@ public class LoginFrame {
         emailField.setOnMouseClicked(event -> handleFieldClick());
         nameField.setOnMouseClicked(event -> handleFieldClick());
         // Verificar si ya existe un usuario validado
-        Optional<User> validUser = userRepository.findAll().stream()
-                .filter(User::isValidation)
-                .findFirst();
-        if (validUser.isPresent()) {
+        Optional<User> existingUser = userRepository.findAll().stream().findFirst();
+        if (existingUser.isPresent()) {
             openPrincipal();
         }
         // Configurar evento en el campo de generación de código

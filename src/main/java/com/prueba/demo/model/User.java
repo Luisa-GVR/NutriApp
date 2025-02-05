@@ -1,5 +1,6 @@
 package com.prueba.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 @Entity
@@ -23,10 +24,6 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    @Column(name = "validation", nullable = false)
-    private boolean validation;
-
     public String getName() {
         return name;
     }
@@ -35,15 +32,9 @@ public class User {
         this.name = name;
     }
 
-    public boolean isValidation() {
-        return validation;
-    }
-
-    public void setValidation(boolean validation) {
-        this.validation = validation;
-    }
-
     public Long getId() {
         return id;
     }
+
+
 }
