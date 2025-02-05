@@ -98,7 +98,6 @@ public class ValidationFrame {
             User user = new User();
             user.setName(getName());
             user.setEmail(getEmail());
-            user.setValidation(true);
 
             userRepository.save(user);
             labelMessage.setStyle("-fx-text-fill: 7da12d;");

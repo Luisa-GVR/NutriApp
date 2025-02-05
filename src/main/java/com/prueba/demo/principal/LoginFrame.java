@@ -188,8 +188,8 @@ public class LoginFrame {
                 }
 
                 // Cargar la nueva ventana
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Dashboard.fxml"));
-                loader.setControllerFactory(applicationContext::getBean); // *** Crucial Line ***
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ProfileFrame.fxml"));
+
 
                 Scene scene = new Scene(loader.load());
 
