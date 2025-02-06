@@ -18,7 +18,7 @@ public class Report {
 
     @ManyToOne
     @JoinColumn(name = "dayMealsID", referencedColumnName = "id")
-    private DayMeals dayMeals;
+    private DayMeal dayMeal;
 
     @ManyToOne
     @JoinColumn(name = "dayExcerciseID", referencedColumnName = "id")
@@ -50,12 +50,12 @@ public class Report {
         this.userData = userData;
     }
 
-    public DayMeals getDayMeals() {
-        return dayMeals;
+    public DayMeal getDayMeals() {
+        return dayMeal;
     }
 
-    public void setDayMeals(DayMeals dayMeals) {
-        this.dayMeals = dayMeals;
+    public void setDayMeals(DayMeal dayMeal) {
+        this.dayMeal = dayMeal;
     }
 
     public DayExcercise getDayExcercise() {

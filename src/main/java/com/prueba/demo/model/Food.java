@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 @Table(name = "Foods")
-public class Foods {
+public class Food {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

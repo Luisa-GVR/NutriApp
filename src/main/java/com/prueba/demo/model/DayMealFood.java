@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "DayMealsFoods")
-public class DayMealsFoods {
+public class DayMealFood {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,11 +12,11 @@ public class DayMealsFoods {
 
     @ManyToOne
     @JoinColumn(name = "FoodsID", referencedColumnName = "id")
-    private Foods foods;
+    private Food food;
 
     @ManyToOne
     @JoinColumn(name = "dayMealsID", referencedColumnName = "id")
-    private DayMeals dayMeals;
+    private DayMeal dayMeal;
 
     //Getters y setters...
 
@@ -29,19 +29,19 @@ public class DayMealsFoods {
         this.id = id;
     }
 
-    public Foods getFoods() {
-        return foods;
+    public Food getFoods() {
+        return food;
     }
 
-    public void setFoods(Foods foods) {
-        this.foods = foods;
+    public void setFoods(Food food) {
+        this.food = food;
     }
 
-    public DayMeals getDayMeals() {
-        return dayMeals;
+    public DayMeal getDayMeals() {
+        return dayMeal;
     }
 
-    public void setDayMeals(DayMeals dayMeals) {
-        this.dayMeals = dayMeals;
+    public void setDayMeals(DayMeal dayMeal) {
+        this.dayMeal = dayMeal;
     }
 }

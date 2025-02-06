@@ -5,8 +5,8 @@ package com.prueba.demo.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prueba.demo.model.Excercise;
 import com.prueba.demo.model.ExcerciseResponse;
-import com.prueba.demo.model.Foods;
-import com.prueba.demo.model.FoodsResponse;
+import com.prueba.demo.model.Food;
+import com.prueba.demo.model.FoodResponse;
 
 import java.io.IOException;
 import java.net.URI;
@@ -23,7 +23,7 @@ public class APIConsumption {
     private static final String API_ID = "7aa68925";
     private static final String URL_BASE = "https://trackapi.nutritionix.com/v2/natural/nutrients";
 
-    public Foods getFoodInfo(String query) {
+    public Food getFoodInfo(String query) {
         HttpClient client = HttpClient.newHttpClient();
 
         String encodedFoodName = URLEncoder.encode(query, StandardCharsets.UTF_8);
@@ -55,15 +55,15 @@ public class APIConsumption {
         try {
             // Usamos ObjectMapper de Jackson para convertir el JSON en un objeto de tipo FoodsResponse
             ObjectMapper objectMapper = new ObjectMapper();
-            FoodsResponse foodsResponse = objectMapper.readValue(jsonResponse, FoodsResponse.class);
+            FoodResponse foodResponse = objectMapper.readValue(jsonResponse, FoodResponse.class);
 
             // Asegúrate de que la lista de alimentos no esté vacía
-            if (foodsResponse.getFoods() != null && !foodsResponse.getFoods().isEmpty()) {
+            if (foodResponse.getFoods() != null && !foodResponse.getFoods().isEmpty()) {
                 // Accedemos al primer alimento de la lista
-                Foods foods = foodsResponse.getFoods().get(0);
+                Food food = foodResponse.getFoods().get(0);
 
                 // Devolvemos el objeto Food
-                return foods;
+                return food;
             } else {
                 System.out.println("No se encontraron alimentos.");
                 return null;  // Si no hay alimentos en la lista

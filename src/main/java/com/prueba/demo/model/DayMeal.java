@@ -7,7 +7,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "DayMeals")
-public class DayMeals {
+public class DayMeal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,7 +18,7 @@ public class DayMeals {
             joinColumns = @JoinColumn(name = "day_meal_id"),
             inverseJoinColumns = @JoinColumn(name = "food_id")
     )
-    private List<Foods> breakfast;
+    private List<Food> breakfast;
 
     @ManyToMany
     @JoinTable(
@@ -26,7 +26,7 @@ public class DayMeals {
             joinColumns = @JoinColumn(name = "day_meal_id"),
             inverseJoinColumns = @JoinColumn(name = "food_id")
     )
-    private List<Foods> lunch;
+    private List<Food> lunch;
 
     @ManyToMany
     @JoinTable(
@@ -34,7 +34,7 @@ public class DayMeals {
             joinColumns = @JoinColumn(name = "day_meal_id"),
             inverseJoinColumns = @JoinColumn(name = "food_id")
     )
-    private List<Foods> dinner;
+    private List<Food> dinner;
 
     @ManyToMany
     @JoinTable(
@@ -42,7 +42,7 @@ public class DayMeals {
             joinColumns = @JoinColumn(name = "day_meal_id"),
             inverseJoinColumns = @JoinColumn(name = "food_id")
     )
-    private List<Foods> snack;
+    private List<Food> snack;
 
     @Column(name = "date", nullable = false, length = 120)
     private Date date;
@@ -59,35 +59,35 @@ public class DayMeals {
         this.id = id;
     }
 
-    public List<Foods> getBreakfast() {
+    public List<Food> getBreakfast() {
         return breakfast;
     }
 
-    public void setBreakfast(List<Foods> breakfast) {
+    public void setBreakfast(List<Food> breakfast) {
         this.breakfast = breakfast;
     }
 
-    public List<Foods> getLunch() {
+    public List<Food> getLunch() {
         return lunch;
     }
 
-    public void setLunch(List<Foods> lunch) {
+    public void setLunch(List<Food> lunch) {
         this.lunch = lunch;
     }
 
-    public List<Foods> getDinner() {
+    public List<Food> getDinner() {
         return dinner;
     }
 
-    public void setDinner(List<Foods> dinner) {
+    public void setDinner(List<Food> dinner) {
         this.dinner = dinner;
     }
 
-    public List<Foods> getSnack() {
+    public List<Food> getSnack() {
         return snack;
     }
 
-    public void setSnack(List<Foods> snack) {
+    public void setSnack(List<Food> snack) {
         this.snack = snack;
     }
 

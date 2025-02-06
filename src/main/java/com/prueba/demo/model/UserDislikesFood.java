@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "UserNoLikeyFoods")
-public class UserNoLikeyFoods {
+public class UserDislikesFood {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,11 +12,11 @@ public class UserNoLikeyFoods {
 
     @ManyToOne
     @JoinColumn(name = "FoodsID", referencedColumnName = "id")
-    private Foods foods;
+    private Food food;
 
     @ManyToOne
     @JoinColumn(name = "userNoLikey", referencedColumnName = "id")
-    private UserNoLikey userNoLikey;
+    private UserDislikes userDislikes;
 
 
 
@@ -31,19 +31,19 @@ public class UserNoLikeyFoods {
         this.id = id;
     }
 
-    public Foods getFoods() {
-        return foods;
+    public Food getFoods() {
+        return food;
     }
 
-    public void setFoods(Foods foods) {
-        this.foods = foods;
+    public void setFoods(Food food) {
+        this.food = food;
     }
 
-    public UserNoLikey getUserNoLikey() {
-        return userNoLikey;
+    public UserDislikes getUserNoLikey() {
+        return userDislikes;
     }
 
-    public void setUserNoLikey(UserNoLikey userNoLikey) {
-        this.userNoLikey = userNoLikey;
+    public void setUserNoLikey(UserDislikes userDislikes) {
+        this.userDislikes = userDislikes;
     }
 }

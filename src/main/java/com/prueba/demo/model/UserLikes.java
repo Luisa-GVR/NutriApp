@@ -2,10 +2,9 @@ package com.prueba.demo.model;
 
 import jakarta.persistence.*;
 
-import java.util.List;
 @Entity
 @Table(name = "UserLikey")
-public class UserLikey {
+public class UserLikes {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

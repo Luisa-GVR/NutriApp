@@ -1,6 +1,6 @@
 package com.prueba.demo.principal;
 
-import com.prueba.demo.model.Foods;
+import com.prueba.demo.model.Food;
 import com.prueba.demo.service.APIConsumption;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -46,14 +46,14 @@ public class Principal {
         }
 
         // Obtener datos desde la API
-        Foods foods = APIConsumption.getFoodInfo(query);
+        Food food = APIConsumption.getFoodInfo(query);
 
         // Mostrar los datos en la interfaz
-        if (foods != null) {
-            foodname.setText("Nombre: " + foods.getFoodName());
-            calories.setText("Calorías: " + foods.getCalories());
-            protein.setText("Proteínas: " + foods.getProtein() + " g");
-            totalCarhbohydrate.setText("Carbohidratos: " + foods.getTotalCarbohydrate() + " g");
+        if (food != null) {
+            foodname.setText("Nombre: " + food.getFoodName());
+            calories.setText("Calorías: " + food.getCalories());
+            protein.setText("Proteínas: " + food.getProtein() + " g");
+            totalCarhbohydrate.setText("Carbohidratos: " + food.getTotalCarbohydrate() + " g");
         } else {
             foodname.setText("Nombre: No encontrado");
             calories.setText("Calorías: -");
