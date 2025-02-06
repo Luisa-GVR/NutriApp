@@ -127,7 +127,7 @@ public class ValidationFrame {
 
             labelMessage.setStyle("-fx-text-fill: #7da12d;");
             labelMessage.setText("Código verificado. ¡Bienvenido!");
-            openPrincipal();
+            openProfileFrame();
         } else {
 
             labelMessage.setStyle("-fx-text-fill: b30000;");
@@ -137,7 +137,7 @@ public class ValidationFrame {
     }
 
 
-    private void openPrincipal() {
+    private void openProfileFrame() {
         Platform.runLater(() -> {
             try {
                 Stage currentStage = (Stage) loginButton.getScene().getWindow();

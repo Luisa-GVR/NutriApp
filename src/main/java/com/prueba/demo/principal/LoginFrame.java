@@ -93,8 +93,12 @@ public class LoginFrame {
         nameField.setOnMouseClicked(event -> handleFieldClick());
         // Verificar si ya existe un usuario validado
         Optional<User> existingUser = userRepository.findAll().stream().findFirst();
-        if (existingUser.isPresent()) {
-            openPrincipal();
+        if (existingUser.isPresent() && existingUser.get().getUserData() != null) {
+            openDashboard();
+        }
+
+        if (existingUser.isPresent() && existingUser.get().getUserData() == null) {
+            openProfileFrame();
         }
         // Configurar evento en el campo de generación de código
         generateCodeField.setOnAction(event -> {
@@ -154,7 +158,7 @@ public class LoginFrame {
     private void openValidationFrame() {
         Platform.runLater(() -> {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ValidationFrame.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Dashboard.fxml"));
                 loader.setControllerFactory(applicationContext::getBean); // *** Crucial Line ***
                 Scene scene = new Scene(loader.load());
 
@@ -177,7 +181,7 @@ public class LoginFrame {
         });
     }
 
-    private void openPrincipal() {
+    private void openProfileFrame() {
         Platform.runLater(() -> {
             try {
                 // Obtener la ventana actual desde el stage principal
@@ -189,6 +193,41 @@ public class LoginFrame {
 
                 // Cargar la nueva ventana
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ProfileFrame.fxml"));
+
+
+                Scene scene = new Scene(loader.load());
+
+                // Crear un nuevo Stage para la ventana principal
+                Stage newStage = new Stage();
+                newStage.setTitle("Principal");
+                newStage.setScene(scene);
+
+                // Establecer el tamaño mínimo de la ventana principal
+                newStage.setMinWidth(900);  // Ancho mínimo de la ventana
+                newStage.setMinHeight(520); // Alto mínimo de la ventana
+
+                // Mostrar la nueva ventana
+                newStage.show();
+
+            } catch (Exception e) {
+                e.printStackTrace();  // Para obtener más detalles sobre el error
+                showAlert("Error", "No se pudo abrir la ventana principal.");
+            }
+        });
+    }
+
+    private void openDashboard() {
+        Platform.runLater(() -> {
+            try {
+                // Obtener la ventana actual desde el stage principal
+                Stage stage = (Stage) generateCodeField.getScene().getWindow();
+
+                if (stage != null) {
+                    stage.close(); // Cerrar la ventana actual
+                }
+
+                // Cargar la nueva ventana
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Dashboard.fxml"));
 
 
                 Scene scene = new Scene(loader.load());
