@@ -1,9 +1,9 @@
 package com.prueba.demo.principal;
 
-import com.prueba.demo.model.User;
-import com.prueba.demo.model.UserData;
-import com.prueba.demo.repository.UserDataRepository;
-import com.prueba.demo.repository.UserRepository;
+import com.prueba.demo.model.Account;
+import com.prueba.demo.model.AccountData;
+import com.prueba.demo.repository.AccountDataRepository;
+import com.prueba.demo.repository.AccountRepository;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -39,10 +39,10 @@ public class ValidationFrame {
     private ApplicationContext applicationContext;
 
     @Autowired
-    private UserRepository userRepository;
+    private AccountRepository accountRepository;
 
     @Autowired
-    private UserDataRepository userDataRepository;
+    private AccountDataRepository accountDataRepository;
 
     private String name;
     private String email;
@@ -101,27 +101,27 @@ public class ValidationFrame {
         if (inputCode.equals(verificationCode)) {
 
             // Crear el objeto User
-            User user = new User();
-            UserData userData = new UserData();
+            Account account = new Account();
+            AccountData accountData = new AccountData();
 
-            user.setName(getName());
-            user.setEmail(getEmail());
+            account.setName(getName());
+            account.setEmail(getEmail());
 
             // Si tienes datos para UserData, crearlos y asociarlos
-            userData.setWeight(0.0);
-            userData.setHeight(0.0);
-            userData.setGender(false);
-            userData.setAbdomen(null);
-            userData.setHips(null);
-            userData.setWaist(null);
-            userData.setArm(null);
-            userData.setChest(null);
-            userData.setGoal(null);
+            accountData.setWeight(0.0);
+            accountData.setHeight(0.0);
+            accountData.setGender(false);
+            accountData.setAbdomen(null);
+            accountData.setHips(null);
+            accountData.setWaist(null);
+            accountData.setArm(null);
+            accountData.setChest(null);
+            accountData.setGoal(null);
 
             // Establece la relación con el User
-            user.setUserData(userData);
+            account.setAccountData(accountData);
 
-            userRepository.save(user);
+            accountRepository.save(account);
 
             // Guarda UserData después de haber asociado
 

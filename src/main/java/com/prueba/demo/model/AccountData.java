@@ -2,23 +2,21 @@ package com.prueba.demo.model;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
-
 @Entity
-@Table(name = "UserData")
-public class UserData {
+@Table(name = "AccountData")
+public class AccountData {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "account_id")
+    private Account account;
 
     @ManyToOne
-    @JoinColumn(name = "userAllergyId", referencedColumnName = "id")
-    private UserAllergy userAllergy;
+    @JoinColumn(name = "accountAllergyId", referencedColumnName = "id")
+    private AccountAllergy accountAllergy;
 
     @Enumerated(EnumType.STRING)
     @Column
@@ -54,24 +52,29 @@ public class UserData {
 
     //Getters y setters...
 
+
     public Long getId() {
         return id;
     }
 
-    public User getUser() {
-        return user;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public Account getAccount() {
+        return account;
     }
 
-    public UserAllergy getUserAllergy() {
-        return userAllergy;
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
-    public void setUserAllergy(UserAllergy userAllergy) {
-        this.userAllergy = userAllergy;
+    public AccountAllergy getAccountAllergy() {
+        return accountAllergy;
+    }
+
+    public void setAccountAllergy(AccountAllergy accountAllergy) {
+        this.accountAllergy = accountAllergy;
     }
 
     public Goal getGoal() {

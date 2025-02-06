@@ -1,11 +1,10 @@
 package com.prueba.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Users")
-public class User {
+@Table(name = "Account")
+public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,20 +16,20 @@ public class User {
     @Column(name = "email", nullable = false, length = 50)
     private String email;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private UserData userData;
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
+    private AccountData accountData;
     //Getters y setters...
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public UserData getUserData() {
-        return userData;
+    public AccountData getAccountData() {
+        return accountData;
     }
 
-    public void setUserData(UserData userData) {
-        this.userData = userData;
+    public void setAccountData(AccountData accountData) {
+        this.accountData = accountData;
     }
 
     public String getEmail() {

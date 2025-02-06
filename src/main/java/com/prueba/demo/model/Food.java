@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
-@Table(name = "Foods")
+@Table(name = "Food")
 public class Food {
 
     @Id

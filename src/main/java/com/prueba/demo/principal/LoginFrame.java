@@ -1,7 +1,7 @@
 package com.prueba.demo.principal;
 
-import com.prueba.demo.model.User;
-import com.prueba.demo.repository.UserRepository;
+import com.prueba.demo.model.Account;
+import com.prueba.demo.repository.AccountRepository;
 import com.prueba.demo.service.IEmailService;
 import com.prueba.demo.service.dto.EmailDTO;
 import javafx.application.Platform;
@@ -47,7 +47,7 @@ public class LoginFrame {
 
     private TemplateEngine templateEngine;
     @Autowired
-    private UserRepository userRepository;
+    private AccountRepository accountRepository;
 
 
     private String verificationCode;
@@ -92,12 +92,12 @@ public class LoginFrame {
         emailField.setOnMouseClicked(event -> handleFieldClick());
         nameField.setOnMouseClicked(event -> handleFieldClick());
         // Verificar si ya existe un usuario validado
-        Optional<User> existingUser = userRepository.findAll().stream().findFirst();
-        if (existingUser.isPresent() && existingUser.get().getUserData() != null) {
+        Optional<Account> existingUser = accountRepository.findAll().stream().findFirst();
+        if (existingUser.isPresent() && existingUser.get().getAccountData() != null) {
             openDashboard();
         }
 
-        if (existingUser.isPresent() && existingUser.get().getUserData() == null) {
+        if (existingUser.isPresent() && existingUser.get().getAccountData() == null) {
             openProfileFrame();
         }
         // Configurar evento en el campo de generación de código
@@ -158,7 +158,7 @@ public class LoginFrame {
     private void openValidationFrame() {
         Platform.runLater(() -> {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Dashboard.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ValidationFrame.fxml"));
                 loader.setControllerFactory(applicationContext::getBean); // *** Crucial Line ***
                 Scene scene = new Scene(loader.load());
 

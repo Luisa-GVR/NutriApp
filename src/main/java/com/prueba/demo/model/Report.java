@@ -14,7 +14,7 @@ public class Report {
 
     @ManyToOne
     @JoinColumn(name = "userDataID", referencedColumnName = "id")
-    private UserData userData;
+    private AccountData accountData;
 
     @ManyToOne
     @JoinColumn(name = "dayMealsID", referencedColumnName = "id")
@@ -42,12 +42,12 @@ public class Report {
         this.id = id;
     }
 
-    public UserData getUserData() {
-        return userData;
+    public AccountData getUserData() {
+        return accountData;
     }
 
-    public void setUserData(UserData userData) {
-        this.userData = userData;
+    public void setUserData(AccountData accountData) {
+        this.accountData = accountData;
     }
 
     public DayMeal getDayMeals() {

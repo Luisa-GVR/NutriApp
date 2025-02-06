@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "DayMeals")
+@Table(name = "DayMeal")
 public class DayMeal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,7 +14,7 @@ public class DayMeal {
 
     @ManyToMany
     @JoinTable(
-            name = "DayMeals_Breakfast",
+            name = "DayMeal_Breakfast",
             joinColumns = @JoinColumn(name = "day_meal_id"),
             inverseJoinColumns = @JoinColumn(name = "food_id")
     )
@@ -22,7 +22,7 @@ public class DayMeal {
 
     @ManyToMany
     @JoinTable(
-            name = "DayMeals_Lunch",
+            name = "DayMeal_Lunch",
             joinColumns = @JoinColumn(name = "day_meal_id"),
             inverseJoinColumns = @JoinColumn(name = "food_id")
     )
@@ -30,7 +30,7 @@ public class DayMeal {
 
     @ManyToMany
     @JoinTable(
-            name = "DayMeals_Dinner",
+            name = "DayMeal_Dinner",
             joinColumns = @JoinColumn(name = "day_meal_id"),
             inverseJoinColumns = @JoinColumn(name = "food_id")
     )
@@ -38,7 +38,7 @@ public class DayMeal {
 
     @ManyToMany
     @JoinTable(
-            name = "DayMeals_Snack",
+            name = "DayMeal_Snack",
             joinColumns = @JoinColumn(name = "day_meal_id"),
             inverseJoinColumns = @JoinColumn(name = "food_id")
     )

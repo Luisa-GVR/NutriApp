@@ -2,20 +2,17 @@ package com.prueba.demo.model;
 
 import jakarta.persistence.*;
 
-import java.util.List;
-
 @Entity
-@Table(name = "UserAllergy")
-public class UserAllergy {
+@Table(name = "AccountLikes")
+public class AccountLikes {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "userDataID", referencedColumnName = "id")
-    private UserData userdata;
-
+    @JoinColumn(name = "accountDataID", referencedColumnName = "id")
+    private AccountData accountData;
 
 
     //Getters y setters...
@@ -29,14 +26,11 @@ public class UserAllergy {
         this.id = id;
     }
 
-
-    public UserData getUserdata() {
-        return userdata;
+    public AccountData getAccountData() {
+        return accountData;
     }
 
-    public void setUserdata(UserData userdata) {
-        this.userdata = userdata;
+    public void setAccountData(AccountData accountData) {
+        this.accountData = accountData;
     }
-
-
 }

@@ -3,8 +3,8 @@ package com.prueba.demo.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "DayMealFoods")
-public class DayMealFood {
+@Table(name = "AccountDislikesFood")
+public class AccountDislikesFood {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,8 +15,10 @@ public class DayMealFood {
     private Food food;
 
     @ManyToOne
-    @JoinColumn(name = "dayMealID", referencedColumnName = "id")
-    private DayMeal dayMeal;
+    @JoinColumn(name = "accountDislikes", referencedColumnName = "id")
+    private AccountDislikes accountDislikes;
+
+
 
     //Getters y setters...
 
@@ -37,11 +39,11 @@ public class DayMealFood {
         this.food = food;
     }
 
-    public DayMeal getDayMeal() {
-        return dayMeal;
+    public AccountDislikes getAccountDislikes() {
+        return accountDislikes;
     }
 
-    public void setDayMeal(DayMeal dayMeal) {
-        this.dayMeal = dayMeal;
+    public void setAccountDislikes(AccountDislikes accountDislikes) {
+        this.accountDislikes = accountDislikes;
     }
 }
