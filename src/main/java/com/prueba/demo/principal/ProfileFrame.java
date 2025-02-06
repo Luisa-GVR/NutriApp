@@ -17,7 +17,7 @@ public class ProfileFrame {
     @FXML
     private ChoiceBox sexChoiceBox;
     @FXML
-    private ChoiceBox allergiesChoiceBox;
+    private ComboBox<String> allergiesComboBox;
 
     @FXML
     private TextArea ageTextArea;
@@ -38,6 +38,25 @@ public class ProfileFrame {
     @FXML
     private TextArea chestTextArea;
 
+    @FXML
+    private Label ageErrorLabel;
+    @FXML
+    private Label heightErrorLabel;
+    @FXML
+    private Label weightErrorLabel;
+    @FXML
+    private Label abdomenErrorLabel;
+    @FXML
+    private Label hipErrorLabel;
+    @FXML
+    private Label waistErrorLabel;
+    @FXML
+    private Label neckErrorLabel;
+    @FXML
+    private Label armErrorLabel;
+    @FXML
+    private Label chestErrorLabel;
+
 
 
     //Metodos front
@@ -55,7 +74,11 @@ public class ProfileFrame {
 
     @FXML
     private void initialize() {
-        //Variables de estilos originales
+
+        allergiesComboBox = new ComboBox<>();
+        allergiesComboBox.getItems().addAll("Maní", "Lácteos", "Gluten");
+
+
 
     }
 }

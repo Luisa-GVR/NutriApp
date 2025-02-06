@@ -4,7 +4,9 @@
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -16,9 +18,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="rootPane" alignment="TOP_CENTER" prefHeight="508.0" prefWidth="800.0" spacing="20.0"
-      style="-fx-background-color: #D4E7B1;" xmlns="http://javafx.com/javafx/23.0.1"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.prueba.demo.principal.ProfileFrame">
+<VBox fx:id="rootPane" alignment="TOP_CENTER" prefHeight="600.0" prefWidth="1000.0" spacing="20.0" style="-fx-background-color: #D4E7B1;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.prueba.demo.principal.ProfileFrame">
    <children>
       <HBox alignment="CENTER_LEFT" prefHeight="64.0" prefWidth="200.0" style="-fx-background-color: #262626;">
          <children>
@@ -42,33 +42,36 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <Label text="Solo necesitamos algunos detalles más para adaptar todoa a ti. Tomará solo un momento.">
+      <Label text="Solo necesitamos algunos detalles más para adaptar todo a ti. Tomará solo un momento.">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <GridPane alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="800.0">
+      <GridPane alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="800.0">
          <columnConstraints>
-            <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="400.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="400.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="0.0" />
-            <ColumnConstraints hgrow="ALWAYS" maxWidth="400.0" minWidth="10.0" prefWidth="400.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="400.0" minWidth="10.0" prefWidth="400.0" />
          </columnConstraints>
          <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
          </rowConstraints>
          <children>
-            <VBox alignment="CENTER" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="256.0" prefWidth="390.0" spacing="20.0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+            <VBox alignment="CENTER" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="390.0" spacing="20.0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                <children>
                   <Label alignment="TOP_LEFT" contentDisplay="CENTER" text="Datos generales" VBox.vgrow="ALWAYS">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
                   </Label>
-                  <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="158.0" prefWidth="282.0" vgap="25.0" VBox.vgrow="ALWAYS">
+                  <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="389.0" vgap="20.0" VBox.vgrow="ALWAYS">
                      <columnConstraints>
-                        <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="168.0" minWidth="10.0" prefWidth="86.0" />
-                        <ColumnConstraints hgrow="ALWAYS" maxWidth="240.0" minWidth="10.0" prefWidth="150.0" />
-                        <ColumnConstraints hgrow="ALWAYS" maxWidth="240.0" minWidth="10.0" prefWidth="29.0" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" maxWidth="168.0" minWidth="10.0" prefWidth="140.0" />
+                        <ColumnConstraints hgrow="ALWAYS" maxWidth="258.0" minWidth="10.0" prefWidth="200.0" />
+                        <ColumnConstraints hgrow="ALWAYS" maxWidth="240.0" minWidth="10.0" prefWidth="47.0" />
                      </columnConstraints>
                      <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
@@ -81,53 +84,143 @@
                         <Label text="Edad" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                            <font>
                               <Font name="System Bold" size="12.0" />
-                           </font></Label>
+                           </font>
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin></Label>
                         <Label text="Sexo" GridPane.rowIndex="1">
                            <font>
                               <Font name="System Bold" size="12.0" />
-                           </font></Label>
+                           </font>
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin></Label>
                         <Label text="Estatura (cm)" GridPane.rowIndex="2">
                            <font>
                               <Font name="System Bold" size="12.0" />
-                           </font></Label>
+                           </font>
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin></Label>
                         <Label text="Peso inicial (kg)" GridPane.rowIndex="3">
                            <font>
                               <Font name="System Bold" size="12.0" />
-                           </font></Label>
+                           </font>
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin></Label>
                         <Label text="Alergias" GridPane.rowIndex="4">
                            <font>
                               <Font name="System Bold" size="12.0" />
-                           </font></Label>
-                        <TextArea id="ageTextArea" fx:id="ageTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" GridPane.columnIndex="1" />
-                        <TextArea id="heightTextArea" fx:id="heightTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <TextArea id="weightTextArea" fx:id="weightTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.vgrow="ALWAYS" />
-                        <ChoiceBox fx:id="sexChoiceBox" minWidth="-Infinity" prefWidth="150.0" style="-fx-background-color: white; -fx-border-color: #cdcdcd; -fx-border-width: 1.5; -fx-border-radius: 4;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <ChoiceBox fx:id="allergiesChoiceBox" minWidth="-Infinity" prefWidth="150.0" style="-fx-background-color: white; -fx-border-color: #cdcdcd; -fx-border-width: 1.5; -fx-border-radius: 4;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                           </font>
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin></Label>
                         <Label text="*" GridPane.columnIndex="2">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
+                           <GridPane.margin>
+                              <Insets top="5.0" />
+                           </GridPane.margin>
                         </Label>
                         <Label text="*" GridPane.columnIndex="2" GridPane.rowIndex="1">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
+                           <GridPane.margin>
+                              <Insets bottom="10.0" />
+                           </GridPane.margin>
                         </Label>
                         <Label text="*" GridPane.columnIndex="2" GridPane.rowIndex="2">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
+                           <padding>
+                              <Insets bottom="8.0" />
+                           </padding>
+                           <GridPane.margin>
+                              <Insets bottom="4.0" />
+                           </GridPane.margin>
                         </Label>
                         <Label text="*" GridPane.columnIndex="2" GridPane.rowIndex="3">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
+                           <GridPane.margin>
+                              <Insets bottom="10.0" />
+                           </GridPane.margin>
                         </Label>
                         <Label text="*" GridPane.columnIndex="2" GridPane.rowIndex="4">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
+                           <GridPane.margin>
+                              <Insets top="5.0" />
+                           </GridPane.margin>
                         </Label>
+                        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+                           <children>
+                              <TextArea id="ageTextArea" fx:id="ageTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="200.0">
+                                 <VBox.margin>
+                                    <Insets top="15.0" />
+                                 </VBox.margin>
+                              </TextArea>
+                              <Label fx:id="ageErrorLabel" text="Por favor, introduce un valor válido." textFill="#b30000">
+                                 <font>
+                                    <Font name="System Bold" size="10.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <children>
+                              <ChoiceBox fx:id="sexChoiceBox" minWidth="200.0" style="-fx-background-color: white; -fx-border-color: #cdcdcd; -fx-border-width: 1.5; -fx-border-radius: 4;" />
+                              <Label fx:id="sexErrorLabel" text="Por favor, introduce un valor válido." textFill="#b30000">
+                                 <font>
+                                    <Font name="System Bold" size="10.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <children>
+                              <TextArea id="heightTextArea" fx:id="heightTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="200.0" />
+                              <Label fx:id="heightErrorLabel" text="Por favor, introduce un valor válido." textFill="#b30000">
+                                 <font>
+                                    <Font name="System Bold" size="10.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                           <children>
+                              <TextArea id="weightTextArea" fx:id="weightTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="200.0" />
+                              <Label fx:id="weightErrorLabel" text="Por favor, introduce un valor válido." textFill="#b30000">
+                                 <font>
+                                    <Font name="System Bold" size="10.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="180.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                           <children>
+                              <HBox minWidth="-Infinity" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <ListView maxWidth="-Infinity" minHeight="25.0" minWidth="-Infinity" orientation="HORIZONTAL" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: white; -fx-border-color: transparent; -fx-border-width: 0.5; -fx-border-radius: 4;" />
+                                    <ComboBox editable="true" prefWidth="100.0" style="-fx-background-color: white; -fx-border-color: #cdcdcd; -fx-border-width: 1.5; -fx-border-radius: 4;" visibleRowCount="5" />
+                                 </children>
+                              </HBox>
+                              <Label fx:id="allergiesErrorLabel" text="Por favor, introduce un valor válido." textFill="#b30000">
+                                 <font>
+                                    <Font name="System Bold" size="10.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <GridPane.margin>
+                              <Insets top="15.0" />
+                           </GridPane.margin>
+                        </VBox>
                      </children>
                   </GridPane>
                </children>
@@ -139,13 +232,13 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                      <VBox.margin>
-                        <Insets />
+                        <Insets top="30.0" />
                      </VBox.margin>
                   </Label>
-                  <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="155.0" prefWidth="260.0" vgap="25.0">
+                  <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="234.0" prefWidth="398.0" vgap="20.0">
                      <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="168.0" minWidth="10.0" prefWidth="70.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="240.0" minWidth="10.0" prefWidth="150.0" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="168.0" minWidth="10.0" prefWidth="122.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="276.0" minWidth="10.0" prefWidth="276.0" />
                      </columnConstraints>
                      <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -159,37 +252,106 @@
                         <Label text="Abdomen">
                            <font>
                               <Font name="System Bold" size="12.0" />
-                           </font></Label>
+                           </font>
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin></Label>
                         <Label text="Cadera" GridPane.rowIndex="1">
                            <font>
                               <Font name="System Bold" size="12.0" />
-                           </font></Label>
-                        <Label prefWidth="58.0" text="Cintura" GridPane.rowIndex="2">
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font></Label>
+                           </font>
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin></Label>
                         <Label text="Cuello" GridPane.rowIndex="3">
                            <font>
                               <Font name="System Bold" size="12.0" />
-                           </font></Label>
+                           </font>
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin></Label>
                         <Label text="Brazo" GridPane.rowIndex="4">
                            <font>
                               <Font name="System Bold" size="12.0" />
-                           </font></Label>
-                        <TextArea id="abdomenTextArea" fx:id="abdomenTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" GridPane.columnIndex="1" />
-                        <TextArea id="waistTextArea" fx:id="waistTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <TextArea id="neckTextArea" fx:id="neckTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <TextArea id="hipTextArea" fx:id="hipTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           </font>
                            <GridPane.margin>
-                              <Insets />
-                           </GridPane.margin>
-                        </TextArea>
-                        <TextArea id="armTextArea" fx:id="armTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <Insets right="10.0" />
+                           </GridPane.margin></Label>
                         <Label text="Pecho" GridPane.rowIndex="5">
                            <font>
                               <Font name="System Bold" size="12.0" />
-                           </font></Label>
-                        <TextArea id="chestTextArea" fx:id="chestTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                           </font>
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin></Label>
+                        <Label text="Cintura" GridPane.rowIndex="2">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+                           <children>
+                              <TextArea id="abdomenTextArea" fx:id="abdomenTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="200.0" />
+                              <Label fx:id="abdomenErrorLabel" text="Por favor, introduce un valor válido." textFill="#b30000">
+                                 <font>
+                                    <Font name="System Bold" size="10.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <children>
+                              <TextArea id="hipTextArea" fx:id="hipTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="200.0" />
+                              <Label fx:id="hipErrorLabel" text="Por favor, introduce un valor válido." textFill="#b30000">
+                                 <font>
+                                    <Font name="System Bold" size="10.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <children>
+                              <TextArea id="waistTextArea" fx:id="waistTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="200.0" />
+                              <Label fx:id="waistErrorLabel" text="Por favor, introduce un valor válido." textFill="#b30000">
+                                 <font>
+                                    <Font name="System Bold" size="10.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                           <children>
+                              <TextArea id="neckTextArea" fx:id="neckTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="200.0" />
+                              <Label fx:id="neckErrorLabel" text="Por favor, introduce un valor válido." textFill="#b30000">
+                                 <font>
+                                    <Font name="System Bold" size="10.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                           <children>
+                              <TextArea id="armTextArea" fx:id="armTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="200.0" />
+                              <Label fx:id="armErrorLabe" text="Por favor, introduce un valor válido." textFill="#b30000">
+                                 <font>
+                                    <Font name="System Bold" size="10.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                           <children>
+                              <TextArea id="chestTextArea" fx:id="chestTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="200.0" />
+                              <Label fx:id="chestErrorLabel" text="Por favor, introduce un valor válido." textFill="#b30000">
+                                 <font>
+                                    <Font name="System Bold" size="10.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
                      </children>
                      <VBox.margin>
                         <Insets bottom="10.0" />
@@ -203,6 +365,9 @@
       <Button id="profileButton" fx:id="profileButton" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="143.0" style="-fx-background-color: #262626;" text="Completar perfil" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="System Bold" size="12.0" />
-         </font></Button>
+         </font>
+         <VBox.margin>
+            <Insets top="-20.0" />
+         </VBox.margin></Button>
    </children>
 </VBox>
