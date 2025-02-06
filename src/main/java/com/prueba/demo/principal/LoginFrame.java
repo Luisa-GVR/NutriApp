@@ -21,6 +21,16 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import jakarta.mail.MessagingException;
 
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.Optional;
 import java.util.Random;
 
@@ -123,6 +133,14 @@ public class LoginFrame {
         if (existingUser.isPresent() && existingUser.get().getAccountData() == null) {
             openProfileFrame();
         }
+
+        File encryptedCodeFile = new File("src/main/resources/encrypted_code.txt");
+        if (encryptedCodeFile.exists()) {
+            closeCurrentWindow();
+            openValidationFrame();
+
+        }
+
         // Configurar evento en el campo de generación de código
         generateCodeField.setOnAction(event -> {
             try {
@@ -151,6 +169,16 @@ public class LoginFrame {
 
         showAlert("Código Generado", "Se ha enviado el código a tu nutrióloga.");
 
+        // Encriptar y guardar el código
+        try {
+            SecretKey secretKey = getOrCreateKey();
+            String encryptedCode = encrypt(verificationCode, secretKey);
+            saveToFile(CODE_FILE, encryptedCode);
+        } catch (Exception e) {
+            showAlert("Error", "No se pudo guardar el código de verificación.");
+        }
+
+        // Enviar email
         Context context = new Context();
         context.setVariable("verificationCode", verificationCode);
         String contentHTML = templateEngine.process("email", context);
@@ -166,6 +194,40 @@ public class LoginFrame {
         closeCurrentWindow();
         openValidationFrame();
     }
+
+    private static final String AES_KEY_FILE = "src/main/resources/encryption_key.txt";
+    private static final String CODE_FILE = "src/main/resources/encrypted_code.txt";
+
+    //Metodos para guardar el codigo en caso de cerrar la aplicacion
+    private SecretKey getOrCreateKey() throws Exception {
+        File keyFile = new File(AES_KEY_FILE);
+        if (keyFile.exists()) {
+            byte[] keyBytes = Files.readAllBytes(Paths.get(AES_KEY_FILE));
+            return new SecretKeySpec(keyBytes, "AES");
+        } else {
+            KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+            keyGenerator.init(128, new SecureRandom());
+            SecretKey secretKey = keyGenerator.generateKey();
+            saveToFile(AES_KEY_FILE, Base64.getEncoder().encodeToString(secretKey.getEncoded()));
+            return secretKey;
+        }
+    }
+
+    // Método para encriptar un texto con AES
+    private String encrypt(String data, SecretKey secretKey) throws Exception {
+        Cipher cipher = Cipher.getInstance("AES");
+        cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+        byte[] encryptedData = cipher.doFinal(data.getBytes());
+        return Base64.getEncoder().encodeToString(encryptedData);
+    }
+
+    // Método para guardar texto en un archivo
+    private void saveToFile(String filePath, String content) throws Exception {
+        try (FileOutputStream fos = new FileOutputStream(filePath)) {
+            fos.write(content.getBytes());
+        }
+    }
+
     private void closeCurrentWindow() {
         Platform.runLater(() -> {
             Stage stage = (Stage) generateCodeField.getScene().getWindow();

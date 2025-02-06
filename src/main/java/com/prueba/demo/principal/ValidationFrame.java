@@ -18,6 +18,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
+
 @Component
 public class ValidationFrame {
     //Variables Validation Frame
@@ -98,6 +110,10 @@ public class ValidationFrame {
     private void verifyCode() {
         String inputCode = codeField.getText();
 
+        if (verificationCode == null || verificationCode.isEmpty()) {
+            verificationCode = readAndDecryptCode();
+        }
+
         if (inputCode.equals(verificationCode)) {
 
             // Crear el objeto User
@@ -136,6 +152,56 @@ public class ValidationFrame {
         }
     }
 
+    //leer el .txt
+
+    private static final String KEY_FILE = "src/main/resources/encryption_key.txt";
+
+    private SecretKey getOrCreateKey() {
+        try {
+            if (Files.exists(Paths.get(KEY_FILE))) {
+                String encodedKey = new String(Files.readAllBytes(Paths.get(KEY_FILE)), StandardCharsets.UTF_8).trim();
+                byte[] decodedKey = Base64.getDecoder().decode(encodedKey);
+                return new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+            }
+
+            KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+            keyGenerator.init(256);
+            SecretKey secretKey = keyGenerator.generateKey();
+
+            // Guardar la clave en el archivo
+            String encodedKey = Base64.getEncoder().encodeToString(secretKey.getEncoded());
+            Files.write(Paths.get(KEY_FILE), encodedKey.getBytes(StandardCharsets.UTF_8));
+
+            return secretKey;
+
+        } catch (NoSuchAlgorithmException | IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    private String readAndDecryptCode() {
+        try {
+            File file = new File("src/main/resources/encrypted_code.txt");
+            if (file.exists()) {
+                SecretKey secretKey = getOrCreateKey(); // Obtiene o crea la clave de desencriptación
+                String encryptedCode = new String(Files.readAllBytes(Paths.get(file.getPath())), StandardCharsets.UTF_8).trim();
+                return decrypt(encryptedCode, secretKey); // Desencripta el código
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    /**
+     * Método para desencriptar el código
+     */
+    private String decrypt(String encryptedData, SecretKey secretKey) throws Exception {
+        Cipher cipher = Cipher.getInstance("AES");
+        cipher.init(Cipher.DECRYPT_MODE, secretKey);
+        byte[] decodedBytes = Base64.getDecoder().decode(encryptedData);
+        return new String(cipher.doFinal(decodedBytes));
+    }
 
     private void openProfileFrame() {
         Platform.runLater(() -> {
