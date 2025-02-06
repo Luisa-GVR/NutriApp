@@ -126,16 +126,13 @@ public class LoginFrame {
         nameField.setOnMouseClicked(event -> handleFieldClick());
         // Verificar si ya existe un usuario validado
         Optional<Account> existingUser = accountRepository.findAll().stream().findFirst();
+        File encryptedCodeFile = new File("src/main/resources/encrypted_code.txt");
+
         if (existingUser.isPresent() && existingUser.get().getAccountData() != null) {
             openDashboard();
-        }
-
-        if (existingUser.isPresent() && existingUser.get().getAccountData() == null) {
+        } else if (existingUser.isPresent() && existingUser.get().getAccountData() == null) {
             openProfileFrame();
-        }
-
-        File encryptedCodeFile = new File("src/main/resources/encrypted_code.txt");
-        if (encryptedCodeFile.exists()) {
+        } else if (encryptedCodeFile.exists()) {
             closeCurrentWindow();
             openValidationFrame();
 
