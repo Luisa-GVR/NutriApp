@@ -53,7 +53,6 @@ public class Principal {
             foodname.setText("Nombre: " + foods.getFoodName());
             calories.setText("Calorías: " + foods.getCalories());
             protein.setText("Proteínas: " + foods.getProtein() + " g");
-            totalFat.setText("Grasas: " + foods.getTotalFat() + " g");
             totalCarhbohydrate.setText("Carbohidratos: " + foods.getTotalCarbohydrate() + " g");
         } else {
             foodname.setText("Nombre: No encontrado");

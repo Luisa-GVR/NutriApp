@@ -2,9 +2,16 @@ package com.prueba.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-@JsonIgnoreProperties(ignoreUnknown = true)
+import jakarta.persistence.*;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+@Entity
+@Table(name = "Foods")
 public class Foods {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @JsonProperty("food_name")
     private String foodName;
@@ -15,12 +22,13 @@ public class Foods {
     @JsonProperty("nf_protein")
     private double protein;
 
-    @JsonProperty("nf_total_fat")
-    private double totalFat;
-
     @JsonProperty("nf_total_carbohydrate")
     private double totalCarbohydrate;
 
+    @JsonProperty("thumbnailURL")
+    private String thumbnailURL;
+
+    //Getters y setters...
 
     public String getFoodName() {
         return foodName;
@@ -46,12 +54,20 @@ public class Foods {
         this.protein = protein;
     }
 
-    public double getTotalFat() {
-        return totalFat;
+    public Long getId() {
+        return id;
     }
 
-    public void setTotalFat(double totalFat) {
-        this.totalFat = totalFat;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getThumbnailURL() {
+        return thumbnailURL;
+    }
+
+    public void setThumbnailURL(String thumbnailURL) {
+        this.thumbnailURL = thumbnailURL;
     }
 
     public double getTotalCarbohydrate() {

@@ -1,6 +1,8 @@
 package com.prueba.demo.principal;
 
 import com.prueba.demo.model.User;
+import com.prueba.demo.model.UserData;
+import com.prueba.demo.repository.UserDataRepository;
 import com.prueba.demo.repository.UserRepository;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -38,6 +40,9 @@ public class ValidationFrame {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserDataRepository userDataRepository;
 
     private String name;
     private String email;
@@ -95,12 +100,32 @@ public class ValidationFrame {
 
         if (inputCode.equals(verificationCode)) {
 
+            // Crear el objeto User
             User user = new User();
+            UserData userData = new UserData();
+
             user.setName(getName());
             user.setEmail(getEmail());
 
+            // Si tienes datos para UserData, crearlos y asociarlos
+            userData.setWeight(0.0);
+            userData.setHeight(0.0);
+            userData.setGender(false);
+            userData.setAbdomen(null);
+            userData.setHips(null);
+            userData.setWaist(null);
+            userData.setArm(null);
+            userData.setChest(null);
+            userData.setGoal(null);
+
+            // Establece la relación con el User
+            user.setUserData(userData);
+
             userRepository.save(user);
-            labelMessage.setStyle("-fx-text-fill: 7da12d;");
+
+            // Guarda UserData después de haber asociado
+
+            labelMessage.setStyle("-fx-text-fill: #7da12d;");
             labelMessage.setText("Código verificado. ¡Bienvenido!");
             openPrincipal();
         } else {
@@ -120,7 +145,7 @@ public class ValidationFrame {
                     currentStage.close(); // Cerrar ventana de validación
                 }
 
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ProfileFrame.fxml"));  //IMPORTANTE --- SI ALGO FALLA AQUI ES ---
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ProfileFrame.fxml"));
                 loader.setControllerFactory(applicationContext::getBean); // *** Crucial Line ***
 
                 Scene scene = new Scene(loader.load());

@@ -10,43 +10,48 @@ public class Excercise {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "excercisename", nullable = false, length = 120)
-    private String excercisename;
+    @Column(name = "excerciseName", nullable = false, length = 120)
+    private String excerciseName;
 
-    @Column(name = "met", nullable = false)
-    private int met;
+    @Enumerated(EnumType.STRING)
+    @Column
+    private ExcerciseType excerciseType;
 
-    @Column(name = "excercisegoal", nullable = false)
-    private boolean excercisegoal;
+    @Column(name = "gifURL", nullable = false)
+    private String gifURL;
+
+    //Getters y setters...
+
 
     public Long getId() {
         return id;
     }
 
-    public String getExcercisename() {
-        return excercisename;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setExcercisename(String excercisename) {
-        this.excercisename = excercisename;
+    public String getExcerciseName() {
+        return excerciseName;
     }
 
-    public int getMet() {
-        return met;
+    public void setExcerciseName(String excerciseName) {
+        this.excerciseName = excerciseName;
     }
 
-    public void setMet(int met) {
-        this.met = met;
+    public ExcerciseType getExcerciseType() {
+        return excerciseType;
     }
 
-    public boolean isExcercisegoal() {
-        return excercisegoal;
+    public void setExcerciseType(ExcerciseType excerciseType) {
+        this.excerciseType = excerciseType;
     }
 
-    public void setExcercisegoal(boolean excercisegoal) {
-        this.excercisegoal = excercisegoal;
+    public String getGifURL() {
+        return gifURL;
     }
 
-
-
+    public void setGifURL(String gifURL) {
+        this.gifURL = gifURL;
+    }
 }

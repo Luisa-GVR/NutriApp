@@ -17,6 +17,22 @@ public class User {
     @Column(name = "email", nullable = false, length = 50)
     private String email;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private UserData userData;
+    //Getters y setters...
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public UserData getUserData() {
+        return userData;
+    }
+
+    public void setUserData(UserData userData) {
+        this.userData = userData;
+    }
+
     public String getEmail() {
         return email;
     }

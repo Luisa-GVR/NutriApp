@@ -1,4 +1,84 @@
 package com.prueba.demo.model;
 
+import jakarta.persistence.*;
+
+import java.sql.Date;
+
+@Entity
+@Table(name = "Report")
 public class Report {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "userDataID", referencedColumnName = "id")
+    private UserData userData;
+
+    @ManyToOne
+    @JoinColumn(name = "dayMealsID", referencedColumnName = "id")
+    private DayMeals dayMeals;
+
+    @ManyToOne
+    @JoinColumn(name = "dayExcerciseID", referencedColumnName = "id")
+    private DayExcercise dayExcercise;
+
+    @Column
+    private boolean goalMet;
+
+    @Column
+    private Date date;
+
+
+    //Getters y setters...
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public UserData getUserData() {
+        return userData;
+    }
+
+    public void setUserData(UserData userData) {
+        this.userData = userData;
+    }
+
+    public DayMeals getDayMeals() {
+        return dayMeals;
+    }
+
+    public void setDayMeals(DayMeals dayMeals) {
+        this.dayMeals = dayMeals;
+    }
+
+    public DayExcercise getDayExcercise() {
+        return dayExcercise;
+    }
+
+    public void setDayExcercise(DayExcercise dayExcercise) {
+        this.dayExcercise = dayExcercise;
+    }
+
+    public boolean isGoalMet() {
+        return goalMet;
+    }
+
+    public void setGoalMet(boolean goalMet) {
+        this.goalMet = goalMet;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 }

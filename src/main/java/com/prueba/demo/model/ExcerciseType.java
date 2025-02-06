@@ -4,7 +4,8 @@ public enum ExcerciseType {
 
     pechoybrazo("pechoybrazo"),
     piernacompleta("piernacompleta"),
-    hombroyespalda("hombroyespalda");
+    hombroyespalda("hombroyespalda"),
+    abdomenycardio("abdomenycardio");
 
     private String value;
 
