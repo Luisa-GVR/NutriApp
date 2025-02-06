@@ -15,7 +15,7 @@ public class AccountData {
     private Account account;
 
     @ManyToOne
-    @JoinColumn(name = "accountAllergyId", referencedColumnName = "id")
+    @JoinColumn(name = "accountAllergyId", referencedColumnName = "id", nullable = true)
     private AccountAllergy accountAllergy;
 
     @Enumerated(EnumType.STRING)
@@ -24,6 +24,9 @@ public class AccountData {
 
     @Column(name = "weight", nullable = false)
     private Double weight;
+
+    @Column(name = "age", nullable = false)
+    private int age;
 
     @Column(name = "height", nullable = false)
     private Double height;
@@ -47,11 +50,28 @@ public class AccountData {
     @Column(name = "chest", nullable = true)
     private Double chest;
 
-
+    @Column(name = "neck", nullable = true)
+    private Double neck;
 
 
     //Getters y setters...
 
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public Double getNeck() {
+        return neck;
+    }
+
+    public void setNeck(Double neck) {
+        this.neck = neck;
+    }
 
     public Long getId() {
         return id;

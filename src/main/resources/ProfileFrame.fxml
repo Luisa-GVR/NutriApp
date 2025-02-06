@@ -335,7 +335,7 @@
                         <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                            <children>
                               <TextArea id="armTextArea" fx:id="armTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="200.0" />
-                              <Label fx:id="armErrorLabe" text="Por favor, introduce un valor válido." textFill="#b30000">
+                              <Label fx:id="armErrorLabel" text="Por favor, introduce un valor válido." textFill="#b30000">
                                  <font>
                                     <Font name="System Bold" size="10.0" />
                                  </font>

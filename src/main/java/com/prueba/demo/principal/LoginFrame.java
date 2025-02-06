@@ -73,7 +73,7 @@ public class LoginFrame {
     }
 
     @FXML
-    private void validarCampos() {
+    private void validateFields() {
 //---CHECAR SI LA LOGICA DE ERRORES DEL REGISTRO ESTA COMPLETA---
         if (emailField.getText().trim().isEmpty() || nameField.getText().trim().isEmpty()) {
             labelMessage.setStyle("-fx-text-fill: b30000;");
@@ -104,7 +104,7 @@ public class LoginFrame {
         generateCodeField.setOnAction(event -> {
             try {
                 // Validar campos antes de continuar
-                validarCampos();
+                validateFields();
 
                 if (!isValidEmail(emailField.getText())) {
                     showAlert("Error", "Correo electrónico inválido. Debe terminar en @gmail.com, @hotmail.com u @outlook.com");
