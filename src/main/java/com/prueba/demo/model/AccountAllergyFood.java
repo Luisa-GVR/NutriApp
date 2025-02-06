@@ -3,7 +3,7 @@ package com.prueba.demo.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "AccountAllergyFoods")
+@Table(name = "AccountAllergyFood")
 public class AccountAllergyFood {
 
     @Id
@@ -11,7 +11,7 @@ public class AccountAllergyFood {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "FoodsID", referencedColumnName = "id")
+    @JoinColumn(name = "FoodID", referencedColumnName = "id")
     private Food food;
 
     @ManyToOne
@@ -29,11 +29,11 @@ public class AccountAllergyFood {
         this.id = id;
     }
 
-    public Food getFoods() {
+    public Food getFood() {
         return food;
     }
 
-    public void setFoods(Food food) {
+    public void setFood(Food food) {
         this.food = food;
     }
 

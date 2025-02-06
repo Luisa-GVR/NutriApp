@@ -154,6 +154,8 @@ public class ProfileFrame {
         accountData.setChest(parseOrDefault(chestTextArea, 0.0));
         accountData.setNeck(parseOrDefault(neckTextArea, 0.0));
 
+        allergiesComboBox.getValue();
+
 /*
         AccountAllergy.
         accountData.setAccountAllergy(allergiesComboBox.getValue());

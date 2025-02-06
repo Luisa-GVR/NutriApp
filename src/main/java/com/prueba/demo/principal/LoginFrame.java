@@ -74,14 +74,37 @@ public class LoginFrame {
 
     @FXML
     private void validateFields() {
-//---CHECAR SI LA LOGICA DE ERRORES DEL REGISTRO ESTA COMPLETA---
-        if (emailField.getText().trim().isEmpty() || nameField.getText().trim().isEmpty()) {
-            labelMessage.setStyle("-fx-text-fill: b30000;");
+        String email = emailField.getText().trim();
+        String name = nameField.getText().trim();
+
+        boolean isValidEmail = email.matches("^[\\w-\\.]+@(?:gmail\\.com|hotmail\\.com|outlook\\.com)$");
+
+        boolean isValidName = name.matches("^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$");
+
+        if (email.isEmpty() || name.isEmpty() || !isValidEmail || !isValidName) {
+            labelMessage.setStyle("-fx-text-fill: #b30000;");
             labelMessage.setText("Nombre o correo electrónico inválidos. Por favor, verifica e intenta nuevamente");
-            nameField.setStyle(originalStyleName + " -fx-border-color: #b30000;");
-            emailField.setStyle(originalStyleName + " -fx-border-color: #b30000;");
+
+            if (name.isEmpty() || !isValidName) {
+                nameField.setStyle(originalStyleName + " -fx-border-color: #b30000;");
+            } else {
+                nameField.setStyle(originalStyleName);
+            }
+
+            if (email.isEmpty() || !isValidEmail) {
+                emailField.setStyle(originalStyleEmail + " -fx-border-color: #b30000;");
+            } else {
+                emailField.setStyle(originalStyleEmail);
+            }
+
+            return;
         }
+
+        nameField.setStyle(originalStyleName);
+        emailField.setStyle(originalStyleEmail);
+        labelMessage.setText(""); // Limpiar mensaje de error si los datos son correctos
     }
+
 
     @FXML
     private void initialize() {
@@ -103,25 +126,22 @@ public class LoginFrame {
         // Configurar evento en el campo de generación de código
         generateCodeField.setOnAction(event -> {
             try {
-                // Validar campos antes de continuar
-                validateFields();
+                validateFields(); // Llama la validación
 
-                if (!isValidEmail(emailField.getText())) {
-                    showAlert("Error", "Correo electrónico inválido. Debe terminar en @gmail.com, @hotmail.com u @outlook.com");
+                if (!labelMessage.getText().isEmpty()) {
                     return;
                 }
+                validateFields();
+
+
+
                 generateCodeVerification();
             } catch (MessagingException e) {
                 showAlert("Error", "No se pudo enviar el correo.");
             }
         });
     }
-    private boolean isValidEmail(String email) {
-        if (email == null || email.isEmpty()) {
-            return false;
-        }
-        return email.matches("^[\\w-\\.]+@(?:gmail\\.com|hotmail\\.com|outlook\\.com)$");
-    }
+
 
     private void generateCodeVerification() throws MessagingException {
         Random random = new Random();
