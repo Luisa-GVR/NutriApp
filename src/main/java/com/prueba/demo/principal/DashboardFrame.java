@@ -17,6 +17,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -154,19 +155,7 @@ public class DashboardFrame {
     @FXML
     private Button setYourPreferencesButtonDiet;
     @FXML
-    private TableView foodTable;
-    @FXML
-    private TableColumn  foodColumnDiet;
-    @FXML
-    private TableColumn  mondayColumnDiet;
-    @FXML
-    private TableColumn tuesdayColumnDiet;
-    @FXML
-    private TableColumn wednesdayColumnDiet;
-    @FXML
-    private TableColumn thursdayColumnDiet;
-    @FXML
-    private TableColumn fridayColumnDiet;
+    private GridPane gridPaneDiet;
 
     //ExercisePane
     @FXML
@@ -174,13 +163,9 @@ public class DashboardFrame {
     @FXML
     private Button setYourPreferencesButtonExercise;
     @FXML
-    private TableView exerciseTable;
+    private GridPane gridPaneExercise;
     @FXML
-    private TableColumn  dayColumn;
-    @FXML
-    private TableColumn  muscularGroupColumn;
-    @FXML
-    private TableColumn rutineColumn;
+    private GridPane gridPaneRutine;  //<------ Este GridPane es el que debe de aparecer y desaparecer
 
     //Reports Pane
     @FXML
