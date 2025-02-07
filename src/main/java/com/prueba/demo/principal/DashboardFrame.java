@@ -1,9 +1,11 @@
 package com.prueba.demo.principal;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -135,6 +137,8 @@ public class DashboardFrame {
     @FXML
     private VBox dietPane;
 
+
+
     //ExercisePane
     @FXML
     private VBox exercisePane;
@@ -146,6 +150,7 @@ public class DashboardFrame {
 
     @FXML
     private void initialize() {
+
         rootPane.setMinWidth(900);  // Ancho mínimo
         rootPane.setMinHeight(520); // Alto mínimo
 
@@ -194,8 +199,6 @@ public class DashboardFrame {
         }
 
 
-
-
         nutriappLabel.sceneProperty().addListener((obs, oldScene, newScene) -> {
             if (newScene != null) {
                 newScene.widthProperty().addListener((obs2, oldVal, newVal) -> {
@@ -226,6 +229,7 @@ public class DashboardFrame {
             }
         });
     }
+
     //Funcionalidades visuales
     @FXML
     private void mouseEntered(javafx.scene.input.MouseEvent event) {
@@ -234,12 +238,14 @@ public class DashboardFrame {
 
         node.setStyle("-fx-background-color: #404040;");  // Cambia el color de fondo a gris
     }
+
     @FXML
     private void mouseExited(javafx.scene.input.MouseEvent event) {
         // Aquí puedes cambiar el color de fondo del HBox, por ejemplo
         Node node = (Node) event.getSource();  // Obtiene la referencia al HBox clickeado
         node.setStyle("-fx-background-color: #262626;");  // Cambia el color de fondo a gris
     }
+
     private void setTooltipForProgressBar(ProgressBar progressBar, Tooltip tooltip) {
         Tooltip.install(progressBar, tooltip); // Instalar el Tooltip en la ProgressBar
 
@@ -257,9 +263,6 @@ public class DashboardFrame {
     }
 
 
-
-
-
     @FXML
     private void showDashboard() {
         hideAll();
@@ -274,6 +277,7 @@ public class DashboardFrame {
         menuVbox.setVisible(true);
 
     }
+
     @FXML
     private void showDiet() {
         hideAll();
@@ -281,6 +285,7 @@ public class DashboardFrame {
         menuVbox.setVisible(true);
 
     }
+
     @FXML
     private void showExercise() {
         hideAll();
@@ -288,6 +293,7 @@ public class DashboardFrame {
         menuVbox.setVisible(true);
 
     }
+
     @FXML
     private void showReports() {
         hideAll();
@@ -326,6 +332,10 @@ public class DashboardFrame {
         nutriappImage.setFitWidth(newWidth);
         nutriappImage.setFitHeight(newHeight);
     }
+
+//-----ESTO ES PARA LA TABLA DE DIETA CHECAR SI ESTA CORRECTO-----
+
+
 }
 
 
