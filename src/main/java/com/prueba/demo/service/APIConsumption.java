@@ -15,6 +15,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class APIConsumption {
 
@@ -29,7 +32,7 @@ public class APIConsumption {
         String encodedFoodName = URLEncoder.encode(query, StandardCharsets.UTF_8);
         String requestBody = "{\"query\":\"" + query + "\"}";
 
-        System.out.println("req body: " + requestBody);
+        //System.out.println("req body: " + requestBody);
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(URL_BASE))
@@ -73,6 +76,40 @@ public class APIConsumption {
             return null;  // Si hubo un error al procesar el JSON
         }
 
+    }
+
+
+    public List<String> getFoodSuggestionsNeutral(String query) {
+        HttpClient client = HttpClient.newHttpClient();
+        String encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8);
+        String requestBody = "{\"query\":\"" + query + "\"}";
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(URL_BASE))
+                .header("x-app-id", API_ID)
+                .header("x-app-key", API_KEY)
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println("Buscando comida: " + query);
+            System.out.println("Cuerpo de la solicitud: " + requestBody);
+            ObjectMapper objectMapper = new ObjectMapper();
+            FoodResponse foodResponse = objectMapper.readValue(response.body(), FoodResponse.class);
+
+            if (foodResponse.getFoods() != null && !foodResponse.getFoods().isEmpty()) {
+                return foodResponse.getFoods().stream()
+                        .limit(3)
+                        .map(Food::getFoodName)
+                        .collect(Collectors.toList());
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return Collections.emptyList();
     }
 
     private static final String EXERCISE_API_KEY = "7365eca4b1msh9743512e61a1b43p1581b0jsneb2caf6b1530";

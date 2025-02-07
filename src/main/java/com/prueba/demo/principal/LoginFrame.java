@@ -129,8 +129,10 @@ public class LoginFrame {
         File encryptedCodeFile = new File("src/main/resources/encrypted_code.txt");
 
         if (existingUser.isPresent() && existingUser.get().getAccountData() != null) {
+            closeCurrentWindow();
             openDashboard();
         } else if (existingUser.isPresent() && existingUser.get().getAccountData() == null) {
+            closeCurrentWindow();
             openProfileFrame();
         } else if (encryptedCodeFile.exists()) {
             closeCurrentWindow();
@@ -272,6 +274,8 @@ public class LoginFrame {
 
                 // Cargar la nueva ventana
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ProfileFrame.fxml"));
+                loader.setControllerFactory(applicationContext::getBean); // *** Crucial Line ***
+
 
 
                 Scene scene = new Scene(loader.load());
@@ -307,6 +311,7 @@ public class LoginFrame {
 
                 // Cargar la nueva ventana
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/Dashboard.fxml"));
+                loader.setControllerFactory(applicationContext::getBean); // *** Crucial Line ***
 
 
                 Scene scene = new Scene(loader.load());

@@ -207,8 +207,8 @@
                            <children>
                               <HBox minWidth="-Infinity" prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <ListView maxWidth="-Infinity" minHeight="25.0" minWidth="-Infinity" orientation="HORIZONTAL" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: white; -fx-border-color: transparent; -fx-border-width: 0.5; -fx-border-radius: 4;" />
-                                    <ComboBox editable="true" prefWidth="100.0" style="-fx-background-color: white; -fx-border-color: #cdcdcd; -fx-border-width: 1.5; -fx-border-radius: 4;" visibleRowCount="5" />
+                                    <ListView fx:id="allergiesListView" maxWidth="-Infinity" minHeight="25.0" minWidth="-Infinity" orientation="HORIZONTAL" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: white; -fx-border-color: transparent; -fx-border-width: 0.5; -fx-border-radius: 4;" />
+                                    <ComboBox fx:id="allergiesComboBox" editable="true" prefWidth="200.0" style="-fx-background-color: white; -fx-border-color: #cdcdcd; -fx-border-width: 1.5; -fx-border-radius: 4;" visibleRowCount="5"/>
                                  </children>
                               </HBox>
                               <Label fx:id="allergiesErrorLabel" text="Por favor, introduce un valor válido." textFill="#b30000">

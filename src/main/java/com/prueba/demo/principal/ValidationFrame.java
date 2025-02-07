@@ -143,6 +143,8 @@ public class ValidationFrame {
 
             labelMessage.setStyle("-fx-text-fill: #7da12d;");
             labelMessage.setText("Código verificado. ¡Bienvenido!");
+            deleteEncryptedCodeFiles();
+
             openProfileFrame();
         } else {
 
@@ -151,6 +153,33 @@ public class ValidationFrame {
             codeField.setStyle(originalStyleCode + " -fx-border-color: #b30000;");
         }
     }
+
+    //borrar archivos
+    private void deleteEncryptedCodeFiles() {
+        try {
+            File encryptedCodeFile = new File("src/main/resources/encrypted_code.txt");
+            File keyFile = new File("src/main/resources/encryption_key.txt");
+
+            // Elimina el archivo de código encriptado si existe
+            if (encryptedCodeFile.exists()) {
+                boolean deletedCode = encryptedCodeFile.delete();
+                if (!deletedCode) {
+                    System.out.println("No se pudo eliminar el archivo encrypted_code.txt");
+                }
+            }
+
+            // Elimina el archivo de clave si existe
+            if (keyFile.exists()) {
+                boolean deletedKey = keyFile.delete();
+                if (!deletedKey) {
+                    System.out.println("No se pudo eliminar el archivo encryption_key.txt");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     //leer el .txt
 
@@ -193,9 +222,6 @@ public class ValidationFrame {
         return "";
     }
 
-    /**
-     * Método para desencriptar el código
-     */
     private String decrypt(String encryptedData, SecretKey secretKey) throws Exception {
         Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.DECRYPT_MODE, secretKey);

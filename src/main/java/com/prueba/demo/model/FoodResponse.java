@@ -1,9 +1,10 @@
 package com.prueba.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Transient;
 
 import java.util.List;
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class FoodResponse {
     @Transient
     private List<Food> foods;
