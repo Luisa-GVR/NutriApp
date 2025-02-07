@@ -7,7 +7,7 @@ import javafx.scene.control.ListView;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SetYourPreferences {
+public class SetYourPreferencesDiet {
     @FXML
     private ListView<String> favsFoodsListView;
     @FXML
