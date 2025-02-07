@@ -151,10 +151,36 @@ public class DashboardFrame {
     //DietPane
     @FXML
     private VBox dietPane;
+    @FXML
+    private Button setYourPreferencesButtonDiet;
+    @FXML
+    private TableView foodTable;
+    @FXML
+    private TableColumn  foodColumnDiet;
+    @FXML
+    private TableColumn  mondayColumnDiet;
+    @FXML
+    private TableColumn tuesdayColumnDiet;
+    @FXML
+    private TableColumn wednesdayColumnDiet;
+    @FXML
+    private TableColumn thursdayColumnDiet;
+    @FXML
+    private TableColumn fridayColumnDiet;
 
     //ExercisePane
     @FXML
     private VBox exercisePane;
+    @FXML
+    private Button setYourPreferencesButtonExercise;
+    @FXML
+    private TableView exerciseTable;
+    @FXML
+    private TableColumn  dayColumn;
+    @FXML
+    private TableColumn  muscularGroupColumn;
+    @FXML
+    private TableColumn rutineColumn;
 
     //Reports Pane
     @FXML
