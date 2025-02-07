@@ -84,6 +84,52 @@ public class DashboardFrame {
     //ProfilePane
     @FXML
     private VBox profilePane;
+    @FXML
+    private TextArea ageTextArea;
+    @FXML
+    private TextArea sexTextArea;
+    @FXML
+    private TextArea heightTextArea;
+    @FXML
+    private TextArea weightTextArea;
+    @FXML
+    private TextArea allergiesTextArea;
+    @FXML
+    private TextArea abdomenTextArea;
+    @FXML
+    private TextArea hipTextArea;
+    @FXML
+    private TextArea waistTextArea;
+    @FXML
+    private TextArea neckTextArea;
+    @FXML
+    private TextArea armTextArea;
+    @FXML
+    private TextArea chestTextArea;
+
+    @FXML
+    private Label ageErrorLabel;
+    @FXML
+    private Label heightErrorLabel;
+    @FXML
+    private Label weightErrorLabel;
+    @FXML
+    private Label abdomenErrorLabel;
+    @FXML
+    private Label hipErrorLabel;
+    @FXML
+    private Label waistErrorLabel;
+    @FXML
+    private Label neckErrorLabel;
+    @FXML
+    private Label armErrorLabel;
+    @FXML
+    private Label chestErrorLabel;
+    @FXML
+    private Label updateLabel;
+    @FXML
+    private Button updateButton;
+
 
     //DietPane
     @FXML
