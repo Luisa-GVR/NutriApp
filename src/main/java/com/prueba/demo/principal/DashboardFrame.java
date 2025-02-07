@@ -9,10 +9,12 @@ import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -121,6 +123,7 @@ public class DashboardFrame {
     private TextArea armTextArea;
     @FXML
     private TextArea chestTextArea;
+
     @FXML
     private Label ageErrorLabel;
     @FXML
@@ -143,8 +146,6 @@ public class DashboardFrame {
     private Label updateLabel;
     @FXML
     private Button updateButton;
-
-
 
 
     //DietPane
@@ -241,6 +242,8 @@ public class DashboardFrame {
                 });
             }
         });
+
+
 
         //Click boton de profile
 
@@ -501,7 +504,6 @@ public class DashboardFrame {
         // Actualizar los campos del perfil
         updateProfileFields(accountData);
     }
-
     @FXML
     private void showDiet() {
         hideAll();
@@ -554,6 +556,10 @@ public class DashboardFrame {
         nutriappImage.setFitWidth(newWidth);
         nutriappImage.setFitHeight(newHeight);
     }
+
+//-----ESTO ES PARA LA TABLA DE DIETA CHECAR SI ESTA CORRECTO-----
+
+
 }
 
 

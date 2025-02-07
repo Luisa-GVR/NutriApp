@@ -430,36 +430,36 @@
                                           <Insets />
                                        </opaqueInsets>
                                     </HBox>
-                                    <TableView editable="true" fixedCellSize="1.0" prefHeight="340.0" prefWidth="590.0" VBox.vgrow="ALWAYS">
+                                    <TableView fx:id="foodTable" editable="true" fixedCellSize="1.0" prefHeight="340.0" prefWidth="590.0" VBox.vgrow="ALWAYS">
                                        <columns>
                                           <TableColumn minWidth="115.0" prefWidth="-1.0" style="-fx-background-color: #7da12d;">
                                              <graphic>
-                                                <Label minWidth="115.0" prefHeight="24.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Comida" textFill="#f9f9f9" />
+                                                <Label fx:id="foodColumnDiet" minWidth="115.0" prefHeight="24.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Comida" textFill="#f9f9f9" />
                                              </graphic>
                                           </TableColumn>
                                           <TableColumn minWidth="115.0" prefWidth="-1.0" style="-fx-background-color: #7da12d;">
                                              <graphic>
-                                                <Label minWidth="115.0" prefHeight="24.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Lunes" textFill="#f9f9f9" />
+                                                <Label fx:id="mondayColumnDiet" minWidth="115.0" prefHeight="24.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Lunes" textFill="#f9f9f9" />
                                              </graphic>
                                           </TableColumn>
                                           <TableColumn minWidth="115.0" prefWidth="-1.0" style="-fx-background-color: #7da12d;">
                                              <graphic>
-                                                <Label minWidth="115.0" prefHeight="24.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Martes" textFill="#f9f9f9" />
+                                                <Label fx:id="tuesdayColumnDiet" minWidth="115.0" prefHeight="24.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Martes" textFill="#f9f9f9" />
                                              </graphic>
                                           </TableColumn>
                                           <TableColumn minWidth="115.0" prefWidth="-1.0" style="-fx-background-color: #7da12d;">
                                              <graphic>
-                                                <Label minWidth="115.0" prefHeight="24.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Miércoles" textFill="#f9f9f9" />
+                                                <Label fx:id="wednesdayColumnDiet" minWidth="115.0" prefHeight="24.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Miércoles" textFill="#f9f9f9" />
                                              </graphic>
                                           </TableColumn>
                                           <TableColumn minWidth="115.0" prefWidth="-1.0" style="-fx-background-color: #7da12d;">
                                              <graphic>
-                                                <Label minWidth="115.0" prefHeight="24.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Jueves" textFill="#f9f9f9" />
+                                                <Label fx:id="thursdayColumnDiet" minWidth="115.0" prefHeight="24.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Jueves" textFill="#f9f9f9" />
                                              </graphic>
                                           </TableColumn>
                                           <TableColumn minWidth="115.0" prefWidth="-1.0" style="-fx-background-color: #7da12d;">
                                              <graphic>
-                                                <Label minWidth="115.0" prefHeight="24.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Viernes" textFill="#f9f9f9" />
+                                                <Label fx:id="fridayColumnDiet" minWidth="115.0" prefHeight="24.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Viernes" textFill="#f9f9f9" />
                                              </graphic>
                                           </TableColumn>
                                        </columns>
