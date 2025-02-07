@@ -467,6 +467,3 @@ public class ProfileFrame {
         stage.close();
     }
 }
-
-
-
