@@ -667,13 +667,17 @@ public class DashboardFrame {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlantillasFXML/SetYourPreferencesDiet.fxml"));
                 loader.setControllerFactory(applicationContext::getBean);
 
-                Scene scene = new Scene(loader.load());
+                Scene scene = new Scene(loader.load(), 600, 360); // Limitar tamaño de la escena
 
                 preferencesDietStage = new Stage();
                 preferencesDietStage.setTitle("Principal");
                 preferencesDietStage.setScene(scene);
-                preferencesDietStage.setMinWidth(900);
-                preferencesDietStage.setMinHeight(520);
+
+                // Establecer límites para la ventana
+                preferencesDietStage.setMinWidth(600);
+                preferencesDietStage.setMinHeight(360);
+                preferencesDietStage.setMaxWidth(600);
+                preferencesDietStage.setMaxHeight(360);
 
                 preferencesDietStage.setOnCloseRequest(event -> preferencesDietStage = null); // Reset when closed
 
