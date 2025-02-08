@@ -17,6 +17,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -26,9 +27,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Properties;
 
 @Component
 public class DashboardFrame {
@@ -139,7 +144,6 @@ public class DashboardFrame {
     @FXML
     private Button updateButton;
 
-
     //DietPane
     @FXML
     private VBox dietPane;
@@ -147,6 +151,11 @@ public class DashboardFrame {
     private Button setYourPreferencesButtonDiet;
     @FXML
     private GridPane gridPaneDiet;
+    @FXML
+    private Label preferencesLabel;
+
+    @FXML
+    private HBox dietPaneConfig;
 
     //ExercisePane
     @FXML
@@ -231,7 +240,7 @@ public class DashboardFrame {
         exerciseButton.setOnAction(event -> showExercise());
         reportsButton.setOnAction(event -> showReports());
 
-        setYourPreferencesButtonDiet.setOnAction(event -> openSetYourPreferencesDiet());
+
 
         // Ajustar tamaño de fuente basado en el tamaño de la ventana
         List<Button> buttons = Arrays.asList(dashboardButton, exerciseButton, dietButton, reportsButton, profileButton);
@@ -282,7 +291,12 @@ public class DashboardFrame {
         });
 
 
+        //Dieta
+        setYourPreferencesButtonDiet.setOnAction(event -> openSetYourPreferencesDiet());
 
+
+
+        //Profile
         //Click boton de profile
 
         updateButton.setOnAction(event -> {
@@ -326,6 +340,86 @@ public class DashboardFrame {
     }
 
 
+    //Funcionalidades visuales
+    @FXML
+    private void mouseEntered(javafx.scene.input.MouseEvent event) {
+        // Aquí puedes cambiar el color de fondo del HBox, por ejemplo
+        Node node = (Node) event.getSource();  // Obtiene la referencia al HBox clickeado
+
+        node.setStyle("-fx-background-color: #404040;");  // Cambia el color de fondo a gris
+    }
+    @FXML
+    private void mouseExited(javafx.scene.input.MouseEvent event) {
+        // Aquí puedes cambiar el color de fondo del HBox, por ejemplo
+        Node node = (Node) event.getSource();  // Obtiene la referencia al HBox clickeado
+        node.setStyle("-fx-background-color: #262626;");  // Cambia el color de fondo a gris
+    }
+    private void setTooltipForProgressBar(ProgressBar progressBar, Tooltip tooltip) {
+        Tooltip.install(progressBar, tooltip); // Instalar el Tooltip en la ProgressBar
+
+        progressBar.setOnMouseEntered(event -> {
+            if (!tooltip.isShowing()) {
+                tooltip.show(progressBar, event.getScreenX(), event.getScreenY() + 10);
+            }
+        });
+
+        progressBar.setOnMouseExited(event -> {
+            if (tooltip.isShowing()) {
+                tooltip.hide();
+            }
+        });
+    }
+
+
+    @FXML
+    private void showDashboard() {
+        hideAll();
+        dashboardPane.setVisible(true);
+        menuVbox.setVisible(true);
+    }
+
+
+    /**
+     profile
+     */
+    @Autowired
+    AccountDataRepository accountDataRepository;
+
+    @Autowired
+    AccountRepository accountRepository;
+
+    @Autowired
+    FoodRepository foodRepository;
+
+    @Autowired
+    AccountAllergyFoodRepository accountAllergyFoodRepository;
+
+    @FXML
+    private void showProfile() {
+        hideAll();
+        profilePane.setVisible(true);
+        menuVbox.setVisible(true);
+
+        Optional<Account> account = accountRepository.findById(1L);
+        AccountData accountData = account.get().getAccountData();
+
+        // Hacer invisible las cosas
+        updateLabel.setVisible(false);
+        userNameLabel.setText(account.get().getName());
+        ageErrorLabel.setVisible(false);
+        heightErrorLabel.setVisible(false);
+        weightErrorLabel.setVisible(false);
+        abdomenErrorLabel.setVisible(false);
+        hipErrorLabel.setVisible(false);
+        waistErrorLabel.setVisible(false);
+        neckErrorLabel.setVisible(false);
+        armErrorLabel.setVisible(false);
+        chestErrorLabel.setVisible(false);
+
+        // Actualizar los campos del perfil
+        updateProfileFields(accountData);
+    }
+
 
     private void updateProfileFields(AccountData accountData) {
         sexTextArea.setText(accountData.getGender() != null && accountData.getGender() ? "Masculino" : "Femenino");
@@ -351,7 +445,6 @@ public class DashboardFrame {
         sexTextArea.setEditable(false);
         allergiesTextArea.setEditable(false);
     }
-
 
     //Lo mismo que hay en ProfileFrame, ligeramente cambiado
 
@@ -386,7 +479,6 @@ public class DashboardFrame {
 
         }
     }
-
 
     private double parseOrDefault(TextArea textArea, double defaultValue) {
         if (textArea.getText() != null && !textArea.getText().trim().isEmpty()) {
@@ -466,91 +558,78 @@ public class DashboardFrame {
         }
     }
 
-    //Funcionalidades visuales
-    @FXML
-    private void mouseEntered(javafx.scene.input.MouseEvent event) {
-        // Aquí puedes cambiar el color de fondo del HBox, por ejemplo
-        Node node = (Node) event.getSource();  // Obtiene la referencia al HBox clickeado
-
-        node.setStyle("-fx-background-color: #404040;");  // Cambia el color de fondo a gris
-    }
-    @FXML
-    private void mouseExited(javafx.scene.input.MouseEvent event) {
-        // Aquí puedes cambiar el color de fondo del HBox, por ejemplo
-        Node node = (Node) event.getSource();  // Obtiene la referencia al HBox clickeado
-        node.setStyle("-fx-background-color: #262626;");  // Cambia el color de fondo a gris
-    }
-    private void setTooltipForProgressBar(ProgressBar progressBar, Tooltip tooltip) {
-        Tooltip.install(progressBar, tooltip); // Instalar el Tooltip en la ProgressBar
-
-        progressBar.setOnMouseEntered(event -> {
-            if (!tooltip.isShowing()) {
-                tooltip.show(progressBar, event.getScreenX(), event.getScreenY() + 10);
-            }
-        });
-
-        progressBar.setOnMouseExited(event -> {
-            if (tooltip.isShowing()) {
-                tooltip.hide();
-            }
-        });
-    }
+    /**
+     dieta
+     */
 
 
-
-
-
-    @FXML
-    private void showDashboard() {
-        hideAll();
-        dashboardPane.setVisible(true);
-        menuVbox.setVisible(true);
-    }
-
-    @Autowired
-    AccountDataRepository accountDataRepository;
-
-    @Autowired
-    AccountRepository accountRepository;
-
-    @Autowired
-    FoodRepository foodRepository;
-
-    @Autowired
-    AccountAllergyFoodRepository accountAllergyFoodRepository;
-
-    @FXML
-    private void showProfile() {
-        hideAll();
-        profilePane.setVisible(true);
-        menuVbox.setVisible(true);
-
-        Optional<Account> account = accountRepository.findById(1L);
-        AccountData accountData = account.get().getAccountData();
-
-        // Hacer invisible las cosas
-        updateLabel.setVisible(false);
-        userNameLabel.setText(account.get().getName());
-        ageErrorLabel.setVisible(false);
-        heightErrorLabel.setVisible(false);
-        weightErrorLabel.setVisible(false);
-        abdomenErrorLabel.setVisible(false);
-        hipErrorLabel.setVisible(false);
-        waistErrorLabel.setVisible(false);
-        neckErrorLabel.setVisible(false);
-        armErrorLabel.setVisible(false);
-        chestErrorLabel.setVisible(false);
-
-        // Actualizar los campos del perfil
-        updateProfileFields(accountData);
-    }
     @FXML
     private void showDiet() {
         hideAll();
         dietPane.setVisible(true);
         menuVbox.setVisible(true);
 
+        Properties properties = new Properties();
+        try (FileInputStream in = new FileInputStream("preferencesState.properties")) {
+            properties.load(in);
+            if ("true".equals(properties.getProperty("preferencesCompleted"))) {
+                setYourPreferencesButtonDiet.setVisible(false);
+                dietPaneConfig.setVisible(false);
+                disableGridPane(gridPaneDiet);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
+
+    private void disableGridPane(GridPane gridPane) {
+        for (Node node : gridPane.getChildren()) {
+            if (node instanceof Control) {
+                ((Control) node).setDisable(true);
+            }
+        }
+    }
+
+
+    public void hidePreferencesUI() {
+        setYourPreferencesButtonDiet.setVisible(false);
+        preferencesLabel.setVisible(false);
+    }
+
+    private Stage preferencesDietStage;
+
+    private void openSetYourPreferencesDiet() {
+        if (preferencesDietStage != null && preferencesDietStage.isShowing()) {
+            preferencesDietStage.toFront(); // Bring the existing window to the front
+            return;
+        }
+
+        Platform.runLater(() -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlantillasFXML/SetYourPreferencesDiet.fxml"));
+                loader.setControllerFactory(applicationContext::getBean);
+
+                Scene scene = new Scene(loader.load());
+
+                preferencesDietStage = new Stage();
+                preferencesDietStage.setTitle("Principal");
+                preferencesDietStage.setScene(scene);
+                preferencesDietStage.setMinWidth(900);
+                preferencesDietStage.setMinHeight(520);
+
+                preferencesDietStage.setOnCloseRequest(event -> preferencesDietStage = null); // Reset when closed
+
+                preferencesDietStage.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    /**
+     ejercicio
+     */
     @FXML
     private void showExercise() {
         hideAll();
@@ -558,6 +637,11 @@ public class DashboardFrame {
         menuVbox.setVisible(true);
 
     }
+
+    /**
+     reportes
+     */
+
     @FXML
     private void showReports() {
         hideAll();
@@ -599,34 +683,8 @@ public class DashboardFrame {
 
     @Autowired
     private ApplicationContext applicationContext;
-    private void openSetYourPreferencesDiet() {
-        Platform.runLater(() -> {
-            try {
 
-                // Cargar la nueva ventana
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlantillasFXML/SetYourPreferencesDiet.fxml"));
-                loader.setControllerFactory(applicationContext::getBean); // *** Crucial Line ***
 
-                Scene scene = new Scene(loader.load());
-
-                // Crear un nuevo Stage para la ventana principal
-                Stage newStage = new Stage();
-                newStage.setTitle("Principal");
-                newStage.setScene(scene);
-
-                // Establecer el tamaño mínimo de la ventana principal
-                newStage.setMinWidth(900);  // Ancho mínimo de la ventana
-                newStage.setMinHeight(520); // Alto mínimo de la ventana
-
-                // Mostrar la nueva ventana
-                newStage.show();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        });
-    }
 
 //-----ESTO ES PARA LA TABLA DE DIETA CHECAR SI ESTA CORRECTO-----
 

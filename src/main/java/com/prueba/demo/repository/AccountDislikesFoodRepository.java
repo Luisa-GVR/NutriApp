@@ -1,6 +1,7 @@
 package com.prueba.demo.repository;
 
 import com.prueba.demo.model.AccountAllergyFood;
+import com.prueba.demo.model.AccountDislikes;
 import com.prueba.demo.model.AccountDislikesFood;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,5 +18,9 @@ public interface AccountDislikesFoodRepository extends JpaRepository<AccountDisl
             "JOIN aaf.food f " +
             "WHERE aaf.accountDislikes.accountData.id = :accountDataId")
     List<String> findFoodNamesByAccountDataId(@Param("accountDataId") Long accountDataId);
+
+
+    List<AccountDislikesFood> findByAccountDislikes(AccountDislikes accountDislikes);
+
 
 }
