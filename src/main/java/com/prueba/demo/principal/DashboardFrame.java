@@ -346,7 +346,7 @@ public class DashboardFrame {
                 super.updateItem(date, empty);
                 if (date.isAfter(LocalDate.now())) {
                     setDisable(true);
-                    setStyle("-fx-background-color: #d3d3d3;"); 
+                    setStyle("-fx-background-color: #d3d3d3;");
                 }
             }
         });
