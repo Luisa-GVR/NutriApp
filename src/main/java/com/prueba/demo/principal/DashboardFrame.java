@@ -85,17 +85,9 @@ public class DashboardFrame {
     private Tooltip timeActivityTooltip;
 
     @FXML
-    private TableView<Event> calendarTable;
+    private GridPane gridPaneDashboard;
     @FXML
-    private TableColumn<Event, String> mondayColumn;
-    @FXML
-    private TableColumn<Event, String> tuesdayColumn;
-    @FXML
-    private TableColumn<Event, String> wednesdayColumn;
-    @FXML
-    private TableColumn<Event, String> thursdayColumn;
-    @FXML
-    private TableColumn<Event, String> fridayColumn;
+    private Label waterLabel;
 
     //ProfilePane
     @FXML
@@ -170,6 +162,40 @@ public class DashboardFrame {
     //Reports Pane
     @FXML
     private VBox reportsPane;
+    @FXML
+    private DatePicker startDatePicker;
+    @FXML
+    private DatePicker endDatePicker;
+    @FXML
+    private HBox infoReportHbox;
+    @FXML
+    private HBox errorReportHbox;
+    @FXML
+    private HBox successReportHbox;
+    @FXML
+    private TextArea ageReportTextArea;
+    @FXML
+    private TextArea sexReportTextArea;
+    @FXML
+    private TextArea heightReportTextArea;
+    @FXML
+    private TextArea weightReportTextArea;
+    @FXML
+    private TextArea allergiesReportTextArea;
+    @FXML
+    private TextArea abdomenReportTextArea;
+    @FXML
+    private TextArea hipReportTextArea;
+    @FXML
+    private TextArea waistReportTextArea;
+    @FXML
+    private TextArea neckReportTextArea;
+    @FXML
+    private TextArea armReportTextArea;
+    @FXML
+    private TextArea chestReportTextArea;
+    @FXML
+    private Button sendReportButton;
 
 
     @FXML
@@ -195,7 +221,7 @@ public class DashboardFrame {
         setTooltipForProgressBar(caloriesProgressBar, caloriesTooltip);
         setTooltipForProgressBar(proteinsProgressBar, proteinsTooltip);
         setTooltipForProgressBar(fatsProgressBar, fatsTooltip);
-        setTooltipForProgressBar(caloriesProgressBar, carbohydratesTooltip);
+        setTooltipForProgressBar(carbohydratesProgressBar, carbohydratesTooltip);
         setTooltipForProgressBar(caloriesBurnedProgressBar, caloriesBurnedTooltip);
         setTooltipForProgressBar(timeActivityProgressBar, timeActivityTooltip);
 
