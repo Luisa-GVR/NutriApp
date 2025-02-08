@@ -7,26 +7,25 @@ import com.prueba.demo.repository.AccountRepository;
 import com.prueba.demo.repository.FoodRepository;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -232,6 +231,8 @@ public class DashboardFrame {
         exerciseButton.setOnAction(event -> showExercise());
         reportsButton.setOnAction(event -> showReports());
 
+        setYourPreferencesButtonDiet.setOnAction(event -> openSetYourPreferencesDiet());
+
         // Ajustar tamaño de fuente basado en el tamaño de la ventana
         List<Button> buttons = Arrays.asList(dashboardButton, exerciseButton, dietButton, reportsButton, profileButton);
 
@@ -323,6 +324,8 @@ public class DashboardFrame {
 
 
     }
+
+
 
     private void updateProfileFields(AccountData accountData) {
         sexTextArea.setText(accountData.getGender() != null && accountData.getGender() ? "Masculino" : "Femenino");
@@ -592,6 +595,37 @@ public class DashboardFrame {
 
         nutriappImage.setFitWidth(newWidth);
         nutriappImage.setFitHeight(newHeight);
+    }
+
+    @Autowired
+    private ApplicationContext applicationContext;
+    private void openSetYourPreferencesDiet() {
+        Platform.runLater(() -> {
+            try {
+
+                // Cargar la nueva ventana
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlantillasFXML/SetYourPreferencesDiet.fxml"));
+                loader.setControllerFactory(applicationContext::getBean); // *** Crucial Line ***
+
+                Scene scene = new Scene(loader.load());
+
+                // Crear un nuevo Stage para la ventana principal
+                Stage newStage = new Stage();
+                newStage.setTitle("Principal");
+                newStage.setScene(scene);
+
+                // Establecer el tamaño mínimo de la ventana principal
+                newStage.setMinWidth(900);  // Ancho mínimo de la ventana
+                newStage.setMinHeight(520); // Alto mínimo de la ventana
+
+                // Mostrar la nueva ventana
+                newStage.show();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        });
     }
 
 //-----ESTO ES PARA LA TABLA DE DIETA CHECAR SI ESTA CORRECTO-----
