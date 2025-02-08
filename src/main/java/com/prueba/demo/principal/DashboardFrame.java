@@ -575,9 +575,9 @@ public class DashboardFrame {
             if ("true".equals(properties.getProperty("preferencesCompleted"))) {
                 setYourPreferencesButtonDiet.setVisible(false);
                 dietPaneConfig.setVisible(false);
-                disableGridPane(gridPaneDiet);
             }
         } catch (IOException e) {
+            disableGridPane(gridPaneDiet);
             e.printStackTrace();
         }
     }
