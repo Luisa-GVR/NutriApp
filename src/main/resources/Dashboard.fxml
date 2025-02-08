@@ -24,7 +24,7 @@
    <children>
       <GridPane maxWidth="1.7976931348623157E308" prefWidth="600.0" VBox.vgrow="ALWAYS">
          <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="151.0" />
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="295.0" minWidth="10.0" prefWidth="151.0" />
             <ColumnConstraints hgrow="ALWAYS" />
          </columnConstraints>
          <rowConstraints>
@@ -367,7 +367,7 @@
                         </VBox>
                         <VBox fx:id="dietPane" prefHeight="200.0" prefWidth="100.0" spacing="30.0" visible="false">
                            <children>
-                              <HBox  alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="50.0" prefWidth="631.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: white;" VBox.vgrow="ALWAYS">
+                              <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="50.0" prefWidth="631.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: white;" VBox.vgrow="ALWAYS">
                                  <children>
                                     <Label text="Dieta">
                                        <font>
@@ -1677,7 +1677,7 @@
                   </StackPane>
                </children>
             </AnchorPane>
-            <VBox fx:id="menuVbox" minHeight="-Infinity" prefHeight="200.0" prefWidth="150.0" spacing="10.0" style="-fx-background-color: #262626;" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+            <VBox fx:id="menuVbox" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" spacing="10.0" style="-fx-background-color: #262626;" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                <children>
                   <HBox fx:id="logoHBox" alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="50.0" prefWidth="150.0" VBox.vgrow="ALWAYS">
                      <children>
@@ -1686,14 +1686,14 @@
                               <Image url="@images/NutriApp64x64.png" />
                            </image>
                         </ImageView>
-                        <Label fx:id="nutriappLabel" text="NutriApp" textFill="#f9f9f9">
+                        <Label fx:id="nutriappLabel" text="NutriApp" textFill="#f9f9f9" HBox.hgrow="ALWAYS">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
                      </children>
                   </HBox>
-                  <HBox prefHeight="1.0" prefWidth="150.0" style="-fx-border-color: #7da12d;" />
+                  <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="1.0" prefWidth="150.0" style="-fx-border-color: #7da12d;" />
                   <Button fx:id="dashboardButton" mnemonicParsing="false" onMouseEntered="#mouseEntered" onMouseExited="#mouseExited" style="-fx-background-color: transparent; -fx-font-size: 1.2vh;" text="Dashboard" textFill="#f9f9f9">
                      <font>
                         <Font name="System Bold" size="12.0" />

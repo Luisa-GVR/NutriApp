@@ -13,8 +13,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="356.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.prueba.demo.principal.SetYourPreferencesDiet">
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="356.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.prueba.demo.principal.SetYourPreferencesDiet">
    <children>
       <HBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="600.0">
          <children>
@@ -64,6 +63,11 @@
                         </ComboBox>
                      </children>
                   </HBox>
+                  <Label fx:id="favsFoodsErrorLabel" text="Label de mensaje de error" textFill="#b30000">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
                </children>
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
@@ -72,18 +76,23 @@
                      <children>
                         <HBox maxWidth="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="240.0" style="-fx-border-color: #cdcdcd;">
                            <children>
-                              <ListView fx:id="NoFavsFoodsListView" maxHeight="-Infinity" minHeight="-Infinity" orientation="HORIZONTAL" prefHeight="23.0" prefWidth="120.0" style="-fx-border-color: white; -fx-background-color: white; -fx-border-width: 1;">
+                              <ListView fx:id="noFavsFoodsListView" maxHeight="-Infinity" minHeight="-Infinity" orientation="HORIZONTAL" prefHeight="23.0" prefWidth="120.0" style="-fx-border-color: white; -fx-background-color: white; -fx-border-width: 1;">
                                  <HBox.margin>
                                     <Insets left="2.0" top="1.5" />
                                  </HBox.margin>
                               </ListView>
-                              <ComboBox fx:id="NoFavsFoodsComboBox" editable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="120.0" style="-fx-background-color: white; -fx-border-color: white; -fx-border-radius: 4;" visibleRowCount="5">
+                              <ComboBox fx:id="noFavsFoodsComboBox" editable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="120.0" style="-fx-background-color: white; -fx-border-color: white; -fx-border-radius: 4;" visibleRowCount="5">
                                  <HBox.margin>
                                     <Insets left="-2.0" />
                                  </HBox.margin>
                               </ComboBox>
                            </children>
                         </HBox>
+                        <Label fx:id="noFavsFoodsErrorLabel" text="Label de mensaje de error" textFill="#b30000">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
                      </children>
                   </VBox>
                </children>

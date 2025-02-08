@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
@@ -19,7 +20,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,13 +28,17 @@ import java.util.Properties;
 @Component
 public class SetYourPreferencesDiet {
     @FXML
+    private Label favsFoodsErrorLabel;
+    @FXML
+    private Label noFavsFoodsErrorLabel;
+    @FXML
     private ListView<String> favsFoodsListView;
     @FXML
-    private ListView<String> NoFavsFoodsListView;
+    private ListView<String> noFavsFoodsListView;
     @FXML
     private ComboBox<String> favsFoodsComboBox;
     @FXML
-    private ComboBox<String> NoFavsFoodsComboBox;
+    private ComboBox<String> noFavsFoodsComboBox;
     @FXML
     private Button saveButton;
 
@@ -44,13 +48,13 @@ public class SetYourPreferencesDiet {
     private void initialize(){
 
         favsFoodsComboBox.setItems(FXCollections.observableArrayList("Ninguna"));
-        NoFavsFoodsComboBox.setItems(FXCollections.observableArrayList("Ninguna"));
+        noFavsFoodsComboBox.setItems(FXCollections.observableArrayList("Ninguna"));
 
         configureFoodComboBox(favsFoodsComboBox, favsFoodsListView);
         configureFoodListView(favsFoodsListView);
 
-        configureFoodComboBox(NoFavsFoodsComboBox, NoFavsFoodsListView);
-        configureFoodListView(NoFavsFoodsListView);
+        configureFoodComboBox(noFavsFoodsComboBox, noFavsFoodsListView);
+        configureFoodListView(noFavsFoodsListView);
 
         saveButton.setOnAction(actionEvent -> {
             try {
@@ -92,7 +96,7 @@ public class SetYourPreferencesDiet {
         List<Food> likeFoodList = new ArrayList<>();
 
         // Obtener la lista de alimentos que no gustan
-        ObservableList<String> dislikeFods = NoFavsFoodsListView.getItems();
+        ObservableList<String> dislikeFods = noFavsFoodsListView.getItems();
         List<Food> dislikeFoodList = new ArrayList<>();
 
         boolean bothNull = false;
@@ -186,7 +190,7 @@ public class SetYourPreferencesDiet {
             //favsFoodsErrorLabel.setVisible(true);
             validInputs = false;
         }
-        if (NoFavsFoodsListView.getItems().isEmpty()){
+        if (noFavsFoodsListView.getItems().isEmpty()){
             //NoFavsFoodsErrorLabel.setText("Por favor, intrduce un valor válido.");
             //NoFavsFoodsErrorLabel.setVisible(true);
             validInputs = false;
