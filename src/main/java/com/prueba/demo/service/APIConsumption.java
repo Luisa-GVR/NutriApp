@@ -2,11 +2,15 @@ package com.prueba.demo.service;
 
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prueba.demo.model.Excercise;
 import com.prueba.demo.model.ExcerciseResponse;
 import com.prueba.demo.model.Food;
 import com.prueba.demo.model.FoodResponse;
+import com.prueba.demo.service.dto.FoodPreferencesDTO;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URI;
@@ -15,15 +19,22 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class APIConsumption {
 
     //Nutritionix, hacerlo mas seguro!
-    private static final String API_KEY = "04efb6f3d6527074db8c13c4ac662f40";
+
+    /* estos son de la nuutricuenta
+     private static final String API_KEY = "04efb6f3d6527074db8c13c4ac662f40";
     private static final String API_ID = "7aa68925";
+    private static final String URL_BASE = "https://trackapi.nutritionix.com/v2/natural/nutrients";
+
+     */
+
+    private static final String API_KEY = "602d0e1d856a6e905686723221befb1e";
+    private static final String API_ID = "7fe9ac29";
     private static final String URL_BASE = "https://trackapi.nutritionix.com/v2/natural/nutrients";
 
     public Food getFoodInfo(String query) {
@@ -94,8 +105,8 @@ public class APIConsumption {
 
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println("Buscando comida: " + query);
-            System.out.println("Cuerpo de la solicitud: " + requestBody);
+            //System.out.println("Buscando comida: " + query);
+            //System.out.println("Cuerpo de la solicitud: " + requestBody);
             ObjectMapper objectMapper = new ObjectMapper();
             FoodResponse foodResponse = objectMapper.readValue(response.body(), FoodResponse.class);
 
@@ -111,6 +122,86 @@ public class APIConsumption {
 
         return Collections.emptyList();
     }
+
+
+
+    public List<String> getFoodSuggestionsRecommended(FoodPreferencesDTO foodPreferencesDTO, double calories) {
+        // Verificar que los parámetros se están recibiendo correctamente
+        if (foodPreferencesDTO != null) {
+            // Imprimir las preferencias (si lo necesitas)
+           // System.out.println("Alergias: " + foodPreferencesDTO.getAllergies());
+            //System.out.println("Disliked Foods: " + foodPreferencesDTO.getDislikedFoods());
+            //System.out.println("Liked Foods: " + foodPreferencesDTO.getLikedFoods());
+        } else {
+           // System.out.println("FoodPreferencesDTO es null");
+            return Collections.emptyList();
+        }
+
+        // Filtrar los alimentos en función de las alergias, alimentos que no gustan, y priori los alimentos que gustan
+        Set<String> allergies = new HashSet<>(foodPreferencesDTO.getAllergies());
+        Set<String> dislikedFoods = new HashSet<>(foodPreferencesDTO.getDislikedFoods());
+        Set<String> likedFoods = new HashSet<>(foodPreferencesDTO.getLikedFoods());
+
+        // Crear un conjunto para almacenar los alimentos recomendados
+        Set<String> recommendedFoods = new HashSet<>();
+
+        // Aquí es donde podemos agregar la lógica de selección de alimentos basada en el tipo de comida
+        // (Desayuno, comida, cena, snacks)
+        List<String> categories = Arrays.asList("desayuno", "comida", "cena", "snacks");
+
+        HttpClient client = HttpClient.newHttpClient();
+
+        // Construir el cuerpo de la solicitud
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, Object> requestBodyMap = new HashMap<>();
+
+        // Incluir categorías de alimentos y preferencias filtradas
+        requestBodyMap.put("categories", categories);
+        requestBodyMap.put("allergies", allergies);
+        requestBodyMap.put("dislikedFoods", dislikedFoods);
+        requestBodyMap.put("likedFoods", likedFoods);
+
+        String requestBody = "";
+        try {
+            requestBody = objectMapper.writeValueAsString(requestBodyMap);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
+
+        // Realizar la solicitud a la API
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(URL_BASE))
+                .header("x-app-id", API_ID)
+                .header("x-app-key", API_KEY)
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            FoodResponse foodResponse = objectMapper.readValue(response.body(), FoodResponse.class);
+
+            if (foodResponse.getFoods() != null && !foodResponse.getFoods().isEmpty()) {
+                // Filtrar los alimentos que cumplen con los requisitos
+                return foodResponse.getFoods().stream()
+                        .filter(food -> !allergies.contains(food.getFoodName()) && !dislikedFoods.contains(food.getFoodName()))
+                        .sorted(Comparator.comparing(food -> likedFoods.contains(food.getFoodName()) ? 1 : 0, Comparator.reverseOrder())) // Priorizar los alimentos liked
+                        .limit(3)
+                        .map(Food::getFoodName)
+                        .collect(Collectors.toList());
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return Collections.emptyList();
+    }
+
+
+
+
 
     private static final String EXERCISE_API_KEY = "7365eca4b1msh9743512e61a1b43p1581b0jsneb2caf6b1530";
     private static final String EXERCISE_API_HOST = "exercisedb.p.rapidapi.com";
@@ -142,6 +233,59 @@ public class APIConsumption {
             return null;
         }
     }
+
+
+    public List<String> getRandomFoodSuggestionsForMealType1() {
+        System.out.println("entre");
+
+        HttpClient client = HttpClient.newHttpClient();
+
+        JSONObject json = new JSONObject();
+        try {
+            json.put("query", "chimichanga");
+            json.put("meal_type", 5);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        String requestBody = json.toString(); // Convert to JSON string
+
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(URL_BASE))  // Use the appropriate URL for fetching foods
+                .header("x-app-id", API_ID)
+                .header("x-app-key", API_KEY)
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+
+        try {
+            System.out.println("entre2");
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            System.out.println(response);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            FoodResponse foodResponse = objectMapper.readValue(response.body(), FoodResponse.class);
+
+            // Filter foods where meal_type is 1 (e.g., Breakfast) and return a random selection
+            if (foodResponse.getFoods() != null && !foodResponse.getFoods().isEmpty()) {
+                System.out.println("entre3");
+                return foodResponse.getFoods().stream()
+                        .filter(food -> food.getMealType() == 1)  // Filter for meal_type == 1
+                        .collect(Collectors.collectingAndThen(Collectors.toList(), list -> {
+                            Collections.shuffle(list);  // Shuffle the list to get random foods
+                            return list.stream().limit(10).map(Food::getFoodName).collect(Collectors.toList());
+                        }));
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return Collections.emptyList();
+    }
+
 
 
 }

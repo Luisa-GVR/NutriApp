@@ -30,6 +30,7 @@ import org.springframework.stereotype.Component;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -336,7 +337,19 @@ public class DashboardFrame {
             }
         });
 
+        //report
 
+        // Restringir que endDatePicker no pueda seleccionar fechas futuras
+        endDatePicker.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                if (date.isAfter(LocalDate.now())) {
+                    setDisable(true);
+                    setStyle("-fx-background-color: #d3d3d3;"); 
+                }
+            }
+        });
     }
 
 
@@ -569,6 +582,34 @@ public class DashboardFrame {
         dietPane.setVisible(true);
         menuVbox.setVisible(true);
 
+
+
+        //grid
+
+        for (int row = 1; row <= 4; row++) {
+            for (int col = 1; col <= 5; col++) {
+                Button button = new Button();
+
+                button.setMaxWidth(Double.MAX_VALUE);
+                button.setMaxHeight(Double.MAX_VALUE);
+
+                // Establecer el texto del botón con el valor de la fila y columna
+                button.setText("Row: " + row + ", Col: " + col);
+
+                gridPaneDiet.add(button, col, row);
+
+                // Asignamos las variables 'row' y 'col' al evento del botón inmediatamente
+                int finalRow = row;
+                int finalCol = col;
+                button.setOnMouseClicked(event -> {
+                    System.out.println("row adentro: " + finalRow);
+                    handleCellClick(finalRow, finalCol);
+                });
+            }
+        }
+
+
+
         Properties properties = new Properties();
         try (FileInputStream in = new FileInputStream("preferencesState.properties")) {
             properties.load(in);
@@ -578,30 +619,8 @@ public class DashboardFrame {
             }
         } catch (IOException e) {
             disableGridPane(gridPaneDiet);
-            e.printStackTrace();
+            //e.printStackTrace();
         }
-
-        //grid
-
-        for (int row = 1; row <= 4; row++) {
-            for (int col = 1; col < 6; col++) {
-                Button button = new Button();
-
-                button.setMaxWidth(Double.MAX_VALUE);
-                button.setMaxHeight(Double.MAX_VALUE);
-
-                gridPaneDiet.add(button, col, row);
-
-                    int finalRow = row;
-                    int finalCol = col;
-                    button.setOnMouseClicked(event -> {
-                        handleCellClick(finalRow, finalCol);
-                    });
-
-            }
-        }
-
-
 
     }
 
@@ -610,22 +629,34 @@ public class DashboardFrame {
     private void handleCellClick(int row, int col) {
         Platform.runLater(() -> {
             try {
+                System.out.println("row adentro del handle: " + row);
+
                 // Si la ventana ya está abierta, traerla al frente
                 if (selectYourFoodStage != null && selectYourFoodStage.isShowing()) {
                     selectYourFoodStage.toFront(); // Traer la ventana existente al frente
                     return;
                 }
 
+                // Crear un nuevo controlador cada vez que se haga clic
                 Stage stage = (Stage) gridPaneDiet.getScene().getWindow();
 
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlantillasFXML/SelectYourFood.fxml"));
-                loader.setControllerFactory(applicationContext::getBean); // *** Crucial Line ***
+                loader.setControllerFactory(applicationContext::getBean); // Asegurarse de que el controlador se asigne correctamente
+
+
 
                 Scene scene = new Scene(loader.load());
+
+                SelectYourFood controller = loader.getController();
+                controller.setCol(col);
+                controller.setRow(row);
+
+                System.out.println("row seteado de controller: " + controller.getRow());
 
                 selectYourFoodStage = new Stage();
                 selectYourFoodStage.setTitle("Principal");
                 selectYourFoodStage.setScene(scene);
+
 
                 selectYourFoodStage.setMinWidth(900);  // Ancho mínimo de la ventana
                 selectYourFoodStage.setMinHeight(520); // Alto mínimo de la ventana
@@ -638,6 +669,7 @@ public class DashboardFrame {
             }
         });
     }
+
 
 
 
@@ -717,6 +749,69 @@ public class DashboardFrame {
         hideAll();
         reportsPane.setVisible(true);
         menuVbox.setVisible(true);
+
+        Optional<Account> account = accountRepository.findById(1L);
+        AccountData accountData = account.get().getAccountData();
+
+        sexReportTextArea.setText(accountData.getGender() != null && accountData.getGender() ? "Masculino" : "Femenino");
+        ageReportTextArea.setText(String.valueOf(accountData.getAge()));
+        heightReportTextArea.setText(String.valueOf(accountData.getHeight()));
+        weightReportTextArea.setText(String.valueOf(accountData.getWeight()));
+        abdomenReportTextArea.setText(String.valueOf(accountData.getAbdomen()));
+        hipReportTextArea.setText(String.valueOf(accountData.getHips()));
+        waistReportTextArea.setText(String.valueOf(accountData.getWaist()));
+        chestReportTextArea.setText(String.valueOf(accountData.getChest()));
+        neckReportTextArea.setText(String.valueOf(accountData.getNeck()));
+        armReportTextArea.setText(String.valueOf(accountData.getArm()));
+
+        // Actualizar alergias
+        List<String> allergicFoodNames = accountAllergyFoodRepository.findFoodNamesByAccountDataId(accountData.getId());
+        if (allergicFoodNames.isEmpty()){
+            allergiesReportTextArea.setText("Ninguna");
+        } else {
+            allergiesReportTextArea.setText(String.join(", ", allergicFoodNames));
+        }
+
+        sendReportButton.setOnAction(event -> {
+            if (validateFieldsReport()) {
+                sendReport();
+            }
+        });
+
+        disableVBox(reportsPane);
+
+
+    }
+
+    private void sendReport() {
+    }
+
+    private boolean validateFieldsReport() {
+        if (startDatePicker.getValue() == null) {
+            errorReportHbox.setVisible(true);
+            return false;
+        }
+        if (endDatePicker.getValue() == null) {
+            errorReportHbox.setVisible(true);
+            return false;
+        }
+
+        if (endDatePicker.getValue().isBefore(startDatePicker.getValue())) {
+            errorReportHbox.setVisible(true);
+            return false;
+        }
+
+        errorReportHbox.setVisible(false);
+        return true;
+
+    }
+
+    private void disableVBox(VBox reportsPane) {
+        for (Node node : reportsPane.getChildren()) {
+            if (node instanceof Control) {
+                ((Control) node).setDisable(true);
+            }
+        }
 
     }
 

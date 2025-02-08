@@ -46,14 +46,16 @@ public class SetYourPreferencesDiet {
 
     @FXML
     private void initialize(){
+        favsFoodsErrorLabel.setVisible(false);
+        noFavsFoodsErrorLabel.setVisible(false);
 
         favsFoodsComboBox.setItems(FXCollections.observableArrayList("Ninguna"));
         noFavsFoodsComboBox.setItems(FXCollections.observableArrayList("Ninguna"));
 
-        configureFoodComboBox(favsFoodsComboBox, favsFoodsListView);
+        configureFoodComboBox(favsFoodsComboBox, favsFoodsListView, favsFoodsErrorLabel);
         configureFoodListView(favsFoodsListView);
 
-        configureFoodComboBox(noFavsFoodsComboBox, noFavsFoodsListView);
+        configureFoodComboBox(noFavsFoodsComboBox, noFavsFoodsListView, noFavsFoodsErrorLabel);
         configureFoodListView(noFavsFoodsListView);
 
         saveButton.setOnAction(actionEvent -> {
@@ -186,13 +188,13 @@ public class SetYourPreferencesDiet {
         boolean validInputs = true;
 
         if (favsFoodsListView.getItems().isEmpty()){
-            //favsFoodsErrorLabel.setText("Por favor, intrduce un valor válido.");
-            //favsFoodsErrorLabel.setVisible(true);
+            favsFoodsErrorLabel.setText("Por favor, intrduce un valor válido.");
+            favsFoodsErrorLabel.setVisible(true);
             validInputs = false;
         }
         if (noFavsFoodsListView.getItems().isEmpty()){
-            //NoFavsFoodsErrorLabel.setText("Por favor, intrduce un valor válido.");
-            //NoFavsFoodsErrorLabel.setVisible(true);
+            noFavsFoodsErrorLabel.setText("Por favor, intrduce un valor válido.");
+            noFavsFoodsErrorLabel.setVisible(true);
             validInputs = false;
         }
 
@@ -201,7 +203,7 @@ public class SetYourPreferencesDiet {
     }
 
 
-    private void configureFoodComboBox(ComboBox<String> comboBox, ListView<String> listView) {
+    private void configureFoodComboBox(ComboBox<String> comboBox, ListView<String> listView, Label errorLabel) {
         // Evitar que Enter agregue elementos automáticamente
         comboBox.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
@@ -234,6 +236,8 @@ public class SetYourPreferencesDiet {
             if (selectedItem != null) {
                 if (items.contains("Ninguna") || (items.size() >= 5) ||
                         (!items.isEmpty() && selectedItem.equals("Ninguna"))) {
+                        errorLabel.setText("Verificar valores ingresados");
+                        errorLabel.setVisible(true);
                     return;
                 }
 

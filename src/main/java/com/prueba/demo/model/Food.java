@@ -28,6 +28,9 @@ public class Food {
     @JsonProperty("thumbnailURL")
     private String thumbnailURL;
 
+    @JsonProperty("meal_type")
+    private int mealType;
+
     //Getters y setters...
 
     public String getFoodName() {
@@ -76,5 +79,13 @@ public class Food {
 
     public void setTotalCarbohydrate(double totalCarbohydrate) {
         this.totalCarbohydrate = totalCarbohydrate;
+    }
+
+    public int getMealType() {
+        return mealType;
+    }
+
+    public void setMealType(int mealType) {
+        this.mealType = mealType;
     }
 }
