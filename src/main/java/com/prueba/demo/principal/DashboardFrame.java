@@ -580,7 +580,65 @@ public class DashboardFrame {
             disableGridPane(gridPaneDiet);
             e.printStackTrace();
         }
+
+        //grid
+
+        for (int row = 1; row <= 4; row++) {
+            for (int col = 1; col < 6; col++) {
+                Button button = new Button();
+
+                button.setMaxWidth(Double.MAX_VALUE);
+                button.setMaxHeight(Double.MAX_VALUE);
+
+                gridPaneDiet.add(button, col, row);
+
+                    int finalRow = row;
+                    int finalCol = col;
+                    button.setOnMouseClicked(event -> {
+                        handleCellClick(finalRow, finalCol);
+                    });
+
+            }
+        }
+
+
+
     }
+
+    private Stage selectYourFoodStage; // Añadir una variable para la ventana
+
+    private void handleCellClick(int row, int col) {
+        Platform.runLater(() -> {
+            try {
+                // Si la ventana ya está abierta, traerla al frente
+                if (selectYourFoodStage != null && selectYourFoodStage.isShowing()) {
+                    selectYourFoodStage.toFront(); // Traer la ventana existente al frente
+                    return;
+                }
+
+                Stage stage = (Stage) gridPaneDiet.getScene().getWindow();
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlantillasFXML/SelectYourFood.fxml"));
+                loader.setControllerFactory(applicationContext::getBean); // *** Crucial Line ***
+
+                Scene scene = new Scene(loader.load());
+
+                selectYourFoodStage = new Stage();
+                selectYourFoodStage.setTitle("Principal");
+                selectYourFoodStage.setScene(scene);
+
+                selectYourFoodStage.setMinWidth(900);  // Ancho mínimo de la ventana
+                selectYourFoodStage.setMinHeight(520); // Alto mínimo de la ventana
+
+                selectYourFoodStage.setOnCloseRequest(event -> selectYourFoodStage = null);
+                selectYourFoodStage.show();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
 
 
     private void disableGridPane(GridPane gridPane) {
@@ -590,7 +648,6 @@ public class DashboardFrame {
             }
         }
     }
-
 
     public void hidePreferencesUI() {
         setYourPreferencesButtonDiet.setVisible(false);
@@ -626,6 +683,15 @@ public class DashboardFrame {
             }
         });
     }
+
+
+
+
+
+
+
+
+
 
     /**
      ejercicio
