@@ -596,6 +596,12 @@ public class DashboardFrame {
 
         LocalDate today = LocalDate.now();
         int dayOfWeek = today.getDayOfWeek().getValue();
+        Date date1 = null;
+        Date date2 = null;
+        Date date3 = null;
+        Date date4 = null;
+        Date date5 = null;
+
 
         for (int row = 1; row <= 5; row++) {
             for (int col = 1; col <= 5; col++) {
@@ -605,6 +611,13 @@ public class DashboardFrame {
                 DayMeal dayMeal = getDayMealForDate(Date.valueOf(targetDate).toLocalDate());
                 Food foodForCell = getFoodForCell(dayMeal, row);
 
+                switch (col) {
+                    case 1 -> date1 = Date.valueOf(targetDate);
+                    case 2 -> date2 = Date.valueOf(targetDate);
+                    case 3 -> date3 = Date.valueOf(targetDate);
+                    case 4 -> date4 = Date.valueOf(targetDate);
+                    case 5 -> date5 = Date.valueOf(targetDate);
+                }
 
                 Button button = new Button();
                 button.setMaxWidth(Double.MAX_VALUE);
@@ -672,11 +685,16 @@ public class DashboardFrame {
         choiceBox4.setItems(options);
         choiceBox5.setItems(options);
 
-        choiceBox1.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, 1));
-        choiceBox2.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, 2));
-        choiceBox3.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, 3));
-        choiceBox4.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, 4));
-        choiceBox5.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, 5));
+        Date finalDate = date1;
+        choiceBox1.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate));
+        Date finalDate1 = date2;
+        choiceBox2.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate1));
+        Date finalDate2 = date3;
+        choiceBox3.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate2));
+        Date finalDate3 = date4;
+        choiceBox4.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate3));
+        Date finalDate4 = date5;
+        choiceBox5.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate4));
 
 
         Properties properties = new Properties();
@@ -698,24 +716,19 @@ public class DashboardFrame {
     @Autowired
     ReportRepository reportRepository;
 
-    private void handleChoiceBoxSelection(String selectedValue, int choiceBoxIndex) {
+    private void handleChoiceBoxSelection(String selectedValue, Date localDate) {
         // Dependiendo de la opción seleccionada y del índice del ChoiceBox, ejecutar algo
         if ("Sí".equals(selectedValue)) {
-            saveToReport(choiceBoxIndex);
+            saveToReport(localDate);
 
         } else {
-            showGoalsCheck(choiceBoxIndex);
+            showGoalsCheck(localDate);
         }
     }
 
-    private void saveToReport(int choiceBoxIndex) {
+    private void saveToReport(Date reportDate) {
 
-        LocalDate today = LocalDate.now();
-        int dayOfWeek = today.getDayOfWeek().getValue();
-        int daysOffset = choiceBoxIndex - 1; // 1 = Lunes, 2 = Martes, etc.
-        LocalDate targetDate = today.minusDays(dayOfWeek - 1).plusDays(daysOffset);
-        Date reportDate = Date.valueOf(targetDate);
-
+        System.out.println(reportDate);
 
         Report existingReport = reportRepository.findByDate(reportDate);
 
@@ -750,7 +763,7 @@ public class DashboardFrame {
 
 
     private Stage goalsCheckStage;
-    private void showGoalsCheck(int choiceBoxIndex) {
+    private void showGoalsCheck(Date reportDate) {
         if (goalsCheckStage != null && goalsCheckStage.isShowing()) {
             goalsCheckStage.toFront(); // Bring the existing window to the front
             return;
@@ -766,7 +779,7 @@ public class DashboardFrame {
                 goalsCheckStage = new Stage();
 
                 GoalsCheck goalsCheck = loader.getController();
-                goalsCheck.setBoxIndex(choiceBoxIndex);
+                goalsCheck.setDate(reportDate);
 
 
                 goalsCheckStage.setTitle("Principal");
