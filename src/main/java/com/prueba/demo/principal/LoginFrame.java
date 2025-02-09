@@ -322,8 +322,8 @@ public class LoginFrame {
                 newStage.setScene(scene);
 
                 // Establecer el tamaño mínimo de la ventana principal
-                newStage.setMinWidth(900);  // Ancho mínimo de la ventana
-                newStage.setMinHeight(520); // Alto mínimo de la ventana
+                newStage.setMinWidth(1000);  // Ancho mínimo de la ventana
+                newStage.setMinHeight(660); // Alto mínimo de la ventana
 
                 // Mostrar la nueva ventana
                 newStage.show();
