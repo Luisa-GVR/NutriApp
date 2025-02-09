@@ -181,8 +181,11 @@ public class SelectYourFood {
 
         stage.setOnHidden(event -> {
             if (dashboardFrame != null) {
-                Platform.runLater(() -> dashboardFrame.showDiet());
-            }
+                Platform.runLater(() -> {
+                    dashboardFrame.hideAll();
+                    dashboardFrame.showDiet();
+                });
+            };
         });
 
         stage.close();

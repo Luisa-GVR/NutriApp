@@ -926,7 +926,7 @@ public class DashboardFrame {
 
     }
 
-    private void hideAll() {
+    public void hideAll() {
         dashboardPane.setVisible(false);
         profilePane.setVisible(false);
         dietPane.setVisible(false);
