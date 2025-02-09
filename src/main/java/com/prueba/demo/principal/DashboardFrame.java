@@ -574,7 +574,7 @@ public class DashboardFrame {
 
 
     @FXML
-    private void showDiet() {
+    public void showDiet() {
         hideAll();
         dietPane.setVisible(true);
         menuVbox.setVisible(true);
@@ -629,6 +629,9 @@ public class DashboardFrame {
                 int finalRow = row;
                 int finalCol = col;
                 button.setOnMouseClicked(event -> {
+
+                    System.out.println(button.getGraphic());
+
                     Button clickedButton = (Button) event.getSource();
                     if (button.getGraphic() != null) {
                         showNutrimentalInfo(targetDate, finalRow);
@@ -661,24 +664,28 @@ public class DashboardFrame {
             nutrimentalInfoStage.toFront(); // Bring the existing window to the front
             return;
         }
-
-
-
         Platform.runLater(() -> {
             try {
+
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlantillasFXML/NutrimentalInfo.fxml"));
                 loader.setControllerFactory(applicationContext::getBean);
 
                 Scene scene = new Scene(loader.load(), 600, 600); // Limitar tamaño de la escena
 
                 nutrimentalInfoStage = new Stage();
+
+                NutrimentalInfo nutrimentalInfo = loader.getController();
+                nutrimentalInfo.setNutritionalData(targetDate, foodType);
+
+
                 nutrimentalInfoStage.setTitle("Principal");
                 nutrimentalInfoStage.setScene(scene);
 
-                NutrimentalInfo nutrimentalInfo = loader.getController();
-
-                nutrimentalInfo.setInfo(targetDate, foodType);
-
+                // Establecer límites para la ventana
+                nutrimentalInfoStage.setMinWidth(600);
+                nutrimentalInfoStage.setMinHeight(600);
+                nutrimentalInfoStage.setMaxWidth(600);
+                nutrimentalInfoStage.setMaxHeight(600);
 
                 nutrimentalInfoStage.setOnCloseRequest(event -> nutrimentalInfoStage = null); // Reset when closed
 
@@ -687,6 +694,7 @@ public class DashboardFrame {
                 e.printStackTrace();
             }
         });
+
 
 
     }
@@ -702,16 +710,11 @@ public class DashboardFrame {
         if (dayMeal != null) {
             switch (row) {
                 case 1: // Breakfast
-                    if (!dayMeal.getBreakfast().isEmpty()) {
-                        System.out.println("Breakfast Found: " + dayMeal.getBreakfast().get(0).getFoodName()); // Log breakfast info
-                    }
+
                     return dayMeal.getBreakfast().isEmpty() ? null : dayMeal.getBreakfast().get(0);
                 case 2: // Lunch
                     return dayMeal.getLunch().isEmpty() ? null : dayMeal.getLunch().get(0);
                 case 3: // Dinner
-                    if (!dayMeal.getDinner().isEmpty()) {
-                        System.out.println("Dinner Found: " + dayMeal.getDinner().get(0).getFoodName()); // Log dinner info
-                    }
                     return dayMeal.getDinner().isEmpty() ? null : dayMeal.getDinner().get(0);
                 case 4: // Snack
                     return dayMeal.getSnack().isEmpty() ? null : dayMeal.getSnack().get(0);
@@ -727,9 +730,19 @@ public class DashboardFrame {
     private static Stage selectYourFoodStage;
 
     private void handleCellClick(Button clickedButton, int row, int col) {
+
+        System.out.println("Aaa");
+
         Platform.runLater(() -> {
             try {
-                if (selectYourFoodStage == null) {
+                System.out.println("bbb");
+
+                if (selectYourFoodStage == null || !selectYourFoodStage.isShowing()) {
+
+                    selectYourFoodStage = new Stage();
+
+                    System.out.println("ccc");
+
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlantillasFXML/SelectYourFood.fxml"));
                     loader.setControllerFactory(applicationContext::getBean);
 
@@ -743,6 +756,7 @@ public class DashboardFrame {
                     selectYourFoodStage.setScene(scene);
                     selectYourFoodStage.setMinWidth(900);
                     selectYourFoodStage.setMinHeight(520);
+
                     selectYourFoodStage.setOnCloseRequest(event -> {
                         selectYourFoodStage = null;
                         selectYourFoodController = null;
@@ -755,6 +769,7 @@ public class DashboardFrame {
                     selectYourFoodController.setCol(col);
                     selectYourFoodController.setRow(row);
                 }
+
 
                 // Handle the button logic here
                 if (clickedButton.getGraphic() != null) {

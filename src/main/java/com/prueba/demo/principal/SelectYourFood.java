@@ -157,10 +157,25 @@ public class SelectYourFood {
         });
 
     }
+
+    private DashboardFrame dashboardFrame;
+
+    public void setDashboardFrame(DashboardFrame dashboardFrame) {
+        this.dashboardFrame = dashboardFrame;
+    }
+
     private void closeCurrentWindow() {
         Stage stage = (Stage) suggestionsListView.getScene().getWindow();
+
+        stage.setOnHidden(event -> {
+            if (dashboardFrame != null) {
+                Platform.runLater(() -> dashboardFrame.showDiet());
+            }
+        });
+
         stage.close();
-    }
+
+        }
     @Autowired
     DayMealFoodRepository dayMealFoodRepository;
     @Autowired
@@ -197,7 +212,7 @@ public class SelectYourFood {
 
         //targetDate es el date que le debo poner al daymeal
 
-        
+
         for (String selectedItem : suggestionsListView.getItems()) {
             Food selectedFood = getFoodByName(selectedItem);
 

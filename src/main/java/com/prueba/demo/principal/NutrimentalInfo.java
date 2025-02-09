@@ -10,6 +10,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -36,18 +37,25 @@ public class NutrimentalInfo {
     private TextArea portionTextArea;
     @FXML
     private Label foodNameLabel;
-    private LocalDate targetDate;
-    private int foodType;
 
-    public void setInfo(LocalDate targetDate, int foodType) {
-        this.targetDate = targetDate;
-        this.foodType = foodType;
-    }
+    public LocalDate passedDate;
+    public int passedFoodType;
 
     @FXML
     private void initialize() {
-        // Use targetDate and foodType to retrieve the corresponding meal information
-        DayMeal dayMeal = getDayMealForDate(targetDate);
+
+
+    }
+
+    public void setNutritionalData(LocalDate targetDate, int foodType) {
+        if (targetDate == null) {
+            System.out.println("targetDate is null!");
+            return; // exit early or handle it appropriately
+        }
+
+        System.out.println(targetDate);
+        DayMeal dayMeal = getDayMealForDate(targetDate);  // Use targetDate directly
+
         if (dayMeal != null) {
             Food foodForMeal = null;
             switch (foodType) {
@@ -73,9 +81,9 @@ public class NutrimentalInfo {
                 foodNameLabel.setText(foodForMeal.getFoodName());
                 caloriesTextArea.setText(String.valueOf(foodForMeal.getCalories()));
                 proteinsTextArea.setText(String.valueOf(foodForMeal.getProtein()));
-                //fatTextArea.setText(String.valueOf(foodForMeal.getTotalFat()));
+                fatTextArea.setText(String.valueOf(foodForMeal.getTotalFat()));
                 carbohydratesTextArea.setText(String.valueOf(foodForMeal.getTotalCarbohydrate()));
-                //portionTextArea.setText(String.valueOf(foodForMeal.getPortionWeight()));
+                portionTextArea.setText(String.valueOf(foodForMeal.getPortionWeight()));
 
                 // Set the food image
                 String imagePath = foodForMeal.getPhoto().getThumb();
@@ -86,11 +94,14 @@ public class NutrimentalInfo {
                 }
             }
         }
+
     }
 
     @Autowired
-    DayMealRepository dayMealRepository;    private DayMeal getDayMealForDate(LocalDate date) {
-        return dayMealRepository.findByDate(java.sql.Date.valueOf(targetDate));
+    DayMealRepository dayMealRepository;
+
+    private DayMeal getDayMealForDate(LocalDate localDate) {
+        return dayMealRepository.findByDate(java.sql.Date.valueOf(localDate));
     }
 
 

@@ -26,13 +26,13 @@ public class Food {
     @JsonProperty("nf_total_carbohydrate")
     private double totalCarbohydrate;
 
-    /*
+
     @JsonProperty("nf_total_fat")
     private double totalFat;
 
     @JsonProperty("serving_weight_grams")
     private double portionWeight;
-*/
+
 
     @JsonProperty("photo") // Matches the JSON structure
     @Embedded
@@ -45,7 +45,7 @@ public class Food {
 
     //Getters y setters...
 
-/*
+
     public double getTotalFat() {
         return totalFat;
     }
@@ -63,7 +63,6 @@ public class Food {
     }
 
 
- */
     public Photo getPhoto() {
         return photo;
     }
