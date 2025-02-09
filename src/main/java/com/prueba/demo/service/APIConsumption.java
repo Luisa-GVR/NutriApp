@@ -8,9 +8,12 @@ import com.prueba.demo.model.Excercise;
 import com.prueba.demo.model.ExcerciseResponse;
 import com.prueba.demo.model.Food;
 import com.prueba.demo.model.FoodResponse;
+import com.prueba.demo.repository.FoodRepository;
 import com.prueba.demo.service.dto.FoodPreferencesDTO;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.URI;
@@ -21,8 +24,11 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
-
+@Service
 public class APIConsumption {
+
+    @Autowired
+    private FoodRepository foodRepository;
 
     //Nutritionix, hacerlo mas seguro!
 
@@ -89,7 +95,6 @@ public class APIConsumption {
 
     }
 
-
     public List<String> getFoodSuggestionsNeutral(String query) {
         HttpClient client = HttpClient.newHttpClient();
         String encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8);
@@ -105,13 +110,26 @@ public class APIConsumption {
 
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            //System.out.println("Buscando comida: " + query);
-            //System.out.println("Cuerpo de la solicitud: " + requestBody);
             ObjectMapper objectMapper = new ObjectMapper();
             FoodResponse foodResponse = objectMapper.readValue(response.body(), FoodResponse.class);
 
             if (foodResponse.getFoods() != null && !foodResponse.getFoods().isEmpty()) {
-                return foodResponse.getFoods().stream()
+                // Filter out invalid food names and save the valid ones to the database
+                List<Food> foods = foodResponse.getFoods().stream()
+                        .filter(food -> food.getFoodName() != null && !food.getFoodName().isEmpty()) // Avoid saving invalid data
+                        .peek(food -> {
+                            try {
+                                // 2. Print each Food object as JSON (for debugging):
+                                String foodJson = objectMapper.writeValueAsString(food);
+                                foodRepository.save(food);
+                            } catch (JsonProcessingException e) {
+                                System.err.println("Error serializing Food object to JSON: " + e.getMessage());
+                            }
+                        }) // Save valid foods to the database
+                        .collect(Collectors.toList());
+
+                // Return the names of the first 3 foods from the list
+                return foods.stream()
                         .limit(3)
                         .map(Food::getFoodName)
                         .collect(Collectors.toList());
@@ -122,6 +140,7 @@ public class APIConsumption {
 
         return Collections.emptyList();
     }
+
 
 
 

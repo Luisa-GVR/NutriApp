@@ -1,11 +1,7 @@
 package com.prueba.demo.principal;
 
-import com.prueba.demo.model.AccountData;
-import com.prueba.demo.model.Goal;
-import com.prueba.demo.repository.AccountAllergyFoodRepository;
-import com.prueba.demo.repository.AccountDataRepository;
-import com.prueba.demo.repository.AccountDislikesFoodRepository;
-import com.prueba.demo.repository.AccountLikesFoodRepository;
+import com.prueba.demo.model.Food;
+import com.prueba.demo.repository.*;
 import com.prueba.demo.service.APIConsumption;
 import com.prueba.demo.service.AccountDataService;
 import com.prueba.demo.service.dto.FoodPreferencesDTO;
@@ -16,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.util.Duration;
@@ -23,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class SelectYourFood {
@@ -69,11 +67,9 @@ public class SelectYourFood {
         // Listener para manejar la selección SOLO desde el dropdown
         suggestionsComboBox.setOnMouseClicked(event -> {
             suggestionsComboBox.show(); // Asegura que el dropdown se muestre al hacer clic
-            searchFood(); // Llamar a searchFood cuando se hace clic en el dropdown
 
-            List<String> getRandomFoodSuggestionsForMealType1 = APIConsumption.getRandomFoodSuggestionsForMealType1();
-            System.out.println("uuwuwuwuw");
-            getRandomFoodSuggestionsForMealType1.forEach(System.out::println);
+
+            //List<String> getRandomFoodSuggestionsForMealType1 = APIConsumption.getRandomFoodSuggestionsForMealType1();
 
         });
 
@@ -84,7 +80,7 @@ public class SelectYourFood {
             pauseTransition.setOnFinished(e -> {
                 String query = suggestionsComboBox.getEditor().getText();
                 if (!query.isEmpty()) {
-                    searchFood();
+                    searchFood(query);
                 }
             });
             pauseTransition.playFromStart(); // Reiniciar el temporizador cada vez que se escribe
@@ -98,13 +94,37 @@ public class SelectYourFood {
             String selectedItem = suggestionsComboBox.getSelectionModel().getSelectedItem();
             ObservableList<String> items = suggestionsListView.getItems();
 
-            if (selectedItem != null) {
+            List<Food> allFoods = foodRepository.findAll();  // Get all foods
 
+            for (Food food : allFoods) {
+                String foodName = food.getFoodName();
+                String thumbnailUrl = food.getPhoto().getThumb(); // Directly access the URL
+
+                // Check if the URL is valid and try loading the image
+                if (thumbnailUrl != null && !thumbnailUrl.isEmpty()) {
+                    try {
+                        new Image(thumbnailUrl); // Try creating an Image to check validity
+                    } catch (IllegalArgumentException e) {
+                        // If invalid, log or handle accordingly
+                    }
+                }
+            }
+
+            if (selectedItem != null) {
+                items.add(selectedItem);
+                Optional<String> foodURL = foodRepository.findThumbnailURLByFoodName(selectedItem);
+
+                if (foodURL.isPresent() && foodURL.get() != null && !foodURL.get().isEmpty()) {
+                    Image foodImage = new Image(foodURL.get()); // Use the actual URL here
+                    foodImageView.setImage(foodImage);
+                } else {
+                }
             }
         });
 
 
-        //Listener para manejar el borrado de alergias
+
+        //Listener para manejar el borrado de suggestions
         suggestionsListView.setOnMouseClicked(event -> {
             String selectedItem = suggestionsListView.getSelectionModel().getSelectedItem();
             if (selectedItem != null) {
@@ -112,6 +132,45 @@ public class SelectYourFood {
 
             }
         });
+
+
+        selectButton.setOnAction(actionEvent -> {
+            try {
+                addFood();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+    }
+
+    @Autowired
+    DayMealFoodRepository dayMealFoodRepository;
+    @Autowired
+    FoodRepository foodRepository;
+    @Autowired
+    private APIConsumption apiConsumption;
+
+    @Autowired
+    DayMealRepository dayMealRepository;
+
+    private void addFood() {
+        System.out.println(getRow());
+
+        switch (getRow()){
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
+
+
+
     }
 
     public FoodPreferencesDTO getFoodPreferences(Long accountId) {
@@ -128,15 +187,31 @@ public class SelectYourFood {
     @Autowired
     private AccountDislikesFoodRepository accountDislikedFoodRepository;
 
-    private final APIConsumption APIConsumption = new APIConsumption();
-    private void searchFood() {
+
+
+    private void searchFood(String query) {
+        List<String> suggestions = apiConsumption.getFoodSuggestionsNeutral(query); //API busqueda
+
+
+        Platform.runLater(() -> {
+            suggestionsComboBox.getItems().clear();
+            suggestionsComboBox.getItems().addAll(suggestions); // Agregar nuevas sugerencias
+            suggestionsComboBox.show();
+
+        });
+
+
+
+    }
+
+
+    private void searchFood2() {
         AccountDataService accountDataService = new AccountDataService(accountDataRepository, accountAllergyFoodRepository, accountLikedFoodRepository, accountDislikedFoodRepository);
 
         double calories = accountDataService.calculateCalories(1L);
         FoodPreferencesDTO foodPreferencesDTO = getFoodPreferences(1L);
 
         double adjustedCalories = 0.0;
-        System.out.println("con get row: " + getRow());
 
         switch (getRow()) {
             case 1:
@@ -153,21 +228,8 @@ public class SelectYourFood {
                 break;
         }
 
-        //System.out.println("Query: " + query);
-        System.out.println("Calorías: " + adjustedCalories);
 
-        if (foodPreferencesDTO != null) {
-            //System.out.println("Alergias: " + foodPreferencesDTO.getAllergies());
-            //System.out.println("Disliked Foods: " + foodPreferencesDTO.getDislikedFoods());
-            //System.out.println("Liked Foods: " + foodPreferencesDTO.getLikedFoods());
-        } else {
-            System.out.println("FoodPreferencesDTO es null");
-        }
-
-        List<String> suggestions = APIConsumption.getFoodSuggestionsRecommended(foodPreferencesDTO, adjustedCalories); //API busqueda
-
-        System.out.println("suggestions: ");
-        suggestions.forEach(System.out::println);
+        List<String> suggestions = apiConsumption.getFoodSuggestionsRecommended(foodPreferencesDTO, adjustedCalories); //API busqueda
 
 
         Platform.runLater(() -> {

@@ -115,10 +115,10 @@ public class SetYourPreferencesDiet {
             accountLikesRepository.save(accountLikes);
 
             for (String allergy : favFoods) {
-                Food food = APIConsumption.getFoodInfo(allergy);
+                Food food = apiConsumption.getFoodInfo(allergy);
 
                 if (food != null) {
-                    Optional<Food> existingFood = foodRepository.findByFoodName(food.getFoodName());
+                    Optional<Food> existingFood = foodRepository.findFirstByFoodName(food.getFoodName());
                     if (existingFood.isPresent()) {
                         food = existingFood.get();
                     } else {
@@ -139,6 +139,7 @@ public class SetYourPreferencesDiet {
         if (dislikeFods.size() == 1 && dislikeFods.get(0).equals("Ninguna")) {
             if (bothNull) {
                 closeCurrentWindow();
+                dashboardFrame.hidePreferencesUI();
             }
         } else {
             AccountDislikes accountDislikes = new AccountDislikes();
@@ -146,10 +147,10 @@ public class SetYourPreferencesDiet {
             accountDislikesRepository.save(accountDislikes);
 
             for (String dislike : dislikeFods) {
-                Food food = APIConsumption.getFoodInfo(dislike);
+                Food food = apiConsumption.getFoodInfo(dislike);
 
                 if (food != null) {
-                    Optional<Food> existingFood = foodRepository.findByFoodName(food.getFoodName());
+                    Optional<Food> existingFood = foodRepository.findFirstByFoodName(food.getFoodName());
                     if (existingFood.isPresent()) {
                         food = existingFood.get();
                     } else {
@@ -173,9 +174,10 @@ public class SetYourPreferencesDiet {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            closeCurrentWindow();
 
+            closeCurrentWindow();
             dashboardFrame.hidePreferencesUI();
+
 
     }
 
@@ -263,11 +265,11 @@ public class SetYourPreferencesDiet {
         });
     }
 
-    private final APIConsumption APIConsumption = new APIConsumption();
-
+    @Autowired
+    private APIConsumption apiConsumption;
 
     private void searchFood(String query, ComboBox comboBox) {
-        List<String> suggestions = APIConsumption.getFoodSuggestionsNeutral(query); //API busqueda
+        List<String> suggestions = apiConsumption.getFoodSuggestionsNeutral(query); //API busqueda
 
         Platform.runLater(() -> {
             comboBox.getItems().clear();

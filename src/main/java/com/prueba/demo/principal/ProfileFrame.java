@@ -214,11 +214,10 @@ public class ProfileFrame {
         });
     }
 
-    private final APIConsumption APIConsumption = new APIConsumption();
-
-
+    @Autowired
+    private APIConsumption apiConsumption;
     private void searchAllergies(String query) {
-        List<String> suggestions = APIConsumption.getFoodSuggestionsNeutral(query); //API busqueda
+        List<String> suggestions = apiConsumption.getFoodSuggestionsNeutral(query); //API busqueda
 
         Platform.runLater(() -> {
             allergiesComboBox.getItems().clear();
@@ -279,10 +278,10 @@ public class ProfileFrame {
 
             // Guardar alimentos relacionados con las alergias
             for (String allergy : allergies) {
-                Food food = APIConsumption.getFoodInfo(allergy);
+                Food food = apiConsumption.getFoodInfo(allergy);
 
                 if (food != null) {
-                    Optional<Food> existingFood = foodRepository.findByFoodName(food.getFoodName());
+                    Optional<Food> existingFood = foodRepository.findFirstByFoodName(food.getFoodName());
                     if (existingFood.isPresent()) {
                         food = existingFood.get();
                     } else {

@@ -602,7 +602,6 @@ public class DashboardFrame {
                 int finalRow = row;
                 int finalCol = col;
                 button.setOnMouseClicked(event -> {
-                    System.out.println("row adentro: " + finalRow);
                     handleCellClick(finalRow, finalCol);
                 });
             }
@@ -629,7 +628,6 @@ public class DashboardFrame {
     private void handleCellClick(int row, int col) {
         Platform.runLater(() -> {
             try {
-                System.out.println("row adentro del handle: " + row);
 
                 // Si la ventana ya está abierta, traerla al frente
                 if (selectYourFoodStage != null && selectYourFoodStage.isShowing()) {
@@ -650,8 +648,6 @@ public class DashboardFrame {
                 SelectYourFood controller = loader.getController();
                 controller.setCol(col);
                 controller.setRow(row);
-
-                System.out.println("row seteado de controller: " + controller.getRow());
 
                 selectYourFoodStage = new Stage();
                 selectYourFoodStage.setTitle("Principal");

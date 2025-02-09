@@ -2,6 +2,7 @@ package com.prueba.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.prueba.demo.principal.Photo;
 import jakarta.persistence.*;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -25,13 +26,25 @@ public class Food {
     @JsonProperty("nf_total_carbohydrate")
     private double totalCarbohydrate;
 
-    @JsonProperty("thumbnailURL")
-    private String thumbnailURL;
+
+    @JsonProperty("photo") // Matches the JSON structure
+    @Embedded
+    private Photo photo;
+
+
 
     @JsonProperty("meal_type")
     private int mealType;
 
     //Getters y setters...
+
+    public Photo getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(Photo photo) {
+        this.photo = photo;
+    }
 
     public String getFoodName() {
         return foodName;
@@ -65,13 +78,7 @@ public class Food {
         this.id = id;
     }
 
-    public String getThumbnailURL() {
-        return thumbnailURL;
-    }
 
-    public void setThumbnailURL(String thumbnailURL) {
-        this.thumbnailURL = thumbnailURL;
-    }
 
     public double getTotalCarbohydrate() {
         return totalCarbohydrate;
