@@ -388,7 +388,7 @@
                                        <children>
                                           <HBox fillHeight="false">
                                              <children>
-                                                <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="361.0" style="-fx-background-color: #e5e5e5; -fx-background-radius: 5;">
+                                                <HBox fx:id="preferencesHBox" alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="361.0" style="-fx-background-color: #e5e5e5; -fx-background-radius: 5;">
                                                    <children>
                                                       <HBox alignment="CENTER" prefHeight="30.0" prefWidth="29.0" style="-fx-background-color: #606060; -fx-background-radius: 5;">
                                                          <children>

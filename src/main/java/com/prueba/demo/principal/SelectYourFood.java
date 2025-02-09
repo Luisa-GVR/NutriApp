@@ -144,12 +144,10 @@ public class SelectYourFood {
 
         selectButton.setOnAction(actionEvent -> {
             try {
-                System.out.println("Items in suggestionsListView:");
-                for (Object item : suggestionsListView.getItems()) {
-                    System.out.println(item);
-                }
+
                 addFood(suggestionsListView);
                 closeCurrentWindow();
+                refreshParentFrame();
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -158,7 +156,21 @@ public class SelectYourFood {
 
     }
 
+    private void refreshParentFrame() {
+        if (dashboardFrame != null) {
+            Platform.runLater(() -> {
+                // This ensures that the parent frame gets updated in the UI thread
+                dashboardFrame.refreshContent();  // Assume refreshContent() is the method that refreshes the content
+            });
+        }
+    }
+
+
     private DashboardFrame dashboardFrame;
+    public SelectYourFood(DashboardFrame dashboardFrame) {
+        this.dashboardFrame = dashboardFrame;
+    }
+
 
     public void setDashboardFrame(DashboardFrame dashboardFrame) {
         this.dashboardFrame = dashboardFrame;
@@ -188,8 +200,6 @@ public class SelectYourFood {
 
 
     private void addFood(ListView<String> suggestionsListView) {
-        System.out.println("Items in suggestionsListView: " + suggestionsListView.getItems());
-
 
         LocalDate today = LocalDate.now();
         DayOfWeek currentDay = today.getDayOfWeek();

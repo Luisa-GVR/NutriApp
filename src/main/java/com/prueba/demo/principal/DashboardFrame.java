@@ -151,7 +151,8 @@ public class DashboardFrame {
     private GridPane gridPaneDiet;
     @FXML
     private Label preferencesLabel;
-
+    @FXML
+    private HBox preferencesHBox;
     @FXML
     private HBox dietPaneConfig;
 
@@ -630,8 +631,6 @@ public class DashboardFrame {
                 int finalCol = col;
                 button.setOnMouseClicked(event -> {
 
-                    System.out.println(button.getGraphic());
-
                     Button clickedButton = (Button) event.getSource();
                     if (button.getGraphic() != null) {
                         showNutrimentalInfo(targetDate, finalRow);
@@ -731,17 +730,14 @@ public class DashboardFrame {
 
     private void handleCellClick(Button clickedButton, int row, int col) {
 
-        System.out.println("Aaa");
 
         Platform.runLater(() -> {
             try {
-                System.out.println("bbb");
 
                 if (selectYourFoodStage == null || !selectYourFoodStage.isShowing()) {
 
                     selectYourFoodStage = new Stage();
 
-                    System.out.println("ccc");
 
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlantillasFXML/SelectYourFood.fxml"));
                     loader.setControllerFactory(applicationContext::getBean);
@@ -796,7 +792,9 @@ public class DashboardFrame {
 
     public void hidePreferencesUI() {
         setYourPreferencesButtonDiet.setVisible(false);
-        preferencesLabel.setVisible(false);
+        preferencesHBox.setVisible(false);
+        hideAll();
+        showDiet();
     }
 
     private Stage preferencesDietStage;
@@ -962,6 +960,13 @@ public class DashboardFrame {
     @Autowired
     private ApplicationContext applicationContext;
 
+    public void refreshContent() {
+        System.out.println("1");
+        showExercise();
+        System.out.println("2");
+        showDiet();
+        System.out.println("3");
+    }
 
 
 //-----ESTO ES PARA LA TABLA DE DIETA CHECAR SI ESTA CORRECTO-----

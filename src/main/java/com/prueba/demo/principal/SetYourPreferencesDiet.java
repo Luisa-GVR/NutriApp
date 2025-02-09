@@ -13,6 +13,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -141,6 +142,7 @@ public class SetYourPreferencesDiet {
             if (bothNull) {
                 closeCurrentWindow();
                 dashboardFrame.hidePreferencesUI();
+                dashboardFrame.refreshContent();
             }
         } else {
             AccountDislikes accountDislikes = new AccountDislikes();
