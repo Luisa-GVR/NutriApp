@@ -37,7 +37,7 @@
       </Label>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
          <children>
-            <Button fx:id="backButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" rotate="90.0" style="-fx-background-color: #262626; -fx-background-radius: 100;" text="V" textFill="WHITE">
+            <Button fx:id="backButton" onAction="#previousFood" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" rotate="90.0" style="-fx-background-color: #262626; -fx-background-radius: 100;" text="V" textFill="WHITE">
                <font>
                   <Font name="Berlin Sans FB Bold" size="18.0" />
                </font>
@@ -47,7 +47,7 @@
                   <ImageView fx:id="foodImageView" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
                </children>
             </VBox>
-            <Button fx:id="nextButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" rotate="270.0" style="-fx-background-color: #262626; -fx-background-radius: 100;" text="V" textFill="WHITE">
+            <Button fx:id="nextButton" onAction="#nextFood" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" rotate="270.0" style="-fx-background-color: #262626; -fx-background-radius: 100;" text="V" textFill="WHITE">
                <font>
                   <Font name="Berlin Sans FB Bold" size="18.0" />
                </font>
