@@ -19,6 +19,10 @@ public class NutrimentalInfo {
     @FXML
     private Button closeButton;
     @FXML
+    private Button backButton;
+    @FXML
+    private Button nextButton;
+    @FXML
     private ImageView foodImageView;
     @FXML
     private TextArea caloriesTextArea;
