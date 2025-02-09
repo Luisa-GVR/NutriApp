@@ -1,10 +1,12 @@
 package com.prueba.demo.principal;
 
+import com.prueba.demo.model.DayMeal;
 import com.prueba.demo.model.Food;
 import com.prueba.demo.repository.*;
 import com.prueba.demo.service.APIConsumption;
 import com.prueba.demo.service.AccountDataService;
 import com.prueba.demo.service.dto.FoodPreferencesDTO;
+import jakarta.transaction.Transactional;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -16,9 +18,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.util.Duration;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.sql.Date;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -136,7 +143,7 @@ public class SelectYourFood {
 
         selectButton.setOnAction(actionEvent -> {
             try {
-                addFood();
+                addFood(suggestionsListView);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -155,22 +162,86 @@ public class SelectYourFood {
     @Autowired
     DayMealRepository dayMealRepository;
 
-    private void addFood() {
-        System.out.println(getRow());
 
-        switch (getRow()){
-            case 1:
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
+    private void addFood(ListView<String> suggestionsListView) {
+        System.out.println("Items in suggestionsListView: " + suggestionsListView.getItems());
+
+
+        LocalDate today = LocalDate.now();
+        DayOfWeek currentDay = today.getDayOfWeek();
+        int dayOfWeek = currentDay.getValue();
+
+        int offset = getCol() - dayOfWeek;
+        LocalDate targetDate = today.plusDays(offset);
+
+        if (targetDate.getDayOfWeek().getValue() < getCol()) {
+            targetDate = targetDate.plusWeeks(1); // Adjust to next week
         }
 
+        DayMeal dayMeal = getDayMealForDate(targetDate); // You'll need to implement this method
+
+        if (dayMeal == null) {
+            // If DayMeal does not exist for this date, create a new one
+            dayMeal = new DayMeal();
+            dayMeal.setDate(java.sql.Date.valueOf(targetDate));
+        }
+
+        //targetDate es el date que le debo poner al daymeal
 
 
+
+
+        for (String selectedItem : suggestionsListView.getItems()) {
+            Food selectedFood = getFoodByName(selectedItem);
+
+            System.out.println("1");
+
+            if (selectedFood != null) {
+                System.out.println("Adding food: " + selectedFood.getFoodName());
+            } else {
+                System.out.println("Food not found: " + selectedItem);
+            }
+
+            switch (getRow()) {
+                case 1: // Breakfast
+
+                    if (dayMeal.getBreakfast() == null) {
+                        dayMeal.setBreakfast(new ArrayList<>());
+
+                    }
+
+                    dayMeal.getBreakfast().add(selectedFood);
+                    break;
+                case 2: // Lunch
+                    if (dayMeal.getLunch() == null) {
+                        dayMeal.setLunch(new ArrayList<>());
+                    }
+                    dayMeal.getLunch().add(selectedFood);
+                    break;
+                case 3: // Dinner
+                    if (dayMeal.getDinner() == null) {
+                        dayMeal.setDinner(new ArrayList<>());
+                    }
+                    dayMeal.getDinner().add(selectedFood);
+                    break;
+                case 4: // Snack
+                    if (dayMeal.getSnack() == null) {
+                        dayMeal.setSnack(new ArrayList<>());
+                    }
+                    dayMeal.getSnack().add(selectedFood);
+                    break;
+            }
+        }
+
+        dayMealRepository.save(dayMeal);
+    }
+
+    private DayMeal getDayMealForDate(LocalDate targetDate) {
+        return dayMealRepository.findByDate(java.sql.Date.valueOf(targetDate));
+    }
+
+    private Food getFoodByName(String foodName) {
+        return foodRepository.findFirstByFoodName(foodName);
     }
 
     public FoodPreferencesDTO getFoodPreferences(Long accountId) {

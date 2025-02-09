@@ -118,12 +118,13 @@ public class SetYourPreferencesDiet {
                 Food food = apiConsumption.getFoodInfo(allergy);
 
                 if (food != null) {
-                    Optional<Food> existingFood = foodRepository.findFirstByFoodName(food.getFoodName());
-                    if (existingFood.isPresent()) {
-                        food = existingFood.get();
+                    Food existingFood = foodRepository.findFirstByFoodName(food.getFoodName());
+                    if (existingFood != null) {
+                        food = existingFood;  // Usar el alimento encontrado
                     } else {
                         foodRepository.save(food); // Guardar nuevo alimento
                     }
+
                     likeFoodList.add(food);
 
                     AccountLikesFood accountLikesFood = new AccountLikesFood();
@@ -150,12 +151,13 @@ public class SetYourPreferencesDiet {
                 Food food = apiConsumption.getFoodInfo(dislike);
 
                 if (food != null) {
-                    Optional<Food> existingFood = foodRepository.findFirstByFoodName(food.getFoodName());
-                    if (existingFood.isPresent()) {
-                        food = existingFood.get();
+                    Food existingFood = foodRepository.findFirstByFoodName(food.getFoodName());
+                    if (existingFood != null) {
+                        food = existingFood;  // Usar el alimento encontrado
                     } else {
                         foodRepository.save(food); // Guardar nuevo alimento
                     }
+
                     dislikeFoodList.add(food);
 
                     AccountDislikesFood accountDislikesFood = new AccountDislikesFood();

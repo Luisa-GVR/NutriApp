@@ -281,12 +281,13 @@ public class ProfileFrame {
                 Food food = apiConsumption.getFoodInfo(allergy);
 
                 if (food != null) {
-                    Optional<Food> existingFood = foodRepository.findFirstByFoodName(food.getFoodName());
-                    if (existingFood.isPresent()) {
-                        food = existingFood.get();
+                    Food existingFood = foodRepository.findFirstByFoodName(food.getFoodName());
+                    if (existingFood != null) {
+                        food = existingFood;  // Usar el alimento encontrado
                     } else {
                         foodRepository.save(food); // Guardar nuevo alimento
                     }
+
                     foodList.add(food);
 
                     // Crear relación AccountAllergyFood

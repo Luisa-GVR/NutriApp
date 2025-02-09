@@ -2,8 +2,10 @@ package com.prueba.demo.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Table(name = "DayMeal")
@@ -12,37 +14,37 @@ public class DayMeal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE}) // Add cascade types
     @JoinTable(
             name = "DayMeal_Breakfast",
             joinColumns = @JoinColumn(name = "day_meal_id"),
             inverseJoinColumns = @JoinColumn(name = "food_id")
     )
-    private List<Food> breakfast;
+    private List<Food> breakfast = new ArrayList<>(); // Aquí inicializamos la lista
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "DayMeal_Lunch",
             joinColumns = @JoinColumn(name = "day_meal_id"),
             inverseJoinColumns = @JoinColumn(name = "food_id")
     )
-    private List<Food> lunch;
+    private List<Food> lunch = new ArrayList<>(); // Inicializar la lista
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "DayMeal_Dinner",
             joinColumns = @JoinColumn(name = "day_meal_id"),
             inverseJoinColumns = @JoinColumn(name = "food_id")
     )
-    private List<Food> dinner;
+    private List<Food> dinner = new ArrayList<>(); // Inicializar la lista
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "DayMeal_Snack",
             joinColumns = @JoinColumn(name = "day_meal_id"),
             inverseJoinColumns = @JoinColumn(name = "food_id")
     )
-    private List<Food> snack;
+    private List<Food> snack = new ArrayList<>(); // Inicializar la lista
 
     @Column(name = "date", nullable = false, length = 120)
     private Date date;

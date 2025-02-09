@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface FoodRepository extends JpaRepository<Food, Long> {
 
-    Optional<Food> findFirstByFoodName(String name);
+    Food findFirstByFoodName(String name);
 
     @Query("SELECT p.thumb FROM Food f JOIN f.photo p WHERE f.foodName = :foodName")
     Optional<String> findThumbnailURLByFoodName(@Param("foodName") String foodName);
