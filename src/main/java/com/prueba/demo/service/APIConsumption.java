@@ -119,13 +119,17 @@ public class APIConsumption {
                         .filter(food -> food.getFoodName() != null && !food.getFoodName().isEmpty()) // Avoid saving invalid data
                         .peek(food -> {
                             try {
-                                // 2. Print each Food object as JSON (for debugging):
-                                String foodJson = objectMapper.writeValueAsString(food);
-                                foodRepository.save(food);
+                                // 1. Check if the food with the same name already exists in the database
+                                Optional<Food> existingFood = foodRepository.findByFoodName(food.getFoodName());
+                                if (existingFood.isEmpty()) {
+                                    // 2. Print each Food object as JSON (for debugging):
+                                    String foodJson = objectMapper.writeValueAsString(food);
+                                    foodRepository.save(food); // Save valid foods to the database
+                                }
                             } catch (JsonProcessingException e) {
                                 System.err.println("Error serializing Food object to JSON: " + e.getMessage());
                             }
-                        }) // Save valid foods to the database
+                        }) // Process valid foods
                         .collect(Collectors.toList());
 
                 // Return the names of the first 3 foods from the list
@@ -140,6 +144,7 @@ public class APIConsumption {
 
         return Collections.emptyList();
     }
+
 
 
 

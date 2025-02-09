@@ -17,4 +17,5 @@ public interface FoodRepository extends JpaRepository<Food, Long> {
     Optional<String> findThumbnailURLByFoodName(@Param("foodName") String foodName);
 
 
+    Optional<Food> findByFoodName(String foodName);
 }

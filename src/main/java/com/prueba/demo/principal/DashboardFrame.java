@@ -1,10 +1,7 @@
 package com.prueba.demo.principal;
 
 import com.prueba.demo.model.*;
-import com.prueba.demo.repository.AccountAllergyFoodRepository;
-import com.prueba.demo.repository.AccountDataRepository;
-import com.prueba.demo.repository.AccountRepository;
-import com.prueba.demo.repository.FoodRepository;
+import com.prueba.demo.repository.*;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
@@ -16,9 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
@@ -30,6 +25,8 @@ import org.springframework.stereotype.Component;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Date;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -582,32 +579,65 @@ public class DashboardFrame {
         dietPane.setVisible(true);
         menuVbox.setVisible(true);
 
-
-
-        //grid
+        LocalDate today = LocalDate.now();
+        int dayOfWeek = today.getDayOfWeek().getValue();
 
         for (int row = 1; row <= 4; row++) {
             for (int col = 1; col <= 5; col++) {
-                Button button = new Button();
+                int daysOffset = col - 1;
+                LocalDate targetDate = today.minusDays(dayOfWeek - 1).plusDays(daysOffset);
 
+
+
+                DayMeal dayMeal = getDayMealForDate(Date.valueOf(targetDate).toLocalDate());
+                Food foodForCell = getFoodForCell(dayMeal, row);
+
+
+                Button button = new Button();
                 button.setMaxWidth(Double.MAX_VALUE);
                 button.setMaxHeight(Double.MAX_VALUE);
 
-                // Establecer el texto del botón con el valor de la fila y columna
-                button.setText("Row: " + row + ", Col: " + col);
+                if (foodForCell != null) {
+                    String imagePath = foodForCell.getPhoto().getThumb();
+
+
+                    if (imagePath != null && !imagePath.isEmpty()) {
+                        Image foodImage = new Image(imagePath, true); // Load in background if needed
+                        ImageView imageView = new ImageView(foodImage);
+
+                        // *** KEY CHANGE 1:  Fit to button size, NO preserve ratio ***
+                        imageView.setFitWidth(60);
+                        imageView.setFitHeight(60);
+                        imageView.setPreserveRatio(false); // <--- Crucial change
+
+
+                        button.setGraphic(imageView);
+                        button.setContentDisplay(ContentDisplay.GRAPHIC_ONLY); // Important for correct sizing
+
+                    } else {
+                        System.out.println("Invalid or missing image path: " + imagePath);
+                    }
+                }
 
                 gridPaneDiet.add(button, col, row);
 
-                // Asignamos las variables 'row' y 'col' al evento del botón inmediatamente
+                // Key Change 2: Ensure GridPane constraints resize buttons
+                GridPane.setHgrow(button, Priority.ALWAYS);
+                GridPane.setVgrow(button, Priority.ALWAYS);
+
+
                 int finalRow = row;
                 int finalCol = col;
                 button.setOnMouseClicked(event -> {
-                    handleCellClick(finalRow, finalCol);
+                    Button clickedButton = (Button) event.getSource();
+                    if (button.getGraphic() != null) {
+                        showNutrimentalInfo(targetDate, finalRow);
+                    } else {
+                        handleCellClick(clickedButton,finalRow, finalCol);
+                    }
                 });
             }
         }
-
-
 
         Properties properties = new Properties();
         try (FileInputStream in = new FileInputStream("preferencesState.properties")) {
@@ -621,44 +651,116 @@ public class DashboardFrame {
             //e.printStackTrace();
         }
 
+
+
     }
 
-    private Stage selectYourFoodStage; // Añadir una variable para la ventana
+    private Stage nutrimentalInfoStage;
+    private void showNutrimentalInfo(LocalDate targetDate, int foodType) {
+        if (nutrimentalInfoStage != null && nutrimentalInfoStage.isShowing()) {
+            nutrimentalInfoStage.toFront(); // Bring the existing window to the front
+            return;
+        }
 
-    private void handleCellClick(int row, int col) {
+
+
         Platform.runLater(() -> {
             try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlantillasFXML/NutrimentalInfo.fxml"));
+                loader.setControllerFactory(applicationContext::getBean);
 
-                // Si la ventana ya está abierta, traerla al frente
-                if (selectYourFoodStage != null && selectYourFoodStage.isShowing()) {
-                    selectYourFoodStage.toFront(); // Traer la ventana existente al frente
-                    return;
+                Scene scene = new Scene(loader.load(), 600, 600); // Limitar tamaño de la escena
+
+                nutrimentalInfoStage = new Stage();
+                nutrimentalInfoStage.setTitle("Principal");
+                nutrimentalInfoStage.setScene(scene);
+
+                NutrimentalInfo nutrimentalInfo = loader.getController();
+
+                nutrimentalInfo.setInfo(targetDate, foodType);
+
+
+                nutrimentalInfoStage.setOnCloseRequest(event -> nutrimentalInfoStage = null); // Reset when closed
+
+                nutrimentalInfoStage.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+
+    }
+
+
+    @Autowired
+    DayMealRepository dayMealRepository;
+    private DayMeal getDayMealForDate(LocalDate targetDate) {
+        return dayMealRepository.findByDate(java.sql.Date.valueOf(targetDate));
+    }
+
+    private Food getFoodForCell(DayMeal dayMeal, int row) {
+        if (dayMeal != null) {
+            switch (row) {
+                case 1: // Breakfast
+                    if (!dayMeal.getBreakfast().isEmpty()) {
+                        System.out.println("Breakfast Found: " + dayMeal.getBreakfast().get(0).getFoodName()); // Log breakfast info
+                    }
+                    return dayMeal.getBreakfast().isEmpty() ? null : dayMeal.getBreakfast().get(0);
+                case 2: // Lunch
+                    return dayMeal.getLunch().isEmpty() ? null : dayMeal.getLunch().get(0);
+                case 3: // Dinner
+                    if (!dayMeal.getDinner().isEmpty()) {
+                        System.out.println("Dinner Found: " + dayMeal.getDinner().get(0).getFoodName()); // Log dinner info
+                    }
+                    return dayMeal.getDinner().isEmpty() ? null : dayMeal.getDinner().get(0);
+                case 4: // Snack
+                    return dayMeal.getSnack().isEmpty() ? null : dayMeal.getSnack().get(0);
+                default:
+                    return null;
+            }
+        }
+        return null;
+    }
+
+
+    private static SelectYourFood selectYourFoodController; // Static instance
+    private static Stage selectYourFoodStage;
+
+    private void handleCellClick(Button clickedButton, int row, int col) {
+        Platform.runLater(() -> {
+            try {
+                if (selectYourFoodStage == null) {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlantillasFXML/SelectYourFood.fxml"));
+                    loader.setControllerFactory(applicationContext::getBean);
+
+                    Scene scene = new Scene(loader.load());
+                    selectYourFoodController = loader.getController();
+                    selectYourFoodController.setCol(col);
+                    selectYourFoodController.setRow(row);
+
+                    selectYourFoodStage = new Stage();
+                    selectYourFoodStage.setTitle("Principal");
+                    selectYourFoodStage.setScene(scene);
+                    selectYourFoodStage.setMinWidth(900);
+                    selectYourFoodStage.setMinHeight(520);
+                    selectYourFoodStage.setOnCloseRequest(event -> {
+                        selectYourFoodStage = null;
+                        selectYourFoodController = null;
+                    });
+
+                    selectYourFoodStage.show();
+
+                } else {
+                    selectYourFoodStage.toFront();
+                    selectYourFoodController.setCol(col);
+                    selectYourFoodController.setRow(row);
                 }
 
-                // Crear un nuevo controlador cada vez que se haga clic
-                Stage stage = (Stage) gridPaneDiet.getScene().getWindow();
-
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlantillasFXML/SelectYourFood.fxml"));
-                loader.setControllerFactory(applicationContext::getBean); // Asegurarse de que el controlador se asigne correctamente
-
-
-
-                Scene scene = new Scene(loader.load());
-
-                SelectYourFood controller = loader.getController();
-                controller.setCol(col);
-                controller.setRow(row);
-
-                selectYourFoodStage = new Stage();
-                selectYourFoodStage.setTitle("Principal");
-                selectYourFoodStage.setScene(scene);
-
-
-                selectYourFoodStage.setMinWidth(900);  // Ancho mínimo de la ventana
-                selectYourFoodStage.setMinHeight(520); // Alto mínimo de la ventana
-
-                selectYourFoodStage.setOnCloseRequest(event -> selectYourFoodStage = null);
-                selectYourFoodStage.show();
+                // Handle the button logic here
+                if (clickedButton.getGraphic() != null) {
+                    // Reset the graphic if needed
+                    clickedButton.setGraphic(null);
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();

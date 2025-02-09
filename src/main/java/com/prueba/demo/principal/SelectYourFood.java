@@ -17,6 +17,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -143,7 +144,12 @@ public class SelectYourFood {
 
         selectButton.setOnAction(actionEvent -> {
             try {
+                System.out.println("Items in suggestionsListView:");
+                for (Object item : suggestionsListView.getItems()) {
+                    System.out.println(item);
+                }
                 addFood(suggestionsListView);
+                closeCurrentWindow();
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -151,7 +157,10 @@ public class SelectYourFood {
         });
 
     }
-
+    private void closeCurrentWindow() {
+        Stage stage = (Stage) suggestionsListView.getScene().getWindow();
+        stage.close();
+    }
     @Autowired
     DayMealFoodRepository dayMealFoodRepository;
     @Autowired
@@ -188,28 +197,21 @@ public class SelectYourFood {
 
         //targetDate es el date que le debo poner al daymeal
 
-
-
-
+        
         for (String selectedItem : suggestionsListView.getItems()) {
             Food selectedFood = getFoodByName(selectedItem);
 
-            System.out.println("1");
-
             if (selectedFood != null) {
-                System.out.println("Adding food: " + selectedFood.getFoodName());
+                foodRepository.save(selectedFood);
             } else {
                 System.out.println("Food not found: " + selectedItem);
             }
 
             switch (getRow()) {
                 case 1: // Breakfast
-
                     if (dayMeal.getBreakfast() == null) {
                         dayMeal.setBreakfast(new ArrayList<>());
-
                     }
-
                     dayMeal.getBreakfast().add(selectedFood);
                     break;
                 case 2: // Lunch
@@ -233,6 +235,7 @@ public class SelectYourFood {
             }
         }
 
+
         dayMealRepository.save(dayMeal);
     }
 
@@ -241,7 +244,11 @@ public class SelectYourFood {
     }
 
     private Food getFoodByName(String foodName) {
-        return foodRepository.findFirstByFoodName(foodName);
+        Food food = foodRepository.findFirstByFoodName(foodName);
+        if (food != null) {
+            foodRepository.save(food);
+        }
+        return food;
     }
 
     public FoodPreferencesDTO getFoodPreferences(Long accountId) {

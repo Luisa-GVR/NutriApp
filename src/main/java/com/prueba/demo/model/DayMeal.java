@@ -14,7 +14,7 @@ public class DayMeal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE}) // Add cascade types
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinTable(
             name = "DayMeal_Breakfast",
             joinColumns = @JoinColumn(name = "day_meal_id"),
@@ -22,7 +22,7 @@ public class DayMeal {
     )
     private List<Food> breakfast = new ArrayList<>(); // Aquí inicializamos la lista
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinTable(
             name = "DayMeal_Lunch",
             joinColumns = @JoinColumn(name = "day_meal_id"),
@@ -30,7 +30,7 @@ public class DayMeal {
     )
     private List<Food> lunch = new ArrayList<>(); // Inicializar la lista
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinTable(
             name = "DayMeal_Dinner",
             joinColumns = @JoinColumn(name = "day_meal_id"),
@@ -38,7 +38,7 @@ public class DayMeal {
     )
     private List<Food> dinner = new ArrayList<>(); // Inicializar la lista
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinTable(
             name = "DayMeal_Snack",
             joinColumns = @JoinColumn(name = "day_meal_id"),
@@ -100,4 +100,18 @@ public class DayMeal {
     public void setDate(Date date) {
         this.date = date;
     }
+
+
+
+    @Override
+    public String toString() {
+        return "DayMeal{" +
+                "date=" + date +
+                ", breakfast=" + breakfast +
+                ", lunch=" + lunch +
+                ", dinner=" + dinner +
+                ", snack=" + snack +
+                '}';
+    }
+
 }

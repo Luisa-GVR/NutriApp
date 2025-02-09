@@ -26,6 +26,13 @@ public class Food {
     @JsonProperty("nf_total_carbohydrate")
     private double totalCarbohydrate;
 
+    /*
+    @JsonProperty("nf_total_fat")
+    private double totalFat;
+
+    @JsonProperty("serving_weight_grams")
+    private double portionWeight;
+*/
 
     @JsonProperty("photo") // Matches the JSON structure
     @Embedded
@@ -38,6 +45,25 @@ public class Food {
 
     //Getters y setters...
 
+/*
+    public double getTotalFat() {
+        return totalFat;
+    }
+
+    public void setTotalFat(double totalFat) {
+        this.totalFat = totalFat;
+    }
+
+    public double getPortionWeight() {
+        return portionWeight;
+    }
+
+    public void setPortionWeight(double portionWeight) {
+        this.portionWeight = portionWeight;
+    }
+
+
+ */
     public Photo getPhoto() {
         return photo;
     }
