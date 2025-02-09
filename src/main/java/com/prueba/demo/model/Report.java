@@ -46,7 +46,7 @@ public class Report {
         return accountData;
     }
 
-    public void setUserData(AccountData accountData) {
+    public void setAccountData(AccountData accountData) {
         this.accountData = accountData;
     }
 

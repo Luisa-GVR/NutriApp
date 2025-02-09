@@ -31,4 +31,12 @@ public class GoalsCheck {
     @FXML
     private ListView<String> optionalListView;
 
+
+
+    public void setBoxIndex(int choiceBoxIndex) {
+
+
+
+
+    }
 }

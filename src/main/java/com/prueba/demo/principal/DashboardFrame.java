@@ -5,7 +5,8 @@ import com.prueba.demo.repository.*;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
-import javafx.event.Event;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -24,9 +25,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Date;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -155,6 +154,21 @@ public class DashboardFrame {
     private HBox preferencesHBox;
     @FXML
     private HBox dietPaneConfig;
+
+    @FXML
+    private ChoiceBox<String> choiceBox1;
+
+    @FXML
+    private ChoiceBox<String> choiceBox2;
+
+    @FXML
+    private ChoiceBox<String> choiceBox3;
+
+    @FXML
+    private ChoiceBox<String> choiceBox4;
+
+    @FXML
+    private ChoiceBox<String> choiceBox5;
 
     //ExercisePane
     @FXML
@@ -583,12 +597,10 @@ public class DashboardFrame {
         LocalDate today = LocalDate.now();
         int dayOfWeek = today.getDayOfWeek().getValue();
 
-        for (int row = 1; row <= 4; row++) {
+        for (int row = 1; row <= 5; row++) {
             for (int col = 1; col <= 5; col++) {
                 int daysOffset = col - 1;
                 LocalDate targetDate = today.minusDays(dayOfWeek - 1).plusDays(daysOffset);
-
-
 
                 DayMeal dayMeal = getDayMealForDate(Date.valueOf(targetDate).toLocalDate());
                 Food foodForCell = getFoodForCell(dayMeal, row);
@@ -597,6 +609,17 @@ public class DashboardFrame {
                 Button button = new Button();
                 button.setMaxWidth(Double.MAX_VALUE);
                 button.setMaxHeight(Double.MAX_VALUE);
+
+/**
+
+                DESHABILITEN ESTO SI VAN A TESTEAR EN UN FIN DE SEMANA O QUIEREN
+                TESTEAR, BLOQUEA LAS COLUMNAS ANTERIORES AL DIA DE HOY
+
+                if (targetDate.isBefore(today)) {
+                    button.setDisable(true); // Deshabilita el botón si la fecha es anterior a hoy
+                }
+
+*/
 
                 if (foodForCell != null) {
                     String imagePath = foodForCell.getPhoto().getThumb();
@@ -641,6 +664,21 @@ public class DashboardFrame {
             }
         }
 
+        ObservableList<String> options = FXCollections.observableArrayList("Sí", "No");
+
+        choiceBox1.setItems(options);
+        choiceBox2.setItems(options);
+        choiceBox3.setItems(options);
+        choiceBox4.setItems(options);
+        choiceBox5.setItems(options);
+
+        choiceBox1.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, 1));
+        choiceBox2.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, 2));
+        choiceBox3.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, 3));
+        choiceBox4.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, 4));
+        choiceBox5.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, 5));
+
+
         Properties properties = new Properties();
         try (FileInputStream in = new FileInputStream("preferencesState.properties")) {
             properties.load(in);
@@ -652,6 +690,102 @@ public class DashboardFrame {
             disableGridPane(gridPaneDiet);
             //e.printStackTrace();
         }
+
+
+
+    }
+
+    @Autowired
+    ReportRepository reportRepository;
+
+    private void handleChoiceBoxSelection(String selectedValue, int choiceBoxIndex) {
+        // Dependiendo de la opción seleccionada y del índice del ChoiceBox, ejecutar algo
+        if ("Sí".equals(selectedValue)) {
+            saveToReport(choiceBoxIndex);
+
+        } else {
+            showGoalsCheck(choiceBoxIndex);
+        }
+    }
+
+    private void saveToReport(int choiceBoxIndex) {
+
+        LocalDate today = LocalDate.now();
+        int dayOfWeek = today.getDayOfWeek().getValue();
+        int daysOffset = choiceBoxIndex - 1; // 1 = Lunes, 2 = Martes, etc.
+        LocalDate targetDate = today.minusDays(dayOfWeek - 1).plusDays(daysOffset);
+        Date reportDate = Date.valueOf(targetDate);
+
+
+        Report existingReport = reportRepository.findByDate(reportDate);
+
+        if (existingReport == null) {
+            Report report = new Report();
+            DayMeal dayMeal = dayMealRepository.findByDate(reportDate);
+            Optional<AccountData> accountData = accountDataRepository.findByAccountId(1L);
+            boolean goalMet = true;
+
+            report.setDayExcercise(null);
+            report.setDayMeals(dayMeal);
+            report.setAccountData(accountData.orElse(null));
+            report.setGoalMet(goalMet);
+            report.setDate(reportDate);
+
+            reportRepository.save(report);
+
+
+        } else {
+            DayMeal dayMeal = dayMealRepository.findByDate(reportDate);
+            Optional<AccountData> accountData = accountDataRepository.findByAccountId(1L);
+            boolean goalMet = true;
+
+            existingReport.setDayMeals(dayMeal);
+            existingReport.setAccountData(accountData.orElse(null));
+            existingReport.setGoalMet(goalMet);
+            existingReport.setDate(reportDate);
+
+            reportRepository.save(existingReport);
+            }
+    }
+
+
+    private Stage goalsCheckStage;
+    private void showGoalsCheck(int choiceBoxIndex) {
+        if (goalsCheckStage != null && goalsCheckStage.isShowing()) {
+            goalsCheckStage.toFront(); // Bring the existing window to the front
+            return;
+        }
+        Platform.runLater(() -> {
+            try {
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlantillasFXML/GoalsCheck.fxml"));
+                loader.setControllerFactory(applicationContext::getBean);
+
+                Scene scene = new Scene(loader.load(), 600, 600); // Limitar tamaño de la escena
+
+                goalsCheckStage = new Stage();
+
+                GoalsCheck goalsCheck = loader.getController();
+                goalsCheck.setBoxIndex(choiceBoxIndex);
+
+
+                goalsCheckStage.setTitle("Principal");
+                goalsCheckStage.setScene(scene);
+
+                // Establecer límites para la ventana
+                goalsCheckStage.setMinWidth(600);
+                goalsCheckStage.setMinHeight(600);
+                goalsCheckStage.setMaxWidth(600);
+                goalsCheckStage.setMaxHeight(600);
+
+                goalsCheckStage.setOnCloseRequest(event -> goalsCheckStage = null); // Reset when closed
+
+                goalsCheckStage.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
 
 
 
@@ -709,7 +843,6 @@ public class DashboardFrame {
         if (dayMeal != null) {
             switch (row) {
                 case 1: // Breakfast
-
                     return dayMeal.getBreakfast().isEmpty() ? null : dayMeal.getBreakfast().get(0);
                 case 2: // Lunch
                     return dayMeal.getLunch().isEmpty() ? null : dayMeal.getLunch().get(0);
@@ -717,6 +850,8 @@ public class DashboardFrame {
                     return dayMeal.getDinner().isEmpty() ? null : dayMeal.getDinner().get(0);
                 case 4: // Snack
                     return dayMeal.getSnack().isEmpty() ? null : dayMeal.getSnack().get(0);
+                case 5: // optional
+                    return dayMeal.getOptional().isEmpty() ? null : dayMeal.getOptional().get(0);
                 default:
                     return null;
             }
@@ -830,14 +965,6 @@ public class DashboardFrame {
             }
         });
     }
-
-
-
-
-
-
-
-
 
 
     /**
@@ -961,17 +1088,8 @@ public class DashboardFrame {
     private ApplicationContext applicationContext;
 
     public void refreshContent() {
-        System.out.println("1");
         showExercise();
-        System.out.println("2");
         showDiet();
-        System.out.println("3");
     }
-
-
 //-----ESTO ES PARA LA TABLA DE DIETA CHECAR SI ESTA CORRECTO-----
-
-
 }
-
-

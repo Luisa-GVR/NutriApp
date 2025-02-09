@@ -46,6 +46,14 @@ public class DayMeal {
     )
     private List<Food> snack = new ArrayList<>(); // Inicializar la lista
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "DayMeal_Optional",
+            joinColumns = @JoinColumn(name = "day_meal_id"),
+            inverseJoinColumns = @JoinColumn(name = "food_id")
+    )
+    private List<Food> optional = new ArrayList<>(); // Inicializar la lista
+
     @Column(name = "date", nullable = false, length = 120)
     private Date date;
 
@@ -71,6 +79,9 @@ public class DayMeal {
 
     public List<Food> getLunch() {
         return lunch;
+    }
+    public List<Food> getOptional() {
+        return optional;
     }
 
     public void setLunch(List<Food> lunch) {
@@ -101,17 +112,9 @@ public class DayMeal {
         this.date = date;
     }
 
-
-
-    @Override
-    public String toString() {
-        return "DayMeal{" +
-                "date=" + date +
-                ", breakfast=" + breakfast +
-                ", lunch=" + lunch +
-                ", dinner=" + dinner +
-                ", snack=" + snack +
-                '}';
+    public void setOptional(List<Food> optional) {
+        this.optional = optional;
     }
+
 
 }

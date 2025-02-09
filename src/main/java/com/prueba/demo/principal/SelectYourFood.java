@@ -260,6 +260,12 @@ public class SelectYourFood {
                     }
                     dayMeal.getSnack().add(selectedFood);
                     break;
+                case 5: // Optional
+                    if (dayMeal.getOptional() == null) {
+                        dayMeal.setOptional(new ArrayList<>());
+                    }
+                    dayMeal.getOptional().add(selectedFood);
+                    break;
             }
         }
 
@@ -327,10 +333,13 @@ public class SelectYourFood {
                 adjustedCalories = calories * 0.3;
                 break;
             case 3:
-                adjustedCalories = calories * 0.30;
+                adjustedCalories = calories * 0.25;
                 break;
             case 4:
-                adjustedCalories = calories * 0.15;
+                adjustedCalories = calories * 0.10;
+                break;
+            case 5:
+                adjustedCalories = calories * 0.10;
                 break;
         }
 

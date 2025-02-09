@@ -84,6 +84,9 @@ public class NutrimentalInfo {
                 case 4:  // Snack
                     foodsForMeal = dayMeals.get(0).getSnack();
                     break;
+                case 5:  // optional
+                    foodsForMeal = dayMeals.get(0).getOptional();
+                    break;
                 default:
                     System.out.println("Invalid foodType");
                     return;
