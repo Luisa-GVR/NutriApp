@@ -681,13 +681,12 @@ public class DashboardFrame {
                     if (button.getGraphic() != null) {
                         showNutrimentalInfo(targetDate, finalRow);
                     } else if (button.getGraphic() == null){
+                        Report report2 = reportRepository.findByDate(Date.valueOf(targetDate));
 
                         System.out.println(1);
-                        if (report == null) {
-                            System.out.println(2);
+                        if (report2 == null) {
                             handleCellClick(clickedButton,finalRow, finalCol);
                         } else{
-                            System.out.println("ola");
                             button.setDisable(true);
                         }
                     }
