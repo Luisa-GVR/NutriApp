@@ -656,6 +656,15 @@ public class DashboardFrame {
                     }
                 }
 
+                //Quitamos la capacidad de agregar cosas si ya existe un reporte
+                Report report = reportRepository.findByDate(Date.valueOf(targetDate));
+                if (report != null) {
+                    if (button.getGraphic() == null){
+                        button.setDisable(true);
+                    }
+
+                }
+
                 gridPaneDiet.add(button, col, row);
 
                 // Key Change 2: Ensure GridPane constraints resize buttons
@@ -687,15 +696,23 @@ public class DashboardFrame {
 
         Date finalDate = date1;
         choiceBox1.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate));
+        if (reportRepository.findByDate(finalDate) != null) choiceBox1.setDisable(true);
+
         Date finalDate1 = date2;
         choiceBox2.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate1));
+        if (reportRepository.findByDate(finalDate1) != null) choiceBox2.setDisable(true);
+
         Date finalDate2 = date3;
         choiceBox3.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate2));
+        if (reportRepository.findByDate(finalDate2) != null) choiceBox3.setDisable(true);
+
         Date finalDate3 = date4;
         choiceBox4.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate3));
+        if (reportRepository.findByDate(finalDate3) != null) choiceBox4.setDisable(true);
+
         Date finalDate4 = date5;
         choiceBox5.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate4));
-
+        if (reportRepository.findByDate(finalDate4) != null) choiceBox5.setDisable(true);
 
         Properties properties = new Properties();
         try (FileInputStream in = new FileInputStream("preferencesState.properties")) {
@@ -720,10 +737,12 @@ public class DashboardFrame {
         // Dependiendo de la opción seleccionada y del índice del ChoiceBox, ejecutar algo
         if ("Sí".equals(selectedValue)) {
             saveToReport(localDate);
-
-        } else {
+            refreshContent();
+        }
+        if ("No".equals(selectedValue)) {
             showGoalsCheck(localDate);
         }
+
     }
 
     private void saveToReport(Date reportDate) {
@@ -759,6 +778,7 @@ public class DashboardFrame {
 
             reportRepository.save(existingReport);
             }
+
     }
 
 
@@ -768,37 +788,38 @@ public class DashboardFrame {
             goalsCheckStage.toFront(); // Bring the existing window to the front
             return;
         }
-        Platform.runLater(() -> {
-            try {
+        if (goalsCheckStage == null) {
+            Platform.runLater(() -> {
+                try {
 
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlantillasFXML/GoalsCheck.fxml"));
-                loader.setControllerFactory(applicationContext::getBean);
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlantillasFXML/GoalsCheck.fxml"));
+                    loader.setControllerFactory(applicationContext::getBean);
 
-                Scene scene = new Scene(loader.load(), 600, 600); // Limitar tamaño de la escena
+                    Scene scene = new Scene(loader.load(), 600, 600); // Limitar tamaño de la escena
 
-                goalsCheckStage = new Stage();
+                    goalsCheckStage = new Stage();
 
-                GoalsCheck goalsCheck = loader.getController();
-                goalsCheck.setDate(reportDate);
+                    GoalsCheck goalsCheck = loader.getController();
+                    goalsCheck.setDate(reportDate);
 
 
-                goalsCheckStage.setTitle("Principal");
-                goalsCheckStage.setScene(scene);
+                    goalsCheckStage.setTitle("Principal");
+                    goalsCheckStage.setScene(scene);
 
-                // Establecer límites para la ventana
-                goalsCheckStage.setMinWidth(600);
-                goalsCheckStage.setMinHeight(600);
-                goalsCheckStage.setMaxWidth(600);
-                goalsCheckStage.setMaxHeight(600);
+                    // Establecer límites para la ventana
+                    goalsCheckStage.setMinWidth(600);
+                    goalsCheckStage.setMinHeight(600);
+                    goalsCheckStage.setMaxWidth(600);
+                    goalsCheckStage.setMaxHeight(600);
 
-                goalsCheckStage.setOnCloseRequest(event -> goalsCheckStage = null); // Reset when closed
+                    goalsCheckStage.setOnCloseRequest(event -> goalsCheckStage = null); // Reset when closed
 
-                goalsCheckStage.show();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-
+                    goalsCheckStage.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
 
 
 

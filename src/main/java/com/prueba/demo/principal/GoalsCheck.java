@@ -1,5 +1,10 @@
 package com.prueba.demo.principal;
 
+import com.prueba.demo.model.*;
+import com.prueba.demo.repository.AccountDataRepository;
+import com.prueba.demo.repository.DayMealRepository;
+import com.prueba.demo.repository.FoodRepository;
+import com.prueba.demo.repository.ReportRepository;
 import com.prueba.demo.service.APIConsumption;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
@@ -16,7 +21,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class GoalsCheck {
@@ -74,9 +82,132 @@ public class GoalsCheck {
 
     }
 
+    @Autowired
+    DayMealRepository dayMealRepository;
+    @Autowired
+    FoodRepository foodRepository;
+
+    private DayMeal getDayMealForDate(Date targetDate) {
+        return dayMealRepository.findByDate(targetDate);
+    }
+    private Food getFoodByName(String foodName) {
+        Food food = foodRepository.findFirstByFoodName(foodName);
+        if (food != null) {
+            foodRepository.save(food);
+        }
+        return food;
+    }
+
     private void sendReport(Date date) {
 
+        DayMeal dayMeal = getDayMealForDate(date);
 
+        if (dayMeal == null) {
+            // If DayMeal does not exist for this date, create a new one
+            dayMeal = new DayMeal();
+            dayMeal.setDate(date);
+        }
+
+// Update breakfast
+        if (!breakfastListView.getItems().contains("Cumplí mi meta")) {
+            for (String selectedItem : breakfastListView.getItems()) {
+                Food selectedFood = getFoodByName(selectedItem);
+                if (dayMeal.getBreakfast() == null) {
+                    dayMeal.setBreakfast(new ArrayList<>());
+                }
+                dayMeal.getBreakfast().add(selectedFood);
+            }
+        }
+
+        // Update lunch
+        if (!lunchListView.getItems().contains("Cumplí mi meta")) {
+            for (String selectedItem : lunchListView.getItems()) {
+                Food selectedFood = getFoodByName(selectedItem);
+                if (dayMeal.getLunch() == null) {
+                    dayMeal.setLunch(new ArrayList<>());
+                }
+                dayMeal.getLunch().add(selectedFood);
+            }
+        }
+
+        // Update dinner
+        if (!dinnerListView.getItems().contains("Cumplí mi meta")) {
+            for (String selectedItem : dinnerListView.getItems()) {
+                Food selectedFood = getFoodByName(selectedItem);
+                if (dayMeal.getDinner() == null) {
+                    dayMeal.setDinner(new ArrayList<>());
+                }
+                dayMeal.getDinner().add(selectedFood);
+            }
+        }
+
+        // Update snacks
+        if (!snackListView.getItems().contains("Cumplí mi meta")) {
+            for (String selectedItem : snackListView.getItems()) {
+                Food selectedFood = getFoodByName(selectedItem);
+                if (dayMeal.getSnack() == null) {
+                    dayMeal.setSnack(new ArrayList<>());
+                }
+                dayMeal.getSnack().add(selectedFood);
+            }
+        }
+
+        // Update optional
+        if (!optionalListView.getItems().contains("Cumplí mi meta")) {
+            for (String selectedItem : optionalListView.getItems()) {
+                Food selectedFood = getFoodByName(selectedItem);
+                if (dayMeal.getOptional() == null) {
+                    dayMeal.setOptional(new ArrayList<>());
+                }
+                dayMeal.getOptional().add(selectedFood);
+            }
+        }
+
+        dayMealRepository.save(dayMeal);
+
+        saveToReport(date);
+
+
+    }
+
+    @Autowired
+    ReportRepository reportRepository;
+    @Autowired
+    AccountDataRepository accountDataRepository;
+
+    private void saveToReport(Date reportDate) {
+
+        System.out.println(reportDate);
+
+        Report existingReport = reportRepository.findByDate(reportDate);
+
+        if (existingReport == null) {
+            Report report = new Report();
+            DayMeal dayMeal = dayMealRepository.findByDate(reportDate);
+            Optional<AccountData> accountData = accountDataRepository.findByAccountId(1L);
+            boolean goalMet = true;
+
+            report.setDayExcercise(null);
+            report.setDayMeals(dayMeal);
+            report.setAccountData(accountData.orElse(null));
+            report.setGoalMet(goalMet);
+            report.setDate(reportDate);
+
+            reportRepository.save(report);
+
+
+        } else {
+            DayMeal dayMeal = dayMealRepository.findByDate(reportDate);
+            Optional<AccountData> accountData = accountDataRepository.findByAccountId(1L);
+            boolean goalMet = true;
+
+            existingReport.setDayMeals(dayMeal);
+            existingReport.setAccountData(accountData.orElse(null));
+            existingReport.setGoalMet(goalMet);
+            existingReport.setDate(reportDate);
+
+            reportRepository.save(existingReport);
+        }
     }
 
     private boolean validateFields() {
