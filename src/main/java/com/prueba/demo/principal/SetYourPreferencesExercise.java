@@ -3,7 +3,9 @@ package com.prueba.demo.principal;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SetYourPreferencesExercise {
     @FXML
     private Button saveButton;
@@ -19,4 +21,12 @@ public class SetYourPreferencesExercise {
     private ChoiceBox<String> thursdayChoiceBox;
     @FXML
     private ChoiceBox<String> fridayChoiceBox;
+
+    @FXML
+    private void initialize(){
+
+
+
+    }
+
 }

@@ -677,10 +677,19 @@ public class DashboardFrame {
                 button.setOnMouseClicked(event -> {
 
                     Button clickedButton = (Button) event.getSource();
+
                     if (button.getGraphic() != null) {
                         showNutrimentalInfo(targetDate, finalRow);
-                    } else {
-                        handleCellClick(clickedButton,finalRow, finalCol);
+                    } else if (button.getGraphic() == null){
+
+                        System.out.println(1);
+                        if (report == null) {
+                            System.out.println(2);
+                            handleCellClick(clickedButton,finalRow, finalCol);
+                        } else{
+                            System.out.println("ola");
+                            button.setDisable(true);
+                        }
                     }
                 });
             }
@@ -1010,7 +1019,45 @@ public class DashboardFrame {
         exercisePane.setVisible(true);
         menuVbox.setVisible(true);
 
+
+        setYourPreferencesButtonExercise.setOnAction(e -> openSetYourPreferencesExcercise());
+
     }
+    private Stage preferencesExcerciseStage;
+
+    private void openSetYourPreferencesExcercise() {
+
+         if (preferencesExcerciseStage != null && preferencesExcerciseStage.isShowing()) {
+             preferencesExcerciseStage.toFront(); // Bring the existing window to the front
+                return;
+            }
+
+            Platform.runLater(() -> {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlantillasFXML/SetYourPreferencesExercise.fxml"));
+                    loader.setControllerFactory(applicationContext::getBean);
+
+                    Scene scene = new Scene(loader.load(), 600, 360); // Limitar tamaño de la escena
+
+                    preferencesExcerciseStage = new Stage();
+                    preferencesExcerciseStage.setTitle("Principal");
+                    preferencesExcerciseStage.setScene(scene);
+
+                    // Establecer límites para la ventana
+                    preferencesExcerciseStage.setMinWidth(600);
+                    preferencesExcerciseStage.setMinHeight(360);
+                    preferencesExcerciseStage.setMaxWidth(600);
+                    preferencesExcerciseStage.setMaxHeight(360);
+
+                    preferencesExcerciseStage.setOnCloseRequest(event -> preferencesExcerciseStage = null); // Reset when closed
+
+                    preferencesExcerciseStage.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+
 
     /**
      reportes
