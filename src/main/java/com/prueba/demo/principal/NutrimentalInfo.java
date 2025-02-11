@@ -92,13 +92,18 @@ public class NutrimentalInfo {
                     return;
             }
 
+            currentFoodIndex = 0;
+
 
             if (foodsForMeal != null && !foodsForMeal.isEmpty()) {
-                // Show the first food
-                showFoodDetails(currentFoodIndex, foodsForMeal.get(currentFoodIndex));
-                // Show the Next button if there are more than one food
-                nextButton.setVisible(foodsForMeal.size() > 1);
-                backButton.setVisible(false); // Initially hide the back button
+                // Ensure currentFoodIndex is within bounds
+                if (currentFoodIndex < foodsForMeal.size()) {
+                    // Show the first food
+                    showFoodDetails(currentFoodIndex, foodsForMeal.get(currentFoodIndex));
+                    // Show the Next button if there are more than one food
+                    nextButton.setVisible(foodsForMeal.size() > 1);
+                    backButton.setVisible(false); // Initially hide the back button
+                }
             }
         }
 
