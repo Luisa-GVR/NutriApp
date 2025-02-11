@@ -15,6 +15,8 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -148,8 +150,6 @@ public class APIConsumption {
 
 
 
-
-
     public List<String> getFoodSuggestionsRecommended(FoodPreferencesDTO foodPreferencesDTO, double calories) {
         // Verificar que los parámetros se están recibiendo correctamente
         if (foodPreferencesDTO != null) {
@@ -260,55 +260,39 @@ public class APIConsumption {
     }
 
 
-    public List<String> getRandomFoodSuggestionsForMealType1() {
-        System.out.println("entre");
+    //cargar informacion
 
+    public List<String> getFoodSuggestionsFromFile(String filePath, int mealType) {
         HttpClient client = HttpClient.newHttpClient();
 
-        JSONObject json = new JSONObject();
-        try {
-            json.put("query", "chimichanga");
-            json.put("meal_type", 5);
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                // Separar los nombres de comida por coma
+                List<String> foodNames = Arrays.asList(line.split(","));
 
-        String requestBody = json.toString(); // Convert to JSON string
+                for (String foodName : foodNames) {
+                    foodName = foodName.trim();  // Eliminar espacios antes y después del nombre de la comida
+                    if (!foodName.isEmpty()) {
+                        // Validar si la comida ya existe en la base de datos
+                        Optional<Food> existingFood = foodRepository.findByFoodName(foodName);
+                        if (existingFood.isEmpty()) {
+                            // Crear el objeto Food y asignar los valores
+                            Food food = new Food();
+                            food.setFoodName(foodName);
+                            food.setMealType(mealType);  // Establecer el tipo de comida
 
-
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(URL_BASE))  // Use the appropriate URL for fetching foods
-                .header("x-app-id", API_ID)
-                .header("x-app-key", API_KEY)
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .build();
-
-        try {
-            System.out.println("entre2");
-
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-            System.out.println(response);
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            FoodResponse foodResponse = objectMapper.readValue(response.body(), FoodResponse.class);
-
-            // Filter foods where meal_type is 1 (e.g., Breakfast) and return a random selection
-            if (foodResponse.getFoods() != null && !foodResponse.getFoods().isEmpty()) {
-                System.out.println("entre3");
-                return foodResponse.getFoods().stream()
-                        .filter(food -> food.getMealType() == 1)  // Filter for meal_type == 1
-                        .collect(Collectors.collectingAndThen(Collectors.toList(), list -> {
-                            Collections.shuffle(list);  // Shuffle the list to get random foods
-                            return list.stream().limit(10).map(Food::getFoodName).collect(Collectors.toList());
-                        }));
+                            // Guardar el objeto Food en la base de datos
+                            foodRepository.save(food);
+                        }
+                    }
+                }
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return Collections.emptyList();
+        return Collections.emptyList(); // Si deseas devolver algo diferente, modifica esta línea
     }
 
 
