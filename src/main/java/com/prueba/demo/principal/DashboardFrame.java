@@ -374,7 +374,7 @@ public class DashboardFrame {
                         super.updateItem(date, empty);
                         if (date.isBefore(oldestDate)) {
                             setDisable(true);
-                            setStyle("-fx-background-color: #d3d3d3;");  
+                            setStyle("-fx-background-color: #d3d3d3;");
                         }
                     }
                 };
@@ -463,24 +463,12 @@ public class DashboardFrame {
                     consumedProtein += weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getProtein();
                     String breakfastFoodName = weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getFoodName();
                     breakfastFoodName = capitalizeFirstLetter(breakfastFoodName);
-                    boolean isLastItem = j == weeklyReport.get(i).getDayMeals().getBreakfast().size() - 1;
-
                     switch (i) {
-                        case 0:
-                            mondayFood += breakfastFoodName + (isLastItem ? "" : ", ");
-                            break;
-                        case 1:
-                            tuesdayFood += breakfastFoodName + (isLastItem ? "" : ", ");
-                            break;
-                        case 2:
-                            wednesdayFood += breakfastFoodName + (isLastItem ? "" : ", ");
-                            break;
-                        case 3:
-                            thursdayFood += breakfastFoodName + (isLastItem ? "" : ", ");
-                            break;
-                        case 4:
-                            fridayFood += breakfastFoodName + (isLastItem ? "" : ", ");
-                            break;
+                        case 0: mondayFood += breakfastFoodName + ", "; break;
+                        case 1: tuesdayFood += breakfastFoodName + ", "; break;
+                        case 2: wednesdayFood += breakfastFoodName + ", "; break;
+                        case 3: thursdayFood += breakfastFoodName + ", "; break;
+                        case 4: fridayFood += breakfastFoodName + ", "; break;
                     }
                 }
 
@@ -491,24 +479,12 @@ public class DashboardFrame {
                     consumedProtein += weeklyReport.get(i).getDayMeals().getLunch().get(j).getProtein();
                     String lunchFoodName = weeklyReport.get(i).getDayMeals().getLunch().get(j).getFoodName();
                     lunchFoodName = capitalizeFirstLetter(lunchFoodName);
-                    boolean isLastItem = j == weeklyReport.get(i).getDayMeals().getLunch().size() - 1;
-
                     switch (i) {
-                        case 0:
-                            mondayFood += lunchFoodName + (isLastItem ? "" : ", ");
-                            break;
-                        case 1:
-                            tuesdayFood += lunchFoodName + (isLastItem ? "" : ", ");
-                            break;
-                        case 2:
-                            wednesdayFood += lunchFoodName + (isLastItem ? "" : ", ");
-                            break;
-                        case 3:
-                            thursdayFood += lunchFoodName + (isLastItem ? "" : ", ");
-                            break;
-                        case 4:
-                            fridayFood += lunchFoodName + (isLastItem ? "" : ", ");
-                            break;
+                        case 0: mondayFood += lunchFoodName + ", "; break;
+                        case 1: tuesdayFood += lunchFoodName + ", "; break;
+                        case 2: wednesdayFood += lunchFoodName + ", "; break;
+                        case 3: thursdayFood += lunchFoodName + ", "; break;
+                        case 4: fridayFood += lunchFoodName + ", "; break;
                     }
                 }
 
@@ -519,24 +495,12 @@ public class DashboardFrame {
                     consumedProtein += weeklyReport.get(i).getDayMeals().getDinner().get(j).getProtein();
                     String dinnerFoodName = weeklyReport.get(i).getDayMeals().getDinner().get(j).getFoodName();
                     dinnerFoodName = capitalizeFirstLetter(dinnerFoodName);
-                    boolean isLastItem = j == weeklyReport.get(i).getDayMeals().getDinner().size() - 1;
-
                     switch (i) {
-                        case 0:
-                            mondayFood += dinnerFoodName + (isLastItem ? "" : ", ");
-                            break;
-                        case 1:
-                            tuesdayFood += dinnerFoodName + (isLastItem ? "" : ", ");
-                            break;
-                        case 2:
-                            wednesdayFood += dinnerFoodName + (isLastItem ? "" : ", ");
-                            break;
-                        case 3:
-                            thursdayFood += dinnerFoodName + (isLastItem ? "" : ", ");
-                            break;
-                        case 4:
-                            fridayFood += dinnerFoodName + (isLastItem ? "" : ", ");
-                            break;
+                        case 0: mondayFood += dinnerFoodName + ", "; break;
+                        case 1: tuesdayFood += dinnerFoodName + ", "; break;
+                        case 2: wednesdayFood += dinnerFoodName + ", "; break;
+                        case 3: thursdayFood += dinnerFoodName + ", "; break;
+                        case 4: fridayFood += dinnerFoodName + ", "; break;
                     }
                 }
 
@@ -547,24 +511,12 @@ public class DashboardFrame {
                     consumedProtein += weeklyReport.get(i).getDayMeals().getSnack().get(j).getProtein();
                     String snackFoodName = weeklyReport.get(i).getDayMeals().getSnack().get(j).getFoodName();
                     snackFoodName = capitalizeFirstLetter(snackFoodName);
-                    boolean isLastItem = j == weeklyReport.get(i).getDayMeals().getSnack().size() - 1;
-
                     switch (i) {
-                        case 0:
-                            mondayFood += snackFoodName + (isLastItem ? "" : ", ");
-                            break;
-                        case 1:
-                            tuesdayFood += snackFoodName + (isLastItem ? "" : ", ");
-                            break;
-                        case 2:
-                            wednesdayFood += snackFoodName + (isLastItem ? "" : ", ");
-                            break;
-                        case 3:
-                            thursdayFood += snackFoodName + (isLastItem ? "" : ", ");
-                            break;
-                        case 4:
-                            fridayFood += snackFoodName + (isLastItem ? "" : ", ");
-                            break;
+                        case 0: mondayFood += snackFoodName + ", "; break;
+                        case 1: tuesdayFood += snackFoodName + ", "; break;
+                        case 2: wednesdayFood += snackFoodName + ", "; break;
+                        case 3: thursdayFood += snackFoodName + ", "; break;
+                        case 4: fridayFood += snackFoodName + ", "; break;
                     }
                 }
 
@@ -575,53 +527,53 @@ public class DashboardFrame {
                     consumedProtein += weeklyReport.get(i).getDayMeals().getOptional().get(j).getProtein();
                     String optionalFoodName = weeklyReport.get(i).getDayMeals().getOptional().get(j).getFoodName();
                     optionalFoodName = capitalizeFirstLetter(optionalFoodName);
-                    boolean isLastItem = j == weeklyReport.get(i).getDayMeals().getOptional().size() - 1;
-
                     switch (i) {
-                        case 0:
-                            mondayFood += optionalFoodName + (isLastItem ? "" : ", ");
-                            break;
-                        case 1:
-                            tuesdayFood += optionalFoodName + (isLastItem ? "" : ", ");
-                            break;
-                        case 2:
-                            wednesdayFood += optionalFoodName + (isLastItem ? "" : ", ");
-                            break;
-                        case 3:
-                            thursdayFood += optionalFoodName + (isLastItem ? "" : ", ");
-                            break;
-                        case 4:
-                            fridayFood += optionalFoodName + (isLastItem ? "" : ", ");
-                            break;
+                        case 0: mondayFood += optionalFoodName + ", "; break;
+                        case 1: tuesdayFood += optionalFoodName + ", "; break;
+                        case 2: wednesdayFood += optionalFoodName + ", "; break;
+                        case 3: thursdayFood += optionalFoodName + ", "; break;
+                        case 4: fridayFood += optionalFoodName + ", "; break;
                     }
                 }
             }
 
-            Text mondayText = new Text(mondayFood);
-            Text tuesdayText = new Text(tuesdayFood);
-            Text wednesdayText = new Text(wednesdayFood);
-            Text thursdayText = new Text(thursdayFood);
-            Text fridayText = new Text(fridayFood);
+            if (mondayFood.endsWith(", ")) {
+                mondayFood = mondayFood.substring(0, mondayFood.length() - 2);
+            }
+            if (tuesdayFood.endsWith(", ")) {
+                tuesdayFood = tuesdayFood.substring(0, tuesdayFood.length() - 2);
+            }
+            if (wednesdayFood.endsWith(", ")) {
+                wednesdayFood = wednesdayFood.substring(0, wednesdayFood.length() - 2);
+            }
+            if (thursdayFood.endsWith(", ")) {
+                thursdayFood = thursdayFood.substring(0, thursdayFood.length() - 2);
+            }
+            if (fridayFood.endsWith(", ")) {
+                fridayFood = fridayFood.substring(0, fridayFood.length() - 2);
+            }
 
-            TextFlow mondayTextFlow = new TextFlow(new Text(mondayFood));
-            TextFlow tuesdayTextFlow = new TextFlow(new Text(tuesdayFood));
-            TextFlow wednesdayTextFlow = new TextFlow(new Text(wednesdayFood));
-            TextFlow thursdayTextFlow = new TextFlow(new Text(thursdayFood));
-            TextFlow fridayTextFlow = new TextFlow(new Text(fridayFood));
+            Label mondayLabel = new Label(mondayFood);
+            Label tuesdayLabel = new Label(tuesdayFood);
+            Label wednesdayLabel = new Label(wednesdayFood);
+            Label thursdayLabel = new Label(thursdayFood);
+            Label fridayLabel = new Label(fridayFood);
 
-            // Set TextFlow wrapping to true
-            mondayTextFlow.setStyle("-fx-wrap-text: true;");
-            tuesdayTextFlow.setStyle("-fx-wrap-text: true;");
-            wednesdayTextFlow.setStyle("-fx-wrap-text: true;");
-            thursdayTextFlow.setStyle("-fx-wrap-text: true;");
-            fridayTextFlow.setStyle("-fx-wrap-text: true;");
+// Configurar la propiedad de truncamiento en el estilo de cada Label
+            mondayLabel.setStyle("-fx-max-width: 150px; -fx-wrap-text: true; -fx-text-overflow: ellipsis;");
+            tuesdayLabel.setStyle("-fx-max-width: 150px; -fx-wrap-text: true; -fx-text-overflow: ellipsis;");
+            wednesdayLabel.setStyle("-fx-max-width: 150px; -fx-wrap-text: true; -fx-text-overflow: ellipsis;");
+            thursdayLabel.setStyle("-fx-max-width: 150px; -fx-wrap-text: true; -fx-text-overflow: ellipsis;");
+            fridayLabel.setStyle("-fx-max-width: 150px; -fx-wrap-text: true; -fx-text-overflow: ellipsis;");
 
-            //Dieta
-            gridPaneDashboard.add(mondayTextFlow, 0, 1);     // Column 0, Row 1
-            gridPaneDashboard.add(tuesdayTextFlow, 1, 1);    // Column 1, Row 1
-            gridPaneDashboard.add(wednesdayTextFlow, 2, 1);  // Column 2, Row 1
-            gridPaneDashboard.add(thursdayTextFlow, 3, 1);   // Column 3, Row 1
-            gridPaneDashboard.add(fridayTextFlow, 4, 1);     // Column 4, Row 1
+// Dieta
+            gridPaneDashboard.add(mondayLabel, 0, 1);     // Columna 0, Fila 1
+            gridPaneDashboard.add(tuesdayLabel, 1, 1);    // Columna 1, Fila 1
+            gridPaneDashboard.add(wednesdayLabel, 2, 1);  // Columna 2, Fila 1
+            gridPaneDashboard.add(thursdayLabel, 3, 1);   // Columna 3, Fila 1
+            gridPaneDashboard.add(fridayLabel, 4, 1);     // Columna 4, Fila 1
+
+
 
 
 

@@ -94,8 +94,6 @@ public class NutrimentalInfo {
 
 
             if (foodsForMeal != null && !foodsForMeal.isEmpty()) {
-
-
                 // Show the first food
                 showFoodDetails(currentFoodIndex, foodsForMeal.get(currentFoodIndex));
                 // Show the Next button if there are more than one food
