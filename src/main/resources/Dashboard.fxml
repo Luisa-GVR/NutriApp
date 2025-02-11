@@ -1639,7 +1639,7 @@
                                                    </rowConstraints>
                                                    <children>
                                                       <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #e8f2d1; -fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.rowIndex="2" />
-                                                      <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #7da12d; -fx-border-color: #d4e7b1; -fx-border-width: 1.5;">
+                                                      <StackPane id="dashboardWeekCalendar" prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #7da12d; -fx-border-color: #d4e7b1; -fx-border-width: 1.5;">
                                                          <children>
                                                             <Label text="Lunes" textFill="WHITE">
                                                                <font>

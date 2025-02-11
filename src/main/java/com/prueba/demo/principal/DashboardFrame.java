@@ -17,6 +17,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +73,7 @@ public class DashboardFrame {
     private ProgressBar caloriesBurnedProgressBar;
     @FXML
     private ProgressBar timeActivityProgressBar;
+
     @FXML
     private Tooltip caloriesTooltip;
     @FXML
@@ -426,44 +429,182 @@ public class DashboardFrame {
             double totalFat = calculateFats()*5;
             double totalCarbs = calculateCarbs()*5;
 
+            String mondayFood = "";
+            String tuesdayFood = "";
+            String wednesdayFood = "";
+            String thursdayFood = "";
+            String fridayFood = "";
 
             for (int i = 0; i < weeklyReport.size(); i++) {
                 for (int j = 0; j < weeklyReport.get(i).getDayMeals().getBreakfast().size(); j++) {
-                    consumedCalories+= weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getCalories();
-                    consumedCarbs+=weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getTotalCarbohydrate();
-                    consumedFat+=weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getTotalFat();
-                    consumedProtein+=weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getProtein();
+                    consumedCalories += weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getCalories();
+                    consumedCarbs += weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getTotalCarbohydrate();
+                    consumedFat += weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getTotalFat();
+                    consumedProtein += weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getProtein();
+                    String breakfastFoodName = weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getFoodName();
+                    breakfastFoodName = capitalizeFirstLetter(breakfastFoodName);
+                    boolean isLastItem = j == weeklyReport.get(i).getDayMeals().getBreakfast().size() - 1;
+
+                    switch (i) {
+                        case 0:
+                            mondayFood += breakfastFoodName + (isLastItem ? "" : ", ");
+                            break;
+                        case 1:
+                            tuesdayFood += breakfastFoodName + (isLastItem ? "" : ", ");
+                            break;
+                        case 2:
+                            wednesdayFood += breakfastFoodName + (isLastItem ? "" : ", ");
+                            break;
+                        case 3:
+                            thursdayFood += breakfastFoodName + (isLastItem ? "" : ", ");
+                            break;
+                        case 4:
+                            fridayFood += breakfastFoodName + (isLastItem ? "" : ", ");
+                            break;
+                    }
                 }
 
                 for (int j = 0; j < weeklyReport.get(i).getDayMeals().getLunch().size(); j++) {
-                    consumedCalories+= weeklyReport.get(i).getDayMeals().getLunch().get(j).getCalories();
-                    consumedCarbs+=weeklyReport.get(i).getDayMeals().getLunch().get(j).getTotalCarbohydrate();
-                    consumedFat+=weeklyReport.get(i).getDayMeals().getLunch().get(j).getTotalFat();
-                    consumedProtein+=weeklyReport.get(i).getDayMeals().getLunch().get(j).getProtein();
+                    consumedCalories += weeklyReport.get(i).getDayMeals().getLunch().get(j).getCalories();
+                    consumedCarbs += weeklyReport.get(i).getDayMeals().getLunch().get(j).getTotalCarbohydrate();
+                    consumedFat += weeklyReport.get(i).getDayMeals().getLunch().get(j).getTotalFat();
+                    consumedProtein += weeklyReport.get(i).getDayMeals().getLunch().get(j).getProtein();
+                    String lunchFoodName = weeklyReport.get(i).getDayMeals().getLunch().get(j).getFoodName();
+                    lunchFoodName = capitalizeFirstLetter(lunchFoodName);
+                    boolean isLastItem = j == weeklyReport.get(i).getDayMeals().getLunch().size() - 1;
+
+                    switch (i) {
+                        case 0:
+                            mondayFood += lunchFoodName + (isLastItem ? "" : ", ");
+                            break;
+                        case 1:
+                            tuesdayFood += lunchFoodName + (isLastItem ? "" : ", ");
+                            break;
+                        case 2:
+                            wednesdayFood += lunchFoodName + (isLastItem ? "" : ", ");
+                            break;
+                        case 3:
+                            thursdayFood += lunchFoodName + (isLastItem ? "" : ", ");
+                            break;
+                        case 4:
+                            fridayFood += lunchFoodName + (isLastItem ? "" : ", ");
+                            break;
+                    }
                 }
 
                 for (int j = 0; j < weeklyReport.get(i).getDayMeals().getDinner().size(); j++) {
-                    consumedCalories+= weeklyReport.get(i).getDayMeals().getDinner().get(j).getCalories();
-                    consumedCarbs+=weeklyReport.get(i).getDayMeals().getDinner().get(j).getTotalCarbohydrate();
-                    consumedFat+=weeklyReport.get(i).getDayMeals().getDinner().get(j).getTotalFat();
-                    consumedProtein+=weeklyReport.get(i).getDayMeals().getDinner().get(j).getProtein();
+                    consumedCalories += weeklyReport.get(i).getDayMeals().getDinner().get(j).getCalories();
+                    consumedCarbs += weeklyReport.get(i).getDayMeals().getDinner().get(j).getTotalCarbohydrate();
+                    consumedFat += weeklyReport.get(i).getDayMeals().getDinner().get(j).getTotalFat();
+                    consumedProtein += weeklyReport.get(i).getDayMeals().getDinner().get(j).getProtein();
+                    String dinnerFoodName = weeklyReport.get(i).getDayMeals().getDinner().get(j).getFoodName();
+                    dinnerFoodName = capitalizeFirstLetter(dinnerFoodName);
+                    boolean isLastItem = j == weeklyReport.get(i).getDayMeals().getDinner().size() - 1;
+
+                    switch (i) {
+                        case 0:
+                            mondayFood += dinnerFoodName + (isLastItem ? "" : ", ");
+                            break;
+                        case 1:
+                            tuesdayFood += dinnerFoodName + (isLastItem ? "" : ", ");
+                            break;
+                        case 2:
+                            wednesdayFood += dinnerFoodName + (isLastItem ? "" : ", ");
+                            break;
+                        case 3:
+                            thursdayFood += dinnerFoodName + (isLastItem ? "" : ", ");
+                            break;
+                        case 4:
+                            fridayFood += dinnerFoodName + (isLastItem ? "" : ", ");
+                            break;
+                    }
                 }
 
                 for (int j = 0; j < weeklyReport.get(i).getDayMeals().getSnack().size(); j++) {
-                    consumedCalories+= weeklyReport.get(i).getDayMeals().getSnack().get(j).getCalories();
-                    consumedCarbs+=weeklyReport.get(i).getDayMeals().getSnack().get(j).getTotalCarbohydrate();
-                    consumedFat+=weeklyReport.get(i).getDayMeals().getSnack().get(j).getTotalFat();
-                    consumedProtein+=weeklyReport.get(i).getDayMeals().getSnack().get(j).getProtein();
+                    consumedCalories += weeklyReport.get(i).getDayMeals().getSnack().get(j).getCalories();
+                    consumedCarbs += weeklyReport.get(i).getDayMeals().getSnack().get(j).getTotalCarbohydrate();
+                    consumedFat += weeklyReport.get(i).getDayMeals().getSnack().get(j).getTotalFat();
+                    consumedProtein += weeklyReport.get(i).getDayMeals().getSnack().get(j).getProtein();
+                    String snackFoodName = weeklyReport.get(i).getDayMeals().getSnack().get(j).getFoodName();
+                    snackFoodName = capitalizeFirstLetter(snackFoodName);
+                    boolean isLastItem = j == weeklyReport.get(i).getDayMeals().getSnack().size() - 1;
+
+                    switch (i) {
+                        case 0:
+                            mondayFood += snackFoodName + (isLastItem ? "" : ", ");
+                            break;
+                        case 1:
+                            tuesdayFood += snackFoodName + (isLastItem ? "" : ", ");
+                            break;
+                        case 2:
+                            wednesdayFood += snackFoodName + (isLastItem ? "" : ", ");
+                            break;
+                        case 3:
+                            thursdayFood += snackFoodName + (isLastItem ? "" : ", ");
+                            break;
+                        case 4:
+                            fridayFood += snackFoodName + (isLastItem ? "" : ", ");
+                            break;
+                    }
                 }
 
                 for (int j = 0; j < weeklyReport.get(i).getDayMeals().getOptional().size(); j++) {
-                    consumedCalories+= weeklyReport.get(i).getDayMeals().getOptional().get(j).getCalories();
-                    consumedCarbs+=weeklyReport.get(i).getDayMeals().getOptional().get(j).getTotalCarbohydrate();
-                    consumedFat+=weeklyReport.get(i).getDayMeals().getOptional().get(j).getTotalFat();
-                    consumedProtein+=weeklyReport.get(i).getDayMeals().getOptional().get(j).getProtein();
-                }
+                    consumedCalories += weeklyReport.get(i).getDayMeals().getOptional().get(j).getCalories();
+                    consumedCarbs += weeklyReport.get(i).getDayMeals().getOptional().get(j).getTotalCarbohydrate();
+                    consumedFat += weeklyReport.get(i).getDayMeals().getOptional().get(j).getTotalFat();
+                    consumedProtein += weeklyReport.get(i).getDayMeals().getOptional().get(j).getProtein();
+                    String optionalFoodName = weeklyReport.get(i).getDayMeals().getOptional().get(j).getFoodName();
+                    optionalFoodName = capitalizeFirstLetter(optionalFoodName);
+                    boolean isLastItem = j == weeklyReport.get(i).getDayMeals().getOptional().size() - 1;
 
+                    switch (i) {
+                        case 0:
+                            mondayFood += optionalFoodName + (isLastItem ? "" : ", ");
+                            break;
+                        case 1:
+                            tuesdayFood += optionalFoodName + (isLastItem ? "" : ", ");
+                            break;
+                        case 2:
+                            wednesdayFood += optionalFoodName + (isLastItem ? "" : ", ");
+                            break;
+                        case 3:
+                            thursdayFood += optionalFoodName + (isLastItem ? "" : ", ");
+                            break;
+                        case 4:
+                            fridayFood += optionalFoodName + (isLastItem ? "" : ", ");
+                            break;
+                    }
+                }
             }
+
+            Text mondayText = new Text(mondayFood);
+            Text tuesdayText = new Text(tuesdayFood);
+            Text wednesdayText = new Text(wednesdayFood);
+            Text thursdayText = new Text(thursdayFood);
+            Text fridayText = new Text(fridayFood);
+
+            TextFlow mondayTextFlow = new TextFlow(new Text(mondayFood));
+            TextFlow tuesdayTextFlow = new TextFlow(new Text(tuesdayFood));
+            TextFlow wednesdayTextFlow = new TextFlow(new Text(wednesdayFood));
+            TextFlow thursdayTextFlow = new TextFlow(new Text(thursdayFood));
+            TextFlow fridayTextFlow = new TextFlow(new Text(fridayFood));
+
+            // Set TextFlow wrapping to true
+            mondayTextFlow.setStyle("-fx-wrap-text: true;");
+            tuesdayTextFlow.setStyle("-fx-wrap-text: true;");
+            wednesdayTextFlow.setStyle("-fx-wrap-text: true;");
+            thursdayTextFlow.setStyle("-fx-wrap-text: true;");
+            fridayTextFlow.setStyle("-fx-wrap-text: true;");
+
+            //Dieta
+            gridPaneDashboard.add(mondayTextFlow, 0, 1);     // Column 0, Row 1
+            gridPaneDashboard.add(tuesdayTextFlow, 1, 1);    // Column 1, Row 1
+            gridPaneDashboard.add(wednesdayTextFlow, 2, 1);  // Column 2, Row 1
+            gridPaneDashboard.add(thursdayTextFlow, 3, 1);   // Column 3, Row 1
+            gridPaneDashboard.add(fridayTextFlow, 4, 1);     // Column 4, Row 1
+
+
+
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy").withLocale(new Locale("es", "MX"));
 
@@ -516,6 +657,13 @@ public class DashboardFrame {
 
         });
 
+    }
+
+    public String capitalizeFirstLetter(String foodName) {
+        if (foodName == null || foodName.isEmpty()) {
+            return foodName;
+        }
+        return foodName.substring(0, 1).toUpperCase() + foodName.substring(1);
     }
 
     public double calculateWater(Long accountId) {
