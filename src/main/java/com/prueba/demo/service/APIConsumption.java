@@ -15,9 +15,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
@@ -127,6 +125,7 @@ public class APIConsumption {
                                 if (existingFood.isEmpty()) {
                                     // 2. Print each Food object as JSON (for debugging):
                                     String foodJson = objectMapper.writeValueAsString(food);
+
                                     foodRepository.save(food); // Save valid foods to the database
                                 }
                             } catch (JsonProcessingException e) {
@@ -263,38 +262,102 @@ public class APIConsumption {
     //cargar informacion
 
     public List<String> getFoodSuggestionsFromFile(String filePath, int mealType) {
+        List<String> foodSuggestions = new ArrayList<>();
+        List<String> queries = readQueriesFromFile(filePath);
+
         HttpClient client = HttpClient.newHttpClient();
 
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                // Separar los nombres de comida por coma
-                List<String> foodNames = Arrays.asList(line.split(","));
+        for (String query : queries) {
+            String encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8);
+            String requestBody = "{\"query\":\"" + query + "\"}";
 
-                for (String foodName : foodNames) {
-                    foodName = foodName.trim();  // Eliminar espacios antes y después del nombre de la comida
-                    if (!foodName.isEmpty()) {
-                        // Validar si la comida ya existe en la base de datos
-                        Optional<Food> existingFood = foodRepository.findByFoodName(foodName);
-                        if (existingFood.isEmpty()) {
-                            // Crear el objeto Food y asignar los valores
-                            Food food = new Food();
-                            food.setFoodName(foodName);
-                            food.setMealType(mealType);  // Establecer el tipo de comida
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL_BASE))
+                    .header("x-app-id", API_ID)
+                    .header("x-app-key", API_KEY)
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .build();
 
-                            // Guardar el objeto Food en la base de datos
-                            foodRepository.save(food);
-                        }
-                    }
+            try {
+                HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                ObjectMapper objectMapper = new ObjectMapper();
+                FoodResponse foodResponse = objectMapper.readValue(response.body(), FoodResponse.class);
+
+                if (foodResponse.getFoods() != null && !foodResponse.getFoods().isEmpty()) {
+                    // Filter out invalid food names and save the valid ones to the database
+                    List<Food> foods = foodResponse.getFoods().stream()
+                            .filter(food -> food.getFoodName() != null && !food.getFoodName().isEmpty()) // Avoid saving invalid data
+                            .peek(food -> {
+                                try {
+                                    food.setMealType(mealType);
+
+                                    // 1. Check if the food with the same name already exists in the database
+                                    Optional<Food> existingFood = foodRepository.findByFoodName(food.getFoodName());
+                                    if (existingFood.isEmpty()) {
+                                        // 2. Print each Food object as JSON (for debugging):
+                                        String foodJson = objectMapper.writeValueAsString(food);
+
+                                        foodRepository.save(food); // Save valid foods to the database
+                                        saveFoodToCSV(food);
+
+                                    }
+                                } catch (JsonProcessingException e) {
+                                    System.err.println("Error serializing Food object to JSON: " + e.getMessage());
+                                }
+                            }) // Process valid foods
+                            .collect(Collectors.toList());
+
+                    // Return the names of the first 3 foods from the list
+                    return foods.stream()
+                            .limit(3)
+                            .map(Food::getFoodName)
+                            .collect(Collectors.toList());
                 }
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        return Collections.emptyList();
+    }
+
+    private List<String> readQueriesFromFile(String filePath) {
+        List<String> queries = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] queryArray = line.split(",");
+                queries.addAll(Arrays.asList(queryArray));
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return Collections.emptyList(); // Si deseas devolver algo diferente, modifica esta línea
+        return queries;
     }
 
 
+    //CAMBIAR EL CSVFILEPATH!!!
+    private void saveFoodToCSV(Food food) {
+        String csvFilePath = "foods.csv"; // Path to your CSV file
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(csvFilePath, true))) {
+            // Prepare the CSV line for the current food
+            String csvLine = String.format("%s,%f,%f,%f,%f,%f,%d",
+                    food.getFoodName(),
+                    food.getCalories(),
+                    food.getProtein(),
+                    food.getTotalCarbohydrate(),
+                    food.getTotalFat(),
+                    food.getPortionWeight(),
+                    food.getMealType());
+
+            // Write the line to the CSV file
+            writer.write(csvLine);
+            writer.newLine(); // Move to the next line for the next entry
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
