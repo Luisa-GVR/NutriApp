@@ -1,7 +1,10 @@
 package com.prueba.demo.principal;
 
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvException;
 import com.prueba.demo.model.*;
 import com.prueba.demo.repository.*;
+import com.prueba.demo.service.APIConsumption;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
@@ -26,8 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.sql.Date;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -231,9 +233,89 @@ public class DashboardFrame {
     @FXML
     private Button sendReportButton;
 
+    /*
+        iniciar con datos
+     */
+
+    public void uploadFoodsFromCSV() {
+        // Verificar y actualizar el estado de creación de la base de datos
+        File propertiesFile = new File("preferencesState.properties");
+        Properties properties = new Properties();
+
+        try {
+            if (!propertiesFile.exists()) {
+                propertiesFile.createNewFile();
+            }
+
+            try (InputStream inputStream = new FileInputStream(propertiesFile)) {
+                properties.load(inputStream);
+            }
+
+            String createdDatabaseValue = properties.getProperty("createdDatabase", "false");
+
+            if ("false".equals(createdDatabaseValue)) {
+                // Subir los alimentos desde el CSV
+                try (CSVReader reader = new CSVReader(new FileReader("src/main/resources/foods.csv"))) {
+                    // Leer el archivo CSV
+                    List<String[]> rows = reader.readAll();
+
+                    for (String[] row : rows) {
+                        if (row.length >= 7) {
+                            Food food = new Food();
+                            food.setFoodName(row[0]);
+                            food.setCalories(Double.parseDouble(row[1]));
+                            food.setProtein(Double.parseDouble(row[2]));
+                            food.setTotalCarbohydrate(Double.parseDouble(row[3]));
+                            food.setTotalFat(Double.parseDouble(row[4]));
+                            food.setPortionWeight(Double.parseDouble(row[5]));
+                            List<Integer> newMealTypes = List.of(Integer.parseInt(row[6]));
+                            food.setMealType(newMealTypes);
+
+                            // Buscar si el alimento ya existe en la base de datos
+                            Optional<Food> existingFoodOptional = foodRepository.findByFoodName(food.getFoodName());
+
+                            if (existingFoodOptional.isPresent()) {
+                                Food existingFood = existingFoodOptional.get();
+
+                                // Verificar si el nuevo mealType ya está en la lista de mealTypes de la comida existente
+                                if (!existingFood.getMealType().containsAll(newMealTypes)) {
+                                    // Si no existe, agregar el nuevo mealType
+                                    existingFood.getMealType().addAll(newMealTypes);
+                                    foodRepository.save(existingFood); // Guardar la comida existente con el nuevo mealType
+                                }
+                            } else {
+                                // Si no existe, guardar el nuevo alimento
+                                foodRepository.save(food);
+                            }
+                        }
+                    }
+
+                    properties.setProperty("createdDatabase", "true");
+
+                    // Guardamos los cambios en el archivo de propiedades
+                    try (OutputStream outputStream = new FileOutputStream(propertiesFile)) {
+                        properties.store(outputStream, null);
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (CsvException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
 
     @FXML
     private void initialize() {
+        uploadFoodsFromCSV();
+
         rootPane.setMinWidth(900);  // Ancho mínimo
         rootPane.setMinHeight(520); // Alto mínimo
 
@@ -438,13 +520,14 @@ public class DashboardFrame {
     /**
      Dashboard
      */
+    @Autowired
+    APIConsumption apiConsumption;
 
     @FXML
     private void showDashboard() {
         hideAll();
         dashboardPane.setVisible(true);
         menuVbox.setVisible(true);
-
 
         Platform.runLater(() -> {
             /**
