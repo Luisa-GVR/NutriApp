@@ -376,6 +376,8 @@ public class DashboardFrame {
             // Si no hay fecha, deshabilitar completamente el startDatePicker
             startDatePicker.setDisable(true);
         } else {
+            startDatePicker.setDisable(false);
+
             // Convertir la fecha a LocalDate
             LocalDate oldestDate = oldestReportDate.toLocalDate();
 
@@ -471,88 +473,145 @@ public class DashboardFrame {
             String thursdayFood = "";
             String fridayFood = "";
 
-            for (int i = 0; i < weeklyReport.size(); i++) {
-                for (int j = 0; j < weeklyReport.get(i).getDayMeals().getBreakfast().size(); j++) {
-                    consumedCalories += weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getCalories();
-                    consumedCarbs += weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getTotalCarbohydrate();
-                    consumedFat += weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getTotalFat();
-                    consumedProtein += weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getProtein();
-                    String breakfastFoodName = weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getFoodName();
-                    breakfastFoodName = capitalizeFirstLetter(breakfastFoodName);
-                    switch (i) {
-                        case 0: mondayFood += breakfastFoodName + ", "; break;
-                        case 1: tuesdayFood += breakfastFoodName + ", "; break;
-                        case 2: wednesdayFood += breakfastFoodName + ", "; break;
-                        case 3: thursdayFood += breakfastFoodName + ", "; break;
-                        case 4: fridayFood += breakfastFoodName + ", "; break;
-                    }
-                }
+            if (weeklyReport == null || weeklyReport.isEmpty()) {
 
-                for (int j = 0; j < weeklyReport.get(i).getDayMeals().getLunch().size(); j++) {
-                    consumedCalories += weeklyReport.get(i).getDayMeals().getLunch().get(j).getCalories();
-                    consumedCarbs += weeklyReport.get(i).getDayMeals().getLunch().get(j).getTotalCarbohydrate();
-                    consumedFat += weeklyReport.get(i).getDayMeals().getLunch().get(j).getTotalFat();
-                    consumedProtein += weeklyReport.get(i).getDayMeals().getLunch().get(j).getProtein();
-                    String lunchFoodName = weeklyReport.get(i).getDayMeals().getLunch().get(j).getFoodName();
-                    lunchFoodName = capitalizeFirstLetter(lunchFoodName);
-                    switch (i) {
-                        case 0: mondayFood += lunchFoodName + ", "; break;
-                        case 1: tuesdayFood += lunchFoodName + ", "; break;
-                        case 2: wednesdayFood += lunchFoodName + ", "; break;
-                        case 3: thursdayFood += lunchFoodName + ", "; break;
-                        case 4: fridayFood += lunchFoodName + ", "; break;
+                consumedCalories = 0;
+                consumedProtein = 0;
+                consumedFat = 0;
+                consumedCarbs = 0;
+            } else {
+                for (int i = 0; i < weeklyReport.size(); i++) {
+                    for (int j = 0; j < weeklyReport.get(i).getDayMeals().getBreakfast().size(); j++) {
+                        consumedCalories += weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getCalories();
+                        consumedCarbs += weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getTotalCarbohydrate();
+                        consumedFat += weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getTotalFat();
+                        consumedProtein += weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getProtein();
+                        String breakfastFoodName = weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getFoodName();
+                        breakfastFoodName = capitalizeFirstLetter(breakfastFoodName);
+                        switch (i) {
+                            case 0:
+                                mondayFood += breakfastFoodName + ", ";
+                                break;
+                            case 1:
+                                tuesdayFood += breakfastFoodName + ", ";
+                                break;
+                            case 2:
+                                wednesdayFood += breakfastFoodName + ", ";
+                                break;
+                            case 3:
+                                thursdayFood += breakfastFoodName + ", ";
+                                break;
+                            case 4:
+                                fridayFood += breakfastFoodName + ", ";
+                                break;
+                        }
                     }
-                }
 
-                for (int j = 0; j < weeklyReport.get(i).getDayMeals().getDinner().size(); j++) {
-                    consumedCalories += weeklyReport.get(i).getDayMeals().getDinner().get(j).getCalories();
-                    consumedCarbs += weeklyReport.get(i).getDayMeals().getDinner().get(j).getTotalCarbohydrate();
-                    consumedFat += weeklyReport.get(i).getDayMeals().getDinner().get(j).getTotalFat();
-                    consumedProtein += weeklyReport.get(i).getDayMeals().getDinner().get(j).getProtein();
-                    String dinnerFoodName = weeklyReport.get(i).getDayMeals().getDinner().get(j).getFoodName();
-                    dinnerFoodName = capitalizeFirstLetter(dinnerFoodName);
-                    switch (i) {
-                        case 0: mondayFood += dinnerFoodName + ", "; break;
-                        case 1: tuesdayFood += dinnerFoodName + ", "; break;
-                        case 2: wednesdayFood += dinnerFoodName + ", "; break;
-                        case 3: thursdayFood += dinnerFoodName + ", "; break;
-                        case 4: fridayFood += dinnerFoodName + ", "; break;
+                    for (int j = 0; j < weeklyReport.get(i).getDayMeals().getLunch().size(); j++) {
+                        consumedCalories += weeklyReport.get(i).getDayMeals().getLunch().get(j).getCalories();
+                        consumedCarbs += weeklyReport.get(i).getDayMeals().getLunch().get(j).getTotalCarbohydrate();
+                        consumedFat += weeklyReport.get(i).getDayMeals().getLunch().get(j).getTotalFat();
+                        consumedProtein += weeklyReport.get(i).getDayMeals().getLunch().get(j).getProtein();
+                        String lunchFoodName = weeklyReport.get(i).getDayMeals().getLunch().get(j).getFoodName();
+                        lunchFoodName = capitalizeFirstLetter(lunchFoodName);
+                        switch (i) {
+                            case 0:
+                                mondayFood += lunchFoodName + ", ";
+                                break;
+                            case 1:
+                                tuesdayFood += lunchFoodName + ", ";
+                                break;
+                            case 2:
+                                wednesdayFood += lunchFoodName + ", ";
+                                break;
+                            case 3:
+                                thursdayFood += lunchFoodName + ", ";
+                                break;
+                            case 4:
+                                fridayFood += lunchFoodName + ", ";
+                                break;
+                        }
                     }
-                }
 
-                for (int j = 0; j < weeklyReport.get(i).getDayMeals().getSnack().size(); j++) {
-                    consumedCalories += weeklyReport.get(i).getDayMeals().getSnack().get(j).getCalories();
-                    consumedCarbs += weeklyReport.get(i).getDayMeals().getSnack().get(j).getTotalCarbohydrate();
-                    consumedFat += weeklyReport.get(i).getDayMeals().getSnack().get(j).getTotalFat();
-                    consumedProtein += weeklyReport.get(i).getDayMeals().getSnack().get(j).getProtein();
-                    String snackFoodName = weeklyReport.get(i).getDayMeals().getSnack().get(j).getFoodName();
-                    snackFoodName = capitalizeFirstLetter(snackFoodName);
-                    switch (i) {
-                        case 0: mondayFood += snackFoodName + ", "; break;
-                        case 1: tuesdayFood += snackFoodName + ", "; break;
-                        case 2: wednesdayFood += snackFoodName + ", "; break;
-                        case 3: thursdayFood += snackFoodName + ", "; break;
-                        case 4: fridayFood += snackFoodName + ", "; break;
+                    for (int j = 0; j < weeklyReport.get(i).getDayMeals().getDinner().size(); j++) {
+                        consumedCalories += weeklyReport.get(i).getDayMeals().getDinner().get(j).getCalories();
+                        consumedCarbs += weeklyReport.get(i).getDayMeals().getDinner().get(j).getTotalCarbohydrate();
+                        consumedFat += weeklyReport.get(i).getDayMeals().getDinner().get(j).getTotalFat();
+                        consumedProtein += weeklyReport.get(i).getDayMeals().getDinner().get(j).getProtein();
+                        String dinnerFoodName = weeklyReport.get(i).getDayMeals().getDinner().get(j).getFoodName();
+                        dinnerFoodName = capitalizeFirstLetter(dinnerFoodName);
+                        switch (i) {
+                            case 0:
+                                mondayFood += dinnerFoodName + ", ";
+                                break;
+                            case 1:
+                                tuesdayFood += dinnerFoodName + ", ";
+                                break;
+                            case 2:
+                                wednesdayFood += dinnerFoodName + ", ";
+                                break;
+                            case 3:
+                                thursdayFood += dinnerFoodName + ", ";
+                                break;
+                            case 4:
+                                fridayFood += dinnerFoodName + ", ";
+                                break;
+                        }
                     }
-                }
 
-                for (int j = 0; j < weeklyReport.get(i).getDayMeals().getOptional().size(); j++) {
-                    consumedCalories += weeklyReport.get(i).getDayMeals().getOptional().get(j).getCalories();
-                    consumedCarbs += weeklyReport.get(i).getDayMeals().getOptional().get(j).getTotalCarbohydrate();
-                    consumedFat += weeklyReport.get(i).getDayMeals().getOptional().get(j).getTotalFat();
-                    consumedProtein += weeklyReport.get(i).getDayMeals().getOptional().get(j).getProtein();
-                    String optionalFoodName = weeklyReport.get(i).getDayMeals().getOptional().get(j).getFoodName();
-                    optionalFoodName = capitalizeFirstLetter(optionalFoodName);
-                    switch (i) {
-                        case 0: mondayFood += optionalFoodName + ", "; break;
-                        case 1: tuesdayFood += optionalFoodName + ", "; break;
-                        case 2: wednesdayFood += optionalFoodName + ", "; break;
-                        case 3: thursdayFood += optionalFoodName + ", "; break;
-                        case 4: fridayFood += optionalFoodName + ", "; break;
+                    for (int j = 0; j < weeklyReport.get(i).getDayMeals().getSnack().size(); j++) {
+                        consumedCalories += weeklyReport.get(i).getDayMeals().getSnack().get(j).getCalories();
+                        consumedCarbs += weeklyReport.get(i).getDayMeals().getSnack().get(j).getTotalCarbohydrate();
+                        consumedFat += weeklyReport.get(i).getDayMeals().getSnack().get(j).getTotalFat();
+                        consumedProtein += weeklyReport.get(i).getDayMeals().getSnack().get(j).getProtein();
+                        String snackFoodName = weeklyReport.get(i).getDayMeals().getSnack().get(j).getFoodName();
+                        snackFoodName = capitalizeFirstLetter(snackFoodName);
+                        switch (i) {
+                            case 0:
+                                mondayFood += snackFoodName + ", ";
+                                break;
+                            case 1:
+                                tuesdayFood += snackFoodName + ", ";
+                                break;
+                            case 2:
+                                wednesdayFood += snackFoodName + ", ";
+                                break;
+                            case 3:
+                                thursdayFood += snackFoodName + ", ";
+                                break;
+                            case 4:
+                                fridayFood += snackFoodName + ", ";
+                                break;
+                        }
+                    }
+
+                    for (int j = 0; j < weeklyReport.get(i).getDayMeals().getOptional().size(); j++) {
+                        consumedCalories += weeklyReport.get(i).getDayMeals().getOptional().get(j).getCalories();
+                        consumedCarbs += weeklyReport.get(i).getDayMeals().getOptional().get(j).getTotalCarbohydrate();
+                        consumedFat += weeklyReport.get(i).getDayMeals().getOptional().get(j).getTotalFat();
+                        consumedProtein += weeklyReport.get(i).getDayMeals().getOptional().get(j).getProtein();
+                        String optionalFoodName = weeklyReport.get(i).getDayMeals().getOptional().get(j).getFoodName();
+                        optionalFoodName = capitalizeFirstLetter(optionalFoodName);
+                        switch (i) {
+                            case 0:
+                                mondayFood += optionalFoodName + ", ";
+                                break;
+                            case 1:
+                                tuesdayFood += optionalFoodName + ", ";
+                                break;
+                            case 2:
+                                wednesdayFood += optionalFoodName + ", ";
+                                break;
+                            case 3:
+                                thursdayFood += optionalFoodName + ", ";
+                                break;
+                            case 4:
+                                fridayFood += optionalFoodName + ", ";
+                                break;
+                        }
                     }
                 }
             }
-
             if (mondayFood.endsWith(", ")) {
                 mondayFood = mondayFood.substring(0, mondayFood.length() - 2);
             }
