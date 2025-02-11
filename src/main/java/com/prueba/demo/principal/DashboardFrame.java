@@ -26,11 +26,10 @@ import org.springframework.stereotype.Component;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Date;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.Properties;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @Component
 public class DashboardFrame {
@@ -84,7 +83,10 @@ public class DashboardFrame {
     private Tooltip caloriesBurnedTooltip;
     @FXML
     private Tooltip timeActivityTooltip;
-
+    @FXML
+    private Label endWeekLabel;
+    @FXML
+    private Label weekStartLabel;
     @FXML
     private GridPane gridPaneDashboard;
     @FXML
@@ -155,6 +157,7 @@ public class DashboardFrame {
     @FXML
     private HBox dietPaneConfig;
 
+
     @FXML
     private ChoiceBox<String> choiceBox1;
 
@@ -170,6 +173,12 @@ public class DashboardFrame {
     @FXML
     private ChoiceBox<String> choiceBox5;
 
+    @FXML
+    private StackPane gridPane11, gridPane12, gridPane13, gridPane14, gridPane15,
+            gridPane21, gridPane22, gridPane23, gridPane24, gridPane25,
+            gridPane31, gridPane32, gridPane33, gridPane34, gridPane35,
+            gridPane41, gridPane42, gridPane43, gridPane44, gridPane45,
+            gridPane51, gridPane52, gridPane53, gridPane54, gridPane55;
     //ExercisePane
     @FXML
     private VBox exercisePane;
@@ -229,22 +238,9 @@ public class DashboardFrame {
         dietPane.setVisible(false);
         exercisePane.setVisible(false);
         reportsPane.setVisible(false);
+        dashboardPane.setVisible(false);
 
-        // Crear tooltips para cada ProgressBar
-        Tooltip caloriesTooltip = new Tooltip("Progreso de calorías consumidas.");
-        Tooltip proteinsTooltip = new Tooltip("Progreso de proteínas consumidas.");
-        Tooltip fatsTooltip = new Tooltip("Progreso de grasas consumidas.");
-        Tooltip carbohydratesTooltip = new Tooltip("Progreso de carbohidratos consumidos.");
-        Tooltip caloriesBurnedTooltip = new Tooltip("Progreso de calorías quemadas.");
-        Tooltip timeActivityTooltip = new Tooltip("Tiempo total de actividad.");
 
-        // Asociar cada Tooltip con su ProgressBar
-        setTooltipForProgressBar(caloriesProgressBar, caloriesTooltip);
-        setTooltipForProgressBar(proteinsProgressBar, proteinsTooltip);
-        setTooltipForProgressBar(fatsProgressBar, fatsTooltip);
-        setTooltipForProgressBar(carbohydratesProgressBar, carbohydratesTooltip);
-        setTooltipForProgressBar(caloriesBurnedProgressBar, caloriesBurnedTooltip);
-        setTooltipForProgressBar(timeActivityProgressBar, timeActivityTooltip);
 
         // Asociar acciones a botones
         profileButton.setOnAction(event -> showProfile());
@@ -308,7 +304,6 @@ public class DashboardFrame {
         setYourPreferencesButtonDiet.setOnAction(event -> openSetYourPreferencesDiet());
 
 
-
         //Profile
         //Click boton de profile
 
@@ -362,6 +357,10 @@ public class DashboardFrame {
                 }
             }
         });
+
+
+        showDashboard();
+
     }
 
 
@@ -395,12 +394,205 @@ public class DashboardFrame {
         });
     }
 
+    /**
+     Dashboard
+     */
 
     @FXML
     private void showDashboard() {
         hideAll();
         dashboardPane.setVisible(true);
         menuVbox.setVisible(true);
+
+
+        Platform.runLater(() -> {
+            /**
+             TODA LA INFORMACION MOSTRADA AQUI ES POR SEMANA DE LUNES A VIERNES!!!
+             */
+
+            Optional<AccountData> accountData = accountDataRepository.findByAccountId(1L);
+            LocalDate today = LocalDate.now();
+            Date monday = Date.valueOf(today.with(DayOfWeek.MONDAY));
+            Date friday = Date.valueOf(today.with(DayOfWeek.FRIDAY));
+
+            List<Report> weeklyReport = reportRepository.findReportsForWeek(1L, monday, friday);
+            double consumedCalories = 0;
+            double consumedProtein = 0;
+            double consumedFat = 0;
+            double consumedCarbs = 0;
+
+            double totalCalories = calculateCalories(1L) * 5;
+            double totalProtein = calculateProteins() *5;
+            double totalFat = calculateFats()*5;
+            double totalCarbs = calculateCarbs()*5;
+
+
+            for (int i = 0; i < weeklyReport.size(); i++) {
+                for (int j = 0; j < weeklyReport.get(i).getDayMeals().getBreakfast().size(); j++) {
+                    consumedCalories+= weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getCalories();
+                    consumedCarbs+=weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getTotalCarbohydrate();
+                    consumedFat+=weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getTotalFat();
+                    consumedProtein+=weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getProtein();
+                }
+
+                for (int j = 0; j < weeklyReport.get(i).getDayMeals().getLunch().size(); j++) {
+                    consumedCalories+= weeklyReport.get(i).getDayMeals().getLunch().get(j).getCalories();
+                    consumedCarbs+=weeklyReport.get(i).getDayMeals().getLunch().get(j).getTotalCarbohydrate();
+                    consumedFat+=weeklyReport.get(i).getDayMeals().getLunch().get(j).getTotalFat();
+                    consumedProtein+=weeklyReport.get(i).getDayMeals().getLunch().get(j).getProtein();
+                }
+
+                for (int j = 0; j < weeklyReport.get(i).getDayMeals().getDinner().size(); j++) {
+                    consumedCalories+= weeklyReport.get(i).getDayMeals().getDinner().get(j).getCalories();
+                    consumedCarbs+=weeklyReport.get(i).getDayMeals().getDinner().get(j).getTotalCarbohydrate();
+                    consumedFat+=weeklyReport.get(i).getDayMeals().getDinner().get(j).getTotalFat();
+                    consumedProtein+=weeklyReport.get(i).getDayMeals().getDinner().get(j).getProtein();
+                }
+
+                for (int j = 0; j < weeklyReport.get(i).getDayMeals().getSnack().size(); j++) {
+                    consumedCalories+= weeklyReport.get(i).getDayMeals().getSnack().get(j).getCalories();
+                    consumedCarbs+=weeklyReport.get(i).getDayMeals().getSnack().get(j).getTotalCarbohydrate();
+                    consumedFat+=weeklyReport.get(i).getDayMeals().getSnack().get(j).getTotalFat();
+                    consumedProtein+=weeklyReport.get(i).getDayMeals().getSnack().get(j).getProtein();
+                }
+
+                for (int j = 0; j < weeklyReport.get(i).getDayMeals().getOptional().size(); j++) {
+                    consumedCalories+= weeklyReport.get(i).getDayMeals().getOptional().get(j).getCalories();
+                    consumedCarbs+=weeklyReport.get(i).getDayMeals().getOptional().get(j).getTotalCarbohydrate();
+                    consumedFat+=weeklyReport.get(i).getDayMeals().getOptional().get(j).getTotalFat();
+                    consumedProtein+=weeklyReport.get(i).getDayMeals().getOptional().get(j).getProtein();
+                }
+
+            }
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy").withLocale(new Locale("es", "MX"));
+
+
+            String mondayFormatted = monday.toLocalDate().format(formatter);
+            String fridayFormatted = friday.toLocalDate().format(formatter);
+            weekStartLabel.setText(mondayFormatted);
+            endWeekLabel.setText(fridayFormatted);
+
+            waterLabel.setText("Hoy deberías tomar " + calculateWater(1L) + " litros de agua.");
+
+            caloriesProgressBar.setProgress(consumedCalories/totalCalories);
+            proteinsProgressBar.setProgress(consumedProtein/totalProtein);
+            fatsProgressBar.setProgress(consumedFat/totalFat);
+            carbohydratesProgressBar.setProgress(consumedCarbs/totalCarbs);
+
+            // Crear tooltips para cada ProgressBar
+            Tooltip caloriesTooltip = new Tooltip("Calorías\n" +
+                    "⬜ Meta semanal: " + Math.floor(totalCalories) + "\n" +
+                    "🟩 Consumo al día: " + Math.floor(consumedCalories));
+
+            Tooltip proteinsTooltip = new Tooltip("Proteínas\n" +
+                    "⬜ Meta semanal: " + Math.floor(totalProtein) + "\n" +
+                    "🟩 Consumo al día: " + Math.floor(consumedProtein));
+
+            Tooltip fatsTooltip = new Tooltip("Grasas\n" +
+                    "⬜ Meta semanal: " + Math.floor(totalFat) + "\n" +
+                    "🟩 Consumo al día: " + Math.floor(consumedFat));
+
+            Tooltip carbohydratesTooltip = new Tooltip("Carbohidratos\n" +
+                    "⬜ Meta semanal: " + Math.floor(totalCarbs) + "\n" +
+                    "🟩 Consumo al día: " + Math.floor(consumedCarbs));
+
+
+            Tooltip caloriesBurnedTooltip = new Tooltip("Progreso de calorías quemadas.");
+
+            Tooltip timeActivityTooltip = new Tooltip("Tiempo total de actividad.");
+
+
+            // Asociar cada Tooltip con su ProgressBar
+            setTooltipForProgressBar(caloriesProgressBar, caloriesTooltip);
+            setTooltipForProgressBar(proteinsProgressBar, proteinsTooltip);
+            setTooltipForProgressBar(fatsProgressBar, fatsTooltip);
+            setTooltipForProgressBar(carbohydratesProgressBar, carbohydratesTooltip);
+            setTooltipForProgressBar(caloriesBurnedProgressBar, caloriesBurnedTooltip);
+            setTooltipForProgressBar(timeActivityProgressBar, timeActivityTooltip);
+
+
+
+
+        });
+
+    }
+
+    public double calculateWater(Long accountId) {
+
+        Optional<AccountData> accountDataOpt = accountDataRepository.findByAccountId(accountId);
+        double totalWater = (accountDataOpt.get().getWeight() / 35);
+
+        return Math.round(totalWater * 10.0) / 10.0;
+    }
+
+
+    public double calculateCalories(Long accountId) {
+
+        Optional<AccountData> accountDataOpt = accountDataRepository.findByAccountId(accountId);
+
+        if (accountDataOpt.isEmpty()) {
+            throw new IllegalArgumentException("");
+        }
+
+        AccountData accountData = accountDataOpt.get();
+
+        // Obtener valores de la cuenta
+        boolean isMale = accountData.getGender(); // true = hombre, false = mujer
+        int age = accountData.getAge();
+        double weight = accountData.getWeight();
+        double height = accountData.getHeight();
+        Goal goal = accountData.getGoal() != null ? accountData.getGoal() : Goal.mantenimiento; // Valor por defecto
+
+        // Cálculo del TMB según Harris-Benedict
+        double tmb;
+
+
+        // Ajustar según el objetivo, actividad de 5 dias por lo que se toma como moderado
+        switch (goal) {
+            case deficit:
+                if (isMale) {
+                    tmb = (((10*weight)+(6.25*height)-(5*age)+5)*1.55)*.8;
+                } else {
+                    tmb = (((10*weight)+(6.25*height)-(5*age)-161)*1.55)*(.8);
+                }
+                return  tmb;
+            case volumen:
+                if (isMale) {
+                    tmb = (((10*weight)+(6.25*height)-(5*age)+5)*1.55)*1.2;
+                } else {
+                    tmb = (((10*weight)+(6.25*height)-(5*age)-161)*1.55)*1.2;
+                }
+                return tmb;
+            default: // mantenimiento
+                if (isMale) {
+                    tmb = (((10*weight)+(6.25*height)-(5*age)+5)*1.55);
+                } else {
+                    tmb = (((10*weight)+(6.25*height)-(5*age)-161)*1.55);
+                }
+                return tmb;
+        }
+    }
+
+    public double calculateProteins() {
+        double calories = calculateCalories(1L);
+        double proteinPercentage = 0.3; // 30% de proteínas
+
+        return (calories * proteinPercentage) / 4; // 1g de proteína = 4 kcal
+    }
+
+    public double calculateFats() {
+        double calories = calculateCalories(1L);
+        double fatPercentage = 0.25; // 25% de grasas
+
+        return (calories * fatPercentage) / 9; // 1g de grasa = 9 kcal
+    }
+
+    public double calculateCarbs() {
+        double calories = calculateCalories(1L);
+        double carbPercentage = 0.45; // 45% de carbohidratos
+
+        return (calories * carbPercentage) / 4; // 1g de carbohidrato = 4 kcal
     }
 
 
@@ -594,6 +786,7 @@ public class DashboardFrame {
         dietPane.setVisible(true);
         menuVbox.setVisible(true);
 
+
         LocalDate today = LocalDate.now();
         int dayOfWeek = today.getDayOfWeek().getValue();
         Date date1 = null;
@@ -731,11 +924,75 @@ public class DashboardFrame {
             }
         } catch (IOException e) {
             disableGridPane(gridPaneDiet);
+
             //e.printStackTrace();
         }
 
 
 
+    }
+
+    @FXML
+    public void resetAndLoadDiet() {
+
+        List<StackPane> gridPanes = Arrays.asList(
+                gridPane11, gridPane12, gridPane13, gridPane14, gridPane15,
+                gridPane21, gridPane22, gridPane23, gridPane24, gridPane25,
+                gridPane31, gridPane32, gridPane33, gridPane34, gridPane35,
+                gridPane41, gridPane42, gridPane43, gridPane44, gridPane45,
+                gridPane51, gridPane52, gridPane53, gridPane54, gridPane55
+        );
+
+        for (StackPane gridPane : gridPanes) {
+            boolean hasImage = false;
+
+            // Verifica si alguno de los nodos hijos es una imagen
+            for (Node node : gridPane.getChildren()) {
+                if (node instanceof ImageView) {
+                    hasImage = true;
+                    break;
+                }
+            }
+
+            if (hasImage) {
+                // Si tiene una imagen, limpia el contenido
+                gridPane.getChildren().clear();
+            } else {
+                // Si no tiene una imagen, deshabilita todos los controles dentro
+                for (Node node : gridPane.getChildren()) {
+                    if (node instanceof Button) {
+                        ((Button) node).setDisable(true);  // Deshabilita los botones específicamente
+                    } else if (node instanceof Control) {
+                        ((Control) node).setDisable(true);  // Deshabilita otros controles si es necesario
+                    }
+                }
+            }
+        }
+
+        choiceBox1.getSelectionModel().clearSelection();
+        choiceBox2.getSelectionModel().clearSelection();
+        choiceBox3.getSelectionModel().clearSelection();
+        choiceBox4.getSelectionModel().clearSelection();
+        choiceBox5.getSelectionModel().clearSelection();
+
+        showDiet();
+    }
+
+    private Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
+        for (Node node : gridPane.getChildren()) {
+            Integer columnIndex = GridPane.getColumnIndex(node);
+            Integer rowIndex = GridPane.getRowIndex(node);
+
+            // Si el índice de columna o fila es null, asignamos un valor por defecto
+            columnIndex = (columnIndex == null) ? 0 : columnIndex; // valor por defecto 0
+            rowIndex = (rowIndex == null) ? 0 : rowIndex; // valor por defecto 0
+
+            // Verificamos si el nodo está en la celda correcta
+            if (columnIndex == col && rowIndex == row) {
+                return node;
+            }
+        }
+        return null;
     }
 
     @Autowired
@@ -745,10 +1002,11 @@ public class DashboardFrame {
         // Dependiendo de la opción seleccionada y del índice del ChoiceBox, ejecutar algo
         if ("Sí".equals(selectedValue)) {
             saveToReport(localDate);
-            refreshContent();
+            resetAndLoadDiet();
         }
         if ("No".equals(selectedValue)) {
             showGoalsCheck(localDate);
+
         }
 
     }
@@ -827,6 +1085,8 @@ public class DashboardFrame {
                     e.printStackTrace();
                 }
             });
+            resetAndLoadDiet();
+
         }
 
 

@@ -430,7 +430,7 @@
                                           <Insets />
                                        </opaqueInsets>
                                     </HBox>
-                                    <GridPane fx:id="gridPaneDiet" VBox.vgrow="ALWAYS">
+                                    <GridPane id="gridPaneDietFood" fx:id="gridPaneDiet" VBox.vgrow="ALWAYS">
                                       <columnConstraints>
                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -525,43 +525,43 @@
                                                 </Label>
                                              </children>
                                           </StackPane>
-                                          <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                          <StackPane fx:id="gridPane11" prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                              <children>
                                                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER" />
                                              </children></StackPane>
-                                          <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                          <StackPane fx:id="gridPane12" prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                              <children>
                                                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
                                              </children></StackPane>
-                                          <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                          <StackPane fx:id="gridPane13" prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="3" GridPane.rowIndex="1">
                                              <children>
                                                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
                                              </children></StackPane>
-                                          <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                                          <StackPane fx:id="gridPane14" prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="4" GridPane.rowIndex="1">
                                              <children>
                                                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
                                              </children></StackPane>
-                                          <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="5" GridPane.rowIndex="1">
+                                          <StackPane fx:id="gridPane15" prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="5" GridPane.rowIndex="1">
                                              <children>
                                                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
                                              </children></StackPane>
-                                          <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                          <StackPane fx:id="gridPane31" prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                              <children>
                                                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
                                              </children></StackPane>
-                                          <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                          <StackPane fx:id="gridPane32" prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="2" GridPane.rowIndex="3">
                                              <children>
                                                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
                                              </children></StackPane>
-                                          <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                                          <StackPane fx:id="gridPane33" prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="3" GridPane.rowIndex="3">
                                              <children>
                                                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
                                              </children></StackPane>
-                                          <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                                          <StackPane fx:id="gridPane34" prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="4" GridPane.rowIndex="3">
                                              <children>
                                                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
                                              </children></StackPane>
-                                          <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="5" GridPane.rowIndex="3">
+                                          <StackPane fx:id="gridPane35" prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="5" GridPane.rowIndex="3">
                                              <children>
                                                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
                                              </children></StackPane>
@@ -590,39 +590,39 @@
                                                 <ChoiceBox fx:id="choiceBox5" prefWidth="150.0" style="-fx-background-color: white; -fx-border-color: #cdcdcd; -fx-border-width: 2; -fx-border-radius: 4;" />
                                              </children>
                                           </StackPane>
-                                          <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #e8f2d1; -fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                          <StackPane fx:id="gridPane22" prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #e8f2d1; -fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="2" GridPane.rowIndex="2">
                                              <children>
                                                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
                                              </children></StackPane>
-                                          <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #e8f2d1; -fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                                          <StackPane fx:id="gridPane23" prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #e8f2d1; -fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="3" GridPane.rowIndex="2">
                                              <children>
                                                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
                                              </children></StackPane>
-                                          <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #e8f2d1; -fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                                          <StackPane fx:id="gridPane24" prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #e8f2d1; -fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="4" GridPane.rowIndex="2">
                                              <children>
                                                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
                                              </children></StackPane>
-                                          <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #e8f2d1; -fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="5" GridPane.rowIndex="2">
+                                          <StackPane fx:id="gridPane25" prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #e8f2d1; -fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="5" GridPane.rowIndex="2">
                                              <children>
                                                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
                                              </children></StackPane>
-                                          <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #e8f2d1; -fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                          <StackPane fx:id="gridPane41" prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #e8f2d1; -fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                              <children>
                                                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
                                              </children></StackPane>
-                                          <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #e8f2d1; -fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                                          <StackPane fx:id="gridPane42" prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #e8f2d1; -fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="2" GridPane.rowIndex="4">
                                              <children>
                                                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
                                              </children></StackPane>
-                                          <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #e8f2d1; -fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                                          <StackPane fx:id="gridPane43" prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #e8f2d1; -fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="3" GridPane.rowIndex="4">
                                              <children>
                                                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
                                              </children></StackPane>
-                                          <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #e8f2d1; -fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="4" GridPane.rowIndex="4">
+                                          <StackPane fx:id="gridPane44" prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #e8f2d1; -fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="4" GridPane.rowIndex="4">
                                              <children>
                                                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
                                              </children></StackPane>
-                                          <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #e8f2d1; -fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="5" GridPane.rowIndex="4">
+                                          <StackPane fx:id="gridPane45" prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #e8f2d1; -fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="5" GridPane.rowIndex="4">
                                              <children>
                                                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
                                              </children></StackPane>
@@ -662,32 +662,32 @@
                                                 </Label>
                                              </children>
                                           </StackPane>
-                                          <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #e8f2d1; -fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                          <StackPane fx:id="gridPane21" prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #e8f2d1; -fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                              <children>
                                                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
                                              </children>
                                           </StackPane>
-                                          <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                          <StackPane fx:id="gridPane51" prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                              <children>
                                                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
                                              </children>
                                           </StackPane>
-                                          <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                                          <StackPane fx:id="gridPane52" prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="2" GridPane.rowIndex="5">
                                              <children>
                                                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
                                              </children>
                                           </StackPane>
-                                          <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="3" GridPane.rowIndex="5">
+                                          <StackPane fx:id="gridPane53" prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="3" GridPane.rowIndex="5">
                                              <children>
                                                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
                                              </children>
                                           </StackPane>
-                                          <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="4" GridPane.rowIndex="5">
+                                          <StackPane fx:id="gridPane54" prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="4" GridPane.rowIndex="5">
                                              <children>
                                                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
                                              </children>
                                           </StackPane>
-                                          <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="5" GridPane.rowIndex="5">
+                                          <StackPane fx:id="gridPane55" prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.columnIndex="5" GridPane.rowIndex="5">
                                              <children>
                                                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
                                              </children>
@@ -1458,7 +1458,7 @@
                                                                         <Insets right="10.0" />
                                                                      </GridPane.margin>
                                                                      <tooltip>
-                                                                        <Tooltip fx:id="proteinsTooltoip" text="Empty Tooltip" />
+                                                                        <Tooltip fx:id="proteinsTooltip" text="Empty Tooltip" />
                                                                      </tooltip>
                                                                   </ProgressBar>
                                                                   <ProgressBar fx:id="caloriesProgressBar" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="16.0" prefWidth="300.0" progress="1.0" style="-fx-accent: #a7c942; -fx-border-color: transparent; -fx-border-width: 0; -fx-border-radius: 10; -fx-control-inner-background: #e0e0e0;" GridPane.columnIndex="1">
@@ -1607,7 +1607,7 @@
                                                             <Insets top="2.0" />
                                                          </padding>
                                                       </Label>
-                                                      <Label text="Inicio semana aqui" textFill="#67ab9f">
+                                                      <Label fx:id="weekStartLabel" text="Inicio semana aqui" textFill="#67ab9f">
                                                          <font>
                                                             <Font name="System Bold" size="10.0" />
                                                          </font>
@@ -1617,7 +1617,7 @@
                                                             <Font name="System Bold" size="12.0" />
                                                          </font>
                                                       </Label>
-                                                      <Label text="Termino semana aqui" textFill="#67ab9f">
+                                                      <Label fx:id="endWeekLabel" text="Termino semana aqui" textFill="#67ab9f">
                                                          <font>
                                                             <Font name="System Bold" size="10.0" />
                                                          </font>

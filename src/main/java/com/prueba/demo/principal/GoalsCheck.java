@@ -166,7 +166,7 @@ public class GoalsCheck {
         dayMealRepository.save(dayMeal);
 
         saveToReport(date);
-
+        closeCurrentWindow();
 
     }
 
