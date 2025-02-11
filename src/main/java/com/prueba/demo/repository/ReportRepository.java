@@ -18,4 +18,8 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
                                     @Param("monday") Date monday,
                                     @Param("friday") Date friday);
     Report findByDate(Date reportDate);
+
+    @Query("SELECT r.date FROM Report r WHERE r.date = (SELECT MIN(r2.date) FROM Report r2)")
+    Date findOldestReportDate();
+
 }

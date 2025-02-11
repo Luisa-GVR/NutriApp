@@ -20,6 +20,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import javafx.util.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -358,6 +359,25 @@ public class DashboardFrame {
                     setDisable(true);
                     setStyle("-fx-background-color: #d3d3d3;");
                 }
+            }
+        });
+
+        Date oldestReportDate = reportRepository.findOldestReportDate();
+        LocalDate oldestDate = oldestReportDate.toLocalDate();
+
+        startDatePicker.setDayCellFactory(new Callback<DatePicker, DateCell>() {
+            @Override
+            public DateCell call(DatePicker datePicker) {
+                return new DateCell() {
+                    @Override
+                    public void updateItem(LocalDate date, boolean empty) {
+                        super.updateItem(date, empty);
+                        if (date.isBefore(oldestDate)) {
+                            setDisable(true);
+                            setStyle("-fx-background-color: #d3d3d3;");  
+                        }
+                    }
+                };
             }
         });
 
