@@ -151,6 +151,7 @@ public class SelectYourFood {
 
         selectButton.setOnAction(actionEvent -> {
             try {
+                cachedSuggestions = null;
                 addFood(suggestionsListView);
                 closeCurrentWindow();
                 refreshParentFrame();
