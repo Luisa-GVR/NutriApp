@@ -63,8 +63,19 @@ public class SelectYourFood {
 
     private List<String> cachedSuggestions = null;
 
+
     @FXML
     private void initialize(){
+
+
+        Platform.runLater(() -> {
+            Stage stage = (Stage) suggestionsComboBox.getScene().getWindow();
+
+                    stage.setOnCloseRequest(event -> {
+                        cachedSuggestions = null;
+                    });
+                });
+
         suggestionsComboBox.setMaxHeight(400);
 
         //Buscar comidas
@@ -140,7 +151,6 @@ public class SelectYourFood {
 
         selectButton.setOnAction(actionEvent -> {
             try {
-
                 addFood(suggestionsListView);
                 closeCurrentWindow();
                 refreshParentFrame();
@@ -173,11 +183,23 @@ public class SelectYourFood {
     }
 
     private void closeCurrentWindow() {
+
         Stage stage = (Stage) suggestionsListView.getScene().getWindow();
+
+        stage.setOnCloseRequest(event -> {
+            cachedSuggestions = null;  // Reset cached suggestions when the window is closed
+            if (dashboardFrame != null) {
+                Platform.runLater(() -> {
+                    dashboardFrame.hideAll();
+                    dashboardFrame.showDiet();
+                });
+            }
+        });
 
         stage.setOnHidden(event -> {
             if (dashboardFrame != null) {
                 Platform.runLater(() -> {
+                    cachedSuggestions = null;
                     dashboardFrame.hideAll();
                     dashboardFrame.showDiet();
                 });
@@ -310,6 +332,7 @@ public class SelectYourFood {
 
 
     }
+
 
 
     private List<String> searchFood2() {
