@@ -6,7 +6,6 @@ import com.prueba.demo.repository.*;
 import com.prueba.demo.service.APIConsumption;
 import com.prueba.demo.service.AccountDataService;
 import com.prueba.demo.service.dto.FoodPreferencesDTO;
-import jakarta.transaction.Transactional;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -19,16 +18,18 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
-import java.sql.Date;
+import org.springframework.data.domain.Pageable;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class SelectYourFood {
@@ -62,6 +63,7 @@ public class SelectYourFood {
 
     @FXML
     private void initialize(){
+        suggestionsComboBox.setMaxHeight(400);
 
         //Buscar comidas
 
@@ -75,7 +77,7 @@ public class SelectYourFood {
         // Listener para manejar la selección SOLO desde el dropdown
         suggestionsComboBox.setOnMouseClicked(event -> {
             suggestionsComboBox.show(); // Asegura que el dropdown se muestre al hacer clic
-
+            searchFood2();
 
             //List<String> getRandomFoodSuggestionsForMealType1 = APIConsumption.getRandomFoodSuggestionsForMealType1();
 
@@ -88,6 +90,7 @@ public class SelectYourFood {
             pauseTransition.setOnFinished(e -> {
                 String query = suggestionsComboBox.getEditor().getText();
                 if (!query.isEmpty()) {
+
                     searchFood(query);
                 }
             });
@@ -317,15 +320,16 @@ public class SelectYourFood {
     }
 
 
-    private void searchFood2() {
+    private List<String> searchFood2() {
         AccountDataService accountDataService = new AccountDataService(accountDataRepository, accountAllergyFoodRepository, accountLikedFoodRepository, accountDislikedFoodRepository);
 
         double calories = accountDataService.calculateCalories(1L);
         FoodPreferencesDTO foodPreferencesDTO = getFoodPreferences(1L);
 
         double adjustedCalories = 0.0;
+        Integer mealType = getRow();
 
-        switch (getRow()) {
+        switch (mealType) {
             case 1:
                 adjustedCalories = calories * 0.2;
                 break;
@@ -343,8 +347,40 @@ public class SelectYourFood {
                 break;
         }
 
+        if (mealType == 5){
+            mealType=4;
+        }
 
-        List<String> suggestions = apiConsumption.getFoodSuggestionsRecommended(foodPreferencesDTO, adjustedCalories); //API busqueda
+        double minCalories = adjustedCalories * 0.75;  // 25% less
+        double maxCalories = adjustedCalories * 1.25;  // 25% more
+
+        Pageable pageable = PageRequest.of(0, 10);  // Limits the result to 10 foods
+
+        List<Food> selectedFoods = foodRepository.findFoodsByMealTypeAndCaloriesRange(Collections.singletonList(mealType), minCalories, maxCalories, pageable);
+
+
+        List<String> selectedFoodNames = selectedFoods.stream()
+                .map(Food::getFoodName)
+                .collect(Collectors.toList());
+
+
+        List<String> allergies = accountAllergyFoodRepository.findFoodNamesByAccountDataId(1L);
+        List<String> dislikedFoods = accountDislikedFoodRepository.findFoodNamesByAccountDataId(1L);
+
+        selectedFoodNames.removeIf(foodName -> allergies.contains(foodName) || dislikedFoods.contains(foodName));
+
+        List<String> likedFoods = accountLikesFoodRepository.findFoodNamesByAccountDataId(1L);
+
+        List<String> allValidFoods = selectedFoodNames.stream()
+                .collect(Collectors.toList());
+        allValidFoods.addAll(likedFoods);
+
+        // Shuffle and pick 5 random suggestions
+        Collections.shuffle(allValidFoods);
+        List<String> suggestions = allValidFoods.stream()
+                .limit(5)
+                .collect(Collectors.toList());
+
 
 
         Platform.runLater(() -> {
@@ -352,7 +388,16 @@ public class SelectYourFood {
             suggestionsComboBox.getItems().addAll(suggestions); // Agregar nuevas sugerencias
             suggestionsComboBox.show();
         });
+
+        return suggestions;
+
     }
+
+    @Autowired
+    AccountDislikesFoodRepository accountDislikesFoodRepository;
+
+    @Autowired
+    AccountLikesFoodRepository accountLikesFoodRepository;
 
 
 

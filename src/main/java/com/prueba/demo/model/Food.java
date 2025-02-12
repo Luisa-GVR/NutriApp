@@ -2,6 +2,7 @@ package com.prueba.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.prueba.demo.principal.Photo;
 import jakarta.persistence.*;
 
@@ -42,6 +43,7 @@ public class Food {
 
 
     @JsonProperty("meal_type")
+    @JsonDeserialize(using = MealTypeDeserializer.class)
     private List<Integer> mealType;
 
 

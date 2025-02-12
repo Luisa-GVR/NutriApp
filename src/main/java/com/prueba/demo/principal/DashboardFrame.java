@@ -260,7 +260,7 @@ public class DashboardFrame {
                     List<String[]> rows = reader.readAll();
 
                     for (String[] row : rows) {
-                        if (row.length >= 7) {
+                        if (row.length >= 8) {
                             Food food = new Food();
                             food.setFoodName(row[0]);
                             food.setCalories(Double.parseDouble(row[1]));
@@ -270,6 +270,7 @@ public class DashboardFrame {
                             food.setPortionWeight(Double.parseDouble(row[5]));
                             List<Integer> newMealTypes = List.of(Integer.parseInt(row[6]));
                             food.setMealType(newMealTypes);
+                            food.setPhoto(new Photo().setThumb(row[7]));
 
                             // Buscar si el alimento ya existe en la base de datos
                             Optional<Food> existingFoodOptional = foodRepository.findByFoodName(food.getFoodName());
@@ -314,7 +315,6 @@ public class DashboardFrame {
 
     @FXML
     private void initialize() {
-        uploadFoodsFromCSV();
 
         rootPane.setMinWidth(900);  // Ancho mínimo
         rootPane.setMinHeight(520); // Alto mínimo
@@ -1060,6 +1060,8 @@ public class DashboardFrame {
 
     @FXML
     public void showDiet() {
+        uploadFoodsFromCSV();
+
         hideAll();
         dietPane.setVisible(true);
         menuVbox.setVisible(true);
