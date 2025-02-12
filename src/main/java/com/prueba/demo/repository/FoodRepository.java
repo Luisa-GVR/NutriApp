@@ -28,7 +28,23 @@ public interface FoodRepository extends JpaRepository<Food, Long> {
                                                    Pageable pageable);
 
 
-
+    @Query("""
+    SELECT f.foodName 
+    FROM Food f 
+    WHERE f.mealType IN :mealType 
+    AND f.calories BETWEEN :minCalories AND :maxCalories
+    AND f.foodName NOT IN (
+        SELECT f.foodName FROM AccountDislikesFood aaf JOIN aaf.food f WHERE aaf.accountDislikes.accountData.id = :accountDataId
+    )
+    AND f.foodName NOT IN (
+        SELECT f.foodName FROM AccountAllergyFood aaf JOIN aaf.food f WHERE aaf.accountAllergy.accountdata.id = :accountDataId
+    )
+""")
+    List<String> findValidFoods(@Param("mealType") List<Integer> mealType,
+                                @Param("minCalories") double minCalories,
+                                @Param("maxCalories") double maxCalories,
+                                @Param("accountDataId") Long accountDataId,
+                                Pageable pageable);
 
 
 }

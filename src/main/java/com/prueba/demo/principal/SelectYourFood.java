@@ -61,6 +61,8 @@ public class SelectYourFood {
         this.col = col;
     }
 
+    private List<String> cachedSuggestions = null;
+
     @FXML
     private void initialize(){
         suggestionsComboBox.setMaxHeight(400);
@@ -74,12 +76,19 @@ public class SelectYourFood {
             }
         });
 
+
+
         // Listener para manejar la selección SOLO desde el dropdown
         suggestionsComboBox.setOnMouseClicked(event -> {
-            suggestionsComboBox.show(); // Asegura que el dropdown se muestre al hacer clic
-            searchFood2();
 
-            //List<String> getRandomFoodSuggestionsForMealType1 = APIConsumption.getRandomFoodSuggestionsForMealType1();
+            if (cachedSuggestions == null) {
+                cachedSuggestions = searchFood2(); // Fetch once and store
+            }
+
+            suggestionsComboBox.show(); // Asegura que el dropdown se muestre al hacer clic
+            suggestionsComboBox.getItems().clear();
+            suggestionsComboBox.getItems().addAll(cachedSuggestions); // Agregar nuevas sugerencias
+            suggestionsComboBox.show();
 
         });
 
@@ -104,22 +113,6 @@ public class SelectYourFood {
 
             String selectedItem = suggestionsComboBox.getSelectionModel().getSelectedItem();
             ObservableList<String> items = suggestionsListView.getItems();
-
-            List<Food> allFoods = foodRepository.findAll();  // Get all foods
-
-            for (Food food : allFoods) {
-                String foodName = food.getFoodName();
-                String thumbnailUrl = food.getPhoto().getThumb(); // Directly access the URL
-
-                // Check if the URL is valid and try loading the image
-                if (thumbnailUrl != null && !thumbnailUrl.isEmpty()) {
-                    try {
-                        new Image(thumbnailUrl); // Try creating an Image to check validity
-                    } catch (IllegalArgumentException e) {
-                        // If invalid, log or handle accordingly
-                    }
-                }
-            }
 
             if (selectedItem != null) {
                 items.add(selectedItem);
@@ -272,7 +265,6 @@ public class SelectYourFood {
             }
         }
 
-
         dayMealRepository.save(dayMeal);
     }
 
@@ -324,7 +316,6 @@ public class SelectYourFood {
         AccountDataService accountDataService = new AccountDataService(accountDataRepository, accountAllergyFoodRepository, accountLikedFoodRepository, accountDislikedFoodRepository);
 
         double calories = accountDataService.calculateCalories(1L);
-        FoodPreferencesDTO foodPreferencesDTO = getFoodPreferences(1L);
 
         double adjustedCalories = 0.0;
         Integer mealType = getRow();
@@ -356,38 +347,14 @@ public class SelectYourFood {
 
         Pageable pageable = PageRequest.of(0, 10);  // Limits the result to 10 foods
 
-        List<Food> selectedFoods = foodRepository.findFoodsByMealTypeAndCaloriesRange(Collections.singletonList(mealType), minCalories, maxCalories, pageable);
-
-
-        List<String> selectedFoodNames = selectedFoods.stream()
-                .map(Food::getFoodName)
-                .collect(Collectors.toList());
-
-
-        List<String> allergies = accountAllergyFoodRepository.findFoodNamesByAccountDataId(1L);
-        List<String> dislikedFoods = accountDislikedFoodRepository.findFoodNamesByAccountDataId(1L);
-
-        selectedFoodNames.removeIf(foodName -> allergies.contains(foodName) || dislikedFoods.contains(foodName));
-
-        List<String> likedFoods = accountLikesFoodRepository.findFoodNamesByAccountDataId(1L);
-
-        List<String> allValidFoods = selectedFoodNames.stream()
-                .collect(Collectors.toList());
-        allValidFoods.addAll(likedFoods);
+        List<String> selectedFoods = foodRepository.findValidFoods(Collections.singletonList(mealType), minCalories, maxCalories, 1L, pageable);
 
         // Shuffle and pick 5 random suggestions
-        Collections.shuffle(allValidFoods);
-        List<String> suggestions = allValidFoods.stream()
+        Collections.shuffle(selectedFoods);
+        List<String> suggestions = selectedFoods.stream()
                 .limit(5)
                 .collect(Collectors.toList());
 
-
-
-        Platform.runLater(() -> {
-            suggestionsComboBox.getItems().clear();
-            suggestionsComboBox.getItems().addAll(suggestions); // Agregar nuevas sugerencias
-            suggestionsComboBox.show();
-        });
 
         return suggestions;
 
