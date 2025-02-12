@@ -6,7 +6,6 @@ import com.prueba.demo.repository.*;
 import com.prueba.demo.service.APIConsumption;
 import com.prueba.demo.service.AccountDataService;
 import com.prueba.demo.service.dto.FoodPreferencesDTO;
-import jakarta.transaction.Transactional;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -19,16 +18,18 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
-import java.sql.Date;
+import org.springframework.data.domain.Pageable;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class SelectYourFood {
@@ -60,8 +61,22 @@ public class SelectYourFood {
         this.col = col;
     }
 
+    private List<String> cachedSuggestions = null;
+
+
     @FXML
     private void initialize(){
+
+
+        Platform.runLater(() -> {
+            Stage stage = (Stage) suggestionsComboBox.getScene().getWindow();
+
+                    stage.setOnCloseRequest(event -> {
+                        cachedSuggestions = null;
+                    });
+                });
+
+        suggestionsComboBox.setMaxHeight(400);
 
         //Buscar comidas
 
@@ -72,12 +87,19 @@ public class SelectYourFood {
             }
         });
 
+
+
         // Listener para manejar la selección SOLO desde el dropdown
         suggestionsComboBox.setOnMouseClicked(event -> {
+
+            if (cachedSuggestions == null) {
+                cachedSuggestions = searchFood2(); // Fetch once and store
+            }
+
             suggestionsComboBox.show(); // Asegura que el dropdown se muestre al hacer clic
-
-
-            //List<String> getRandomFoodSuggestionsForMealType1 = APIConsumption.getRandomFoodSuggestionsForMealType1();
+            suggestionsComboBox.getItems().clear();
+            suggestionsComboBox.getItems().addAll(cachedSuggestions); // Agregar nuevas sugerencias
+            suggestionsComboBox.show();
 
         });
 
@@ -88,6 +110,7 @@ public class SelectYourFood {
             pauseTransition.setOnFinished(e -> {
                 String query = suggestionsComboBox.getEditor().getText();
                 if (!query.isEmpty()) {
+
                     searchFood(query);
                 }
             });
@@ -101,22 +124,6 @@ public class SelectYourFood {
 
             String selectedItem = suggestionsComboBox.getSelectionModel().getSelectedItem();
             ObservableList<String> items = suggestionsListView.getItems();
-
-            List<Food> allFoods = foodRepository.findAll();  // Get all foods
-
-            for (Food food : allFoods) {
-                String foodName = food.getFoodName();
-                String thumbnailUrl = food.getPhoto().getThumb(); // Directly access the URL
-
-                // Check if the URL is valid and try loading the image
-                if (thumbnailUrl != null && !thumbnailUrl.isEmpty()) {
-                    try {
-                        new Image(thumbnailUrl); // Try creating an Image to check validity
-                    } catch (IllegalArgumentException e) {
-                        // If invalid, log or handle accordingly
-                    }
-                }
-            }
 
             if (selectedItem != null) {
                 items.add(selectedItem);
@@ -144,7 +151,7 @@ public class SelectYourFood {
 
         selectButton.setOnAction(actionEvent -> {
             try {
-
+                cachedSuggestions = null;
                 addFood(suggestionsListView);
                 closeCurrentWindow();
                 refreshParentFrame();
@@ -177,11 +184,23 @@ public class SelectYourFood {
     }
 
     private void closeCurrentWindow() {
+
         Stage stage = (Stage) suggestionsListView.getScene().getWindow();
+
+        stage.setOnCloseRequest(event -> {
+            cachedSuggestions = null;  // Reset cached suggestions when the window is closed
+            if (dashboardFrame != null) {
+                Platform.runLater(() -> {
+                    dashboardFrame.hideAll();
+                    dashboardFrame.showDiet();
+                });
+            }
+        });
 
         stage.setOnHidden(event -> {
             if (dashboardFrame != null) {
                 Platform.runLater(() -> {
+                    cachedSuggestions = null;
                     dashboardFrame.hideAll();
                     dashboardFrame.showDiet();
                 });
@@ -269,7 +288,6 @@ public class SelectYourFood {
             }
         }
 
-
         dayMealRepository.save(dayMeal);
     }
 
@@ -317,15 +335,16 @@ public class SelectYourFood {
     }
 
 
-    private void searchFood2() {
+
+    private List<String> searchFood2() {
         AccountDataService accountDataService = new AccountDataService(accountDataRepository, accountAllergyFoodRepository, accountLikedFoodRepository, accountDislikedFoodRepository);
 
         double calories = accountDataService.calculateCalories(1L);
-        FoodPreferencesDTO foodPreferencesDTO = getFoodPreferences(1L);
 
         double adjustedCalories = 0.0;
+        Integer mealType = getRow();
 
-        switch (getRow()) {
+        switch (mealType) {
             case 1:
                 adjustedCalories = calories * 0.2;
                 break;
@@ -343,16 +362,33 @@ public class SelectYourFood {
                 break;
         }
 
+        if (mealType == 5){
+            mealType=4;
+        }
 
-        List<String> suggestions = apiConsumption.getFoodSuggestionsRecommended(foodPreferencesDTO, adjustedCalories); //API busqueda
+        double minCalories = adjustedCalories * 0.75;  // 25% less
+        double maxCalories = adjustedCalories * 1.25;  // 25% more
+
+        Pageable pageable = PageRequest.of(0, 10);  // Limits the result to 10 foods
+
+        List<String> selectedFoods = foodRepository.findValidFoods(Collections.singletonList(mealType), minCalories, maxCalories, 1L, pageable);
+
+        // Shuffle and pick 5 random suggestions
+        Collections.shuffle(selectedFoods);
+        List<String> suggestions = selectedFoods.stream()
+                .limit(5)
+                .collect(Collectors.toList());
 
 
-        Platform.runLater(() -> {
-            suggestionsComboBox.getItems().clear();
-            suggestionsComboBox.getItems().addAll(suggestions); // Agregar nuevas sugerencias
-            suggestionsComboBox.show();
-        });
+        return suggestions;
+
     }
+
+    @Autowired
+    AccountDislikesFoodRepository accountDislikesFoodRepository;
+
+    @Autowired
+    AccountLikesFoodRepository accountLikesFoodRepository;
 
 
 

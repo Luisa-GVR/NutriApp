@@ -20,8 +20,9 @@ public class Photo {
         return thumb;
     }
 
-    public void setThumb(String thumb) {
+    public Photo setThumb(String thumb) {
         this.thumb = thumb;
+        return this;
     }
 
     public String getHighres() {

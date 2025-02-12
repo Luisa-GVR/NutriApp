@@ -2,8 +2,11 @@ package com.prueba.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.prueba.demo.principal.Photo;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
@@ -39,9 +42,10 @@ public class Food {
     private Photo photo;
 
 
-
     @JsonProperty("meal_type")
-    private int mealType;
+    @JsonDeserialize(using = MealTypeDeserializer.class)
+    private List<Integer> mealType;
+
 
     //Getters y setters...
 
@@ -113,11 +117,11 @@ public class Food {
         this.totalCarbohydrate = totalCarbohydrate;
     }
 
-    public int getMealType() {
+    public List<Integer> getMealType() {
         return mealType;
     }
 
-    public void setMealType(int mealType) {
+    public void setMealType(List<Integer> mealType) {
         this.mealType = mealType;
     }
 }

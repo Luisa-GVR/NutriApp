@@ -41,8 +41,25 @@ public class APIConsumption {
     //esta dde mi cuenta
 
 
+
+     /*
+
     private static final String API_KEY = "602d0e1d856a6e905686723221befb1e";
     private static final String API_ID = "7fe9ac29";
+    private static final String URL_BASE = "https://trackapi.nutritionix.com/v2/natural/nutrients";
+
+
+
+*/
+/* otro personal XD
+    private static final String API_KEY = "5489f0b2ecbc6bfd795e90ce6d2c09d0";
+    private static final String API_ID = "d1ca182a";
+    private static final String URL_BASE = "https://trackapi.nutritionix.com/v2/natural/nutrients";
+
+ */
+
+    private static final String API_KEY = "1ffb74a6400c6112c94c03ff2ff19803";
+    private static final String API_ID = "4096520a";
     private static final String URL_BASE = "https://trackapi.nutritionix.com/v2/natural/nutrients";
 
     public Food getFoodInfo(String query) {
