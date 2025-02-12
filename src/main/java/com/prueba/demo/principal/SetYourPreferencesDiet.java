@@ -6,13 +6,13 @@ import com.prueba.demo.service.APIConsumption;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -47,6 +47,7 @@ public class SetYourPreferencesDiet {
 
     @FXML
     private void initialize(){
+
         favsFoodsErrorLabel.setVisible(false);
         noFavsFoodsErrorLabel.setVisible(false);
 
@@ -69,9 +70,10 @@ public class SetYourPreferencesDiet {
                 //showAlert("Error", "No se pudo completar el perfil.");
             }
         });
-
-
     }
+
+
+
 
     @Autowired
     private AccountDataRepository accountDataRepository;
@@ -208,7 +210,6 @@ public class SetYourPreferencesDiet {
 
     }
 
-
     private void configureFoodComboBox(ComboBox<String> comboBox, ListView<String> listView, Label errorLabel) {
         // Evitar que Enter agregue elementos automáticamente
         comboBox.setOnKeyPressed(event -> {
@@ -223,15 +224,16 @@ public class SetYourPreferencesDiet {
         PauseTransition pauseTransition = new PauseTransition(Duration.millis(500));
 
         // Mostrar sugerencias de la API cuando el usuario escribe
-        comboBox.setOnKeyReleased(event -> {
-            pauseTransition.setOnFinished(e -> {
+
+        comboBox.getEditor().setOnKeyTyped(event -> {
+            if (event.getCharacter().equals("\r")) { // "\r" representa la tecla Enter
                 String query = comboBox.getEditor().getText();
                 if (!query.isEmpty()) {
                     searchFood(query, comboBox);
                 }
-            });
-            pauseTransition.playFromStart();
+            }
         });
+
 
         comboBox.setOnAction(event -> {
             if (!comboBox.isShowing()) return; // Solo procesar si se selecciona desde el dropdown
@@ -242,8 +244,8 @@ public class SetYourPreferencesDiet {
             if (selectedItem != null) {
                 if (items.contains("Ninguna") || (items.size() >= 5) ||
                         (!items.isEmpty() && selectedItem.equals("Ninguna"))) {
-                        errorLabel.setText("Verificar valores ingresados");
-                        errorLabel.setVisible(true);
+                    errorLabel.setText("Verificar valores ingresados");
+                    errorLabel.setVisible(true);
                     return;
                 }
 
@@ -259,6 +261,22 @@ public class SetYourPreferencesDiet {
 
 
     }
+    // Método para agregar elementos a la lista con validaciones
+    private void addItemToList(String selectedItem, ListView<String> listView, Label errorLabel) {
+        ObservableList<String> items = listView.getItems();
+
+        if (items.contains("Ninguna") || (items.size() >= 5) ||
+                (!items.isEmpty() && selectedItem.equals("Ninguna"))) {
+            errorLabel.setText("Verificar valores ingresados");
+            errorLabel.setVisible(true);
+            return;
+        }
+
+        if (!items.contains(selectedItem)) {
+            items.add(selectedItem);
+            System.out.println("Added item: " + selectedItem);
+        }
+    }
 
     private void configureFoodListView(ListView<String> listView) {
         listView.setOnMouseClicked(event -> {
@@ -267,20 +285,38 @@ public class SetYourPreferencesDiet {
                 listView.getItems().remove(selectedItem);
             }
         });
+
+        listView.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                event.consume();
+
+            }
+        });
+
     }
 
     @Autowired
     private APIConsumption apiConsumption;
 
     private void searchFood(String query, ComboBox comboBox) {
+        TextField editor = comboBox.getEditor();
+
         List<String> suggestions = apiConsumption.getFoodSuggestionsNeutral(query); //API busqueda
 
         Platform.runLater(() -> {
+
+            editor.requestFocus();
+
+
             comboBox.getItems().clear();
             comboBox.getItems().addAll(suggestions); // Agregar nuevas sugerencias
             comboBox.getItems().add("Ninguna"); // Mantener "Ninguna"
+
             comboBox.show();
+
         });
+
+
     }
 
     private void closeCurrentWindow() {

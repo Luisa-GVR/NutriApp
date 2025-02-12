@@ -33,17 +33,18 @@ public class APIConsumption {
     //Nutritionix, hacerlo mas seguro!
 
      //estos son de la nutricuenta
+    /*
      private static final String API_KEY = "04efb6f3d6527074db8c13c4ac662f40";
     private static final String API_ID = "7aa68925";
     private static final String URL_BASE = "https://trackapi.nutritionix.com/v2/natural/nutrients";
-
+*/
     //esta dde mi cuenta
-     /*
+
 
     private static final String API_KEY = "602d0e1d856a6e905686723221befb1e";
     private static final String API_ID = "7fe9ac29";
     private static final String URL_BASE = "https://trackapi.nutritionix.com/v2/natural/nutrients";
-*/
+
     public Food getFoodInfo(String query) {
         HttpClient client = HttpClient.newHttpClient();
 
