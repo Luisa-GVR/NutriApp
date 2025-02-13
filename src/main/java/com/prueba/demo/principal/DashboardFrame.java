@@ -451,35 +451,7 @@ public class DashboardFrame {
             }
         });
 
-        Date oldestReportDate = reportRepository.findOldestReportDate();
 
-        // Verificar si oldestReportDate es null
-        if (oldestReportDate == null) {
-            // Si no hay fecha, deshabilitar completamente el startDatePicker
-            startDatePicker.setDisable(true);
-        } else {
-            startDatePicker.setDisable(false);
-
-            // Convertir la fecha a LocalDate
-            LocalDate oldestDate = oldestReportDate.toLocalDate();
-
-            // Configurar el DatePicker para que no permita fechas anteriores a la más antigua
-            startDatePicker.setDayCellFactory(new Callback<DatePicker, DateCell>() {
-                @Override
-                public DateCell call(DatePicker datePicker) {
-                    return new DateCell() {
-                        @Override
-                        public void updateItem(LocalDate date, boolean empty) {
-                            super.updateItem(date, empty);
-                            if (date.isBefore(oldestDate)) {
-                                setDisable(true);  // Deshabilitar la fecha si es anterior a la fecha más antigua
-                                setStyle("-fx-background-color: #d3d3d3;");  // Estilo para las fechas deshabilitadas
-                            }
-                        }
-                    };
-                }
-            });
-        }
 
 
         showDashboard();
@@ -1610,6 +1582,39 @@ public class DashboardFrame {
         hideAll();
         reportsPane.setVisible(true);
         menuVbox.setVisible(true);
+
+        Date oldestReportDate = reportRepository.findOldestReportDate();
+
+        // Verificar si oldestReportDate es null
+        if (oldestReportDate == null) {
+            // Si no hay fecha, deshabilitar completamente el startDatePicker
+            startDatePicker.setDisable(true);
+            oldestReportDate = reportRepository.findOldestReportDate();
+
+        } else {
+            startDatePicker.setDisable(false);
+
+            // Convertir la fecha a LocalDate
+            LocalDate oldestDate = oldestReportDate.toLocalDate();
+
+            // Configurar el DatePicker para que no permita fechas anteriores a la más antigua
+            startDatePicker.setDayCellFactory(new Callback<DatePicker, DateCell>() {
+                @Override
+                public DateCell call(DatePicker datePicker) {
+                    return new DateCell() {
+                        @Override
+                        public void updateItem(LocalDate date, boolean empty) {
+                            super.updateItem(date, empty);
+                            if (date.isBefore(oldestDate)) {
+                                setDisable(true);  // Deshabilitar la fecha si es anterior a la fecha más antigua
+                                setStyle("-fx-background-color: #d3d3d3;");  // Estilo para las fechas deshabilitadas
+                            }
+                        }
+                    };
+                }
+            });
+        }
+
 
         Optional<Account> account = accountRepository.findById(1L);
         AccountData accountData = account.get().getAccountData();
