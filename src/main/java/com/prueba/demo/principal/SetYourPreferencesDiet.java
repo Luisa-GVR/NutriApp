@@ -211,55 +211,55 @@ public class SetYourPreferencesDiet {
     }
 
     private void configureFoodComboBox(ComboBox<String> comboBox, ListView<String> listView, Label errorLabel) {
-        // Evitar que Enter agregue elementos automáticamente
-        comboBox.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER) {
-                event.consume();
-            }
-        });
-
         // Asegurar que el dropdown se muestre al hacer clic
         comboBox.setOnMouseClicked(event -> comboBox.show());
 
-        PauseTransition pauseTransition = new PauseTransition(Duration.millis(500));
-
-        // Mostrar sugerencias de la API cuando el usuario escribe
-
+        // Buscar alimentos cuando el usuario presiona Enter y limpiar el texto
         comboBox.getEditor().setOnKeyTyped(event -> {
-            if (event.getCharacter().equals("\r")) { // "\r" representa la tecla Enter
+            if (event.getCharacter().equals("\r")) { // Enter presionado
                 String query = comboBox.getEditor().getText();
                 if (!query.isEmpty()) {
                     searchFood(query, comboBox);
+                    Platform.runLater(() -> comboBox.getEditor().clear()); // Borra el texto después de la búsqueda
                 }
             }
         });
 
-
         comboBox.setOnAction(event -> {
-            if (!comboBox.isShowing()) return; // Solo procesar si se selecciona desde el dropdown
+            Platform.runLater(() -> {
+                String selectedItem = comboBox.getSelectionModel().getSelectedItem();
+                ObservableList<String> items = listView.getItems();
+                ObservableList<String> comboItems = comboBox.getItems(); // Opciones válidas
 
-            String selectedItem = comboBox.getSelectionModel().getSelectedItem();
-            ObservableList<String> items = listView.getItems();
+                if (selectedItem == null || !comboItems.contains(selectedItem)) {
+                    return;
+                }
 
-            if (selectedItem != null) {
-                if (items.contains("Ninguna") || (items.size() >= 5) ||
-                        (!items.isEmpty() && selectedItem.equals("Ninguna"))) {
-                    errorLabel.setText("Verificar valores ingresados");
+                if (items.contains("Ninguna")) {
+                    errorLabel.setText("No se pueden agregar elementos si 'Ninguna' está en la lista.");
+                    errorLabel.setVisible(true);
+                    return;
+                }
+                if (items.size() >= 5) {
+                    errorLabel.setText("No se pueden agregar más de 5 elementos.");
+                    errorLabel.setVisible(true);
+                    return;
+                }
+                if (!items.isEmpty() && selectedItem.equals("Ninguna")) {
+                    errorLabel.setText("'Ninguna' solo puede agregarse si la lista está vacía.");
                     errorLabel.setVisible(true);
                     return;
                 }
 
                 if (!items.contains(selectedItem)) {
                     items.add(selectedItem);
+                    errorLabel.setVisible(false); // Oculta error si la selección es válida
                 }
-            }
 
-            // Borra lo escrito en el ComboBox sin alterar las sugerencias
-            Platform.runLater(() -> comboBox.getEditor().clear());
+                // Limpiar la selección después de agregar el elemento
+                comboBox.getSelectionModel().clearSelection();
+            });
         });
-
-
-
     }
     // Método para agregar elementos a la lista con validaciones
     private void addItemToList(String selectedItem, ListView<String> listView, Label errorLabel) {

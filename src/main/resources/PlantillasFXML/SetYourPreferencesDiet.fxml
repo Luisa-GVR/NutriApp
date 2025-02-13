@@ -46,17 +46,17 @@
          <children>
             <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="295.0" GridPane.columnIndex="1">
                <children>
-                  <HBox maxWidth="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="240.0" style="-fx-border-color: #cdcdcd;">
+                  <HBox maxWidth="-Infinity" minHeight="-Infinity" prefHeight="50.0" prefWidth="240.0" style="-fx-border-color: #cdcdcd;">
                      <VBox.margin>
                         <Insets top="8.0" />
                      </VBox.margin>
                      <children>
-                        <ListView fx:id="favsFoodsListView" maxHeight="-Infinity" minHeight="-Infinity" orientation="HORIZONTAL" prefHeight="23.0" prefWidth="120.0" style="-fx-border-color: white; -fx-background-color: white; -fx-border-width: 1;">
+                        <ListView fx:id="favsFoodsListView" maxHeight="-Infinity" minHeight="-Infinity" orientation="HORIZONTAL" prefHeight="45.0" prefWidth="120.0" style="-fx-border-color: white; -fx-background-color: white; -fx-border-width: 1;">
                            <HBox.margin>
                               <Insets left="2.0" top="1.5" />
                            </HBox.margin>
                         </ListView>
-                        <ComboBox fx:id="favsFoodsComboBox" editable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="120.0" style="-fx-background-color: white; -fx-border-color: white; -fx-border-radius: 4;" visibleRowCount="5">
+                        <ComboBox fx:id="favsFoodsComboBox" editable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="47.0" prefWidth="120.0" style="-fx-background-color: white; -fx-border-color: white; -fx-border-radius: 4;" visibleRowCount="5">
                            <HBox.margin>
                               <Insets left="-2.0" />
                            </HBox.margin>
@@ -67,6 +67,9 @@
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
                   </Label>
                </children>
             </VBox>
@@ -76,12 +79,12 @@
                      <children>
                         <HBox maxWidth="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="240.0" style="-fx-border-color: #cdcdcd;">
                            <children>
-                              <ListView fx:id="noFavsFoodsListView" maxHeight="-Infinity" minHeight="-Infinity" orientation="HORIZONTAL" prefHeight="23.0" prefWidth="120.0" style="-fx-border-color: white; -fx-background-color: white; -fx-border-width: 1;">
+                              <ListView fx:id="noFavsFoodsListView" maxHeight="-Infinity" minHeight="-Infinity" orientation="HORIZONTAL" prefHeight="30.0" prefWidth="120.0" style="-fx-border-color: white; -fx-background-color: white; -fx-border-width: 1;">
                                  <HBox.margin>
                                     <Insets left="2.0" top="1.5" />
                                  </HBox.margin>
                               </ListView>
-                              <ComboBox fx:id="noFavsFoodsComboBox" editable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="120.0" style="-fx-background-color: white; -fx-border-color: white; -fx-border-radius: 4;" visibleRowCount="5">
+                              <ComboBox fx:id="noFavsFoodsComboBox" editable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="32.0" prefWidth="120.0" style="-fx-background-color: white; -fx-border-color: white; -fx-border-radius: 4;" visibleRowCount="5">
                                  <HBox.margin>
                                     <Insets left="-2.0" />
                                  </HBox.margin>

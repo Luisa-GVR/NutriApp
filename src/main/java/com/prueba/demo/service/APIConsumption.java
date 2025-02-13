@@ -308,7 +308,7 @@ public class APIConsumption {
                             .filter(food -> food.getFoodName() != null && !food.getFoodName().isEmpty()) // Avoid saving invalid data
                             .peek(food -> {
                                 try {
-                                    food.setMealType(mealType);
+                                    food.setMealType(Collections.singletonList(mealType));
 
                                     // 1. Check if the food with the same name already exists in the database
                                     Optional<Food> existingFood = foodRepository.findByFoodName(food.getFoodName());
