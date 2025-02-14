@@ -1559,17 +1559,17 @@ public class DashboardFrame {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlantillasFXML/SetYourPreferencesExercise.fxml"));
                     loader.setControllerFactory(applicationContext::getBean);
 
-                    Scene scene = new Scene(loader.load(), 600, 360); // Limitar tamaño de la escena
+                    Scene scene = new Scene(loader.load(), 400, 500); // Limitar tamaño de la escena
 
                     preferencesExcerciseStage = new Stage();
                     preferencesExcerciseStage.setTitle("Principal");
                     preferencesExcerciseStage.setScene(scene);
 
                     // Establecer límites para la ventana
-                    preferencesExcerciseStage.setMinWidth(600);
-                    preferencesExcerciseStage.setMinHeight(360);
-                    preferencesExcerciseStage.setMaxWidth(600);
-                    preferencesExcerciseStage.setMaxHeight(360);
+                    preferencesExcerciseStage.setMinWidth(400);
+                    preferencesExcerciseStage.setMinHeight(500);
+                    preferencesExcerciseStage.setMaxWidth(400);
+                    preferencesExcerciseStage.setMaxHeight(500);
 
                     preferencesExcerciseStage.setOnCloseRequest(event -> preferencesExcerciseStage = null); // Reset when closed
 

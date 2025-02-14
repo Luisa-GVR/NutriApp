@@ -10,6 +10,7 @@ public enum ExcerciseType {
     private String value;
 
     ExcerciseType(String value) {
+       // this.value = value;
     }
 
     public static ExcerciseType fromString(String text) {
