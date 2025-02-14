@@ -145,8 +145,10 @@ public class SetYourPreferencesExercise {
     @Autowired
     private AccountRepository accountRepository;
 
+    /*
     @Autowired
     private AccountExerciseDayRepository AccountExerciseDayRepository;
+*/
 
     /*
     private void completeProfile() {

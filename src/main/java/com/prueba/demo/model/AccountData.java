@@ -22,6 +22,26 @@ public class AccountData {
     @Column
     private Goal goal;
 
+    @Enumerated(EnumType.STRING)
+    @Column
+    private ExcerciseType monday;
+
+    @Enumerated(EnumType.STRING)
+    @Column
+    private ExcerciseType tuesday;
+
+    @Enumerated(EnumType.STRING)
+    @Column
+    private ExcerciseType wednesday;
+
+    @Enumerated(EnumType.STRING)
+    @Column
+    private ExcerciseType thursday;
+
+    @Enumerated(EnumType.STRING)
+    @Column
+    private ExcerciseType friday;
+
     @Column(name = "weight", nullable = false)
     private Double weight;
 
