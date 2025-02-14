@@ -80,6 +80,8 @@ public class GoalsCheck {
             }
         });
 
+
+
     }
 
     @Autowired
@@ -312,11 +314,22 @@ public class GoalsCheck {
             comboBox.show();
         });
     }
+    public interface CloseCallback {
+        void onClosed();
+    }
+
+    private CloseCallback closeCallback;
+
+    public void setCloseCallback(CloseCallback callback) {
+        this.closeCallback = callback;
+    }
 
     private void closeCurrentWindow() {
         Stage stage = (Stage) saveButton.getScene().getWindow();
         stage.close();
+        if (closeCallback != null) {
+            closeCallback.onClosed(); // Notify the parent
+        }
     }
-
 
 }

@@ -1333,9 +1333,14 @@ public class DashboardFrame {
                     goalsCheckStage.setMaxWidth(600);
                     goalsCheckStage.setMaxHeight(600);
 
-                    goalsCheckStage.setOnCloseRequest(event -> goalsCheckStage = null); // Reset when closed
+                    goalsCheckStage.setOnCloseRequest(event -> {
+                        goalsCheckStage = null;
+                    });
 
                     goalsCheckStage.show();
+                    goalsCheck.setCloseCallback(this::goalsCheckClosed);
+
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1344,8 +1349,11 @@ public class DashboardFrame {
 
         }
 
+    }
 
-
+    private void goalsCheckClosed() {
+        goalsCheckStage = null; // Correctly reset the reference
+        resetAndLoadDiet(); // Or any other actions you need to take
     }
 
     private Stage nutrimentalInfoStage;
