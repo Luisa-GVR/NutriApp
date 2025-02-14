@@ -261,6 +261,7 @@ public class SetYourPreferencesDiet {
             });
         });
     }
+
     // Método para agregar elementos a la lista con validaciones
     private void addItemToList(String selectedItem, ListView<String> listView, Label errorLabel) {
         ObservableList<String> items = listView.getItems();
