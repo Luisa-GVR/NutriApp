@@ -20,8 +20,24 @@ public class DayExcercise {
     @Column(name = "date", nullable = false, length = 120)
     private Date date;
 
+    @ManyToMany
+    @JoinTable(
+            name = "DayExcercise_Excercise",
+            joinColumns = @JoinColumn(name = "dayExcercise_id"),
+            inverseJoinColumns = @JoinColumn(name = "excercise_id")
+    )
+    private List<Excercise> excercises;
+
     //Getters y setters...
 
+
+    public List<Excercise> getExcercises() {
+        return excercises;
+    }
+
+    public void setExcercises(List<Excercise> excercises) {
+        this.excercises = excercises;
+    }
 
     public Long getId() {
         return id;
