@@ -36,6 +36,13 @@ public class SetYourPreferencesExercise {
     @FXML
     private ChoiceBox<String> fridayChoiceBox;
 
+    @Autowired
+    ExcerciseRepository excerciseRepository;
+
+    @Autowired
+    DayExcerciseRepository dayExcerciseRepository;
+
+
     private final ObservableList<String> allExercises = FXCollections.observableArrayList(
             "Pecho y Brazo", "Pierna Completa", "Hombro y Espalda", "Abdomen y Cardio"
     );
