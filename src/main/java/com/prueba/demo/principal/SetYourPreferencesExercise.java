@@ -67,7 +67,7 @@ public class SetYourPreferencesExercise {
         saveButton.setOnAction(actionEvent -> {
             try {
                 if (validateFields()) {
-                    //completeProfile();
+                    completeProfile();
                     System.out.println("entre a save y llegue a que si valido");
                 }else {
                     System.out.println("entre a save y no valido desde else");
@@ -145,88 +145,24 @@ public class SetYourPreferencesExercise {
     @Autowired
     private AccountRepository accountRepository;
 
-    /*
     @Autowired
-    private AccountExerciseDayRepository AccountExerciseDayRepository;
-*/
+    private AccountData accountData;
 
-    /*
+
     private void completeProfile() {
-        AccountData accountData = accountDataRepository.findById(1L).orElse(new AccountData());
+        //AccountData accountData = accountDataRepository.findById(1L).orElse(new AccountData());
+
+        Optional<Account> account = accountRepository.findById(1L);
+        AccountData accountData = account.get().getAccountData();
+
+        // Recoger los ejercicios seleccionados
+        String mondayExercise = mondayChoiceBox.getValue();
+        String tuesdayExercise = tuesdayChoiceBox.getValue();
+        String wednesdayExercise = wednesdayChoiceBox.getValue();
+        String thursdayExercise = thursdayChoiceBox.getValue();
+        String fridayExercise = fridayChoiceBox.getValue();
 
 
-        // Obtener la lista de ejercicios que gustan
-        ObservableList<String> Exercises = exerciseListView.getItems();
-        List<Excercise> exerciseList = new ArrayList<>();
-
-        boolean exerciseNull = false;
-
-
-        // Procesar ejercicios que gustan
-        if (Exercises.isEmpty() || (Exercises.size() == 1)) {
-
-            exerciseNull = true;
-        } else {
-
-            AccountLikes accountLikes = new AccountLikes();
-            accountLikes.setAccountData(accountData);
-            accountLikesRepository.save(accountLikes);
-
-            for (String allergy : favFoods) {
-                Food food = apiConsumption.getFoodInfo(allergy);
-
-                if (food != null) {
-                    Food existingFood = foodRepository.findFirstByFoodName(food.getFoodName());
-                    if (existingFood != null) {
-                        food = existingFood;  // Usar el alimento encontrado
-                    } else {
-                        foodRepository.save(food); // Guardar nuevo alimento
-                    }
-
-                    likeFoodList.add(food);
-
-                    AccountLikesFood accountLikesFood = new AccountLikesFood();
-                    accountLikesFood.setFood(food);
-                    accountLikesFood.setAccountLikes(accountLikes);
-                    accountLikesFoodRepository.save(accountLikesFood);
-                }
-            }
-
-        }
-
-        // Procesar alimentos que no gustan
-        if (dislikeFods.size() == 1 && dislikeFods.get(0).equals("Ninguna")) {
-            if (bothNull) {
-                closeCurrentWindow();
-                dashboardFrame.hidePreferencesUI();
-                dashboardFrame.refreshContent();
-            }
-        } else {
-            AccountDislikes accountDislikes = new AccountDislikes();
-            accountDislikes.setAccountData(accountData);
-            accountDislikesRepository.save(accountDislikes);
-
-            for (String dislike : dislikeFods) {
-                Food food = apiConsumption.getFoodInfo(dislike);
-
-                if (food != null) {
-                    Food existingFood = foodRepository.findFirstByFoodName(food.getFoodName());
-                    if (existingFood != null) {
-                        food = existingFood;  // Usar el alimento encontrado
-                    } else {
-                        foodRepository.save(food); // Guardar nuevo alimento
-                    }
-
-                    dislikeFoodList.add(food);
-
-                    AccountDislikesFood accountDislikesFood = new AccountDislikesFood();
-                    accountDislikesFood.setFood(food);
-                    accountDislikesFood.setAccountDislikes(accountDislikes);
-                    accountDislikesFoodRepository.save(accountDislikesFood);
-                }
-            }
-
-        }
 
         Properties properties = new Properties();
         properties.setProperty("preferencesExerciseCompleted", "true");
@@ -242,12 +178,15 @@ public class SetYourPreferencesExercise {
 
     }
 
+    private DashboardFrame dashboardFrame;
+    public SetYourPreferencesExercise(DashboardFrame dashboardFrame) {
+        this.dashboardFrame = dashboardFrame;
+    }
+
     private void closeCurrentWindow() {
         Stage stage = (Stage) saveButton.getScene().getWindow();
         stage.close();
     }
 
-
-     */
 
 }
