@@ -77,6 +77,46 @@ public class AccountData {
     //Getters y setters...
 
 
+    public ExcerciseType getMonday() {
+        return monday;
+    }
+
+    public void setMonday(ExcerciseType monday) {
+        this.monday = monday;
+    }
+
+    public ExcerciseType getTuesday() {
+        return tuesday;
+    }
+
+    public void setTuesday(ExcerciseType tuesday) {
+        this.tuesday = tuesday;
+    }
+
+    public ExcerciseType getWednesday() {
+        return wednesday;
+    }
+
+    public void setWednesday(ExcerciseType wednesday) {
+        this.wednesday = wednesday;
+    }
+
+    public ExcerciseType getThursday() {
+        return thursday;
+    }
+
+    public void setThursday(ExcerciseType thursday) {
+        this.thursday = thursday;
+    }
+
+    public ExcerciseType getFriday() {
+        return friday;
+    }
+
+    public void setFriday(ExcerciseType friday) {
+        this.friday = friday;
+    }
+
     public int getAge() {
         return age;
     }
