@@ -359,23 +359,23 @@ public class ProfileFrame {
 
         //Validar medidas corporales
 
-        // Validar abdomen ((90 - 300 cm)
-        validInputs &= isValidNumber(abdomenTextArea, 90, 300, "Abdomen", abdomenErrorLabel, 1);
+        // Validar abdomen ((40 - 170 cm)
+        validInputs &= isValidNumber(abdomenTextArea, 40, 170, "Abdomen", abdomenErrorLabel, 1);
 
-        // Validar cadera (90 - 300 cm)
-        validInputs &= isValidNumber(hipTextArea, 30, 300, "Cadera", hipErrorLabel, 1);
+        // Validar cadera (50 - 170 cm)
+        validInputs &= isValidNumber(hipTextArea, 50, 170, "Cadera", hipErrorLabel, 1);
 
-        // Validar cintura (90 - 300 cm)
-        validInputs &= isValidNumber(waistTextArea, 90, 300, "Cintura", waistErrorLabel, 1);
+        // Validar cintura (35 - 170 cm)
+        validInputs &= isValidNumber(waistTextArea, 35, 170, "Cintura", waistErrorLabel, 1);
 
-        // Validar cuello ((90 - 300 cm)
-        validInputs &= isValidNumber(neckTextArea, 90, 300, "Cuello", neckErrorLabel, 1);
+        // Validar cuello ((15 - 170 cm)
+        validInputs &= isValidNumber(neckTextArea, 15, 170, "Cuello", neckErrorLabel, 1);
 
-        // Validar brazo (90 - 300 cm)
-        validInputs &= isValidNumber(armTextArea, 30, 300, "Brazo", armErrorLabel, 1);
+        // Validar brazo (10 - 170 cm)
+        validInputs &= isValidNumber(armTextArea, 10, 170, "Brazo", armErrorLabel, 1);
 
-        // Validar pecho (90 - 300 cm)
-        validInputs &= isValidNumber(chestTextArea, 90, 300, "Pecho", chestErrorLabel, 1);
+        // Validar pecho (50 - 170 cm)
+        validInputs &= isValidNumber(chestTextArea, 50, 170, "Pecho", chestErrorLabel, 1);
 
 
         return validInputs;
