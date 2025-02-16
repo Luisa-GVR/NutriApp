@@ -29,12 +29,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
@@ -1104,8 +1106,15 @@ public class DashboardFrame {
                 Button button = new Button();
                 button.setMaxWidth(Double.MAX_VALUE);
                 button.setMaxHeight(Double.MAX_VALUE);
+                BackgroundFill backgroundFill = new BackgroundFill(
+                        Color.rgb(0, 0, 0, 0.01),  // Color con opacidad
+                        CornerRadii.EMPTY,        // Radio de esquinas
+                        Insets.EMPTY              // Margen interno
+                );
+                button.setBackground(new Background(backgroundFill));
 
-/**
+
+                /**
 
                 DESHABILITEN ESTO SI VAN A TESTEAR EN UN FIN DE SEMANA O QUIEREN
                 TESTEAR, BLOQUEA LAS COLUMNAS ANTERIORES AL DIA DE HOY
@@ -1129,13 +1138,23 @@ public class DashboardFrame {
                         imageView.setFitHeight(60);
                         imageView.setPreserveRatio(false); // <--- Crucial change
 
-
                         button.setGraphic(imageView);
                         button.setContentDisplay(ContentDisplay.GRAPHIC_ONLY); // Important for correct sizing
 
                     } else {
                         System.out.println("Invalid or missing image path: " + imagePath);
                     }
+                } else {
+
+
+                    button.setOnMouseEntered(e -> button.setStyle(
+                            "-fx-background-color: rgb(189, 189, 189);"
+                    ));
+
+                    button.setOnMouseExited(e -> button.setStyle(
+                                    "-fx-border-color: transparent;"
+                    ));
+
                 }
 
                 //Quitamos la capacidad de agregar cosas si ya existe un reporte
