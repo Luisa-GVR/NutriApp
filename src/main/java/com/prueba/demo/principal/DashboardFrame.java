@@ -1104,7 +1104,7 @@ public class DashboardFrame {
                 Button button = new Button();
                 button.setMaxWidth(Double.MAX_VALUE);
                 button.setMaxHeight(Double.MAX_VALUE);
-
+                button.setOpacity(0.5);
 /**
 
                 DESHABILITEN ESTO SI VAN A TESTEAR EN UN FIN DE SEMANA O QUIEREN
@@ -1128,7 +1128,7 @@ public class DashboardFrame {
                         imageView.setFitWidth(60);
                         imageView.setFitHeight(60);
                         imageView.setPreserveRatio(false); // <--- Crucial change
-
+                        button.setOpacity(0.85);
 
                         button.setGraphic(imageView);
                         button.setContentDisplay(ContentDisplay.GRAPHIC_ONLY); // Important for correct sizing
