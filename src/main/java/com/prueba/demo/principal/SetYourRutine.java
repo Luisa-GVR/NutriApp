@@ -3,10 +3,11 @@ package com.prueba.demo.principal;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
+import org.springframework.stereotype.Component;
 
-import javax.swing.text.html.ListView;
-
+@Component
 public class SetYourRutine {
     @FXML
     private Button saveButton;
@@ -15,8 +16,12 @@ public class SetYourRutine {
     @FXML
     private ImageView exerciseImageView;
     @FXML
-    private ListView suggestionsListView;
+    private ListView<String> suggestionsListView;
 
+    @FXML
+    private void initialize() {
+
+    }
 
 
 }
