@@ -1147,8 +1147,6 @@ public class DashboardFrame {
                         showNutrimentalInfo(targetDate, finalRow);
                     } else if (button.getGraphic() == null){
                         Report report2 = reportRepository.findByDate(Date.valueOf(targetDate));
-
-                        System.out.println(1);
                         if (report2 == null) {
                             handleCellClick(clickedButton,finalRow, finalCol);
                         } else{
@@ -1287,8 +1285,6 @@ public class DashboardFrame {
     }
 
     private void saveToReport(Date reportDate) {
-
-        System.out.println(reportDate);
 
         Report existingReport = reportRepository.findByDate(reportDate);
 
@@ -1669,7 +1665,7 @@ public class DashboardFrame {
         sendReportButton.setOnAction(event -> {
             if (validateFieldsReport()) {
                 try {
-                    sendReport();
+                    generateReport();
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
                 } catch (IOException e) {
@@ -1683,7 +1679,7 @@ public class DashboardFrame {
 
     }
 
-    public void sendReport() throws FileNotFoundException, IOException {
+    public void generateReport() throws FileNotFoundException, IOException {
         String dest = "toSendPDF.pdf";
         PdfWriter writer = new PdfWriter(dest);
         PdfDocument pdf = new PdfDocument(writer);
@@ -1729,6 +1725,14 @@ public class DashboardFrame {
 
         document.add(new Paragraph(" "));
 
+        document.add(new Paragraph("Reporte de " + Date.valueOf(startDatePicker.getValue()).toString() + " a " + Date.valueOf(endDatePicker.getValue()).toString())
+                .setFont(boldFont)
+                .setFontSize(14)
+                .setTextAlignment(TextAlignment.CENTER));
+
+        document.add(new Paragraph(" ")); // Espacio antes de la siguiente sección
+
+
         // Información de Reportes
         List<Report> results = accountRepository.findReportsByAccountAndDateRange(1L, Date.valueOf(startDatePicker.getValue()), Date.valueOf(endDatePicker.getValue()));
 
@@ -1755,17 +1759,40 @@ public class DashboardFrame {
         }
 
         document.add(table);
-        /*
+
+        document.add(new Paragraph("Ejercicios Realizados").setFont(boldFont).setFontSize(14));
+
+
+        Table exerciseTable = new Table(new float[]{3, 3, 3}).useAllAvailableWidth(); // 3 columnas
+        exerciseTable.addHeaderCell(new Cell().add(new Paragraph("Fecha").setFont(boldFont)).setBackgroundColor(ColorConstants.LIGHT_GRAY));
+        exerciseTable.addHeaderCell(new Cell().add(new Paragraph("Ejercicio").setFont(boldFont)).setBackgroundColor(ColorConstants.LIGHT_GRAY));
+        exerciseTable.addHeaderCell(new Cell().add(new Paragraph("Duración").setFont(boldFont)).setBackgroundColor(ColorConstants.LIGHT_GRAY));
+
         for (Report result : results) {
-            table.addCell(new Cell().add(new Paragraph(result.getDate().toString())));
-            table.addCell(new Cell().add(new Paragraph(result.getFood())));
-            table.addCell(new Cell().add(new Paragraph(result.getExercise())));
+            exerciseTable.addCell(new Cell().add(new Paragraph(result.getDate().toString())));
+
+            // Obtener la lista de ejercicios de la entidad DayExcercise
+            DayExcercise exercise = result.getDayExcercise();
+            if (exercise != null) {
+                // Mostrar el nombre del ejercicio (o ejercicios si es más de uno)
+                StringBuilder exerciseNames = new StringBuilder();
+                for (Excercise excercise : exercise.getExcercises()) {
+                    exerciseNames.append(excercise.getExcerciseName()).append(", ");
+                }
+
+                // Agregar a la tabla el nombre del ejercicio y la duración
+                exerciseTable.addCell(new Cell().add(new Paragraph(exerciseNames.length() > 0 ? exerciseNames.substring(0, exerciseNames.length() - 2) : "No disponible")));
+                exerciseTable.addCell(new Cell().add(new Paragraph(exercise.getTime() + " mins")));
+            } else {
+                exerciseTable.addCell(new Cell().add(new Paragraph("No disponible")));
+                exerciseTable.addCell(new Cell().add(new Paragraph("No disponible")));
+            }
         }
-*/
+
+        document.add(exerciseTable);
 
         document.close();
 
-        System.out.println("PDF creado exitosamente!");
     }
 
     private String getFoodNames(List<Food> foodList) {
