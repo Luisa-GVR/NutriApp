@@ -1975,11 +1975,20 @@ public class DashboardFrame {
         if (exerciseType == null) {
             return "";
         }
-        return exerciseType.name()
-                .replaceAll("y", " y ")  // Agrega espacios antes y después de "y"
-                .replaceAll("(?<!^)([A-Z])", " $1") // Agrega espacio antes de mayúsculas
-                .toLowerCase();
+        String formattedName;
+        if (exerciseType == ExcerciseType.piernacompleta) {
+            formattedName = "pierna completa";
+        } else {
+            formattedName = exerciseType.name()
+                    .replaceAll("y", " y ")  // Agrega espacios antes y después de "y"
+                    .replaceAll("(?<!^)([A-Z])", " $1") // Agrega espacio antes de mayúsculas
+                    .toLowerCase();
+        }
+        // Convertir la primera letra en mayúscula
+        return formattedName.substring(0, 1).toUpperCase() + formattedName.substring(1);
     }
+
+
 
     private boolean validateFieldsReport() {
         if (startDatePicker.getValue() == null) {
