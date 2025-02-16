@@ -2,7 +2,6 @@ package com.prueba.demo.principal;
 
 import com.prueba.demo.model.*;
 import com.prueba.demo.repository.*;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,6 +10,7 @@ import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
@@ -35,6 +35,7 @@ public class SetYourPreferencesExercise {
     private ChoiceBox<String> thursdayChoiceBox;
     @FXML
     private ChoiceBox<String> fridayChoiceBox;
+
 
     @Autowired
     ExcerciseRepository excerciseRepository;
@@ -89,6 +90,7 @@ public class SetYourPreferencesExercise {
             }
         });
     }
+
 
     private void setupChoiceBox(ChoiceBox<String> choiceBox) {
         choiceBox.setOnAction(event -> {
@@ -155,38 +157,101 @@ public class SetYourPreferencesExercise {
     private AccountRepository accountRepository;
 
     private void completeProfile() {
-        //AccountData accountData = accountDataRepository.findById(1L).orElse(new AccountData());
+        accountRepository.findById(1L).ifPresentOrElse(account -> {
+            AccountData accountData = account.getAccountData();
 
-        Optional<Account> account = accountRepository.findById(1L);
-        AccountData accountData = account.get().getAccountData();
+            if (accountData == null) {
+                accountData = new AccountData();
+                account.setAccountData(accountData);
+            }
 
-        // Recoger los ejercicios seleccionados
-        String mondayExercise = mondayChoiceBox.getValue();
-        String tuesdayExercise = tuesdayChoiceBox.getValue();
-        String wednesdayExercise = wednesdayChoiceBox.getValue();
-        String thursdayExercise = thursdayChoiceBox.getValue();
-        String fridayExercise = fridayChoiceBox.getValue();
+            try {
+                // Validar y asignar los ejercicios seleccionados
+                accountData.setMonday(getValidExerciseType(mondayChoiceBox.getValue()));
+                accountData.setTuesday(getValidExerciseType(tuesdayChoiceBox.getValue()));
+                accountData.setWednesday(getValidExerciseType(wednesdayChoiceBox.getValue()));
+                accountData.setThursday(getValidExerciseType(thursdayChoiceBox.getValue()));
+                accountData.setFriday(getValidExerciseType(fridayChoiceBox.getValue()));
 
+                // Guardar cambios en la base de datos
+                accountDataRepository.save(accountData);
+                accountRepository.save(account);
 
+                // Guardar estado de preferencias en un archivo
+                savePreferencesState();
 
-        Properties properties = new Properties();
-        properties.setProperty("preferencesExerciseCompleted", "true");
-        try (FileOutputStream out = new FileOutputStream("preferencesState.properties")) {
-            properties.store(out, null);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        closeCurrentWindow();
-        dashboardFrame.hidePreferencesUI();
-
-
+                closeCurrentWindow();
+                dashboardFrame.hidePreferencesUI();
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error: Opción inválida seleccionada en el ChoiceBox.");
+                e.printStackTrace();
+            } catch (IOException e) {
+                System.out.println("Error al guardar el estado de preferencias.");
+                e.printStackTrace();
+            }
+        }, () -> System.out.println("Error: No se encontró la cuenta con ID 1"));
     }
 
+    /**
+     * Método para validar y convertir valores del ChoiceBox en ExerciseType
+     */
+    private ExcerciseType getValidExerciseType(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            throw new IllegalArgumentException("El valor del ChoiceBox no puede estar vacío");
+        }
+
+        // Normalizar el valor: quitar espacios y convertir a minúsculas
+        String formattedValue = value.replace(" ", "").toLowerCase();
+
+        // Convertir el valor formateado al enum
+        try {
+            return ExcerciseType.fromString(formattedValue); // Usar el método fromString del enum
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("El valor seleccionado no es válido para el ejercicio.");
+        }
+    }
+
+
+    /**
+     * Método para guardar el estado de preferencias en un archivo
+     */
+    private void savePreferencesState() throws IOException {
+        Properties properties = new Properties();
+
+        // Cargar las propiedades existentes
+        try (FileInputStream in = new FileInputStream("preferencesState.properties")) {
+            properties.load(in);
+        } catch (IOException e) {
+            // Si el archivo no existe, no pasa nada
+        }
+
+        // Verificar si ya se ha completado el ejercicio
+        if (!"true".equals(properties.getProperty("preferencesExerciseCompleted"))) {
+            properties.setProperty("preferencesExerciseCompleted", "true");
+
+            // Guardar las nuevas propiedades en el archivo
+            try (FileOutputStream out = new FileOutputStream("preferencesState.properties")) {
+                properties.store(out, null);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            // Hacer invisible el HBox en DashboardFrame
+            dashboardFrame.excerciseHbox.setVisible(false); // Cambiar visibilidad a false
+
+        } else {
+            System.out.println("El ejercicio ya está marcado como completado.");
+        }
+    }
+
+
+
+    @Autowired
     private DashboardFrame dashboardFrame;
     public SetYourPreferencesExercise(DashboardFrame dashboardFrame) {
         this.dashboardFrame = dashboardFrame;
     }
+
 
     private void closeCurrentWindow() {
         Stage stage = (Stage) saveButton.getScene().getWindow();

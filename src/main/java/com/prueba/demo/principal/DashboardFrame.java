@@ -190,6 +190,8 @@ public class DashboardFrame {
     @FXML
     private VBox exercisePane;
     @FXML
+    public HBox excerciseHbox;
+    @FXML
     private Button setYourPreferencesButtonExercise;
     @FXML
     private GridPane gridPaneExercise;
@@ -316,6 +318,13 @@ public class DashboardFrame {
 
     @FXML
     private void initialize() {
+        Properties properties = new Properties();
+        loadProperties(properties);
+
+        if ("true".equals(properties.getProperty("preferencesExerciseCompleted"))) {
+            // Ocultar el botón de configuración de preferencias si ya se ha completado el ejercicio
+            excerciseHbox.setVisible(false);  // O usar setDisable(true) si prefieres deshabilitar el botón
+        }
 
 
         rootPane.setMinWidth(900);  // Ancho mínimo
@@ -397,6 +406,7 @@ public class DashboardFrame {
 
         //Dieta
         setYourPreferencesButtonDiet.setOnAction(event -> openSetYourPreferencesDiet());
+
 
 
         //Profile
@@ -1551,6 +1561,7 @@ public class DashboardFrame {
         hideAll();
         exercisePane.setVisible(true);
         menuVbox.setVisible(true);
+        updateExerciseLabels();
 
 
         setYourPreferencesButtonExercise.setOnAction(e -> openSetYourPreferencesExcercise());
@@ -1559,37 +1570,140 @@ public class DashboardFrame {
     private Stage preferencesExcerciseStage;
 
     private void openSetYourPreferencesExcercise() {
+        // Cargar las propiedades
+        Properties properties = new Properties();
+        loadProperties(properties);
 
-         if (preferencesExcerciseStage != null && preferencesExcerciseStage.isShowing()) {
-             preferencesExcerciseStage.toFront(); // Bring the existing window to the front
-                return;
-            }
+        // Verificar si ya se ha completado el ejercicio
 
-            Platform.runLater(() -> {
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlantillasFXML/SetYourPreferencesExercise.fxml"));
-                    loader.setControllerFactory(applicationContext::getBean);
 
-                    Scene scene = new Scene(loader.load(), 400, 500); // Limitar tamaño de la escena
-
-                    preferencesExcerciseStage = new Stage();
-                    preferencesExcerciseStage.setTitle("Principal");
-                    preferencesExcerciseStage.setScene(scene);
-
-                    // Establecer límites para la ventana
-                    preferencesExcerciseStage.setMinWidth(400);
-                    preferencesExcerciseStage.setMinHeight(500);
-                    preferencesExcerciseStage.setMaxWidth(400);
-                    preferencesExcerciseStage.setMaxHeight(500);
-
-                    preferencesExcerciseStage.setOnCloseRequest(event -> preferencesExcerciseStage = null); // Reset when closed
-
-                    preferencesExcerciseStage.show();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
+        // Si la ventana ya está abierta, la traemos al frente
+        if (preferencesExcerciseStage != null && preferencesExcerciseStage.isShowing()) {
+            preferencesExcerciseStage.toFront(); // Traer la ventana existente al frente
+            return;
         }
+
+        // Abrir la ventana de preferencias si aún no se ha completado el ejercicio
+        Platform.runLater(() -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlantillasFXML/SetYourPreferencesExercise.fxml"));
+                loader.setControllerFactory(applicationContext::getBean);
+
+                SetYourPreferencesExercise controller = loader.getController();
+
+                Scene scene = new Scene(loader.load(), 400, 500); // Limitar tamaño de la escena
+
+                preferencesExcerciseStage = new Stage();
+                preferencesExcerciseStage.setTitle("Principal");
+                preferencesExcerciseStage.setScene(scene);
+
+                // Establecer límites para la ventana
+                preferencesExcerciseStage.setMinWidth(400);
+                preferencesExcerciseStage.setMinHeight(500);
+                preferencesExcerciseStage.setMaxWidth(400);
+                preferencesExcerciseStage.setMaxHeight(500);
+
+                preferencesExcerciseStage.setOnCloseRequest(event -> preferencesExcerciseStage = null); // Reset cuando se cierra
+
+                preferencesExcerciseStage.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private void loadProperties(Properties properties) {
+        try (FileInputStream in = new FileInputStream("preferencesState.properties")) {
+            properties.load(in);
+        } catch (IOException e) {
+            // Si el archivo no existe, no pasa nada
+            e.printStackTrace();
+        }
+    }
+    private void updateExerciseLabels() {
+        // Obtén los datos de la cuenta actual
+        accountRepository.findById(1L).ifPresentOrElse(account -> {
+            AccountData accountData = account.getAccountData();
+
+            if (accountData != null) {
+                // Obtén los valores de los días
+                String mondayExercise = accountData.getMonday() != null ? formatExerciseLabel(accountData.getMonday().toString()) : "No asignado";
+                String tuesdayExercise = accountData.getTuesday() != null ? formatExerciseLabel(accountData.getTuesday().toString()) : "No asignado";
+                String wednesdayExercise = accountData.getWednesday() != null ? formatExerciseLabel(accountData.getWednesday().toString()) : "No asignado";
+                String thursdayExercise = accountData.getThursday() != null ? formatExerciseLabel(accountData.getThursday().toString()) : "No asignado";
+                String fridayExercise = accountData.getFriday() != null ? formatExerciseLabel(accountData.getFriday().toString()) : "No asignado";
+
+                // Recorre los nodos dentro del GridPane
+                for (Node node : gridPaneExercise.getChildren()) {
+                    // Verifica si el nodo es un StackPane
+                    if (node instanceof StackPane) {
+                        // Asigna valores predeterminados si el índice de columna o fila es null
+                        Integer columnIndex = GridPane.getColumnIndex(node);
+                        Integer rowIndex = GridPane.getRowIndex(node);
+
+                        if (columnIndex == null) columnIndex = 0; // Valor predeterminado para columna
+                        if (rowIndex == null) rowIndex = 0; // Valor predeterminado para fila
+
+                        // Verifica si estamos en la segunda columna (índice 1)
+                        if (columnIndex == 1) {
+                            // Dentro de cada StackPane, busca el Label y actualiza el texto
+                            StackPane stackPane = (StackPane) node;
+                            Label label = (Label) stackPane.getChildren().get(0);  // Suponiendo que el Label es el primer hijo
+
+                            // Actualiza el texto del Label dependiendo de la fila
+                            switch (rowIndex) {
+                                case 1:
+                                    label.setText(mondayExercise);
+                                    break;
+                                case 2:
+                                    label.setText(tuesdayExercise);
+                                    break;
+                                case 3:
+                                    label.setText(wednesdayExercise);
+                                    break;
+                                case 4:
+                                    label.setText(thursdayExercise);
+                                    break;
+                                case 5:
+                                    label.setText(fridayExercise);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+        }, () -> System.out.println("Error: No se encontró la cuenta con ID 2"));
+    }
+    private String formatExerciseLabel(String exercise) {
+        // Reemplaza los valores en minúsculas y sin espacios, añadiendo los espacios correctos
+        String formatted = exercise.replaceAll("([a-z])([A-Z])", "$1 $2");
+
+        // Reemplaza la letra "y" con espacio antes y después (sin cambiar a mayúscula)
+        formatted = formatted.replaceAll("y", " y ");
+
+        // Reemplaza la palabra "completa" y añade un espacio después
+        formatted = formatted.replaceAll("completa", " completa");
+
+        // Capitaliza la primera letra de cada palabra, excepto la "y"
+        String[] words = formatted.split(" ");
+        StringBuilder sb = new StringBuilder();
+        for (String word : words) {
+            if (!word.equals("y")) {
+                sb.append(word.substring(0, 1).toUpperCase()).append(word.substring(1)).append(" ");
+            } else {
+                sb.append(word).append(" "); // Para "y", no se hace mayúscula
+            }
+        }
+
+        return sb.toString().trim();
+    }
+
+
+
+
+
 
 
     /**

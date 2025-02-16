@@ -723,7 +723,7 @@
                               </HBox>
                               <VBox prefHeight="460.0" prefWidth="487.0" spacing="20.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: white;" VBox.vgrow="ALWAYS">
                                  <children>
-                                    <HBox prefHeight="52.0" prefWidth="631.0" spacing="110.0" VBox.vgrow="NEVER">
+                                    <HBox fx:id="excerciseHbox" prefHeight="52.0" prefWidth="631.0" spacing="110.0" VBox.vgrow="NEVER">
                                        <children>
                                           <HBox fillHeight="false">
                                              <children>
