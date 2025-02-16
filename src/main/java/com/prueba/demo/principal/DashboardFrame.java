@@ -1530,6 +1530,8 @@ public class DashboardFrame {
         showDiet();
     }
 
+
+
     private Stage preferencesDietStage;
 
     private void openSetYourPreferencesDiet() {
@@ -2057,5 +2059,7 @@ public class DashboardFrame {
         showExercise();
         showDiet();
     }
+
+
 //-----ESTO ES PARA LA TABLA DE DIETA CHECAR SI ESTA CORRECTO-----
 }
