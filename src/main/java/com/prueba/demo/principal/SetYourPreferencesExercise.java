@@ -58,8 +58,8 @@ public class SetYourPreferencesExercise {
 
         //exerciseErrorLabel.setVisible(false);
 
-        objetiveChoiceBox.setItems(FXCollections.observableArrayList("Pérdida de peso",
-                "Mantener la forma", "Aumentar masa muscular"));
+        objetiveChoiceBox.setItems(FXCollections.observableArrayList("Deficit",
+                "Mantenimiento", "Volumen"));
 
         // Inicializar ComboBoxes con todos los ejercicios
         mondayChoiceBox.setItems(FXCollections.observableArrayList(allExercises));
@@ -67,6 +67,7 @@ public class SetYourPreferencesExercise {
         wednesdayChoiceBox.setItems(FXCollections.observableArrayList(allExercises));
         thursdayChoiceBox.setItems(FXCollections.observableArrayList(allExercises));
         fridayChoiceBox.setItems(FXCollections.observableArrayList(allExercises)); // Viernes tiene todos siempre
+
 
         // Agregar listeners para detectar cambios y actualizar los demás días
         setupChoiceBox(mondayChoiceBox);
@@ -173,6 +174,8 @@ public class SetYourPreferencesExercise {
                 accountData.setThursday(getValidExerciseType(thursdayChoiceBox.getValue()));
                 accountData.setFriday(getValidExerciseType(fridayChoiceBox.getValue()));
 
+                String selectedGoal = objetiveChoiceBox.getValue();
+                accountData.setGoal(Goal.fromString(selectedGoal));
                 // Guardar cambios en la base de datos
                 accountDataRepository.save(accountData);
                 accountRepository.save(account);
