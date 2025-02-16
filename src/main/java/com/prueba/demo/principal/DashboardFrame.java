@@ -17,6 +17,11 @@ import com.opencsv.exceptions.CsvException;
 import com.prueba.demo.model.*;
 import com.prueba.demo.repository.*;
 import com.prueba.demo.service.APIConsumption;
+import com.prueba.demo.service.IEmailService;
+import com.prueba.demo.service.dto.EmailDTO;
+import jakarta.mail.Authenticator;
+import jakarta.mail.MessagingException;
+import jakarta.mail.Session;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
@@ -459,6 +464,8 @@ public class DashboardFrame {
         });
 
         //report
+
+
 
         // Restringir que endDatePicker no pueda seleccionar fechas futuras
         endDatePicker.setDayCellFactory(picker -> new DateCell() {
@@ -1106,8 +1113,8 @@ public class DashboardFrame {
                 if (targetDate.isBefore(today)) {
                     button.setDisable(true); // Deshabilita el botón si la fecha es anterior a hoy
                 }
-
 */
+
 
                 if (foodForCell != null) {
                     String imagePath = foodForCell.getPhoto().getThumb();
@@ -1621,8 +1628,8 @@ public class DashboardFrame {
         try (FileInputStream in = new FileInputStream("preferencesState.properties")) {
             properties.load(in);
         } catch (IOException e) {
-            // Si el archivo no existe, no pasa nada
-            e.printStackTrace();
+            // Si el archivo no existe, no pasa nada lol le quite el printstack porque luego asusta
+            //e.printStackTrace();
         }
     }
     private void updateExerciseLabels() {
@@ -1779,18 +1786,35 @@ public class DashboardFrame {
         sendReportButton.setOnAction(event -> {
             if (validateFieldsReport()) {
                 try {
-                    generateReport();
+                    generateReportAndSendEmail();
+                    successReportHbox.setVisible(true);
+                    PauseTransition pause = new PauseTransition(Duration.seconds(3));
+                    pause.setOnFinished(e -> successReportHbox.setVisible(false));  // Ocultar el HBox después de la pausa
+                    pause.play();
+                } catch (MessagingException e) {
+                    throw new RuntimeException(e);
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
+
+                startCooldown();
+
             }
         });
 
         disableVBox(reportsPane);
 
+    }
 
+    private static final int COOLDOWN_TIME = 10;
+
+    private void startCooldown() {
+        // Pausar por el tiempo de cooldown y luego habilitar el botón
+        PauseTransition pause = new PauseTransition(Duration.seconds(COOLDOWN_TIME));
+        pause.setOnFinished(event -> sendReportButton.setDisable(false));
+        pause.play();
     }
 
     public void generateReport() throws FileNotFoundException, IOException {
@@ -1811,6 +1835,8 @@ public class DashboardFrame {
         String gender = account.get().getGender() ? "Masculino" : "Femenino";
         Double weight = account.get().getWeight();
         Double height = account.get().getHeight();
+        Goal goal = account.get().getGoal();
+        String goalString = (goal != null) ? goal.toString() : "Mantenimiento";
 
         Double abdomen = account.get().getAbdomen();
         Double hips = account.get().getHips();
@@ -1828,6 +1854,7 @@ public class DashboardFrame {
         document.add(new Paragraph("Género: " + gender));
         document.add(new Paragraph("Peso: " + weight + " kg"));
         document.add(new Paragraph("Altura: " + height + " m"));
+        document.add(new Paragraph("Meta: " + goalString));
 
         document.add(new Paragraph("Medidas Corporales").setFont(boldFont).setFontSize(14));
         document.add(new Paragraph("Abdomen: " + abdomen + " cm"));
@@ -1908,6 +1935,30 @@ public class DashboardFrame {
         document.close();
 
     }
+
+    @Autowired
+    private IEmailService iEmailService;
+
+    private void sendEmailWithPDFAttachment() throws MessagingException, IOException {
+        // Ruta del archivo PDF que queremos adjuntar
+        String pdfFilePath = "toSendPDF.pdf";
+
+        EmailDTO emailDTO = new EmailDTO();
+        emailDTO.setAddressee("nutriappunison@gmail.com");
+        emailDTO.setSubject("Reporte Nutricional");
+        emailDTO.setMessage("Adjunto el reporte nutricional generado.");
+
+        File pdfFile = new File(pdfFilePath);
+        iEmailService.sendMailWithAttachment(emailDTO, pdfFile);
+    }
+
+    // Método para generar el reporte y luego enviarlo
+    private void generateReportAndSendEmail() throws FileNotFoundException, IOException, MessagingException {
+        generateReport();
+        sendEmailWithPDFAttachment();
+    }
+
+
 
     private String getFoodNames(List<Food> foodList) {
         if (foodList == null || foodList.isEmpty()) {
