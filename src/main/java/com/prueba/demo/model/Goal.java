@@ -9,16 +9,24 @@ public enum Goal {
     private String value;
 
     Goal(String value) {
+        this.value = value;
+    }
+    public String getNombre() {
+        return value;
     }
 
     public static Goal fromString(String text) {
-        for (Goal goal : Goal.values()) {
-            if (goal.value.equalsIgnoreCase(text)) {
-                return goal;
+        if (text != null) {
+            for (Goal goal : Goal.values()) {
+                if (goal.getNombre().equalsIgnoreCase(text.trim().toLowerCase())) {
+                    return goal;  // ❌ No uses "new Goal()"
+                }
             }
         }
-        throw new IllegalArgumentException("No constant with text " + text + " found");
+        throw new IllegalArgumentException("No se encontró una meta con el texto: " + text);
     }
+
+
 
     @Override
     public String toString() {
