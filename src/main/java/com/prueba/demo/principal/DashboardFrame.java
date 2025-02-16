@@ -1,8 +1,17 @@
 package com.prueba.demo.principal;
 
+import com.itextpdf.io.font.constants.StandardFonts;
+import com.itextpdf.kernel.colors.ColorConstants;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
+import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.properties.TextAlignment;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 import com.prueba.demo.model.*;
@@ -1663,6 +1672,8 @@ public class DashboardFrame {
                     sendReport();
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
             }
         });
@@ -1672,20 +1683,19 @@ public class DashboardFrame {
 
     }
 
-    private void sendReport() throws FileNotFoundException {
-
-        //Creando info para el pdf
+    public void sendReport() throws FileNotFoundException, IOException {
         String dest = "toSendPDF.pdf";
         PdfWriter writer = new PdfWriter(dest);
         PdfDocument pdf = new PdfDocument(writer);
-        Document document = new Document(pdf);
+        Document document = new Document(pdf, PageSize.A4);
 
+        PdfFont boldFont = PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD);
+        PdfFont normalFont = PdfFontFactory.createFont(StandardFonts.HELVETICA);
 
-        //Information from user
+        // Datos del usuario
         String name = accountRepository.findById(1L).get().getName();
         String email = accountRepository.findById(1L).get().getEmail();
 
-        //more info, now frm account
         Optional<AccountData> account = accountDataRepository.findByAccountId(1L);
         int age = account.get().getAge();
         String gender = account.get().getGender() ? "Masculino" : "Femenino";
@@ -1699,12 +1709,74 @@ public class DashboardFrame {
         Double chest = account.get().getChest();
         Double neck = account.get().getNeck();
 
+        // Encabezado
+        document.add(new Paragraph("Reporte Nutricional").setFont(boldFont).setFontSize(18).setTextAlignment(TextAlignment.CENTER));
+        document.add(new Paragraph("Datos del Usuario").setFont(boldFont).setFontSize(14));
+        document.add(new Paragraph("Nombre: " + name));
+        document.add(new Paragraph("Correo: " + email));
+        document.add(new Paragraph("Edad: " + age));
+        document.add(new Paragraph("Género: " + gender));
+        document.add(new Paragraph("Peso: " + weight + " kg"));
+        document.add(new Paragraph("Altura: " + height + " m"));
 
-        //Information from days
+        document.add(new Paragraph("Medidas Corporales").setFont(boldFont).setFontSize(14));
+        document.add(new Paragraph("Abdomen: " + abdomen + " cm"));
+        document.add(new Paragraph("Caderas: " + hips + " cm"));
+        document.add(new Paragraph("Cintura: " + waist + " cm"));
+        document.add(new Paragraph("Brazo: " + arm + " cm"));
+        document.add(new Paragraph("Pecho: " + chest + " cm"));
+        document.add(new Paragraph("Cuello: " + neck + " cm"));
+
+        document.add(new Paragraph(" "));
+
+        // Información de Reportes
         List<Report> results = accountRepository.findReportsByAccountAndDateRange(1L, Date.valueOf(startDatePicker.getValue()), Date.valueOf(endDatePicker.getValue()));
 
 
+        document.add(new Paragraph("Comidas").setFont(boldFont).setFontSize(14));
 
+        Table table = new Table(new float[]{3, 3, 3, 3, 3, 3}).useAllAvailableWidth(); // 6 columnas
+        table.addHeaderCell(new Cell().add(new Paragraph("Fecha").setFont(boldFont)).setBackgroundColor(ColorConstants.LIGHT_GRAY));
+        table.addHeaderCell(new Cell().add(new Paragraph("Desayuno").setFont(boldFont)).setBackgroundColor(ColorConstants.LIGHT_GRAY));
+        table.addHeaderCell(new Cell().add(new Paragraph("Comida").setFont(boldFont)).setBackgroundColor(ColorConstants.LIGHT_GRAY));
+        table.addHeaderCell(new Cell().add(new Paragraph("Cena").setFont(boldFont)).setBackgroundColor(ColorConstants.LIGHT_GRAY));
+        table.addHeaderCell(new Cell().add(new Paragraph("Snack").setFont(boldFont)).setBackgroundColor(ColorConstants.LIGHT_GRAY));
+        table.addHeaderCell(new Cell().add(new Paragraph("Opcional").setFont(boldFont)).setBackgroundColor(ColorConstants.LIGHT_GRAY));
+
+        for (Report result : results) {
+            table.addCell(new Cell().add(new Paragraph(result.getDate().toString())));
+
+            // Agregar los nombres de los alimentos (si existen) para cada comida
+            table.addCell(new Cell().add(new Paragraph(getFoodNames(result.getDayMeals().getBreakfast()))));
+            table.addCell(new Cell().add(new Paragraph(getFoodNames(result.getDayMeals().getLunch()))));
+            table.addCell(new Cell().add(new Paragraph(getFoodNames(result.getDayMeals().getDinner()))));
+            table.addCell(new Cell().add(new Paragraph(getFoodNames(result.getDayMeals().getSnack()))));
+            table.addCell(new Cell().add(new Paragraph(getFoodNames(result.getDayMeals().getOptional()))));
+        }
+
+        document.add(table);
+        /*
+        for (Report result : results) {
+            table.addCell(new Cell().add(new Paragraph(result.getDate().toString())));
+            table.addCell(new Cell().add(new Paragraph(result.getFood())));
+            table.addCell(new Cell().add(new Paragraph(result.getExercise())));
+        }
+*/
+
+        document.close();
+
+        System.out.println("PDF creado exitosamente!");
+    }
+
+    private String getFoodNames(List<Food> foodList) {
+        if (foodList == null || foodList.isEmpty()) {
+            return "";
+        }
+        StringBuilder foodNames = new StringBuilder();
+        for (Food food : foodList) {
+            foodNames.append(food.getFoodName()).append(", ");  // Agregar el nombre de cada alimento
+        }
+        return foodNames.length() > 0 ? foodNames.substring(0, foodNames.length() - 2) : "";  // Eliminar la última coma
     }
 
     private String formatExerciseName(ExcerciseType exerciseType) {
