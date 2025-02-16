@@ -1,5 +1,8 @@
 package com.prueba.demo.principal;
 
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 import com.prueba.demo.model.*;
@@ -20,8 +23,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Duration;
@@ -315,6 +316,7 @@ public class DashboardFrame {
 
     @FXML
     private void initialize() {
+
 
         rootPane.setMinWidth(900);  // Ancho mínimo
         rootPane.setMinHeight(520); // Alto mínimo
@@ -703,10 +705,17 @@ public class DashboardFrame {
             gridPaneDashboard.add(thursdayLabel, 3, 1);   // Columna 3, Fila 1
             gridPaneDashboard.add(fridayLabel, 4, 1);     // Columna 4, Fila 1
 
+            Label mondayExerciseLabel = new Label(formatExerciseName(accountData.get().getMonday()));
+            Label tuesdayExerciseLabel = new Label(formatExerciseName(accountData.get().getTuesday()));
+            Label wednesdayExerciseLabel = new Label(formatExerciseName(accountData.get().getWednesday()));
+            Label thursdayExerciseLabel = new Label(formatExerciseName(accountData.get().getThursday()));
+            Label fridayExerciseLabel = new Label(formatExerciseName(accountData.get().getFriday()));
 
-
-
-
+            gridPaneDashboard.add(mondayExerciseLabel, 0, 2);
+            gridPaneDashboard.add(tuesdayExerciseLabel, 1, 2);
+            gridPaneDashboard.add(wednesdayExerciseLabel, 2, 2);
+            gridPaneDashboard.add(thursdayExerciseLabel, 3, 2);
+            gridPaneDashboard.add(fridayExerciseLabel, 4, 2);
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy").withLocale(new Locale("es", "MX"));
 
@@ -866,6 +875,8 @@ public class DashboardFrame {
         hideAll();
         profilePane.setVisible(true);
         menuVbox.setVisible(true);
+
+
 
         Optional<Account> account = accountRepository.findById(1L);
         AccountData accountData = account.get().getAccountData();
@@ -1648,7 +1659,11 @@ public class DashboardFrame {
 
         sendReportButton.setOnAction(event -> {
             if (validateFieldsReport()) {
-                sendReport();
+                try {
+                    sendReport();
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
@@ -1657,7 +1672,49 @@ public class DashboardFrame {
 
     }
 
-    private void sendReport() {
+    private void sendReport() throws FileNotFoundException {
+
+        //Creando info para el pdf
+        String dest = "toSendPDF.pdf";
+        PdfWriter writer = new PdfWriter(dest);
+        PdfDocument pdf = new PdfDocument(writer);
+        Document document = new Document(pdf);
+
+
+        //Information from user
+        String name = accountRepository.findById(1L).get().getName();
+        String email = accountRepository.findById(1L).get().getEmail();
+
+        //more info, now frm account
+        Optional<AccountData> account = accountDataRepository.findByAccountId(1L);
+        int age = account.get().getAge();
+        String gender = account.get().getGender() ? "Masculino" : "Femenino";
+        Double weight = account.get().getWeight();
+        Double height = account.get().getHeight();
+
+        Double abdomen = account.get().getAbdomen();
+        Double hips = account.get().getHips();
+        Double waist = account.get().getWaist();
+        Double arm = account.get().getArm();
+        Double chest = account.get().getChest();
+        Double neck = account.get().getNeck();
+
+
+        //Information from days
+        List<Report> results = accountRepository.findReportsByAccountAndDateRange(1L, Date.valueOf(startDatePicker.getValue()), Date.valueOf(endDatePicker.getValue()));
+
+
+
+    }
+
+    private String formatExerciseName(ExcerciseType exerciseType) {
+        if (exerciseType == null) {
+            return "";
+        }
+        return exerciseType.name()
+                .replaceAll("y", " y ")  // Agrega espacios antes y después de "y"
+                .replaceAll("(?<!^)([A-Z])", " $1") // Agrega espacio antes de mayúsculas
+                .toLowerCase();
     }
 
     private boolean validateFieldsReport() {

@@ -154,10 +154,6 @@ public class SetYourPreferencesExercise {
     @Autowired
     private AccountRepository accountRepository;
 
-    @Autowired
-    private AccountData accountData;
-
-
     private void completeProfile() {
         //AccountData accountData = accountDataRepository.findById(1L).orElse(new AccountData());
 
