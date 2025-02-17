@@ -2069,6 +2069,8 @@ public class DashboardFrame {
         Double chest = account.get().getChest();
         Double neck = account.get().getNeck();
 
+        double imc = Math.round((weight / Math.pow(height / 100.0, 2)) * 10.0) / 10.0;
+
         // Encabezado
         document.add(new Paragraph("Reporte Nutricional").setFont(boldFont).setFontSize(18).setTextAlignment(TextAlignment.CENTER));
         document.add(new Paragraph("Datos del Usuario").setFont(boldFont).setFontSize(14));
@@ -2079,6 +2081,7 @@ public class DashboardFrame {
         document.add(new Paragraph("Peso: " + weight + " kg"));
         document.add(new Paragraph("Altura: " + height + " m"));
         document.add(new Paragraph("Meta: " + goalString));
+        document.add(new Paragraph("IMC: " + imc));
 
         document.add(new Paragraph("Medidas Corporales").setFont(boldFont).setFontSize(14));
         document.add(new Paragraph("Abdomen: " + abdomen + " cm"));
