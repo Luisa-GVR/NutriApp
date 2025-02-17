@@ -44,8 +44,6 @@ public class SetYourPreferencesExercise {
     DayExcerciseRepository dayExcerciseRepository;
 
 
-
-
     private final ObservableList<String> allExercises = FXCollections.observableArrayList(
             "Pecho y Brazo", "Pierna Completa", "Hombro y Espalda", "Abdomen y Cardio"
     );

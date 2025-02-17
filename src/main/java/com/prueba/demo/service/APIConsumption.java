@@ -8,10 +8,9 @@ import com.prueba.demo.model.Excercise;
 import com.prueba.demo.model.ExcerciseResponse;
 import com.prueba.demo.model.Food;
 import com.prueba.demo.model.FoodResponse;
+import com.prueba.demo.repository.ExcerciseRepository;
 import com.prueba.demo.repository.FoodRepository;
 import com.prueba.demo.service.dto.FoodPreferencesDTO;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -248,6 +247,7 @@ public class APIConsumption {
     private static final String EXERCISE_API_KEY = "7365eca4b1msh9743512e61a1b43p1581b0jsneb2caf6b1530";
     private static final String EXERCISE_API_HOST = "exercisedb.p.rapidapi.com";
     private static final String EXERCISE_API_URL = "https://exercisedb.p.rapidapi.com/status";
+
     public Excercise getExerciseInfo(String exerciseName) {
         HttpClient client = HttpClient.newHttpClient();
         String encodedExerciseName = java.net.URLEncoder.encode(exerciseName, StandardCharsets.UTF_8);
@@ -275,6 +275,123 @@ public class APIConsumption {
             return null;
         }
     }
+
+    @Autowired
+    ExcerciseRepository excerciseRepository;
+
+    public List<String> getExerciseSuggestionsByMuscleGroup(String muscleGroup) {
+        HttpClient client = HttpClient.newHttpClient();
+        String encodedMuscleGroup = URLEncoder.encode(muscleGroup, StandardCharsets.UTF_8);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(EXERCISE_API_URL + encodedMuscleGroup)) // API para buscar por músculo
+                .header("X-RapidAPI-Key", EXERCISE_API_KEY)
+                .header("X-RapidAPI-Host", EXERCISE_API_HOST)
+                .GET()
+                .build();
+
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() != 200) {
+                System.out.println("Error en la API: " + response.statusCode());
+                return Collections.emptyList();
+            }
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            ExcerciseResponse exerciseResponse = objectMapper.readValue(response.body(), ExcerciseResponse.class);
+
+
+            if (exerciseResponse.getExcercises() != null && !exerciseResponse.getExcercises().isEmpty()) {
+                List<Excercise> exercises = exerciseResponse.getExcercises().stream()
+                        .filter(exercise -> exercise.getExcerciseName() != null && !exercise.getExcerciseName().isEmpty()) // Filtrar nombres válidos
+                        .peek(exercise -> {
+
+                            try {
+                                // Verificar si ya existe en la base de datos
+
+
+                                Optional<Excercise> existingExercise = excerciseRepository.findByExcerciseName(exercise.getExcerciseName());
+                                if (existingExercise.isEmpty()) {
+                                    String exerciseJson = objectMapper.writeValueAsString(exercise); // Debug opcional
+                                    excerciseRepository.save(exercise); // Guardar si no existe
+                                }
+
+                            } catch (IOException e) {
+                                System.err.println("Error serializando el ejercicio: " + e.getMessage());
+                            }
+                        })
+
+                        .collect(Collectors.toList());
+
+                // Retornar los nombres de los primeros 3 ejercicios
+                return exercises.stream()
+                        .limit(3)
+                        .map(Excercise::getExcerciseName)
+                        .collect(Collectors.toList());
+            }
+
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return Collections.emptyList();
+    }
+
+
+    //es un draft para ver la busqueda mediante imagenes
+    public Optional<String> searchExerciseImage(String exerciseName) {
+        // Crear cliente HTTP para la solicitud
+        HttpClient client = HttpClient.newHttpClient();
+
+        // Codificar el nombre del ejercicio para evitar caracteres especiales en la URL
+        String encodedExerciseName = URLEncoder.encode(exerciseName, StandardCharsets.UTF_8);
+
+        // Construir la URL para consultar la API de ExerciseDB
+        String exerciseApiUrl = "https://exercisedb.p.rapidapi.com/exercises/" + encodedExerciseName;
+
+        // Crear la solicitud HTTP
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(exerciseApiUrl))
+                .header("X-RapidAPI-Key", EXERCISE_API_KEY)  // Reemplaza con tu API Key
+                .header("X-RapidAPI-Host", EXERCISE_API_HOST)
+                .GET()
+                .build();
+
+        // Realizar la solicitud y procesar la respuesta
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            // Verificar si la respuesta fue exitosa
+            if (response.statusCode() == 200) {
+                ObjectMapper objectMapper = new ObjectMapper();
+                Excercise excercise = objectMapper.readValue(response.body(), Excercise.class);
+
+                // Obtener la URL de la imagen desde la respuesta de la API
+                String exerciseImageUrl = excercise.getGifURL(); // Asumiendo que la URL de la imagen está en esta propiedad
+
+                if (exerciseImageUrl != null && !exerciseImageUrl.isEmpty()) {
+                    // Crear una imagen a partir de la URL y mostrarla en el ImageView
+                    //Image excerciseImage = new Image(exerciseImageUrl);
+                    //excerciseImageView.setImage(excerciseImage);
+
+                    System.out.println("si se encontró una imagen para el ejercicio");
+                } else {
+                    // Manejo de caso cuando no se encuentra una imagen (puedes mostrar una imagen predeterminada)
+                    System.out.println("No se encontró una imagen para el ejercicio.");
+                }
+            } else {
+                System.out.println("Error al obtener la información del ejercicio: " + response.statusCode());
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
+
 
 
     //cargar informacion

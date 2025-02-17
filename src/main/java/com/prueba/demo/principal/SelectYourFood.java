@@ -129,6 +129,7 @@ public class SelectYourFood {
                 items.add(selectedItem);
                 Optional<String> foodURL = foodRepository.findThumbnailURLByFoodName(selectedItem);
 
+
                 if (foodURL.isPresent() && foodURL.get() != null && !foodURL.get().isEmpty()) {
                     Image foodImage = new Image(foodURL.get()); // Use the actual URL here
                     foodImageView.setImage(foodImage);
@@ -287,7 +288,6 @@ public class SelectYourFood {
                     break;
             }
         }
-
         dayMealRepository.save(dayMeal);
     }
 

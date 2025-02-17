@@ -30,6 +30,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -40,6 +41,7 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Duration;
+import org.hibernate.annotations.Check;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -1104,7 +1106,7 @@ public class DashboardFrame {
                 Button button = new Button();
                 button.setMaxWidth(Double.MAX_VALUE);
                 button.setMaxHeight(Double.MAX_VALUE);
-                button.setOpacity(0.5);
+
 /**
 
                 DESHABILITEN ESTO SI VAN A TESTEAR EN UN FIN DE SEMANA O QUIEREN
@@ -1128,7 +1130,7 @@ public class DashboardFrame {
                         imageView.setFitWidth(60);
                         imageView.setFitHeight(60);
                         imageView.setPreserveRatio(false); // <--- Crucial change
-                        button.setOpacity(0.85);
+
 
                         button.setGraphic(imageView);
                         button.setContentDisplay(ContentDisplay.GRAPHIC_ONLY); // Important for correct sizing
@@ -1389,6 +1391,7 @@ public class DashboardFrame {
         resetAndLoadDiet(); // Or any other actions you need to take
     }
 
+
     private Stage nutrimentalInfoStage;
     private void showNutrimentalInfo(LocalDate targetDate, int foodType) {
         if (nutrimentalInfoStage != null && nutrimentalInfoStage.isShowing()) {
@@ -1571,24 +1574,243 @@ public class DashboardFrame {
      ejercicio
      */
     @FXML
-    private void showExercise() {
+    public void showExercise() {
         hideAll();
         exercisePane.setVisible(true);
         menuVbox.setVisible(true);
         updateExerciseLabels();
 
-
         setYourPreferencesButtonExercise.setOnAction(e -> openSetYourPreferencesExcercise());
 
+        // Definir grupos musculares
+        AccountData accountData = new AccountData();
+        String monday = String.valueOf(accountData.getMonday());
+        String tuesday = String.valueOf(accountData.getTuesday());
+        String wednesday = String.valueOf(accountData.getWednesday());
+        String thursday = String.valueOf(accountData.getThursday());
+        String friday = String.valueOf(accountData.getFriday());
+
+        String[] muscleGroups = {monday, tuesday, wednesday, thursday, friday};
+
+        LocalDate today = LocalDate.now();
+        int dayOfWeek = today.getDayOfWeek().getValue();
+        Date date1 = null;
+        Date date2 = null;
+        Date date3 = null;
+        Date date4 = null;
+        Date date5 = null;
+
+        for (int row = 1; row <= 5; row++) {
+            for (int col = 1; col <= 5; col++) {
+                int daysOffset = col - 1;
+                LocalDate targetDate = today.minusDays(dayOfWeek - 1).plusDays(daysOffset);
+
+                switch (col) {
+                    case 1 -> date1 = Date.valueOf(targetDate);
+                    case 2 -> date2 = Date.valueOf(targetDate);
+                    case 3 -> date3 = Date.valueOf(targetDate);
+                    case 4 -> date4 = Date.valueOf(targetDate);
+                    case 5 -> date5 = Date.valueOf(targetDate);
+                }
+                Button exerciseButton = new Button("");
+                exerciseButton.setMaxWidth(Double.MAX_VALUE);
+                exerciseButton.setMaxHeight(Double.MAX_VALUE);
+
+                gridPaneExercise.add(exerciseButton, 2, row);
+
+                // Hacer que el botón crezca dentro de la celda
+                GridPane.setHgrow(exerciseButton, Priority.ALWAYS);
+
+
+                int finalRow = row;
+                int finalCol = col;
+                exerciseButton.setOnMouseClicked(event -> {
+
+                    Button clickedButton = (Button) event.getSource();
+
+                    if (exerciseButton.getGraphic() != null) {
+                        System.out.println("HOLAAAAA ENTRE A QUE CHHEQUEEESSS TU RUTINA WEIIIII");
+                        showCheckYourRutine();
+
+                    } else if (exerciseButton.getGraphic() == null){
+                        Report report2 = reportRepository.findByDate(Date.valueOf(targetDate));
+                        if (report2 == null) {
+                            System.out.println("HOLAAAAA ENTRE A QUE SELECCIONESSS TU RUTINA WEIIIII");
+                            //showSetYourRutine();
+                            handleCellClickForExercise(clickedButton, finalRow, finalCol);
+                            //handleCellClick(clickedButton,finalRow, finalCol);
+
+                        } else{
+                            exerciseButton.setDisable(true);
+                        }
+                    }
+                });
+
+            }
+        }
     }
+    private static Stage showSetYourRutine; // Stage global
+
+    private void handleCellClickForExercise(Button clickedButton, int row, int col) {
+        Platform.runLater(() -> {
+            try {
+                if (showSetYourRutine == null || !showSetYourRutine.isShowing()) {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlantillasFXML/SetYourRutine.fxml"));
+                    loader.setControllerFactory(applicationContext::getBean);
+
+                    Parent root = loader.load(); // Cargar el FXML
+                    SetYourRutine controller = loader.getController(); // Obtener el controlador
+
+                    // Crear la ventana
+                    showSetYourRutine = new Stage();
+                    showSetYourRutine.setTitle("Principal");
+                    showSetYourRutine.setScene(new Scene(root));
+                    showSetYourRutine.setMinWidth(900);
+                    showSetYourRutine.setMinHeight(520);
+
+                    showSetYourRutine.setOnCloseRequest(event -> showSetYourRutine = null);
+
+                    showSetYourRutine.show();
+                } else {
+                    showSetYourRutine.toFront();
+                }
+
+                // Lógica del botón
+                if (clickedButton.getGraphic() != null) {
+                    clickedButton.setGraphic(null);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+
+    private Stage checkYourRutineStage;
+
+    private void showCheckYourRutine() {
+
+        // Cargar las propiedades
+        Properties properties = new Properties();
+        loadProperties(properties);
+
+
+        // Si la ventana ya está abierta, la traemos al frente
+        if (checkYourRutineStage != null && checkYourRutineStage.isShowing()) {
+            checkYourRutineStage.toFront(); // Traer la ventana existente al frente
+            return;
+        }
+
+        // Abrir la ventana de check si aún no se ha completado el ejercicio
+        Platform.runLater(() -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlantillasFXML/CheckYourRutine.fxml"));
+                loader.setControllerFactory(applicationContext::getBean);
+
+                CheckYourRutine controller = loader.getController();
+
+                Scene scene = new Scene(loader.load(), 400, 500); // Limitar tamaño de la escena
+
+                checkYourRutineStage = new Stage();
+                checkYourRutineStage.setTitle("Principal");
+                checkYourRutineStage.setScene(scene);
+
+                // Establecer límites para la ventana
+                checkYourRutineStage.setMinWidth(400);
+                checkYourRutineStage.setMinHeight(500);
+                checkYourRutineStage.setMaxWidth(400);
+                checkYourRutineStage.setMaxHeight(500);
+
+                checkYourRutineStage.setOnCloseRequest(event -> checkYourRutineStage = null); // Reset cuando se cierra
+
+                checkYourRutineStage.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+
+    private Stage setYourRutineStage;
+
+    private void showSetYourRutine() {
+
+        Properties properties = new Properties();
+        loadProperties(properties);
+
+        if (setYourRutineStage != null && setYourRutineStage.isShowing()) {
+            setYourRutineStage.toFront(); // Traer la ventana existente al frente
+            return;
+        }
+        Platform.runLater(() -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlantillasFXML/SetYourRutine.fxml"));
+                loader.setControllerFactory(applicationContext::getBean);
+
+                SetYourRutine controller = loader.getController();
+
+                Scene scene = new Scene(loader.load(), 400, 500); // Limitar tamaño de la escena
+
+                setYourRutineStage = new Stage();
+                setYourRutineStage.setTitle("Principal");
+                setYourRutineStage.setScene(scene);
+
+                // Establecer límites para la ventana
+                setYourRutineStage.setMinWidth(400);
+                setYourRutineStage.setMinHeight(500);
+                setYourRutineStage.setMaxWidth(400);
+                setYourRutineStage.setMaxHeight(500);
+
+                setYourRutineStage.setOnCloseRequest(event -> setYourRutineStage = null); // Reset cuando se cierra
+
+                setYourRutineStage.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+
+
+
+//    @Autowired
+//    DayExcerciseRepository dayExcerciseRepository;
+//
+//    private DayExcercise getDayExerciseForDate(LocalDate targetDate) {
+//        return dayExcerciseRepository.findByDate(java.sql.Date.valueOf(targetDate));
+//    }
+
+    /*
+    private Excercise getExcerciseForCell(DayExcercise dayExcercise, int row) {
+        if (dayExcercise != null) {
+            switch (row) {
+                case 1: // Breakfast
+                    return dayMeal.getBreakfast().isEmpty() ? null : dayMeal.getBreakfast().get(0);
+                case 2: // Lunch
+                    return dayMeal.getLunch().isEmpty() ? null : dayMeal.getLunch().get(0);
+                case 3: // Dinner
+                    return dayMeal.getDinner().isEmpty() ? null : dayMeal.getDinner().get(0);
+                case 4: // Snack
+                    return dayMeal.getSnack().isEmpty() ? null : dayMeal.getSnack().get(0);
+                case 5: // optional
+                    return dayMeal.getOptional().isEmpty() ? null : dayMeal.getOptional().get(0);
+                default:
+                    return null;
+            }
+        }
+        return null;
+    }
+
+     */
+
+
     private Stage preferencesExcerciseStage;
 
     private void openSetYourPreferencesExcercise() {
         // Cargar las propiedades
         Properties properties = new Properties();
         loadProperties(properties);
-
-        // Verificar si ya se ha completado el ejercicio
 
 
         // Si la ventana ya está abierta, la traemos al frente
