@@ -1563,6 +1563,7 @@ public class DashboardFrame {
                 loader.setControllerFactory(applicationContext::getBean);
 
                 Scene scene = new Scene(loader.load(), 600, 360); // Limitar tamaño de la escena
+                scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
 
                 preferencesDietStage = new Stage();
                 preferencesDietStage.setTitle("Principal");

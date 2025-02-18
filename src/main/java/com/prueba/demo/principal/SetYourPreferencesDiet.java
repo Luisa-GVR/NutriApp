@@ -51,7 +51,6 @@ public class SetYourPreferencesDiet {
     @FXML
     private void initialize(){
 
-
         setupListViewWithDeleteButton(favsFoodsListView);
         setupListViewWithDeleteButton(noFavsFoodsListView);
 
@@ -81,17 +80,14 @@ public class SetYourPreferencesDiet {
     private void setupListViewWithDeleteButton(ListView<String> listView) {
         listView.setCellFactory(lv -> new ListCell<String>() {
             private final Button deleteButton = new Button("X");
+            private final HBox hbox = new HBox(5);
+            private final Label label = new Label();
+
             {
-                // Estilo para el botón "X"
-                deleteButton.setStyle("-fx-background-color: transparent; " +
-                        "-fx-text-fill: #6c6c70; " +
-                        "-fx-font-size: 8px; " +  // Aumentamos el tamaño de la "X"
-                        "-fx-font-weight: bold; " +
-                        "-fx-min-width: 20px; " +  // Aumentamos el tamaño mínimo
-                        "-fx-min-height: 20px; " + // Aumentamos el tamaño mínimo
-                        "-fx-max-width: 20px; " +  // Aumentamos el tamaño máximo
-                        "-fx-max-height: 20px; " + // Aumentamos el tamaño máximo
-                        "-fx-background-radius: 50%; "); // Mantén el padding bajo
+                // Agregar las clases CSS
+                deleteButton.getStyleClass().add("delete-button");
+                label.getStyleClass().add("list-item-label");
+                hbox.getStyleClass().add("hbox-container");
 
                 deleteButton.setOnAction(event -> {
                     String item = getItem();
@@ -99,6 +95,8 @@ public class SetYourPreferencesDiet {
                         getListView().getItems().remove(item);
                     }
                 });
+
+                hbox.getChildren().addAll(deleteButton, label);
             }
 
             @Override
@@ -108,39 +106,13 @@ public class SetYourPreferencesDiet {
                     setText(null);
                     setGraphic(null);
                 } else {
-                    // Convertir la primera letra a mayúscula
-                    if (!item.isEmpty()) {
-                        item = item.substring(0, 1).toUpperCase() + item.substring(1);
-                    }
-
-                    // Crear un contenedor HBox para envolver el texto y el botón "X"
-                    HBox hbox = new HBox(0); // 1px de espacio entre el texto y el botón
-                    Label label = new Label(item);
-                    hbox.getChildren().addAll(deleteButton, label);
-
-                    label.setStyle("-fx-text-fill: #757583; " +
-                            "-fx-font-size: 10px;");
-                    hbox.setAlignment(Pos.CENTER);
-
-                    // Aplicar estilo al HBox (borde redondeado y padding)
-                    hbox.setStyle("-fx-border-color: #b7b8b8; " +
-                            "-fx-border-width: 1.5px; " +
-                            "-fx-border-radius: 4px; " +
-                            "-fx-background-color: #dcdcdc;" +
-                            "-fx-background-radius: 4px;" +
-                            "-fx-pref-height: 20px; " +  // Ajusta la altura preferida
-                            "-fx-min-height: 20px; " +   // Ajusta la altura mínima
-                            "-fx-max-height: 20px; ");    // Limita el ancho máximo
-                    HBox.setMargin(hbox, new javafx.geometry.Insets(0, -5, 0, -5)); // Márgenes negativos (izquierda y derecha)
-
-                    // Establecer el gráfico como el HBox
+                    label.setText(Character.toUpperCase(item.charAt(0)) + item.substring(1));
                     setGraphic(hbox);
-                    setText(null); // No es necesario establecer el texto de la celda ya que estamos usando un HBox
                 }
             }
-
         });
     }
+
 
 
 

@@ -1,0 +1,40 @@
+/* Estilos específicos para el botón de eliminar */
+.delete-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #6c6c70;
+    -fx-font-size: 8px;
+    -fx-font-weight: bold;
+    -fx-min-width: 20px;
+    -fx-min-height: 20px;
+    -fx-max-width: 20px;
+    -fx-max-height: 20px;
+    -fx-background-radius: 50%;
+}
+
+/* Estilos para el texto de los elementos de la lista */
+.list-item-label {
+    -fx-text-fill: #757583;
+    -fx-font-size: 10px;
+}
+
+/* Estilos para el contenedor HBox (solo para la lista) */
+.hbox-container {
+    -fx-padding: 0 5px 0 5px;
+    -fx-spacing: 5px;
+    -fx-alignment: center;
+    -fx-background-color: #dcdcdc;
+    -fx-border-color: #b7b8b8;
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-pref-height: 20px;
+    -fx-min-height: 20px;
+    -fx-max-height: 20px;
+
+}
+
+/* Evitar que la ListCell tenga borde o fondo por defecto */
+.list-cell {
+    -fx-border-width: 0;  /* Elimina el borde */
+    -fx-background-color: transparent;  /* Elimina el fondo */
+}
