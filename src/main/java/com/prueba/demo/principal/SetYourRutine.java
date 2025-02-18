@@ -1,24 +1,19 @@
 package com.prueba.demo.principal;
 
-import com.prueba.demo.model.DayExcercise;
-import com.prueba.demo.model.DayMeal;
-import com.prueba.demo.model.Excercise;
-import com.prueba.demo.model.Food;
+import com.prueba.demo.model.*;
+import com.prueba.demo.repository.AccountDataRepository;
+import com.prueba.demo.repository.AccountRepository;
 import com.prueba.demo.repository.DayExcerciseRepository;
 import com.prueba.demo.repository.ExcerciseRepository;
 import com.prueba.demo.service.APIConsumption;
-import javafx.animation.PauseTransition;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -68,101 +63,119 @@ public class SetYourRutine {
     @Autowired
     private DayExcerciseRepository dayExcerciseRepository;
 
+    @Autowired
+    private AccountDataRepository accountDataRepository;
+    @Autowired
+    private AccountRepository accountRepository;
+
 
     @FXML
     private void initialize() {
-
         Platform.runLater(() -> {
-            Stage stage = (Stage) suggestionsComboBox.getScene().getWindow();
-
-            stage.setOnCloseRequest(event -> {
-                cachedSuggestions = null;
-            });
-        });
-
-        suggestionsComboBox.setMaxHeight(400);
-
-        //Buscar ejercicios
-
-        // Evitar que Enter agregue elementos automáticamente
-        suggestionsComboBox.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER) {
-                event.consume(); // Evita que Enter agregue la informacioon al listview
-            }
-        });
+            suggestionsComboBox.setEditable(false);
 
 
+            int row = getRow();
+            ExcerciseType dayType = null;
 
-        // Listener para manejar la selección SOLO desde el dropdown
-        suggestionsComboBox.setOnMouseClicked(event -> {
+            Optional<Account> account = accountRepository.findById(1L);
+            AccountData accountData = account.get().getAccountData();
 
-            suggestionsComboBox.show(); // Asegura que el dropdown se muestre al hacer clic
-            suggestionsComboBox.getItems().clear();
-            suggestionsComboBox.getItems().addAll(cachedSuggestions); // Agregar nuevas sugerencias
-            suggestionsComboBox.show();
-
-        });
-
-        PauseTransition pauseTransition = new PauseTransition(Duration.millis(500));
-
-        // Listener para mostrar las sugerencias de la API cuando el usuario escribe
-        suggestionsComboBox.setOnKeyReleased(event -> {
-            pauseTransition.setOnFinished(e -> {
-                String query = suggestionsComboBox.getEditor().getText();
-                if (!query.isEmpty()) {
-
-                    searchExercise(query);
-                }
-            });
-            pauseTransition.playFromStart(); // Reiniciar el temporizador cada vez que se escribe
-        });
-
-        suggestionsComboBox.setOnAction(event -> {
-            if (!suggestionsComboBox.isShowing()) { // Solo ejecuta si el usuario selecciono desde el dropdown
-                return;
+            switch (row){
+                case 1:
+                    dayType = accountData.getMonday();
+                    break;
+                case 2:
+                    dayType = accountData.getTuesday();
+                    break;
+                case 3:
+                    dayType = accountData.getWednesday();
+                    break;
+                case 4:
+                    dayType = accountData.getThursday();
+                    break;
+                case 5:
+                    dayType = accountData.getFriday();
+                    break;
             }
 
-            String selectedItem = suggestionsComboBox.getSelectionModel().getSelectedItem();
-            ObservableList<String> items = suggestionsListView.getItems();
+            List<String> exercises = new ArrayList<>();
 
-            if (selectedItem != null) {
+            if (dayType != null) {
 
-                items.add(selectedItem);
-
-                Optional<String> excerciseURL = apiConsumption.searchExerciseImage(selectedItem);
-
-                if (excerciseURL.isPresent() && excerciseURL.get() != null && !excerciseURL.get().isEmpty()) {
-                    Image excerciseImage = new Image(excerciseURL.get()); // Use the actual URL here
-                    exerciseImageView.setImage(excerciseImage);
-                } else {
-
+                switch (dayType) {
+                    case pechoybrazo:
+                        exercises.add("chest");
+                        exercises.add("lower%20arms");
+                        exercises.add("upper%20arms");
+                        break;
+                    case piernacompleta:
+                        exercises.add("upper%20legs");
+                        exercises.add("lower%20legs");
+                        break;
+                    case hombroyespalda:
+                        exercises.add("back");
+                        exercises.add("shoulders");
+                        break;
+                    case abdomenycardio:
+                        exercises.add("cardio");
+                        exercises.add("waist");
+                        break;
+                    default:
+                        break;
                 }
             }
-        });
 
+            List<String> allSuggestions = new ArrayList<>();
 
+            if (cachedSuggestions == null){
+                for (String muscleGroup : exercises) {
+                    List<String> suggestions = apiConsumption.getExerciseSuggestionsByMuscleGroup(muscleGroup, dayType);
+                    allSuggestions.addAll(suggestions); // Añadimos todas las sugerencias al mismo list
+                }
 
-        //Listener para manejar el borrado de suggestions
-        suggestionsListView.setOnMouseClicked(event -> {
-            String selectedItem = suggestionsListView.getSelectionModel().getSelectedItem();
-            if (selectedItem != null) {
-                suggestionsListView.getItems().remove(selectedItem);
-
+                cachedSuggestions = allSuggestions;
             }
+
+            suggestionsComboBox.getItems().addAll(cachedSuggestions);
+
+            //Listener para manejar el borrado de suggestions
+            suggestionsListView.setOnMouseClicked(event -> {
+                String selectedItem = suggestionsListView.getSelectionModel().getSelectedItem();
+                if (selectedItem != null) {
+                    suggestionsListView.getItems().remove(selectedItem);
+
+                }
+            });
+            //agregar suggestions
+
+            suggestionsComboBox.setOnAction(event -> {
+                String selectedItem = suggestionsComboBox.getSelectionModel().getSelectedItem();
+                if (selectedItem != null && !suggestionsListView.getItems().contains(selectedItem)) {
+                    suggestionsListView.getItems().add(selectedItem);
+                    String excerciseGifURL = excerciseRepository.findFirstByExcerciseName(selectedItem).getGifURL();
+                    if (excerciseGifURL != null) {
+                        Image exerciseImage = new Image(excerciseGifURL);
+                        exerciseImageView.setImage(exerciseImage);
+                    }
+                }
+            });
+
+
+            saveButton.setOnAction(actionEvent -> {
+                try {
+                    cachedSuggestions = null;
+                    addExcercise(suggestionsListView);
+                    closeCurrentWindow();
+                    refreshParentFrame();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+
         });
 
-
-        saveButton.setOnAction(actionEvent -> {
-            try {
-                cachedSuggestions = null;
-                addExcercise(suggestionsListView);
-                closeCurrentWindow();
-                refreshParentFrame();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
 
     }
 
@@ -179,52 +192,11 @@ public class SetYourRutine {
             targetDate = targetDate.plusWeeks(1); // Adjust to next week
         }
 
-        //DayExcercise dayExcercise = getDayExcerciseForDate(targetDate);
 
-        /*
-        if (dayExcercise == null) {
-            // If DayMeal does not exist for this date, create a new one
-            dayExcercise = new DayExcercise();
-            dayExcercise.setDate(java.sql.Date.valueOf(targetDate));
-        }
-
-         */
-
-        //targetDate es el date que le debo poner al daymeal
-
-        for (String selectedItem : suggestionsListView.getItems()) {
-            Excercise selectedExcercise = getExcerciseByName(selectedItem);
-
-            if (selectedExcercise != null) {
-                //excerciseRepository.save(selectedExcercise);
-            } else {
-                System.out.println("Excercise not found: " + selectedItem);
-            }
-
-
-        }
-        //dayExcerciseRepository.save(dayExcercise);
     }
 
-    private Excercise getExcerciseByName(String excerciseName) {
-        /*
-        Excercise excercise = excerciseRepository.findFirstByExcerciseName(excerciseName);
-        if (excercise != null) {
-            excerciseRepository.save(excercise);
-        }
-        return excercise;
 
-         */
-        return null;
-    }
-
-    /*
-    private DayExcercise getDayExcerciseForDate(LocalDate targetDate) {
-        return dayExcerciseRepository.findByDate(java.sql.Date.valueOf(targetDate));
-    }
-
-     */
-
+/*
     private void searchExercise(String query) {
         List<String> suggestions = apiConsumption.getExerciseSuggestionsByMuscleGroup(query); //API busqueda
 
@@ -236,6 +208,8 @@ public class SetYourRutine {
         });
 
     }
+
+ */
 
     private void closeCurrentWindow() {
 
@@ -273,7 +247,7 @@ public class SetYourRutine {
         if (dashboardFrame != null) {
             Platform.runLater(() -> {
                 // This ensures that the parent frame gets updated in the UI thread
-                dashboardFrame.refreshContent();  // Assume refreshContent() is the method that refreshes the content
+                dashboardFrame.refreshExcerciseContent();  // Assume refreshContent() is the method that refreshes the content
             });
         }
     }
