@@ -1428,7 +1428,7 @@ public class DashboardFrame {
                 nutrimentalInfo.setNutritionalData(targetDate, foodType);
 
 
-                nutrimentalInfoStage.setTitle("Principal");
+                nutrimentalInfoStage.setTitle("Informacion nutrimental");
                 nutrimentalInfoStage.setScene(scene);
 
                 // Establecer límites para la ventana
@@ -1444,8 +1444,6 @@ public class DashboardFrame {
                 e.printStackTrace();
             }
         });
-
-
 
     }
 
@@ -1612,11 +1610,6 @@ public class DashboardFrame {
 
         // Definir grupos musculares
         AccountData accountData = new AccountData();
-        String monday = String.valueOf(accountData.getMonday());
-        String tuesday = String.valueOf(accountData.getTuesday());
-        String wednesday = String.valueOf(accountData.getWednesday());
-        String thursday = String.valueOf(accountData.getThursday());
-        String friday = String.valueOf(accountData.getFriday());
 
         LocalDate today = LocalDate.now();
         int dayOfWeek = today.getDayOfWeek().getValue();
@@ -1670,10 +1663,9 @@ public class DashboardFrame {
                 // Aquí puedes manejar la lógica del clic, dependiendo de si se quiere mostrar más detalles o realizar alguna acción
                 if (clickedButton.getText().contains("No hay ejercicios")) {
                     handleCellClickForExercise(finalRow);
-                    System.out.println("No exercises for this day");
                 } else {
                     // Lógica para cuando sí hay ejercicios
-                    showCheckYourRutine();
+                    showCheckYourRutine(targetDate);
                 }
             });
         }
@@ -1788,40 +1780,43 @@ public class DashboardFrame {
 
     private Stage checkYourRutineStage;
 
-    private void showCheckYourRutine() {
-
-        // Cargar las propiedades
+    private void showCheckYourRutine(LocalDate targetDate) {
+        // Load properties
         Properties properties = new Properties();
         loadProperties(properties);
 
-
-        // Si la ventana ya está abierta, la traemos al frente
+        // If window is already open, bring it to the front
         if (checkYourRutineStage != null && checkYourRutineStage.isShowing()) {
-            checkYourRutineStage.toFront(); // Traer la ventana existente al frente
+            checkYourRutineStage.toFront();
             return;
         }
 
-        // Abrir la ventana de check si aún no se ha completado el ejercicio
         Platform.runLater(() -> {
             try {
+                // Initialize FXMLLoader with the Spring context
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlantillasFXML/CheckYourRutine.fxml"));
                 loader.setControllerFactory(applicationContext::getBean);
-
-                CheckYourRutine controller = loader.getController();
-
-                Scene scene = new Scene(loader.load(), 400, 500); // Limitar tamaño de la escena
+                Scene scene = new Scene(loader.load(), 400, 500);
 
                 checkYourRutineStage = new Stage();
-                checkYourRutineStage.setTitle("Principal");
+
+
+                // Load the controller
+                CheckYourRutine controller = loader.getController();
+                controller.setTargetDate(targetDate);  // Now the controller should not be null
+
+
+                checkYourRutineStage.setTitle("Informacion de ejercicios");
                 checkYourRutineStage.setScene(scene);
 
-                // Establecer límites para la ventana
+                // Set window size restrictions
                 checkYourRutineStage.setMinWidth(400);
                 checkYourRutineStage.setMinHeight(500);
                 checkYourRutineStage.setMaxWidth(400);
                 checkYourRutineStage.setMaxHeight(500);
 
-                checkYourRutineStage.setOnCloseRequest(event -> checkYourRutineStage = null); // Reset cuando se cierra
+                // Reset checkYourRutineStage when closed
+                checkYourRutineStage.setOnCloseRequest(event -> checkYourRutineStage = null);
 
                 checkYourRutineStage.show();
             } catch (Exception e) {
