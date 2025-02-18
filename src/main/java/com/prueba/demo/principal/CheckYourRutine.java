@@ -36,7 +36,8 @@ public class CheckYourRutine {
     @FXML
     private TextArea timeTextArea;
 
-    private int currentExcercise = 0;
+    private int currentExerciseIndex;
+    private List<Excercise> currentExercises;
 
 
     @FXML
@@ -59,27 +60,21 @@ public class CheckYourRutine {
 
     public void setTargetDate(LocalDate targetDate) {
         if (targetDate == null) {
-            return; // exit early or handle it appropriately
+            return;
         }
 
-        List <DayExcercise> dayExcercises = getDayExerciseForDate(targetDate);
-
-        currentExcercise = 0;
+        List<DayExcercise> dayExcercises = dayExcerciseRepository.findAllByDate(java.sql.Date.valueOf(targetDate));
 
         if (dayExcercises != null && !dayExcercises.isEmpty()) {
-            // Ensure currentExcercise is within bounds
-            if (currentExcercise < dayExcercises.size()) {
-                // Show the first exercise
-                List<Excercise> exercises = dayExcercises.get(currentExcercise).getExcercises();
-                if (!exercises.isEmpty()) {
-                    showExerciseDetails(exercises.get(0));
-                    // Show the Next button if there are more exercises
-                    nextButton.setVisible(exercises.size() > 1);
-                    backButton.setVisible(false); // Initially hide the back button
-                }
+            currentExercises = dayExcercises.get(0).getExcercises(); // Tomar la lista de ejercicios del primer día
+            currentExerciseIndex = 0;
+
+            if (!currentExercises.isEmpty()) {
+                showExerciseDetails(currentExercises.get(currentExerciseIndex));
+                nextButton.setVisible(currentExercises.size() > 1);
+                backButton.setVisible(false);
             }
         }
-
     }
 
 
@@ -89,10 +84,14 @@ public class CheckYourRutine {
         seriesTextArea.setText(String.valueOf(exercise.getSeries()));
         timeTextArea.setText(String.valueOf(exercise.getTime()));
 
-        // Set the image (assuming gifURL points to an image)
+        repetitionsTextArea.setEditable(false);
+        seriesTextArea.setEditable(false);
+        timeTextArea.setEditable(false);
+
         Image image = new Image(exercise.getGifURL());
         exerciseImageView.setImage(image);
     }
+
 
 
     @Autowired
@@ -110,34 +109,26 @@ public class CheckYourRutine {
 
     @FXML
     private void onNextButtonClicked() {
-        List<DayExcercise> dayExcercises = getDayExerciseForDate(LocalDate.now());
-        if (currentExcercise < dayExcercises.size() - 1) {
-            currentExcercise++;
-            List<Excercise> exercises = dayExcercises.get(currentExcercise).getExcercises();
-            if (!exercises.isEmpty()) {
-                showExerciseDetails(exercises.get(0));
-            }
-        }
 
-        // Hide next button if there's no next exercise
-        nextButton.setVisible(currentExcercise < dayExcercises.size() - 1);
-        backButton.setVisible(currentExcercise > 0);  // Show the back button if we're not at the first exercise
+
+        if (currentExercises != null && currentExerciseIndex < currentExercises.size() - 1) {
+            currentExerciseIndex++;
+            showExerciseDetails(currentExercises.get(currentExerciseIndex));
+
+            backButton.setVisible(true);
+            nextButton.setVisible(currentExerciseIndex < currentExercises.size() - 1);
+        }
     }
 
     @FXML
     private void onBackButtonClicked() {
-        List<DayExcercise> dayExcercises = getDayExerciseForDate(LocalDate.now());
+        if (currentExercises != null && currentExerciseIndex > 0) {
+            currentExerciseIndex--;
+            showExerciseDetails(currentExercises.get(currentExerciseIndex));
 
-        if (currentExcercise > 0) {
-            currentExcercise--;
-            List<Excercise> exercises = dayExcercises.get(currentExcercise).getExcercises();
-            if (!exercises.isEmpty()) {
-                showExerciseDetails(exercises.get(0));
-            }
+            nextButton.setVisible(true);
+            backButton.setVisible(currentExerciseIndex > 0);
         }
-
-        // Show the next button if there's another exercise
-        nextButton.setVisible(currentExcercise < dayExcercises.size() - 1);
-        backButton.setVisible(currentExcercise > 0);  // Show the back button if we're not at the first exercise
     }
+
 }

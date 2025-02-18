@@ -1605,6 +1605,11 @@ public class DashboardFrame {
         choiceBoxExcercise4.setItems(options);
         choiceBoxExcercise5.setItems(options);
 
+        choiceBoxExcercise1.setDisable(true);
+        choiceBoxExcercise2.setDisable(true);
+        choiceBoxExcercise3.setDisable(true);
+        choiceBoxExcercise4.setDisable(true);
+        choiceBoxExcercise5.setDisable(true);
 
         setYourPreferencesButtonExercise.setOnAction(e -> openSetYourPreferencesExcercise());
 
@@ -1670,8 +1675,6 @@ public class DashboardFrame {
             });
         }
 
-
-
         Properties properties = new Properties();
         try (FileInputStream in = new FileInputStream("preferencesState.properties")) {
             properties.load(in);
@@ -1682,24 +1685,45 @@ public class DashboardFrame {
 
                 // checar si funciona una vez que ya se puedan agregar ejercicios
 
-                boolean hasInfo = false;
+                boolean hasNoExercises = false;
+
                 for (Node node : gridPaneExercise.getChildren()) {
                     if (node instanceof Button button) {
-                        if (button.getText() != null && !button.getText().isEmpty()) {
-                            hasInfo = true;
+                        Integer rowIndex = GridPane.getRowIndex(button); // Obtener la fila del botón en el GridPane
+                        if (rowIndex == null) continue; // Si no tiene una fila asignada, continuar con el siguiente nodo
+
+                        if ("No hay ejercicios".equals(button.getText())) {
+                            hasNoExercises = true;
+
+                            // Habilitar el ChoiceBox correspondiente a la fila
+                            switch (rowIndex) {
+                                case 2 -> choiceBoxExcercise1.setDisable(false);
+                                case 3 -> choiceBoxExcercise2.setDisable(false);
+                                case 4 -> choiceBoxExcercise3.setDisable(false);
+                                case 5 -> choiceBoxExcercise4.setDisable(false);
+                                case 6 -> choiceBoxExcercise5.setDisable(false);
+                            }
+                        }
+                    } else if (node instanceof Label label) {
+                        if ("No hay ejercicios".equals(label.getText())) {
+                            System.out.println(2);
+                            hasNoExercises = true;
                             break;
-                        } else if (button.getGraphic() != null) {
-                            hasInfo = true;
-                            break;
+                        }
+                    } else if (node instanceof StackPane stackPane) {
+                        for (Node child : stackPane.getChildren()) {
+                            if (child instanceof Label label && "No hay ejercicios".equals(label.getText())) {
+                                System.out.println(3);
+                                hasNoExercises = true;
+                                break;
+                            }
                         }
                     }
                 }
 
-                if (hasInfo) {
+                if (!hasNoExercises) {
                     enableGridPane(gridPaneRutine);
                 }
-
-
             } else {
                 disableGridPane(gridPaneExercise);
                 disableNode(gridPaneRutine);
@@ -2000,10 +2024,6 @@ public class DashboardFrame {
 
 
 
-
-
-
-
     /**
      reportes
      */
@@ -2103,6 +2123,8 @@ public class DashboardFrame {
         pause.play();
     }
 
+
+
     public void generateReport() throws FileNotFoundException, IOException {
         String dest = "toSendPDF.pdf";
         PdfWriter writer = new PdfWriter(dest);
@@ -2131,6 +2153,8 @@ public class DashboardFrame {
         Double chest = account.get().getChest();
         Double neck = account.get().getNeck();
 
+        List<String> accountAllergies = accountAllergyFoodRepository.findFoodNamesByAccountDataId(1L);
+
         double imc = Math.round((weight / Math.pow(height / 100.0, 2)) * 10.0) / 10.0;
 
         // Encabezado
@@ -2143,7 +2167,11 @@ public class DashboardFrame {
         document.add(new Paragraph("Peso: " + weight + " kg"));
         document.add(new Paragraph("Altura: " + height + " m"));
         document.add(new Paragraph("Meta: " + goalString));
-        document.add(new Paragraph("IMC: " + imc));
+        document.add(new Paragraph("Alergias: " + (accountAllergies.isEmpty() ? "Ninguna" : String.join(", ", accountAllergies))));
+
+
+
+        //document.add(new Paragraph("IMC: " + imc));
 
         document.add(new Paragraph("Medidas Corporales").setFont(boldFont).setFontSize(14));
         document.add(new Paragraph("Abdomen: " + abdomen + " cm"));
@@ -2346,7 +2374,4 @@ public class DashboardFrame {
         showExercise();
         showDiet();
     }
-
-
-//-----ESTO ES PARA LA TABLA DE DIETA CHECAR SI ESTA CORRECTO-----
 }
