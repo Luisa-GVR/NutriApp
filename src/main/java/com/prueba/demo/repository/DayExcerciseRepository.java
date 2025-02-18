@@ -12,6 +12,8 @@ import java.util.List;
 
 @Repository
 public interface DayExcerciseRepository extends JpaRepository<DayExcercise, Long> {
-    DayExcercise findByDate(Date valueOf);
     List<DayExcercise> findAllByDate(Date valueOf);
+
+    List<DayExcercise> findByDate(Date date);
+
 }

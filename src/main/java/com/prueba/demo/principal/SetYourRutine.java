@@ -74,6 +74,10 @@ public class SetYourRutine {
         Platform.runLater(() -> {
             suggestionsComboBox.setEditable(false);
 
+            Stage stage = (Stage) suggestionsComboBox.getScene().getWindow();
+            stage.setOnCloseRequest(event -> {
+                cachedSuggestions = null;
+            });
 
             int row = getRow();
             ExcerciseType dayType = null;
@@ -130,7 +134,8 @@ public class SetYourRutine {
 
             if (cachedSuggestions == null){
                 for (String muscleGroup : exercises) {
-                    List<String> suggestions = apiConsumption.getExerciseSuggestionsByMuscleGroup(muscleGroup, dayType);
+                    Goal goal = accountData.getGoal();
+                    List<String> suggestions = apiConsumption.getExerciseSuggestionsByMuscleGroup(muscleGroup, dayType, goal);
                     allSuggestions.addAll(suggestions); // Añadimos todas las sugerencias al mismo list
                 }
 
@@ -144,7 +149,6 @@ public class SetYourRutine {
                 String selectedItem = suggestionsListView.getSelectionModel().getSelectedItem();
                 if (selectedItem != null) {
                     suggestionsListView.getItems().remove(selectedItem);
-
                 }
             });
             //agregar suggestions
@@ -164,11 +168,12 @@ public class SetYourRutine {
 
             saveButton.setOnAction(actionEvent -> {
                 try {
-                    cachedSuggestions = null;
-                    addExcercise(suggestionsListView);
-                    closeCurrentWindow();
-                    refreshParentFrame();
-
+                    if (suggestionsListView.getItems().size()>= 3 && suggestionsListView.getItems().size() <= 5){
+                        cachedSuggestions = null;
+                        addExcercise(suggestionsListView);
+                        closeCurrentWindow();
+                        refreshParentFrame();
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -185,12 +190,33 @@ public class SetYourRutine {
         DayOfWeek currentDay = today.getDayOfWeek();
         int dayOfWeek = currentDay.getValue();
 
-        int offset = getCol() - dayOfWeek;
+        int offset = getRow() - dayOfWeek;
         LocalDate targetDate = today.plusDays(offset);
 
         if (targetDate.getDayOfWeek().getValue() < getCol()) {
             targetDate = targetDate.plusWeeks(1); // Adjust to next week
         }
+
+        //fecha
+        DayExcercise dayExcercise = new DayExcercise();
+        dayExcercise.setDate(java.sql.Date.valueOf(targetDate));
+
+        //Agregar ejercicios con los nombres
+        List<Excercise> exercisesToAdd = new ArrayList<>();
+
+        // Iterar sobre los nombres de los ejercicios en suggestionsListView
+        for (String exerciseName : suggestionsListView.getItems()) {
+            // Buscar cada ejercicio en la base de datos por nombre
+            Excercise exercise = excerciseRepository.findByExcerciseName(exerciseName);
+            exercisesToAdd.add(exercise);
+        }
+        dayExcercise.setExcercises(exercisesToAdd);
+
+
+        Optional<Account> account = accountRepository.findById(1L);
+        AccountData accountData = account.get().getAccountData();
+
+        dayExcerciseRepository.save(dayExcercise);
 
 
     }

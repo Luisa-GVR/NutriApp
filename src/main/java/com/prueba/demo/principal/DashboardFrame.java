@@ -1586,6 +1586,8 @@ public class DashboardFrame {
     }
 
 
+    @Autowired
+    DayExcerciseRepository dayExcerciseRepository;
 
     /**
      ejercicio
@@ -1616,58 +1618,65 @@ public class DashboardFrame {
         String thursday = String.valueOf(accountData.getThursday());
         String friday = String.valueOf(accountData.getFriday());
 
-        String[] muscleGroups = {monday, tuesday, wednesday, thursday, friday};
-
         LocalDate today = LocalDate.now();
         int dayOfWeek = today.getDayOfWeek().getValue();
-        Date date1 = null;
-        Date date2 = null;
-        Date date3 = null;
-        Date date4 = null;
-        Date date5 = null;
+
 
         for (int row = 1; row <= 5; row++) {
-            for (int col = 1; col <= 5; col++) {
-                int daysOffset = col - 1;
-                LocalDate targetDate = today.minusDays(dayOfWeek - 1).plusDays(daysOffset);
+            // Ajustamos la fecha con un offset para cada fila
+            int daysOffset = row - 1;
+            LocalDate targetDate = today.minusDays(dayOfWeek - 1).plusDays(daysOffset);
+            Date sqlDate = Date.valueOf(targetDate); // Convierte el LocalDate a Date de SQL
 
+            // Obtener los ejercicios para la fecha
+            List<DayExcercise> dayExcerciseList = dayExcerciseRepository.findByDate(sqlDate);
 
+            // Crear el botón con el texto de los ejercicios
+            Button exerciseButton = new Button("");
+            exerciseButton.setMaxWidth(Double.MAX_VALUE);
+            exerciseButton.setMaxHeight(Double.MAX_VALUE);
 
-                switch (row) {
-                    case 1 -> date1 = Date.valueOf(targetDate);
-                    case 2 -> date2 = Date.valueOf(targetDate);
-                    case 3 -> date3 = Date.valueOf(targetDate);
-                    case 4 -> date4 = Date.valueOf(targetDate);
-                    case 5 -> date5 = Date.valueOf(targetDate);
-                }
-                Button exerciseButton = new Button("");
-                exerciseButton.setMaxWidth(Double.MAX_VALUE);
-                exerciseButton.setMaxHeight(Double.MAX_VALUE);
+            // Si hay ejercicios para este día, concatenamos los nombres
+            if (dayExcerciseList != null && !dayExcerciseList.isEmpty()) {
+                StringBuilder exerciseNames = new StringBuilder();
 
-                gridPaneExercise.add(exerciseButton, 2, row);
-
-                // Hacer que el botón crezca dentro de la celda
-                GridPane.setHgrow(exerciseButton, Priority.ALWAYS);
-
-                int finalRow = row;
-                exerciseButton.setOnMouseClicked(event -> {
-
-                    Button clickedButton = (Button) event.getSource();
-
-                    if (exerciseButton.getGraphic() != null) {
-                        System.out.println("HOLAAAAA ENTRE A QUE CHHEQUEEESSS TU RUTINA WEIIIII");
-                        showCheckYourRutine();
-
-                    } else if (exerciseButton.getGraphic() == null){
-                        handleCellClickForExercise(finalRow);
-
-
-                    }
+                dayExcerciseList.forEach(dayExcercise -> {
+                    dayExcercise.getExcercises().forEach(exercise -> {
+                        exerciseNames.append(exercise.getExcerciseName()).append(", ");
+                    });
                 });
 
-            }
-        }
+                // Eliminar la última coma y espacio si hay ejercicios
+                if (exerciseNames.length() > 0) {
+                    exerciseNames.setLength(exerciseNames.length() - 2);
+                }
 
+                // Establecer el texto del botón con los nombres de los ejercicios
+                exerciseButton.setText(exerciseNames.toString());
+            } else {
+                exerciseButton.setText("No hay ejercicios"); // Si no hay ejercicios, mostrar este texto
+            }
+
+            // Agregar el botón a la celda correspondiente de la tabla, empezando desde la tercera columna
+            gridPaneExercise.add(exerciseButton, 2, row); // Columna 2 (tercera columna) y fila de 1 a 5
+
+            // Hacer que el botón crezca dentro de la celda
+            GridPane.setHgrow(exerciseButton, Priority.ALWAYS);
+
+            // Configurar el evento de clic para cada botón
+            int finalRow = row;
+            exerciseButton.setOnMouseClicked(event -> {
+                Button clickedButton = (Button) event.getSource();
+                // Aquí puedes manejar la lógica del clic, dependiendo de si se quiere mostrar más detalles o realizar alguna acción
+                if (clickedButton.getText().contains("No hay ejercicios")) {
+                    handleCellClickForExercise(finalRow);
+                    System.out.println("No exercises for this day");
+                } else {
+                    // Lógica para cuando sí hay ejercicios
+                    showCheckYourRutine();
+                }
+            });
+        }
 
 
 

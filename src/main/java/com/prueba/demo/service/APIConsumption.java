@@ -4,11 +4,11 @@ package com.prueba.demo.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prueba.demo.model.*;
 import com.prueba.demo.repository.ExcerciseRepository;
 import com.prueba.demo.repository.FoodRepository;
-import com.prueba.demo.service.dto.FoodPreferencesDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +21,9 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.prueba.demo.model.ExcerciseType.piernacompleta;
+
 @Service
 public class APIConsumption {
 
@@ -30,11 +33,11 @@ public class APIConsumption {
     //Nutritionix, hacerlo mas seguro!
 
      //estos son de la nutricuenta
-    /*
-     private static final String API_KEY = "04efb6f3d6527074db8c13c4ac662f40";
-    private static final String API_ID = "7aa68925";
-    private static final String URL_BASE = "https://trackapi.nutritionix.com/v2/natural/nutrients";
-*/
+
+    private static final String API_KEY_CALORIES = "04efb6f3d6527074db8c13c4ac662f40";
+    private static final String API_ID_CALORIES = "7aa68925";
+    private static final String URL_BASE_CALORIES = "https://trackapi.nutritionix.com/v2/natural/exercise/";
+
     //esta dde mi cuenta
 
 
@@ -171,7 +174,7 @@ public class APIConsumption {
         String encodedExerciseName = java.net.URLEncoder.encode(exerciseName, StandardCharsets.UTF_8);
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(EXERCISE_API_URL + encodedExerciseName + "?limit=5"))
+                .uri(URI.create(EXERCISE_API_URL + encodedExerciseName + "?limit=3"))
                 .header("X-RapidAPI-Key", EXERCISE_API_KEY)
                 .header("X-RapidAPI-Host", EXERCISE_API_HOST)
                 .GET()
@@ -198,10 +201,10 @@ public class APIConsumption {
     @Autowired
     ExcerciseRepository excerciseRepository;
 
-    public List<String> getExerciseSuggestionsByMuscleGroup(String muscleGroup, ExcerciseType insertedExcerciseType) {
+    public List<String> getExerciseSuggestionsByMuscleGroup(String muscleGroup, ExcerciseType insertedExcerciseType, Goal goal) {
         HttpClient client = HttpClient.newHttpClient();
 
-        String url = EXERCISE_API_URL + muscleGroup + "?limit=1";
+        String url = EXERCISE_API_URL + muscleGroup + "?limit=5";
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .header("X-RapidAPI-Key", EXERCISE_API_KEY)
@@ -227,11 +230,61 @@ public class APIConsumption {
                         String gifUrl = (String) exerciseData.get("gifUrl");
                         String name = (String) exerciseData.get("name");
 
+                        Optional<Excercise> existingExercise = Optional.ofNullable(excerciseRepository.findByExcerciseName(name));
+                        if (existingExercise.isPresent()) {
+                            // Si ya existe, devolver su nombre sin guardarlo nuevamente
+                            return existingExercise.get().getExcerciseName();
+                        }
+
+
+
                         Excercise exercise = new Excercise();
                         exercise.setGifURL(gifUrl);
                         exercise.setExcerciseName(name);
                         exercise.setExcerciseType(insertedExcerciseType);
                         exercise.setExcerciseType(insertedExcerciseType);
+
+                        int series = 5;
+                        if(insertedExcerciseType == piernacompleta){
+                            series =4;
+                            exercise.setSeries(series);
+                        } else {
+                            exercise.setSeries(series);
+                        }
+
+                        Random random = new Random();
+                        int selectedReps = 0;
+                        int time = 5;  // Valor por defecto
+
+                        switch (goal) {
+                            case deficit:
+                                // Elegir aleatoriamente entre 12, 14 y 15
+                                selectedReps = new int[]{12, 14, 15}[random.nextInt(3)];
+                                time = (selectedReps == 14 || selectedReps == 15) ? 4 : 5;  // Si es 14 o 15, asignar 4, sino 5
+                                break;
+                            case volumen:
+                                // Elegir aleatoriamente entre 6, 8 y 10
+                                selectedReps = new int[]{6, 8, 10}[random.nextInt(3)];
+                                time = (selectedReps == 10) ? 4 : 5;  // Si es 10, asignar 4, sino 5
+                                break;
+                            case mantenimiento:
+                                // Elegir aleatoriamente entre 10 y 12
+                                selectedReps = new int[]{10, 12}[random.nextInt(2)];
+                                time = (selectedReps == 12) ? 4 : 5;  // Si es 12, asignar 4, sino 5
+                                break;
+                            default:
+                                selectedReps = new int[]{10, 12}[random.nextInt(2)];
+                                time = (selectedReps == 12) ? 4 : 5;  // Si es 12, asignar 4, sino 5
+                        }
+
+                        exercise.setReps(selectedReps);
+
+                        int totalTime = (int) Math.round((selectedReps * time * series) / 60.0);
+                        exercise.setTime(totalTime);
+
+                        int caloriesBurned = getCaloriesBurned(name, totalTime);
+
+                        exercise.setCalories(caloriesBurned);
 
                         // Guardar el ejercicio en la base de datos
                         Excercise savedExercise = excerciseRepository.save(exercise);
@@ -251,63 +304,44 @@ public class APIConsumption {
     }
 
 
-    //es un draft para ver la busqueda mediante imagenes
-    public Optional<String> searchExerciseImage(String exerciseName) {
-        // Crear cliente HTTP para la solicitud
+
+    public int getCaloriesBurned(String exerciseName, int duration) {
         HttpClient client = HttpClient.newHttpClient();
 
-        // Codificar el nombre del ejercicio para evitar caracteres especiales en la URL
-        String encodedExerciseName = URLEncoder.encode(exerciseName, StandardCharsets.UTF_8);
+        String query = exerciseName + " " + duration + " minutes";
+        String requestBody = "{\"query\":\"" + query + "\"}";
 
-        // Construir la URL para consultar la API de ExerciseDB
-        String exerciseApiUrl = "https://exercisedb.p.rapidapi.com/exercises/" + encodedExerciseName;
-
-        // Crear la solicitud HTTP
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(exerciseApiUrl))
-                .header("X-RapidAPI-Key", EXERCISE_API_KEY)  // Reemplaza con tu API Key
-                .header("X-RapidAPI-Host", EXERCISE_API_HOST)
-                .GET()
+                .uri(URI.create(URL_BASE_CALORIES))
+                .header("x-app-id", API_ID_CALORIES)
+                .header("x-app-key", API_KEY_CALORIES)
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
 
-        // Realizar la solicitud y procesar la respuesta
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            // Verificar si la respuesta fue exitosa
-            if (response.statusCode() == 200) {
-                ObjectMapper objectMapper = new ObjectMapper();
-                Excercise excercise = objectMapper.readValue(response.body(), Excercise.class);
+            String jsonResponse = response.body();
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode rootNode = objectMapper.readTree(jsonResponse);
 
-                // Obtener la URL de la imagen desde la respuesta de la API
-                String exerciseImageUrl = excercise.getGifURL(); // Asumiendo que la URL de la imagen está en esta propiedad
-
-                if (exerciseImageUrl != null && !exerciseImageUrl.isEmpty()) {
-                    // Crear una imagen a partir de la URL y mostrarla en el ImageView
-                    //Image excerciseImage = new Image(exerciseImageUrl);
-                    //excerciseImageView.setImage(excerciseImage);
-
-                    System.out.println("si se encontró una imagen para el ejercicio");
-                } else {
-                    // Manejo de caso cuando no se encuentra una imagen (puedes mostrar una imagen predeterminada)
-                    System.out.println("No se encontró una imagen para el ejercicio.");
-                }
-            } else {
-                System.out.println("Error al obtener la información del ejercicio: " + response.statusCode());
+            if (rootNode.has("exercises") && rootNode.get("exercises").isArray() && rootNode.get("exercises").size() > 0) {
+                JsonNode exerciseNode = rootNode.get("exercises").get(0);
+                return exerciseNode.get("nf_calories").asInt();
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
-        return null;
+
+        return 0; // En caso de error o si no se encontraron ejercicios
     }
 
 
 
 
-
-
-    //cargar informacion
-
+    //cargar informacion, borrar a futuro? sirvio para hacer el mockupdata
+/*
     public List<String> getFoodSuggestionsFromFile(String filePath, int mealType) {
         List<String> foodSuggestions = new ArrayList<>();
         List<String> queries = readQueriesFromFile(filePath);
@@ -406,5 +440,6 @@ public class APIConsumption {
             e.printStackTrace();
         }
     }
+*/
 
 }

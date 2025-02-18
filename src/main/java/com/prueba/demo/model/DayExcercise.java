@@ -17,22 +17,17 @@ public class DayExcercise {
     @Column(name = "time", nullable = false, length = 120)
     private int time;
 
-    @Column(name = "reps", nullable = false, length = 120)
-    private int reps;
-
-    @Column(name = "series", nullable = false, length = 120)
-    private int series;
-
     @Column(name = "date", nullable = false, length = 120)
     private Date date;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "DayExcercise_Excercise",
             joinColumns = @JoinColumn(name = "dayExcercise_id"),
             inverseJoinColumns = @JoinColumn(name = "excercise_id")
     )
     private List<Excercise> excercises;
+
 
     //Getters y setters...
 
@@ -53,7 +48,17 @@ public class DayExcercise {
         this.id = id;
     }
 
-
+    @PrePersist
+    @PreUpdate
+    private void calculateTime() {
+        if (excercises != null) {
+            this.time = excercises.stream()
+                    .mapToInt(Excercise::getTime)
+                    .sum();
+        } else {
+            this.time = 0;
+        }
+    }
 
     public int getTime() {
         return time;

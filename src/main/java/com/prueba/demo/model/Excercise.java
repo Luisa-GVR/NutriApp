@@ -22,8 +22,55 @@ public class Excercise {
     @Column(name = "gifURL", nullable = false)
     private String gifURL;
 
+
+
+    @Column(name = "time", nullable = false, length = 120)
+    private int time;
+
+    @Column(name = "reps", nullable = false, length = 120)
+    private int reps;
+
+    @Column(name = "series", nullable = false, length = 120)
+    private int series;
+
+    @Column(name = "calories", nullable = false, length = 120)
+    private int calories;
+
+
     //Getters y setters...
 
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
+    }
+
+    public int getReps() {
+        return reps;
+    }
+
+    public void setReps(int reps) {
+        this.reps = reps;
+    }
+
+    public int getSeries() {
+        return series;
+    }
+
+    public void setSeries(int series) {
+        this.series = series;
+    }
+
+    public int getCalories() {
+        return calories;
+    }
+
+    public void setCalories(int calories) {
+        this.calories = calories;
+    }
 
     public Long getId() {
         return id;
