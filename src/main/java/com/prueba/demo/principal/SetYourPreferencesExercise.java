@@ -77,15 +77,12 @@ public class SetYourPreferencesExercise {
             try {
                 if (validateFields()) {
                     completeProfile();
-                    System.out.println("entre a save y llegue a que si valido");
                 }else {
                     System.out.println("entre a save y no valido desde else");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
                 //showAlert("Error", "No se pudo completar el perfil.");
-                System.out.println("entre a save y no valido desde catch");
-
             }
         });
     }
@@ -241,7 +238,7 @@ public class SetYourPreferencesExercise {
             dashboardFrame.excerciseHbox.setVisible(false); // Cambiar visibilidad a false
 
         } else {
-            System.out.println("El ejercicio ya está marcado como completado.");
+
         }
     }
 
@@ -256,6 +253,7 @@ public class SetYourPreferencesExercise {
 
     private void closeCurrentWindow() {
         Stage stage = (Stage) saveButton.getScene().getWindow();
+        dashboardFrame.refreshExcerciseContent();
         stage.close();
     }
 

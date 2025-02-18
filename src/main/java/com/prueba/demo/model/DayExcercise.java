@@ -17,6 +17,12 @@ public class DayExcercise {
     @Column(name = "time", nullable = false, length = 120)
     private int time;
 
+    @Column(name = "reps", nullable = false, length = 120)
+    private int reps;
+
+    @Column(name = "series", nullable = false, length = 120)
+    private int series;
+
     @Column(name = "date", nullable = false, length = 120)
     private Date date;
 

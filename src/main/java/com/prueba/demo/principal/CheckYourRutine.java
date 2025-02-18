@@ -5,7 +5,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
+import org.springframework.stereotype.Controller;
 
+@Controller
 public class CheckYourRutine {
     @FXML
     private Button nextButton;

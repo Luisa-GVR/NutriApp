@@ -987,27 +987,27 @@
                                                 </StackPane>
                                                 <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.rowIndex="1">
                                                    <children>
-                                                      <ChoiceBox prefWidth="150.0" style="-fx-background-color: white; -fx-border-color: #cdcdcd; -fx-border-width: 2; -fx-border-radius: 4;" />
+                                                      <ChoiceBox fx:id="choiceBoxExcercise1" prefWidth="150.0" style="-fx-background-color: white; -fx-border-color: #cdcdcd; -fx-border-width: 2; -fx-border-radius: 4;" />
                                                    </children>
                                                 </StackPane>
                                                 <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.rowIndex="3">
                                                    <children>
-                                                      <ChoiceBox prefWidth="150.0" style="-fx-background-color: white; -fx-border-color: #cdcdcd; -fx-border-width: 2; -fx-border-radius: 4;" />
+                                                      <ChoiceBox fx:id="choiceBoxExcercise3" prefWidth="150.0" style="-fx-background-color: white; -fx-border-color: #cdcdcd; -fx-border-width: 2; -fx-border-radius: 4;" />
                                                    </children>
                                                 </StackPane>
                                                 <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.rowIndex="5">
                                                    <children>
-                                                      <ChoiceBox prefWidth="150.0" style="-fx-background-color: white; -fx-border-color: #cdcdcd; -fx-border-width: 2; -fx-border-radius: 4;" />
+                                                      <ChoiceBox fx:id="choiceBoxExcercise5" prefWidth="150.0" style="-fx-background-color: white; -fx-border-color: #cdcdcd; -fx-border-width: 2; -fx-border-radius: 4;" />
                                                    </children>
                                                 </StackPane>
                                                 <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #e8f2d1; -fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.rowIndex="4">
                                                    <children>
-                                                      <ChoiceBox prefWidth="150.0" style="-fx-background-color: white; -fx-border-color: #cdcdcd; -fx-border-width: 2; -fx-border-radius: 4;" />
+                                                      <ChoiceBox fx:id="choiceBoxExcercise4" prefWidth="150.0" style="-fx-background-color: white; -fx-border-color: #cdcdcd; -fx-border-width: 2; -fx-border-radius: 4;" />
                                                    </children>
                                                 </StackPane>
                                                 <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #e8f2d1; -fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.rowIndex="2">
                                                    <children>
-                                                      <ChoiceBox prefWidth="150.0" style="-fx-background-color: white; -fx-border-color: #cdcdcd; -fx-border-width: 2; -fx-border-radius: 4;" />
+                                                      <ChoiceBox fx:id="choiceBoxExcercise2" prefWidth="150.0" style="-fx-background-color: white; -fx-border-color: #cdcdcd; -fx-border-width: 2; -fx-border-radius: 4;" />
                                                    </children>
                                                 </StackPane>
                                              </children>

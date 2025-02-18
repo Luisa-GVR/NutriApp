@@ -214,6 +214,22 @@ public class DashboardFrame {
     @FXML
     private GridPane gridPaneRutine;  //<------ Este GridPane es el que debe de aparecer y desaparecer
 
+    @FXML
+    private ChoiceBox<String> choiceBoxExcercise1;
+
+    @FXML
+    private ChoiceBox<String> choiceBoxExcercise2;
+
+    @FXML
+    private ChoiceBox<String> choiceBoxExcercise3;
+
+    @FXML
+    private ChoiceBox<String> choiceBoxExcercise4;
+
+    @FXML
+    private ChoiceBox<String> choiceBoxExcercise5;
+
+
     //Reports Pane
     @FXML
     private VBox reportsPane;
@@ -1570,6 +1586,7 @@ public class DashboardFrame {
     }
 
 
+
     /**
      ejercicio
      */
@@ -1579,6 +1596,15 @@ public class DashboardFrame {
         exercisePane.setVisible(true);
         menuVbox.setVisible(true);
         updateExerciseLabels();
+
+        ObservableList<String> options = FXCollections.observableArrayList("Sí", "No");
+
+        choiceBoxExcercise1.setItems(options);
+        choiceBoxExcercise2.setItems(options);
+        choiceBoxExcercise3.setItems(options);
+        choiceBoxExcercise4.setItems(options);
+        choiceBoxExcercise5.setItems(options);
+
 
         setYourPreferencesButtonExercise.setOnAction(e -> openSetYourPreferencesExcercise());
 
@@ -1605,7 +1631,9 @@ public class DashboardFrame {
                 int daysOffset = col - 1;
                 LocalDate targetDate = today.minusDays(dayOfWeek - 1).plusDays(daysOffset);
 
-                switch (col) {
+
+
+                switch (row) {
                     case 1 -> date1 = Date.valueOf(targetDate);
                     case 2 -> date2 = Date.valueOf(targetDate);
                     case 3 -> date3 = Date.valueOf(targetDate);
@@ -1621,9 +1649,7 @@ public class DashboardFrame {
                 // Hacer que el botón crezca dentro de la celda
                 GridPane.setHgrow(exerciseButton, Priority.ALWAYS);
 
-
                 int finalRow = row;
-                int finalCol = col;
                 exerciseButton.setOnMouseClicked(event -> {
 
                     Button clickedButton = (Button) event.getSource();
@@ -1633,25 +1659,93 @@ public class DashboardFrame {
                         showCheckYourRutine();
 
                     } else if (exerciseButton.getGraphic() == null){
-                        Report report2 = reportRepository.findByDate(Date.valueOf(targetDate));
-                        if (report2 == null) {
-                            System.out.println("HOLAAAAA ENTRE A QUE SELECCIONESSS TU RUTINA WEIIIII");
-                            //showSetYourRutine();
-                            handleCellClickForExercise(clickedButton, finalRow, finalCol);
-                            //handleCellClick(clickedButton,finalRow, finalCol);
+                        handleCellClickForExercise(finalRow);
 
-                        } else{
-                            exerciseButton.setDisable(true);
-                        }
+
                     }
                 });
 
             }
         }
+
+
+
+
+        Properties properties = new Properties();
+        try (FileInputStream in = new FileInputStream("preferencesState.properties")) {
+            properties.load(in);
+            if ("true".equals(properties.getProperty("preferencesExerciseCompleted"))) {
+                enableGridPane(gridPaneExercise);
+                setYourPreferencesButtonExercise.setVisible(false);
+                excerciseHbox.setVisible(false);
+
+                // checar si funciona una vez que ya se puedan agregar ejercicios
+
+                boolean hasInfo = false;
+                for (Node node : gridPaneExercise.getChildren()) {
+                    if (node instanceof Button button) {
+                        if (button.getText() != null && !button.getText().isEmpty()) {
+                            hasInfo = true;
+                            break;
+                        } else if (button.getGraphic() != null) {
+                            hasInfo = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (hasInfo) {
+                    enableGridPane(gridPaneRutine);
+                }
+
+
+            } else {
+                disableGridPane(gridPaneExercise);
+                disableNode(gridPaneRutine);
+            }
+        } catch (IOException e) {
+            disableGridPane(gridPaneExercise);
+            disableNode(gridPaneRutine);
+            //e.printStackTrace();
+        }
+
+
+    }
+
+    public void refreshExcerciseContent(){
+        showDiet();
+        showExercise();
+    }
+
+    private void enableGridPane(GridPane gridPane) {
+        for (Node node : gridPane.getChildren()) {
+            enableNode(node);
+        }
+    }
+
+    private void enableNode(Node node) {
+        if (node instanceof Control) {
+            ((Control) node).setDisable(false);
+        } else if (node instanceof Parent) { // StackPane, VBox, etc.
+            for (Node child : ((Parent) node).getChildrenUnmodifiable()) {
+                enableNode(child);
+            }
+        }
+    }
+
+
+    private void disableNode(Node node) {
+        if (node instanceof Control) {
+            ((Control) node).setDisable(true);
+        } else if (node instanceof Parent) { // Parent covers containers like StackPane, VBox, HBox, etc.
+            for (Node child : ((Parent) node).getChildrenUnmodifiable()) {
+                disableNode(child);
+            }
+        }
     }
     private static Stage showSetYourRutine; // Stage global
 
-    private void handleCellClickForExercise(Button clickedButton, int row, int col) {
+    private void handleCellClickForExercise(int row) {
         Platform.runLater(() -> {
             try {
                 if (showSetYourRutine == null || !showSetYourRutine.isShowing()) {
@@ -1660,6 +1754,7 @@ public class DashboardFrame {
 
                     Parent root = loader.load(); // Cargar el FXML
                     SetYourRutine controller = loader.getController(); // Obtener el controlador
+                    controller.setRow(row);
 
                     // Crear la ventana
                     showSetYourRutine = new Stage();
@@ -1673,11 +1768,6 @@ public class DashboardFrame {
                     showSetYourRutine.show();
                 } else {
                     showSetYourRutine.toFront();
-                }
-
-                // Lógica del botón
-                if (clickedButton.getGraphic() != null) {
-                    clickedButton.setGraphic(null);
                 }
 
             } catch (Exception e) {
@@ -1771,38 +1861,6 @@ public class DashboardFrame {
         });
     }
 
-
-
-
-//    @Autowired
-//    DayExcerciseRepository dayExcerciseRepository;
-//
-//    private DayExcercise getDayExerciseForDate(LocalDate targetDate) {
-//        return dayExcerciseRepository.findByDate(java.sql.Date.valueOf(targetDate));
-//    }
-
-    /*
-    private Excercise getExcerciseForCell(DayExcercise dayExcercise, int row) {
-        if (dayExcercise != null) {
-            switch (row) {
-                case 1: // Breakfast
-                    return dayMeal.getBreakfast().isEmpty() ? null : dayMeal.getBreakfast().get(0);
-                case 2: // Lunch
-                    return dayMeal.getLunch().isEmpty() ? null : dayMeal.getLunch().get(0);
-                case 3: // Dinner
-                    return dayMeal.getDinner().isEmpty() ? null : dayMeal.getDinner().get(0);
-                case 4: // Snack
-                    return dayMeal.getSnack().isEmpty() ? null : dayMeal.getSnack().get(0);
-                case 5: // optional
-                    return dayMeal.getOptional().isEmpty() ? null : dayMeal.getOptional().get(0);
-                default:
-                    return null;
-            }
-        }
-        return null;
-    }
-
-     */
 
 
     private Stage preferencesExcerciseStage;

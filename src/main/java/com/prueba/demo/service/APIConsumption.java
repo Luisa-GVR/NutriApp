@@ -3,11 +3,9 @@ package com.prueba.demo.service;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.prueba.demo.model.Excercise;
-import com.prueba.demo.model.ExcerciseResponse;
-import com.prueba.demo.model.Food;
-import com.prueba.demo.model.FoodResponse;
+import com.prueba.demo.model.*;
 import com.prueba.demo.repository.ExcerciseRepository;
 import com.prueba.demo.repository.FoodRepository;
 import com.prueba.demo.service.dto.FoodPreferencesDTO;
@@ -164,96 +162,16 @@ public class APIConsumption {
         return Collections.emptyList();
     }
 
-
-
-    public List<String> getFoodSuggestionsRecommended(FoodPreferencesDTO foodPreferencesDTO, double calories) {
-        // Verificar que los parámetros se están recibiendo correctamente
-        if (foodPreferencesDTO != null) {
-            // Imprimir las preferencias (si lo necesitas)
-           // System.out.println("Alergias: " + foodPreferencesDTO.getAllergies());
-            //System.out.println("Disliked Foods: " + foodPreferencesDTO.getDislikedFoods());
-            //System.out.println("Liked Foods: " + foodPreferencesDTO.getLikedFoods());
-        } else {
-           // System.out.println("FoodPreferencesDTO es null");
-            return Collections.emptyList();
-        }
-
-        // Filtrar los alimentos en función de las alergias, alimentos que no gustan, y priori los alimentos que gustan
-        Set<String> allergies = new HashSet<>(foodPreferencesDTO.getAllergies());
-        Set<String> dislikedFoods = new HashSet<>(foodPreferencesDTO.getDislikedFoods());
-        Set<String> likedFoods = new HashSet<>(foodPreferencesDTO.getLikedFoods());
-
-        // Crear un conjunto para almacenar los alimentos recomendados
-        Set<String> recommendedFoods = new HashSet<>();
-
-        // Aquí es donde podemos agregar la lógica de selección de alimentos basada en el tipo de comida
-        // (Desayuno, comida, cena, snacks)
-        List<String> categories = Arrays.asList("desayuno", "comida", "cena", "snacks");
-
-        HttpClient client = HttpClient.newHttpClient();
-
-        // Construir el cuerpo de la solicitud
-        ObjectMapper objectMapper = new ObjectMapper();
-        Map<String, Object> requestBodyMap = new HashMap<>();
-
-        // Incluir categorías de alimentos y preferencias filtradas
-        requestBodyMap.put("categories", categories);
-        requestBodyMap.put("allergies", allergies);
-        requestBodyMap.put("dislikedFoods", dislikedFoods);
-        requestBodyMap.put("likedFoods", likedFoods);
-
-        String requestBody = "";
-        try {
-            requestBody = objectMapper.writeValueAsString(requestBodyMap);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return Collections.emptyList();
-        }
-
-        // Realizar la solicitud a la API
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(URL_BASE))
-                .header("x-app-id", API_ID)
-                .header("x-app-key", API_KEY)
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .build();
-
-        try {
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-            FoodResponse foodResponse = objectMapper.readValue(response.body(), FoodResponse.class);
-
-            if (foodResponse.getFoods() != null && !foodResponse.getFoods().isEmpty()) {
-                // Filtrar los alimentos que cumplen con los requisitos
-                return foodResponse.getFoods().stream()
-                        .filter(food -> !allergies.contains(food.getFoodName()) && !dislikedFoods.contains(food.getFoodName()))
-                        .sorted(Comparator.comparing(food -> likedFoods.contains(food.getFoodName()) ? 1 : 0, Comparator.reverseOrder())) // Priorizar los alimentos liked
-                        .limit(3)
-                        .map(Food::getFoodName)
-                        .collect(Collectors.toList());
-            }
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        return Collections.emptyList();
-    }
-
-
-
-
-
     private static final String EXERCISE_API_KEY = "7365eca4b1msh9743512e61a1b43p1581b0jsneb2caf6b1530";
     private static final String EXERCISE_API_HOST = "exercisedb.p.rapidapi.com";
-    private static final String EXERCISE_API_URL = "https://exercisedb.p.rapidapi.com/status";
+    private static final String EXERCISE_API_URL = "https://exercisedb.p.rapidapi.com/exercises/bodyPart/";
 
     public Excercise getExerciseInfo(String exerciseName) {
         HttpClient client = HttpClient.newHttpClient();
         String encodedExerciseName = java.net.URLEncoder.encode(exerciseName, StandardCharsets.UTF_8);
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(EXERCISE_API_URL + encodedExerciseName))
+                .uri(URI.create(EXERCISE_API_URL + encodedExerciseName + "?limit=5"))
                 .header("X-RapidAPI-Key", EXERCISE_API_KEY)
                 .header("X-RapidAPI-Host", EXERCISE_API_HOST)
                 .GET()
@@ -276,15 +194,16 @@ public class APIConsumption {
         }
     }
 
+
     @Autowired
     ExcerciseRepository excerciseRepository;
 
-    public List<String> getExerciseSuggestionsByMuscleGroup(String muscleGroup) {
+    public List<String> getExerciseSuggestionsByMuscleGroup(String muscleGroup, ExcerciseType insertedExcerciseType) {
         HttpClient client = HttpClient.newHttpClient();
-        String encodedMuscleGroup = URLEncoder.encode(muscleGroup, StandardCharsets.UTF_8);
 
+        String url = EXERCISE_API_URL + muscleGroup + "?limit=1";
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(EXERCISE_API_URL + encodedMuscleGroup)) // API para buscar por músculo
+                .uri(URI.create(url))
                 .header("X-RapidAPI-Key", EXERCISE_API_KEY)
                 .header("X-RapidAPI-Host", EXERCISE_API_HOST)
                 .GET()
@@ -294,42 +213,35 @@ public class APIConsumption {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() != 200) {
-                System.out.println("Error en la API: " + response.statusCode());
                 return Collections.emptyList();
             }
 
             ObjectMapper objectMapper = new ObjectMapper();
-            ExcerciseResponse exerciseResponse = objectMapper.readValue(response.body(), ExcerciseResponse.class);
 
+            // Deserializar directamente a una lista de Excercise objetos, solo extrayendo gifUrl y name
+            List<Map<String, Object>> apiResponse = objectMapper.readValue(response.body(), new TypeReference<List<Map<String, Object>>>() {});
 
-            if (exerciseResponse.getExcercises() != null && !exerciseResponse.getExcercises().isEmpty()) {
-                List<Excercise> exercises = exerciseResponse.getExcercises().stream()
-                        .filter(exercise -> exercise.getExcerciseName() != null && !exercise.getExcerciseName().isEmpty()) // Filtrar nombres válidos
-                        .peek(exercise -> {
+            // Filtrar ejercicios válidos, asignar ExcerciseType e insertarlos en la base de datos
+            List<String> exerciseNames = apiResponse.stream()
+                    .map(exerciseData -> {
+                        String gifUrl = (String) exerciseData.get("gifUrl");
+                        String name = (String) exerciseData.get("name");
 
-                            try {
-                                // Verificar si ya existe en la base de datos
+                        Excercise exercise = new Excercise();
+                        exercise.setGifURL(gifUrl);
+                        exercise.setExcerciseName(name);
+                        exercise.setExcerciseType(insertedExcerciseType);
+                        exercise.setExcerciseType(insertedExcerciseType);
 
+                        // Guardar el ejercicio en la base de datos
+                        Excercise savedExercise = excerciseRepository.save(exercise);
 
-                                Optional<Excercise> existingExercise = excerciseRepository.findByExcerciseName(exercise.getExcerciseName());
-                                if (existingExercise.isEmpty()) {
-                                    String exerciseJson = objectMapper.writeValueAsString(exercise); // Debug opcional
-                                    excerciseRepository.save(exercise); // Guardar si no existe
-                                }
+                        // Devolver el nombre del ejercicio
+                        return savedExercise.getExcerciseName();
+                    })
+                    .collect(Collectors.toList());
 
-                            } catch (IOException e) {
-                                System.err.println("Error serializando el ejercicio: " + e.getMessage());
-                            }
-                        })
-
-                        .collect(Collectors.toList());
-
-                // Retornar los nombres de los primeros 3 ejercicios
-                return exercises.stream()
-                        .limit(3)
-                        .map(Excercise::getExcerciseName)
-                        .collect(Collectors.toList());
-            }
+            return exerciseNames;
 
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();

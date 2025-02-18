@@ -1,9 +1,11 @@
 package com.prueba.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Excercise")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Excercise {
 
     @Id
