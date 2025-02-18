@@ -1612,6 +1612,19 @@ public class DashboardFrame {
         choiceBoxExcercise4.setDisable(true);
         choiceBoxExcercise5.setDisable(true);
 
+        boolean choiceBoxEnabled1 = true;
+        boolean choiceBoxEnabled2 = true;
+        boolean choiceBoxEnabled3 = true;
+        boolean choiceBoxEnabled4 = true;
+        boolean choiceBoxEnabled5 = true;
+
+        choiceBoxExcercise1.setOnAction(event -> handleChoiceBoxExcerciseSelection(choiceBoxExcercise1, 1));
+        choiceBoxExcercise2.setOnAction(event -> handleChoiceBoxExcerciseSelection(choiceBoxExcercise2, 2));
+        choiceBoxExcercise3.setOnAction(event -> handleChoiceBoxExcerciseSelection(choiceBoxExcercise3, 3));
+        choiceBoxExcercise4.setOnAction(event -> handleChoiceBoxExcerciseSelection(choiceBoxExcercise4, 4));
+        choiceBoxExcercise5.setOnAction(event -> handleChoiceBoxExcerciseSelection(choiceBoxExcercise5, 5));
+
+
         setYourPreferencesButtonExercise.setOnAction(e -> openSetYourPreferencesExcercise());
 
         // Definir grupos musculares
@@ -1619,6 +1632,8 @@ public class DashboardFrame {
 
         LocalDate today = LocalDate.now();
         int dayOfWeek = today.getDayOfWeek().getValue();
+
+
 
 
         for (int row = 1; row <= 5; row++) {
@@ -1652,6 +1667,25 @@ public class DashboardFrame {
 
                 // Establecer el texto del botón con los nombres de los ejercicios
                 exerciseButton.setText(exerciseNames.toString());
+                switch (row){
+                    case 1:
+                        choiceBoxEnabled1 = false;
+                        break;
+                    case 2:
+                        choiceBoxEnabled2 = false;
+                        break;
+                    case 3:
+                        choiceBoxEnabled3 = false;
+                        break;
+                    case 4:
+                        choiceBoxEnabled4 = false;
+                        break;
+                    case 5:
+                        choiceBoxEnabled5 = false;
+                        break;
+
+                }
+
             } else {
                 exerciseButton.setText("No hay ejercicios"); // Si no hay ejercicios, mostrar este texto
             }
@@ -1676,6 +1710,8 @@ public class DashboardFrame {
             });
         }
 
+
+
         Properties properties = new Properties();
         try (FileInputStream in = new FileInputStream("preferencesState.properties")) {
             properties.load(in);
@@ -1683,48 +1719,13 @@ public class DashboardFrame {
                 enableGridPane(gridPaneExercise);
                 setYourPreferencesButtonExercise.setVisible(false);
                 excerciseHbox.setVisible(false);
+                choiceBoxExcercise1.setDisable(choiceBoxEnabled1);
+                choiceBoxExcercise2.setDisable(choiceBoxEnabled2);
+                choiceBoxExcercise3.setDisable(choiceBoxEnabled3);
+                choiceBoxExcercise4.setDisable(choiceBoxEnabled4);
+                choiceBoxExcercise5.setDisable(choiceBoxEnabled5);
 
-                // checar si funciona una vez que ya se puedan agregar ejercicios
 
-                boolean hasNoExercises = false;
-
-                for (Node node : gridPaneExercise.getChildren()) {
-                    if (node instanceof Button button) {
-                        Integer rowIndex = GridPane.getRowIndex(button); // Obtener la fila del botón en el GridPane
-                        if (rowIndex == null) continue; // Si no tiene una fila asignada, continuar con el siguiente nodo
-
-                        if ("No hay ejercicios".equals(button.getText())) {
-                            hasNoExercises = true;
-
-                            // Habilitar el ChoiceBox correspondiente a la fila
-                            switch (rowIndex) {
-                                case 2 -> choiceBoxExcercise1.setDisable(false);
-                                case 3 -> choiceBoxExcercise2.setDisable(false);
-                                case 4 -> choiceBoxExcercise3.setDisable(false);
-                                case 5 -> choiceBoxExcercise4.setDisable(false);
-                                case 6 -> choiceBoxExcercise5.setDisable(false);
-                            }
-                        }
-                    } else if (node instanceof Label label) {
-                        if ("No hay ejercicios".equals(label.getText())) {
-                            System.out.println(2);
-                            hasNoExercises = true;
-                            break;
-                        }
-                    } else if (node instanceof StackPane stackPane) {
-                        for (Node child : stackPane.getChildren()) {
-                            if (child instanceof Label label && "No hay ejercicios".equals(label.getText())) {
-                                System.out.println(3);
-                                hasNoExercises = true;
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                if (!hasNoExercises) {
-                    enableGridPane(gridPaneRutine);
-                }
             } else {
                 disableGridPane(gridPaneExercise);
                 disableNode(gridPaneRutine);
@@ -1737,6 +1738,51 @@ public class DashboardFrame {
 
 
     }
+
+    private void handleChoiceBoxExcerciseSelection(ChoiceBox<String> choiceBox, int dayIndex) {
+        Optional<AccountData> account = accountDataRepository.findByAccountId(1L);
+
+        String selectedValue = choiceBox.getValue();
+
+        if (selectedValue != null) {
+            LocalDate today = LocalDate.now();
+            int currentDayOfWeek = today.getDayOfWeek().getValue(); // Lunes es 1, Domingo es 7
+            LocalDate mondayOfThisWeek = today.minusDays(currentDayOfWeek - 1);
+            LocalDate selectedLocalDate = mondayOfThisWeek.plusDays(dayIndex - 1);
+
+            Date selectedDate = Date.valueOf(selectedLocalDate);
+
+            if (selectedValue.equals("Sí")) {
+                Report report = reportRepository.findByDate(selectedDate);
+
+                if (report == null) {
+                    report = new Report();
+                    report.setDate(selectedDate);
+                    report.setAccountData(account.get());
+                    reportRepository.save(report);
+                }
+                report.setGoalMet(true);
+                DayExcercise dayExcerciseList = dayExcerciseRepository.findAllByDate(selectedDate).get(0);
+                report.setDayExcercise(dayExcerciseList);
+
+                reportRepository.save(report);
+
+            } else if (selectedValue.equals("No")) {
+                Report report = reportRepository.findByDate(selectedDate);
+
+                if (report == null) {
+                    report = new Report();
+                    report.setDate(selectedDate);
+                    report.setAccountData(account.get());
+                    reportRepository.save(report);
+                }
+                report.setGoalMet(false);
+                reportRepository.save(report);
+
+            }
+        }
+    }
+
 
     public void refreshExcerciseContent(){
         showDiet();
@@ -2209,13 +2255,21 @@ public class DashboardFrame {
         for (Report result : results) {
             table.addCell(new Cell().add(new Paragraph(result.getDate().toString())));
 
-            // Agregar los nombres de los alimentos (si existen) para cada comida
-            table.addCell(new Cell().add(new Paragraph(getFoodNames(result.getDayMeals().getBreakfast()))));
-            table.addCell(new Cell().add(new Paragraph(getFoodNames(result.getDayMeals().getLunch()))));
-            table.addCell(new Cell().add(new Paragraph(getFoodNames(result.getDayMeals().getDinner()))));
-            table.addCell(new Cell().add(new Paragraph(getFoodNames(result.getDayMeals().getSnack()))));
-            table.addCell(new Cell().add(new Paragraph(getFoodNames(result.getDayMeals().getOptional()))));
+            DayMeal dayMeals = result.getDayMeals();
+            if (dayMeals != null) {
+                table.addCell(new Cell().add(new Paragraph(getFoodNames(dayMeals.getBreakfast()))));
+                table.addCell(new Cell().add(new Paragraph(getFoodNames(dayMeals.getLunch()))));
+                table.addCell(new Cell().add(new Paragraph(getFoodNames(dayMeals.getDinner()))));
+                table.addCell(new Cell().add(new Paragraph(getFoodNames(dayMeals.getSnack()))));
+                table.addCell(new Cell().add(new Paragraph(getFoodNames(dayMeals.getOptional()))));
+            } else {
+                // Si dayMeals es nulo, llenar todas las celdas con "No disponible"
+                for (int i = 0; i < 5; i++) {
+                    table.addCell(new Cell().add(new Paragraph("No disponible")));
+                }
+            }
         }
+
 
         document.add(table);
 

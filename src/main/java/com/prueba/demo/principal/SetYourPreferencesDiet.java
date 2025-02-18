@@ -20,6 +20,8 @@ import javafx.util.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -216,17 +218,39 @@ public class SetYourPreferencesDiet {
 
         }
 
-            Properties properties = new Properties();
-            properties.setProperty("preferencesCompleted", "true");
-            try (FileOutputStream out = new FileOutputStream("preferencesState.properties")) {
-                properties.store(out, null);
+        String filePath = "preferencesState.properties";
+        Properties properties = new Properties();
+        File propertiesFile = new File(filePath);
+
+        // Verificar si el archivo existe
+        if (propertiesFile.exists()) {
+            try (FileInputStream in = new FileInputStream(propertiesFile)) {
+                properties.load(in);
+                String preferenceValue = properties.getProperty("preferencesCompleted");
+
+                // Verificar el valor de preferencesCompleted
+                if (!"true".equals(preferenceValue)) {
+                    properties.setProperty("preferencesCompleted", "true");
+                    try (FileOutputStream out = new FileOutputStream(propertiesFile)) {
+                        properties.store(out, null);
+                    }
+                } else {
+                    System.out.println("El archivo ya contiene preferencesCompleted=true");
+                }
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            closeCurrentWindow();
-            dashboardFrame.hidePreferencesUI();
-
+        } else {
+            // Crear el archivo con preferencesCompleted=true
+            properties.setProperty("preferencesCompleted", "true");
+            try (FileOutputStream out = new FileOutputStream(propertiesFile)) {
+                properties.store(out, null);
+                System.out.println("Archivo creado con preferencesCompleted=true");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 
