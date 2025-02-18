@@ -9,6 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
@@ -45,8 +46,14 @@ public class SetYourPreferencesDiet {
 
 
 
+
+
     @FXML
     private void initialize(){
+
+
+        setupListViewWithDeleteButton(favsFoodsListView);
+        setupListViewWithDeleteButton(noFavsFoodsListView);
 
         favsFoodsErrorLabel.setVisible(false);
         noFavsFoodsErrorLabel.setVisible(false);
@@ -71,6 +78,70 @@ public class SetYourPreferencesDiet {
             }
         });
     }
+    private void setupListViewWithDeleteButton(ListView<String> listView) {
+        listView.setCellFactory(lv -> new ListCell<String>() {
+            private final Button deleteButton = new Button("X");
+            {
+                // Estilo para el botón "X"
+                deleteButton.setStyle("-fx-background-color: transparent; " +
+                        "-fx-text-fill: #6c6c70; " +
+                        "-fx-font-size: 8px; " +  // Aumentamos el tamaño de la "X"
+                        "-fx-font-weight: bold; " +
+                        "-fx-min-width: 20px; " +  // Aumentamos el tamaño mínimo
+                        "-fx-min-height: 20px; " + // Aumentamos el tamaño mínimo
+                        "-fx-max-width: 20px; " +  // Aumentamos el tamaño máximo
+                        "-fx-max-height: 20px; " + // Aumentamos el tamaño máximo
+                        "-fx-background-radius: 50%; "); // Mantén el padding bajo
+
+                deleteButton.setOnAction(event -> {
+                    String item = getItem();
+                    if (item != null) {
+                        getListView().getItems().remove(item);
+                    }
+                });
+            }
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    // Convertir la primera letra a mayúscula
+                    if (!item.isEmpty()) {
+                        item = item.substring(0, 1).toUpperCase() + item.substring(1);
+                    }
+
+                    // Crear un contenedor HBox para envolver el texto y el botón "X"
+                    HBox hbox = new HBox(0); // 1px de espacio entre el texto y el botón
+                    Label label = new Label(item);
+                    hbox.getChildren().addAll(deleteButton, label);
+
+                    label.setStyle("-fx-text-fill: #757583; " +
+                            "-fx-font-size: 10px;");
+                    hbox.setAlignment(Pos.CENTER);
+
+                    // Aplicar estilo al HBox (borde redondeado y padding)
+                    hbox.setStyle("-fx-border-color: #b7b8b8; " +
+                            "-fx-border-width: 1.5px; " +
+                            "-fx-border-radius: 4px; " +
+                            "-fx-background-color: #dcdcdc;" +
+                            "-fx-background-radius: 4px;" +
+                            "-fx-pref-height: 20px; " +  // Ajusta la altura preferida
+                            "-fx-min-height: 20px; " +   // Ajusta la altura mínima
+                            "-fx-max-height: 20px; ");    // Limita el ancho máximo
+                    HBox.setMargin(hbox, new javafx.geometry.Insets(0, -5, 0, -5)); // Márgenes negativos (izquierda y derecha)
+
+                    // Establecer el gráfico como el HBox
+                    setGraphic(hbox);
+                    setText(null); // No es necesario establecer el texto de la celda ya que estamos usando un HBox
+                }
+            }
+
+        });
+    }
+
 
 
 
@@ -236,7 +307,7 @@ public class SetYourPreferencesDiet {
                 }
 
                 if (items.contains("Ninguna")) {
-                    errorLabel.setText("No se pueden agregar elementos si 'Ninguna' está en la lista.");
+                    errorLabel.setText("Elimina 'Ninguna' para agregar más elementos.");
                     errorLabel.setVisible(true);
                     return;
                 }
