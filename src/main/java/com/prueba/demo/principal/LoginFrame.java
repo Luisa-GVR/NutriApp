@@ -279,6 +279,8 @@ public class LoginFrame {
 
 
                 Scene scene = new Scene(loader.load());
+                scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
+
 
                 // Crear un nuevo Stage para la ventana principal
                 Stage newStage = new Stage();

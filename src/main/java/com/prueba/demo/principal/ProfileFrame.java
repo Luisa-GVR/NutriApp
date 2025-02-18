@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import javafx.stage.Stage;
@@ -104,6 +105,7 @@ public class ProfileFrame {
 
     @FXML
     private void initialize() {
+        setupListViewWithDeleteButton(allergiesListView);
         // Inicializar los labels de error
         ageErrorLabel.setVisible(false);
         heightErrorLabel.setVisible(false);
@@ -210,6 +212,41 @@ public class ProfileFrame {
             } catch (Exception e) {
                 e.printStackTrace();
                 showAlert("Error", "No se pudo completar el perfil.");
+            }
+        });
+    }
+    private void setupListViewWithDeleteButton(ListView<String> listView) {
+        listView.setCellFactory(lv -> new ListCell<String>() {
+            private final Button deleteButton = new Button("X");
+            private final HBox hbox = new HBox(5);
+            private final Label label = new Label();
+
+            {
+                // Agregar las clases CSS
+                deleteButton.getStyleClass().add("delete-button");
+                label.getStyleClass().add("list-item-label");
+                hbox.getStyleClass().add("hbox-container");
+
+                deleteButton.setOnAction(event -> {
+                    String item = getItem();
+                    if (item != null) {
+                        getListView().getItems().remove(item);
+                    }
+                });
+
+                hbox.getChildren().addAll(deleteButton, label);
+            }
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    label.setText(Character.toUpperCase(item.charAt(0)) + item.substring(1));
+                    setGraphic(hbox);
+                }
             }
         });
     }
