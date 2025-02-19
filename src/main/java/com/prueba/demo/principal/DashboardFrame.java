@@ -1434,6 +1434,7 @@ public class DashboardFrame {
                     loader.setControllerFactory(applicationContext::getBean);
 
                     Scene scene = new Scene(loader.load(), 600, 600); // Limitar tamaño de la escena
+                    scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
 
                     goalsCheckStage = new Stage();
 
@@ -1557,6 +1558,7 @@ public class DashboardFrame {
                     loader.setControllerFactory(applicationContext::getBean);
 
                     Scene scene = new Scene(loader.load());
+                    scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
                     selectYourFoodController = loader.getController();
                     selectYourFoodController.setCol(col);
                     selectYourFoodController.setRow(row);
@@ -1939,6 +1941,7 @@ public class DashboardFrame {
                     loader.setControllerFactory(applicationContext::getBean);
 
                     Parent root = loader.load(); // Cargar el FXML
+                    root.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
                     SetYourRutine controller = loader.getController(); // Obtener el controlador
                     controller.setRow(row);
 
@@ -2036,6 +2039,7 @@ public class DashboardFrame {
                 SetYourPreferencesExercise controller = loader.getController();
 
                 Scene scene = new Scene(loader.load(), 400, 500); // Limitar tamaño de la escena
+                scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
 
                 preferencesExcerciseStage = new Stage();
                 preferencesExcerciseStage.setTitle("Elije tus preferencias en ejercicio");
