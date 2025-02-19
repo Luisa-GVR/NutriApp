@@ -1677,14 +1677,19 @@ public class DashboardFrame {
         LocalDate today = LocalDate.now();
         int dayOfWeek = today.getDayOfWeek().getValue();
 
-
+        boolean[] existDayExcercises = new boolean[5];
 
 
         for (int row = 1; row <= 5; row++) {
+
             // Ajustamos la fecha con un offset para cada fila
             int daysOffset = row - 1;
             LocalDate targetDate = today.minusDays(dayOfWeek - 1).plusDays(daysOffset);
             Date sqlDate = Date.valueOf(targetDate); // Convierte el LocalDate a Date de SQL
+
+            existDayExcercises[row - 1] = !dayExcerciseRepository.findByDate(sqlDate).isEmpty();
+            System.out.println(sqlDate);
+            System.out.println(existDayExcercises[row-1]);
 
             // Obtener los ejercicios para la fecha
             List<DayExcercise> dayExcerciseList = dayExcerciseRepository.findByDate(sqlDate);
@@ -1729,27 +1734,45 @@ public class DashboardFrame {
             switch (row) {
                 case 1:
                     if (reportIsNull || (!goalMet && !hasDayExcercise)) {
-                        choiceBoxDisabled1 = false; // Se puede crear el reporte
+                        if (existDayExcercises[0]){
+                            choiceBoxDisabled1 = false;
+                        }
+                         // Se puede crear el reporte
                     }
                     break;
                 case 2:
                     if (reportIsNull || (!goalMet && !hasDayExcercise)) {
-                        choiceBoxDisabled2 = false;
+                        if (existDayExcercises[1]){
+                            choiceBoxDisabled2 = false;
+
+                        }
+
                     }
                     break;
                 case 3:
-                    if (reportIsNull || (!goalMet && !hasDayExcercise)) {
-                        choiceBoxDisabled3 = false;
+                    if (reportIsNull ||(!goalMet && !hasDayExcercise)) {
+                        if (existDayExcercises[2]){
+                            choiceBoxDisabled3 = false;
+                        }
+
                     }
                     break;
                 case 4:
                     if (reportIsNull || (!goalMet && !hasDayExcercise)) {
-                        choiceBoxDisabled4 = false;
+                        if (existDayExcercises[3]){
+                            choiceBoxDisabled4 = false;
+
+                        }
+
                     }
                     break;
                 case 5:
                     if (reportIsNull || (!goalMet && !hasDayExcercise)) {
-                        choiceBoxDisabled5 = false;
+                        if (existDayExcercises[4]){
+                            choiceBoxDisabled5 = false;
+
+                        }
+
                     }
                     break;
             }

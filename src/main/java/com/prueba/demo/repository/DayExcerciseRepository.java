@@ -16,4 +16,6 @@ public interface DayExcerciseRepository extends JpaRepository<DayExcercise, Long
 
     List<DayExcercise> findByDate(Date date);
 
+
+
 }
