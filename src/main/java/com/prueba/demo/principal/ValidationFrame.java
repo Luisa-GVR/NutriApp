@@ -241,6 +241,7 @@ public class ValidationFrame {
                 loader.setControllerFactory(applicationContext::getBean); // *** Crucial Line ***
 
                 Scene scene = new Scene(loader.load());
+                scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
 
                 Stage newStage = new Stage();
                 newStage.setTitle("Perfil de usuario");
