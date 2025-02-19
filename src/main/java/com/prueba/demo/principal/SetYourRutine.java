@@ -173,7 +173,6 @@ public class SetYourRutine {
                         cachedSuggestions = null;
                         addExcercise(suggestionsListView);
                         closeCurrentWindow();
-                        refreshParentFrame();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

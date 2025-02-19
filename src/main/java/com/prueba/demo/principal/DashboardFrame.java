@@ -1252,12 +1252,29 @@ public class DashboardFrame {
                         showNutrimentalInfo(targetDate, finalRow);
                     } else if (button.getGraphic() == null){
                         Report report2 = reportRepository.findByDate(Date.valueOf(targetDate));
-                        if (report2.getDayMeals() == null) {
-                            handleCellClick(clickedButton,finalRow, finalCol);
+                        if (report2 == null || report2.getDayMeals() == null) {
+                                handleCellClick(clickedButton,finalRow, finalCol);
+
                         }
                     }
                 });
             }
+        }
+
+        Properties properties = new Properties();
+        try (FileInputStream in = new FileInputStream("preferencesState.properties")) {
+            properties.load(in);
+            if ("true".equals(properties.getProperty("preferencesCompleted"))) {
+                setYourPreferencesButtonDiet.setVisible(false);
+                dietPaneConfig.setVisible(false);
+            } else {
+                disableGridPane(gridPaneDiet);
+
+            }
+        } catch (IOException e) {
+            disableGridPane(gridPaneDiet);
+
+            //e.printStackTrace();
         }
 
         ObservableList<String> options = FXCollections.observableArrayList("Sí", "No");
@@ -1288,21 +1305,7 @@ public class DashboardFrame {
         choiceBox5.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate4));
         if (reportRepository.findByDate(finalDate4).getDayMeal() != null) choiceBox5.setDisable(true);
 
-        Properties properties = new Properties();
-        try (FileInputStream in = new FileInputStream("preferencesState.properties")) {
-            properties.load(in);
-            if ("true".equals(properties.getProperty("preferencesCompleted"))) {
-                setYourPreferencesButtonDiet.setVisible(false);
-                dietPaneConfig.setVisible(false);
-            } else {
-                disableGridPane(gridPaneDiet);
 
-            }
-        } catch (IOException e) {
-            disableGridPane(gridPaneDiet);
-
-            //e.printStackTrace();
-        }
 
 
 
@@ -1814,12 +1817,9 @@ public class DashboardFrame {
                 // Aquí puedes manejar la lógica del clic, dependiendo de si se quiere mostrar más detalles o realizar alguna acción
                 if (clickedButton.getText().contains("No hay ejercicios")) {
                     handleCellClickForExercise(finalRow);
-                    refreshExcerciseContent();
                 } else {
                     // Lógica para cuando sí hay ejercicios
                     showCheckYourRutine(targetDate);
-                    refreshExcerciseContent();
-
                 }
             });
         }
