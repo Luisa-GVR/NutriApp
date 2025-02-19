@@ -357,7 +357,8 @@ public class SelectYourFood {
 
     private void searchFood(String query) {
         List<String> suggestions = apiConsumption.getFoodSuggestionsNeutral(query); //API busqueda
-
+        System.out.println("meow meow meow");
+        System.out.println(suggestions.get(0));
 
         Platform.runLater(() -> {
             suggestionsComboBox.getItems().clear();
