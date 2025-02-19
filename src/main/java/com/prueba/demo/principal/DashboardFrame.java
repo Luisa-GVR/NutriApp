@@ -811,6 +811,25 @@ public class DashboardFrame {
 
             int totalCaloriesExcercise = 1000;
 
+            if (accountData.isPresent() && accountData.get().getGoal() != null) {
+                switch (accountData.get().getGoal()) {
+                    case volumen:
+                        totalCaloriesExcercise = 900;
+                        break;
+                    case mantenimiento:
+                        totalCaloriesExcercise = 1000;
+                        break;
+                    case deficit:
+                        totalCaloriesExcercise = 1200;
+                        break;
+                    default:
+                        break;
+                }
+            } else {
+                totalCaloriesExcercise = 1000;
+            }
+
+
 
             timeActivityProgressBar.setProgress(timeExcercise/totalTimeToExcercise);
 
@@ -1688,8 +1707,6 @@ public class DashboardFrame {
             Date sqlDate = Date.valueOf(targetDate); // Convierte el LocalDate a Date de SQL
 
             existDayExcercises[row - 1] = !dayExcerciseRepository.findByDate(sqlDate).isEmpty();
-            System.out.println(sqlDate);
-            System.out.println(existDayExcercises[row-1]);
 
             // Obtener los ejercicios para la fecha
             List<DayExcercise> dayExcerciseList = dayExcerciseRepository.findByDate(sqlDate);
@@ -1775,6 +1792,14 @@ public class DashboardFrame {
 
                     }
                     break;
+            }
+
+            if (row==5){
+
+                reportIsNull = Boolean.parseBoolean(null);
+                goalMet = Boolean.parseBoolean(null);
+                hasDayExcercise = Boolean.parseBoolean(null);
+
             }
 
 
