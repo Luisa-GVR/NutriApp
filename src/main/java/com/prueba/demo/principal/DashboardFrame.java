@@ -574,143 +574,160 @@ public class DashboardFrame {
             String thursdayFood = "";
             String fridayFood = "";
 
+            double timeExcercise = 0;
+            double caloriesExcercise = 0;
+
             if (weeklyReport == null || weeklyReport.isEmpty()) {
 
                 consumedCalories = 0;
                 consumedProtein = 0;
                 consumedFat = 0;
                 consumedCarbs = 0;
+
             } else {
                 for (int i = 0; i < weeklyReport.size(); i++) {
-                    for (int j = 0; j < weeklyReport.get(i).getDayMeals().getBreakfast().size(); j++) {
-                        consumedCalories += weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getCalories();
-                        consumedCarbs += weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getTotalCarbohydrate();
-                        consumedFat += weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getTotalFat();
-                        consumedProtein += weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getProtein();
-                        String breakfastFoodName = weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getFoodName();
-                        breakfastFoodName = capitalizeFirstLetter(breakfastFoodName);
-                        switch (i) {
-                            case 0:
-                                mondayFood += breakfastFoodName + ", ";
-                                break;
-                            case 1:
-                                tuesdayFood += breakfastFoodName + ", ";
-                                break;
-                            case 2:
-                                wednesdayFood += breakfastFoodName + ", ";
-                                break;
-                            case 3:
-                                thursdayFood += breakfastFoodName + ", ";
-                                break;
-                            case 4:
-                                fridayFood += breakfastFoodName + ", ";
-                                break;
+
+                    if (weeklyReport.get(i).getDayExcercise() != null){
+                        for (int j = 0; j < weeklyReport.get(i).getDayExcercise().getExcercises().size(); j++) {
+                            caloriesExcercise += weeklyReport.get(i).getDayExcercise().getExcercises().get(j).getCalories();
+                            timeExcercise += weeklyReport.get(i).getDayExcercise().getTime();
                         }
                     }
 
-                    for (int j = 0; j < weeklyReport.get(i).getDayMeals().getLunch().size(); j++) {
-                        consumedCalories += weeklyReport.get(i).getDayMeals().getLunch().get(j).getCalories();
-                        consumedCarbs += weeklyReport.get(i).getDayMeals().getLunch().get(j).getTotalCarbohydrate();
-                        consumedFat += weeklyReport.get(i).getDayMeals().getLunch().get(j).getTotalFat();
-                        consumedProtein += weeklyReport.get(i).getDayMeals().getLunch().get(j).getProtein();
-                        String lunchFoodName = weeklyReport.get(i).getDayMeals().getLunch().get(j).getFoodName();
-                        lunchFoodName = capitalizeFirstLetter(lunchFoodName);
-                        switch (i) {
-                            case 0:
-                                mondayFood += lunchFoodName + ", ";
-                                break;
-                            case 1:
-                                tuesdayFood += lunchFoodName + ", ";
-                                break;
-                            case 2:
-                                wednesdayFood += lunchFoodName + ", ";
-                                break;
-                            case 3:
-                                thursdayFood += lunchFoodName + ", ";
-                                break;
-                            case 4:
-                                fridayFood += lunchFoodName + ", ";
-                                break;
+                    if (weeklyReport.get(i).getDayMeal() != null){
+
+                        for (int j = 0; j < weeklyReport.get(i).getDayMeals().getBreakfast().size(); j++) {
+                            consumedCalories += weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getCalories();
+                            consumedCarbs += weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getTotalCarbohydrate();
+                            consumedFat += weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getTotalFat();
+                            consumedProtein += weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getProtein();
+                            String breakfastFoodName = weeklyReport.get(i).getDayMeals().getBreakfast().get(j).getFoodName();
+                            breakfastFoodName = capitalizeFirstLetter(breakfastFoodName);
+                            switch (i) {
+                                case 0:
+                                    mondayFood += breakfastFoodName + ", ";
+                                    break;
+                                case 1:
+                                    tuesdayFood += breakfastFoodName + ", ";
+                                    break;
+                                case 2:
+                                    wednesdayFood += breakfastFoodName + ", ";
+                                    break;
+                                case 3:
+                                    thursdayFood += breakfastFoodName + ", ";
+                                    break;
+                                case 4:
+                                    fridayFood += breakfastFoodName + ", ";
+                                    break;
+                            }
                         }
+
+                        for (int j = 0; j < weeklyReport.get(i).getDayMeals().getLunch().size(); j++) {
+                            consumedCalories += weeklyReport.get(i).getDayMeals().getLunch().get(j).getCalories();
+                            consumedCarbs += weeklyReport.get(i).getDayMeals().getLunch().get(j).getTotalCarbohydrate();
+                            consumedFat += weeklyReport.get(i).getDayMeals().getLunch().get(j).getTotalFat();
+                            consumedProtein += weeklyReport.get(i).getDayMeals().getLunch().get(j).getProtein();
+                            String lunchFoodName = weeklyReport.get(i).getDayMeals().getLunch().get(j).getFoodName();
+                            lunchFoodName = capitalizeFirstLetter(lunchFoodName);
+                            switch (i) {
+                                case 0:
+                                    mondayFood += lunchFoodName + ", ";
+                                    break;
+                                case 1:
+                                    tuesdayFood += lunchFoodName + ", ";
+                                    break;
+                                case 2:
+                                    wednesdayFood += lunchFoodName + ", ";
+                                    break;
+                                case 3:
+                                    thursdayFood += lunchFoodName + ", ";
+                                    break;
+                                case 4:
+                                    fridayFood += lunchFoodName + ", ";
+                                    break;
+                            }
+                        }
+
+                        for (int j = 0; j < weeklyReport.get(i).getDayMeals().getDinner().size(); j++) {
+                            consumedCalories += weeklyReport.get(i).getDayMeals().getDinner().get(j).getCalories();
+                            consumedCarbs += weeklyReport.get(i).getDayMeals().getDinner().get(j).getTotalCarbohydrate();
+                            consumedFat += weeklyReport.get(i).getDayMeals().getDinner().get(j).getTotalFat();
+                            consumedProtein += weeklyReport.get(i).getDayMeals().getDinner().get(j).getProtein();
+                            String dinnerFoodName = weeklyReport.get(i).getDayMeals().getDinner().get(j).getFoodName();
+                            dinnerFoodName = capitalizeFirstLetter(dinnerFoodName);
+                            switch (i) {
+                                case 0:
+                                    mondayFood += dinnerFoodName + ", ";
+                                    break;
+                                case 1:
+                                    tuesdayFood += dinnerFoodName + ", ";
+                                    break;
+                                case 2:
+                                    wednesdayFood += dinnerFoodName + ", ";
+                                    break;
+                                case 3:
+                                    thursdayFood += dinnerFoodName + ", ";
+                                    break;
+                                case 4:
+                                    fridayFood += dinnerFoodName + ", ";
+                                    break;
+                            }
+                        }
+
+                        for (int j = 0; j < weeklyReport.get(i).getDayMeals().getSnack().size(); j++) {
+                            consumedCalories += weeklyReport.get(i).getDayMeals().getSnack().get(j).getCalories();
+                            consumedCarbs += weeklyReport.get(i).getDayMeals().getSnack().get(j).getTotalCarbohydrate();
+                            consumedFat += weeklyReport.get(i).getDayMeals().getSnack().get(j).getTotalFat();
+                            consumedProtein += weeklyReport.get(i).getDayMeals().getSnack().get(j).getProtein();
+                            String snackFoodName = weeklyReport.get(i).getDayMeals().getSnack().get(j).getFoodName();
+                            snackFoodName = capitalizeFirstLetter(snackFoodName);
+                            switch (i) {
+                                case 0:
+                                    mondayFood += snackFoodName + ", ";
+                                    break;
+                                case 1:
+                                    tuesdayFood += snackFoodName + ", ";
+                                    break;
+                                case 2:
+                                    wednesdayFood += snackFoodName + ", ";
+                                    break;
+                                case 3:
+                                    thursdayFood += snackFoodName + ", ";
+                                    break;
+                                case 4:
+                                    fridayFood += snackFoodName + ", ";
+                                    break;
+                            }
+                        }
+
+                        for (int j = 0; j < weeklyReport.get(i).getDayMeals().getOptional().size(); j++) {
+                            consumedCalories += weeklyReport.get(i).getDayMeals().getOptional().get(j).getCalories();
+                            consumedCarbs += weeklyReport.get(i).getDayMeals().getOptional().get(j).getTotalCarbohydrate();
+                            consumedFat += weeklyReport.get(i).getDayMeals().getOptional().get(j).getTotalFat();
+                            consumedProtein += weeklyReport.get(i).getDayMeals().getOptional().get(j).getProtein();
+                            String optionalFoodName = weeklyReport.get(i).getDayMeals().getOptional().get(j).getFoodName();
+                            optionalFoodName = capitalizeFirstLetter(optionalFoodName);
+                            switch (i) {
+                                case 0:
+                                    mondayFood += optionalFoodName + ", ";
+                                    break;
+                                case 1:
+                                    tuesdayFood += optionalFoodName + ", ";
+                                    break;
+                                case 2:
+                                    wednesdayFood += optionalFoodName + ", ";
+                                    break;
+                                case 3:
+                                    thursdayFood += optionalFoodName + ", ";
+                                    break;
+                                case 4:
+                                    fridayFood += optionalFoodName + ", ";
+                                    break;
+                            }
+                        }
+
                     }
 
-                    for (int j = 0; j < weeklyReport.get(i).getDayMeals().getDinner().size(); j++) {
-                        consumedCalories += weeklyReport.get(i).getDayMeals().getDinner().get(j).getCalories();
-                        consumedCarbs += weeklyReport.get(i).getDayMeals().getDinner().get(j).getTotalCarbohydrate();
-                        consumedFat += weeklyReport.get(i).getDayMeals().getDinner().get(j).getTotalFat();
-                        consumedProtein += weeklyReport.get(i).getDayMeals().getDinner().get(j).getProtein();
-                        String dinnerFoodName = weeklyReport.get(i).getDayMeals().getDinner().get(j).getFoodName();
-                        dinnerFoodName = capitalizeFirstLetter(dinnerFoodName);
-                        switch (i) {
-                            case 0:
-                                mondayFood += dinnerFoodName + ", ";
-                                break;
-                            case 1:
-                                tuesdayFood += dinnerFoodName + ", ";
-                                break;
-                            case 2:
-                                wednesdayFood += dinnerFoodName + ", ";
-                                break;
-                            case 3:
-                                thursdayFood += dinnerFoodName + ", ";
-                                break;
-                            case 4:
-                                fridayFood += dinnerFoodName + ", ";
-                                break;
-                        }
-                    }
-
-                    for (int j = 0; j < weeklyReport.get(i).getDayMeals().getSnack().size(); j++) {
-                        consumedCalories += weeklyReport.get(i).getDayMeals().getSnack().get(j).getCalories();
-                        consumedCarbs += weeklyReport.get(i).getDayMeals().getSnack().get(j).getTotalCarbohydrate();
-                        consumedFat += weeklyReport.get(i).getDayMeals().getSnack().get(j).getTotalFat();
-                        consumedProtein += weeklyReport.get(i).getDayMeals().getSnack().get(j).getProtein();
-                        String snackFoodName = weeklyReport.get(i).getDayMeals().getSnack().get(j).getFoodName();
-                        snackFoodName = capitalizeFirstLetter(snackFoodName);
-                        switch (i) {
-                            case 0:
-                                mondayFood += snackFoodName + ", ";
-                                break;
-                            case 1:
-                                tuesdayFood += snackFoodName + ", ";
-                                break;
-                            case 2:
-                                wednesdayFood += snackFoodName + ", ";
-                                break;
-                            case 3:
-                                thursdayFood += snackFoodName + ", ";
-                                break;
-                            case 4:
-                                fridayFood += snackFoodName + ", ";
-                                break;
-                        }
-                    }
-
-                    for (int j = 0; j < weeklyReport.get(i).getDayMeals().getOptional().size(); j++) {
-                        consumedCalories += weeklyReport.get(i).getDayMeals().getOptional().get(j).getCalories();
-                        consumedCarbs += weeklyReport.get(i).getDayMeals().getOptional().get(j).getTotalCarbohydrate();
-                        consumedFat += weeklyReport.get(i).getDayMeals().getOptional().get(j).getTotalFat();
-                        consumedProtein += weeklyReport.get(i).getDayMeals().getOptional().get(j).getProtein();
-                        String optionalFoodName = weeklyReport.get(i).getDayMeals().getOptional().get(j).getFoodName();
-                        optionalFoodName = capitalizeFirstLetter(optionalFoodName);
-                        switch (i) {
-                            case 0:
-                                mondayFood += optionalFoodName + ", ";
-                                break;
-                            case 1:
-                                tuesdayFood += optionalFoodName + ", ";
-                                break;
-                            case 2:
-                                wednesdayFood += optionalFoodName + ", ";
-                                break;
-                            case 3:
-                                thursdayFood += optionalFoodName + ", ";
-                                break;
-                            case 4:
-                                fridayFood += optionalFoodName + ", ";
-                                break;
-                        }
-                    }
                 }
             }
             if (mondayFood.endsWith(", ")) {
@@ -776,6 +793,31 @@ public class DashboardFrame {
             fatsProgressBar.setProgress(consumedFat/totalFat);
             carbohydratesProgressBar.setProgress(consumedCarbs/totalCarbs);
 
+            int totalTimeToExcercise = 150;
+            if (accountData.isPresent() && accountData.get().getGoal() != null) {
+                switch (accountData.get().getGoal()) {
+                    case volumen:
+                        totalTimeToExcercise = 75;
+                        break;
+                    case mantenimiento:
+                        totalTimeToExcercise = 115;
+                        break;
+                    default:
+                        break;
+                }
+            } else {
+                totalTimeToExcercise = 150;
+            }
+
+            int totalCaloriesExcercise = 1000;
+
+
+            timeActivityProgressBar.setProgress(timeExcercise/totalTimeToExcercise);
+
+            caloriesBurnedProgressBar.setProgress(caloriesExcercise/totalCaloriesExcercise);
+
+
+
             // Crear tooltips para cada ProgressBar
             Tooltip caloriesTooltip = new Tooltip("Calorías\n" +
                     "⬜ Meta semanal: " + Math.floor(totalCalories) + "\n" +
@@ -794,9 +836,13 @@ public class DashboardFrame {
                     "🟩 Consumo al día: " + Math.floor(consumedCarbs));
 
 
-            Tooltip caloriesBurnedTooltip = new Tooltip("Progreso de calorías quemadas.");
+            Tooltip caloriesBurnedTooltip = new Tooltip("Calorias quemadas\n" +
+                    "⬜ Meta semanal: " + Math.floor(totalCaloriesExcercise) + "\n" +
+                    "🟩 Calorias al día: " + Math.floor(caloriesExcercise));
 
-            Tooltip timeActivityTooltip = new Tooltip("Tiempo total de actividad.");
+            Tooltip timeActivityTooltip = new Tooltip("Tiempo de actividad\n" +
+                    "⬜ Meta semanal: " + Math.floor(totalTimeToExcercise) + "\n" +
+                    "🟩 Tiempo al día: " + Math.floor(timeExcercise));
 
 
             // Asociar cada Tooltip con su ProgressBar
@@ -806,11 +852,14 @@ public class DashboardFrame {
             setTooltipForProgressBar(carbohydratesProgressBar, carbohydratesTooltip);
             setTooltipForProgressBar(caloriesBurnedProgressBar, caloriesBurnedTooltip);
             setTooltipForProgressBar(timeActivityProgressBar, timeActivityTooltip);
+            setTooltipForProgressBar(caloriesBurnedProgressBar, caloriesBurnedTooltip);
+            setTooltipForProgressBar(timeActivityProgressBar, timeActivityTooltip);
 
 
 
 
         });
+
 
     }
 
@@ -1158,11 +1207,11 @@ public class DashboardFrame {
 
                 //Quitamos la capacidad de agregar cosas si ya existe un reporte
                 Report report = reportRepository.findByDate(Date.valueOf(targetDate));
-                if (report != null) {
-                    if (button.getGraphic() == null){
+                if (report != null && report.getDayMeals() != null) {
+                    // Si el reporte existe y tiene un DayMeal asociado, deshabilitamos el botón
+                    if (button.getGraphic() == null) {
                         button.setDisable(true);
                     }
-
                 }
 
                 gridPaneDiet.add(button, col, row);
@@ -1327,12 +1376,10 @@ public class DashboardFrame {
             Report report = new Report();
             DayMeal dayMeal = dayMealRepository.findByDate(reportDate);
             Optional<AccountData> accountData = accountDataRepository.findByAccountId(1L);
-            boolean goalMet = true;
 
             report.setDayExcercise(null);
             report.setDayMeals(dayMeal);
             report.setAccountData(accountData.orElse(null));
-            report.setGoalMet(goalMet);
             report.setDate(reportDate);
 
             reportRepository.save(report);
@@ -1341,11 +1388,8 @@ public class DashboardFrame {
         } else {
             DayMeal dayMeal = dayMealRepository.findByDate(reportDate);
             Optional<AccountData> accountData = accountDataRepository.findByAccountId(1L);
-            boolean goalMet = true;
-
             existingReport.setDayMeals(dayMeal);
             existingReport.setAccountData(accountData.orElse(null));
-            existingReport.setGoalMet(goalMet);
             existingReport.setDate(reportDate);
 
             reportRepository.save(existingReport);
@@ -1612,11 +1656,11 @@ public class DashboardFrame {
         choiceBoxExcercise4.setDisable(true);
         choiceBoxExcercise5.setDisable(true);
 
-        boolean choiceBoxEnabled1 = true;
-        boolean choiceBoxEnabled2 = true;
-        boolean choiceBoxEnabled3 = true;
-        boolean choiceBoxEnabled4 = true;
-        boolean choiceBoxEnabled5 = true;
+        boolean choiceBoxDisabled1 = true;
+        boolean choiceBoxDisabled2 = true;
+        boolean choiceBoxDisabled3 = true;
+        boolean choiceBoxDisabled4 = true;
+        boolean choiceBoxDisabled5 = true;
 
         choiceBoxExcercise1.setOnAction(event -> handleChoiceBoxExcerciseSelection(choiceBoxExcercise1, 1));
         choiceBoxExcercise2.setOnAction(event -> handleChoiceBoxExcerciseSelection(choiceBoxExcercise2, 2));
@@ -1667,28 +1711,49 @@ public class DashboardFrame {
 
                 // Establecer el texto del botón con los nombres de los ejercicios
                 exerciseButton.setText(exerciseNames.toString());
-                switch (row){
-                    case 1:
-                        choiceBoxEnabled1 = false;
-                        break;
-                    case 2:
-                        choiceBoxEnabled2 = false;
-                        break;
-                    case 3:
-                        choiceBoxEnabled3 = false;
-                        break;
-                    case 4:
-                        choiceBoxEnabled4 = false;
-                        break;
-                    case 5:
-                        choiceBoxEnabled5 = false;
-                        break;
-
-                }
 
             } else {
                 exerciseButton.setText("No hay ejercicios"); // Si no hay ejercicios, mostrar este texto
             }
+
+            // Obtener el reporte de la base de datos
+            Report existingReport = reportRepository.findByDate(sqlDate);
+
+            // Si el reporte no existe, asignamos reportIsNull a true
+            boolean reportIsNull = existingReport == null;
+
+            // Si el reporte existe, verificamos las condiciones
+            boolean goalMet = !reportIsNull && existingReport.isGoalMet();
+            boolean hasDayExcercise = !reportIsNull && existingReport.getDayExcercise() != null;
+
+            switch (row) {
+                case 1:
+                    if (reportIsNull || (!goalMet && !hasDayExcercise)) {
+                        choiceBoxDisabled1 = false; // Se puede crear el reporte
+                    }
+                    break;
+                case 2:
+                    if (reportIsNull || (!goalMet && !hasDayExcercise)) {
+                        choiceBoxDisabled2 = false;
+                    }
+                    break;
+                case 3:
+                    if (reportIsNull || (!goalMet && !hasDayExcercise)) {
+                        choiceBoxDisabled3 = false;
+                    }
+                    break;
+                case 4:
+                    if (reportIsNull || (!goalMet && !hasDayExcercise)) {
+                        choiceBoxDisabled4 = false;
+                    }
+                    break;
+                case 5:
+                    if (reportIsNull || (!goalMet && !hasDayExcercise)) {
+                        choiceBoxDisabled5 = false;
+                    }
+                    break;
+            }
+
 
             // Agregar el botón a la celda correspondiente de la tabla, empezando desde la tercera columna
             gridPaneExercise.add(exerciseButton, 2, row); // Columna 2 (tercera columna) y fila de 1 a 5
@@ -1703,9 +1768,12 @@ public class DashboardFrame {
                 // Aquí puedes manejar la lógica del clic, dependiendo de si se quiere mostrar más detalles o realizar alguna acción
                 if (clickedButton.getText().contains("No hay ejercicios")) {
                     handleCellClickForExercise(finalRow);
+                    refreshExcerciseContent();
                 } else {
                     // Lógica para cuando sí hay ejercicios
                     showCheckYourRutine(targetDate);
+                    refreshExcerciseContent();
+
                 }
             });
         }
@@ -1719,11 +1787,11 @@ public class DashboardFrame {
                 enableGridPane(gridPaneExercise);
                 setYourPreferencesButtonExercise.setVisible(false);
                 excerciseHbox.setVisible(false);
-                choiceBoxExcercise1.setDisable(choiceBoxEnabled1);
-                choiceBoxExcercise2.setDisable(choiceBoxEnabled2);
-                choiceBoxExcercise3.setDisable(choiceBoxEnabled3);
-                choiceBoxExcercise4.setDisable(choiceBoxEnabled4);
-                choiceBoxExcercise5.setDisable(choiceBoxEnabled5);
+                choiceBoxExcercise1.setDisable(choiceBoxDisabled1);
+                choiceBoxExcercise2.setDisable(choiceBoxDisabled2);
+                choiceBoxExcercise3.setDisable(choiceBoxDisabled3);
+                choiceBoxExcercise4.setDisable(choiceBoxDisabled4);
+                choiceBoxExcercise5.setDisable(choiceBoxDisabled5);
 
 
             } else {
