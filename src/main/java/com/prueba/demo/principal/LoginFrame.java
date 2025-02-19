@@ -89,7 +89,7 @@ public class LoginFrame {
 
         boolean isValidEmail = email.matches("^[\\w-\\.]+@(?:gmail\\.com|hotmail\\.com|outlook\\.com)$");
 
-        boolean isValidName = name.matches("^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$");
+        boolean isValidName = name.matches("^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$") && name.length() <= 70;
 
         if (email.isEmpty() || name.isEmpty() || !isValidEmail || !isValidName) {
             labelMessage.setStyle("-fx-text-fill: #b30000;");

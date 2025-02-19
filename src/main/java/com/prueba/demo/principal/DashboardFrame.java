@@ -2014,7 +2014,7 @@ public class DashboardFrame {
 
 
     private Stage setYourRutineStage;
-    
+
     private Stage preferencesExcerciseStage;
 
     private void openSetYourPreferencesExcercise() {
