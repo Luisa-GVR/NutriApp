@@ -1438,7 +1438,7 @@ public class DashboardFrame {
                     goalsCheck.setDate(reportDate);
 
 
-                    goalsCheckStage.setTitle("Principal");
+                    goalsCheckStage.setTitle("Metas a cumplir");
                     goalsCheckStage.setScene(scene);
 
                     // Establecer límites para la ventana
@@ -1561,7 +1561,7 @@ public class DashboardFrame {
                     selectYourFoodController.setRow(row);
 
                     selectYourFoodStage = new Stage();
-                    selectYourFoodStage.setTitle("Principal");
+                    selectYourFoodStage.setTitle("Selecciona tu comida");
                     selectYourFoodStage.setScene(scene);
                     selectYourFoodStage.setMinWidth(900);
                     selectYourFoodStage.setMinHeight(520);
@@ -1629,7 +1629,7 @@ public class DashboardFrame {
                 scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
 
                 preferencesDietStage = new Stage();
-                preferencesDietStage.setTitle("Principal");
+                preferencesDietStage.setTitle("Selecciona tus preferencias");
                 preferencesDietStage.setScene(scene);
 
                 // Establecer límites para la ventana
@@ -1946,7 +1946,7 @@ public class DashboardFrame {
 
                     // Crear la ventana
                     showSetYourRutine = new Stage();
-                    showSetYourRutine.setTitle("Principal");
+                    showSetYourRutine.setTitle("Selecciona tu rutina");
                     showSetYourRutine.setScene(new Scene(root));
                     showSetYourRutine.setMinWidth(900);
                     showSetYourRutine.setMinHeight(520);
@@ -2014,46 +2014,7 @@ public class DashboardFrame {
 
 
     private Stage setYourRutineStage;
-
-    private void showSetYourRutine() {
-
-        Properties properties = new Properties();
-        loadProperties(properties);
-
-        if (setYourRutineStage != null && setYourRutineStage.isShowing()) {
-            setYourRutineStage.toFront(); // Traer la ventana existente al frente
-            return;
-        }
-        Platform.runLater(() -> {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlantillasFXML/SetYourRutine.fxml"));
-                loader.setControllerFactory(applicationContext::getBean);
-
-                SetYourRutine controller = loader.getController();
-
-                Scene scene = new Scene(loader.load(), 400, 500); // Limitar tamaño de la escena
-
-                setYourRutineStage = new Stage();
-                setYourRutineStage.setTitle("Principal");
-                setYourRutineStage.setScene(scene);
-
-                // Establecer límites para la ventana
-                setYourRutineStage.setMinWidth(400);
-                setYourRutineStage.setMinHeight(500);
-                setYourRutineStage.setMaxWidth(400);
-                setYourRutineStage.setMaxHeight(500);
-
-                setYourRutineStage.setOnCloseRequest(event -> setYourRutineStage = null); // Reset cuando se cierra
-
-                setYourRutineStage.show();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
-
-
+    
     private Stage preferencesExcerciseStage;
 
     private void openSetYourPreferencesExcercise() {
@@ -2079,7 +2040,7 @@ public class DashboardFrame {
                 Scene scene = new Scene(loader.load(), 400, 500); // Limitar tamaño de la escena
 
                 preferencesExcerciseStage = new Stage();
-                preferencesExcerciseStage.setTitle("Principal");
+                preferencesExcerciseStage.setTitle("Elije tus preferencias en ejercicio");
                 preferencesExcerciseStage.setScene(scene);
 
                 // Establecer límites para la ventana
@@ -2286,8 +2247,6 @@ public class DashboardFrame {
         pause.play();
     }
 
-
-
     public void generateReport() throws FileNotFoundException, IOException {
         String dest = "toSendPDF.pdf";
         PdfWriter writer = new PdfWriter(dest);
@@ -2386,7 +2345,6 @@ public class DashboardFrame {
             }
         }
 
-
         document.add(table);
 
         document.add(new Paragraph("Ejercicios Realizados").setFont(boldFont).setFontSize(14));
@@ -2446,8 +2404,6 @@ public class DashboardFrame {
         sendEmailWithPDFAttachment();
     }
 
-
-
     private String getFoodNames(List<Food> foodList) {
         if (foodList == null || foodList.isEmpty()) {
             return "";
@@ -2475,8 +2431,6 @@ public class DashboardFrame {
         // Convertir la primera letra en mayúscula
         return formattedName.substring(0, 1).toUpperCase() + formattedName.substring(1);
     }
-
-
 
     private boolean validateFieldsReport() {
         if (startDatePicker.getValue() == null) {
