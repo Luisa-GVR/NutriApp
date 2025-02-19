@@ -243,7 +243,7 @@ public class ValidationFrame {
                 Scene scene = new Scene(loader.load());
 
                 Stage newStage = new Stage();
-                newStage.setTitle("Principal");
+                newStage.setTitle("Perfil de usuario");
                 newStage.setScene(scene);
                 newStage.setResizable(false);
                 newStage.show();

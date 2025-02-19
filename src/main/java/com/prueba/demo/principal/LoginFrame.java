@@ -89,7 +89,7 @@ public class LoginFrame {
 
         boolean isValidEmail = email.matches("^[\\w-\\.]+@(?:gmail\\.com|hotmail\\.com|outlook\\.com)$");
 
-        boolean isValidName = name.matches("^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$");
+        boolean isValidName = name.matches("^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$") && name.length() <= 70;
 
         if (email.isEmpty() || name.isEmpty() || !isValidEmail || !isValidName) {
             labelMessage.setStyle("-fx-text-fill: #b30000;");
@@ -284,7 +284,7 @@ public class LoginFrame {
 
                 // Crear un nuevo Stage para la ventana principal
                 Stage newStage = new Stage();
-                newStage.setTitle("Principal");
+                newStage.setTitle("Perfil de usuario");
                 newStage.setScene(scene);
 
                 // Establecer el tamaño mínimo de la ventana principal
@@ -320,7 +320,7 @@ public class LoginFrame {
 
                 // Crear un nuevo Stage para la ventana principal
                 Stage newStage = new Stage();
-                newStage.setTitle("Principal");
+                newStage.setTitle("Inicio");
                 newStage.setScene(scene);
 
                 // Establecer el tamaño mínimo de la ventana principal

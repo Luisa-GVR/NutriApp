@@ -34,6 +34,18 @@ public class Report {
     //Getters y setters...
 
 
+    public AccountData getAccountData() {
+        return accountData;
+    }
+
+    public DayMeal getDayMeal() {
+        return dayMeal;
+    }
+
+    public void setDayMeal(DayMeal dayMeal) {
+        this.dayMeal = dayMeal;
+    }
+
     public Long getId() {
         return id;
     }
