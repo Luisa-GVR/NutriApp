@@ -124,30 +124,45 @@ public class ProfileFrame {
 
 
 
-        // Evitar que Enter agregue elementos automáticamente
-        allergiesComboBox.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER) {
-                event.consume(); // Evita que Enter agregue la informacioon al listview
-            }
-        });
-
         // Listener para manejar la selección SOLO desde el dropdown
         allergiesComboBox.setOnMouseClicked(event -> {
             allergiesComboBox.show(); // Asegura que el dropdown se muestre al hacer clic
+
         });
 
-        PauseTransition pauseTransition = new PauseTransition(Duration.millis(500));
 
-        // Listener para mostrar las sugerencias de la API cuando el usuario escribe
-        allergiesComboBox.setOnKeyReleased(event -> {
-            pauseTransition.setOnFinished(e -> {
-                String query = allergiesComboBox.getEditor().getText();
+        allergiesComboBox.getEditor().setOnKeyTyped(event -> {
+            String query = allergiesComboBox.getEditor().getText().trim(); // Eliminar espacios vacíos
+
+            if (event.getCharacter().equals("\r")) { // Enter presionado
                 if (!query.isEmpty()) {
+                    // Asegurar que no haya cadenas vacías antes de agregar un nuevo valor
+                    allergiesComboBox.getItems().removeIf(String::isEmpty);
+
+                    // Evitar que se agreguen duplicados
+                    if (!allergiesComboBox.getItems().contains(query)) {
+                        allergiesComboBox.getItems().add(query);
+                    }
+
+                    // Ejecutar la búsqueda
                     searchAllergies(query);
                 }
-            });
-            pauseTransition.playFromStart(); // Reiniciar el temporizador cada vez que se escribe
+
+                // Limpiar el campo de entrada en el siguiente ciclo de ejecución
+                Platform.runLater(() -> allergiesComboBox.getEditor().clear());
+            }
         });
+
+
+
+        allergiesComboBox.setOnShowing(event -> {
+            Platform.runLater(() -> {
+                allergiesComboBox.getSelectionModel().clearSelection();
+                allergiesComboBox.getEditor().clear(); // Limpia cualquier texto en el editor
+            });
+        });
+
+
 
         allergiesComboBox.setOnAction(event -> {
             if (!allergiesComboBox.isShowing()) { // Solo ejecuta si el usuario selecciono desde el dropdown
@@ -185,7 +200,10 @@ public class ProfileFrame {
                     items.add(selectedItem);
                     //allergiesComboBox.setValue("");
                 }
+
             }
+            Platform.runLater(() -> allergiesComboBox.getEditor().clear()); // Borra el texto después de la búsqueda
+
         });
 
 
@@ -240,7 +258,8 @@ public class ProfileFrame {
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty || item == null) {
+
+                if (empty || item == null || item.isEmpty()) {
                     setText(null);
                     setGraphic(null);
                 } else {
@@ -248,6 +267,7 @@ public class ProfileFrame {
                     setGraphic(hbox);
                 }
             }
+
         });
     }
 

@@ -8,11 +8,10 @@ import com.prueba.demo.repository.ExcerciseRepository;
 import com.prueba.demo.service.APIConsumption;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -71,6 +70,8 @@ public class SetYourRutine {
 
     @FXML
     private void initialize() {
+        setupListViewWithDeleteButton(suggestionsListView);
+
         Platform.runLater(() -> {
             suggestionsComboBox.setEditable(false);
 
@@ -184,6 +185,43 @@ public class SetYourRutine {
 
     }
 
+    private void setupListViewWithDeleteButton(ListView<String> listView) {
+        listView.setCellFactory(lv -> new ListCell<String>() {
+            private final Button deleteButton = new Button("X");
+            private final HBox hbox = new HBox(5);
+            private final Label label = new Label();
+
+            {
+                // Agregar las clases CSS
+                deleteButton.getStyleClass().add("delete-button");
+                label.getStyleClass().add("list-item-label");
+                hbox.getStyleClass().add("hbox-container");
+
+                deleteButton.setOnAction(event -> {
+                    String item = getItem();
+                    if (item != null) {
+                        getListView().getItems().remove(item);
+                    }
+                });
+
+                hbox.getChildren().addAll(deleteButton, label);
+            }
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null || item.isEmpty()) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    label.setText(Character.toUpperCase(item.charAt(0)) + item.substring(1));
+                    setGraphic(hbox);
+                }
+            }
+
+        });
+    }
     private void addExcercise(ListView<String> suggestionsListView) {
 
         LocalDate today = LocalDate.now();

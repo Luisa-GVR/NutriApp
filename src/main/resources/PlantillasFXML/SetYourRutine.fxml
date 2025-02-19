@@ -42,12 +42,16 @@
             <Insets left="10.0" right="10.0" />
          </VBox.margin>
       </VBox>
-        <HBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="300.0" style="-fx-border-color: #c9c9c9; -fx-border-width: 1; -fx-border-radius: 4;">
-            <children>
-                <ListView fx:id="suggestionsListView" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: transparent; -fx-border-color: transparent;" />
-                <ComboBox fx:id="suggestionsComboBox" editable="true" prefWidth="150.0" style="-fx-background-color: transparent; -fx-background-color: transparent;" />
-            </children>
-        </HBox>
+      <VBox alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="252.0" style="-fx-border-color: #c9c9c9; -fx-border-width: 1; -fx-border-radius: 4;">
+         <children>
+            <ListView fx:id="suggestionsListView" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="HORIZONTAL" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: white; -fx-border-color: transparent; -fx-border-width: 0.5; -fx-border-radius: 4;" />
+            <ComboBox fx:id="suggestionsComboBox" editable="true" minWidth="-Infinity" prefHeight="15.0" prefWidth="250.0" style="-fx-background-color: white; -fx-border-color: white; -fx-border-width: 1.5; -fx-border-radius: 4;" visibleRowCount="5">
+               <VBox.margin>
+                  <Insets top="-15.0" />
+               </VBox.margin>
+            </ComboBox>
+         </children>
+      </VBox>
         <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #d4e7b1; -fx-border-color: #7da12d;">
             <children>
                 <ImageView fx:id="exerciseImageView" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />

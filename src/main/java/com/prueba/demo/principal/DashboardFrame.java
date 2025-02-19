@@ -1368,6 +1368,7 @@ public class DashboardFrame {
                     loader.setControllerFactory(applicationContext::getBean);
 
                     Scene scene = new Scene(loader.load(), 600, 600); // Limitar tamaño de la escena
+                    scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
 
                     goalsCheckStage = new Stage();
 
@@ -1493,6 +1494,7 @@ public class DashboardFrame {
                     loader.setControllerFactory(applicationContext::getBean);
 
                     Scene scene = new Scene(loader.load());
+                    scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
                     selectYourFoodController = loader.getController();
                     selectYourFoodController.setCol(col);
                     selectYourFoodController.setRow(row);
@@ -1786,6 +1788,7 @@ public class DashboardFrame {
                     showSetYourRutine = new Stage();
                     showSetYourRutine.setTitle("Principal");
                     showSetYourRutine.setScene(new Scene(root));
+                    root.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
                     showSetYourRutine.setMinWidth(900);
                     showSetYourRutine.setMinHeight(520);
 
@@ -1870,6 +1873,8 @@ public class DashboardFrame {
                 SetYourRutine controller = loader.getController();
 
                 Scene scene = new Scene(loader.load(), 400, 500); // Limitar tamaño de la escena
+                scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
+
 
                 setYourRutineStage = new Stage();
                 setYourRutineStage.setTitle("Principal");

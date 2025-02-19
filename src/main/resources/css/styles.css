@@ -15,6 +15,7 @@
 .list-item-label {
     -fx-text-fill: #757583;
     -fx-font-size: 10px;
+
 }
 
 /* Estilos para el contenedor HBox (solo para la lista) */
@@ -27,9 +28,9 @@
     -fx-border-width: 1.5px;
     -fx-border-radius: 4px;
     -fx-background-radius: 4px;
-    -fx-pref-height: 20px;
-    -fx-min-height: 20px;
-    -fx-max-height: 20px;
+    -fx-pref-height: 15px;
+    -fx-min-height: 15px;
+    -fx-max-height: 15px;
 
 }
 
@@ -37,4 +38,23 @@
 .list-cell {
     -fx-border-width: 0;  /* Elimina el borde */
     -fx-background-color: transparent;  /* Elimina el fondo */
+    -fx-alignment: top-center; /* Asegura que el contenido de cada celda esté alineado arriba y centrado */
+
 }
+/* Estilo del texto en las opciones del ComboBox */
+.combo-box .list-cell {
+    -fx-text-fill: #333;  /* Asegura que el texto sea visible en todas las opciones */
+}
+
+/* Estilo cuando se pasa el mouse sobre una opción */
+.combo-box-popup .list-view .list-cell:hover {
+    -fx-background-color: #b7b8b8;  /* Color de fondo al pasar el mouse */
+    -fx-text-fill: #000;  /* Mantiene el texto oscuro y legible */
+}
+
+/* Estilo de la opción seleccionada */
+.combo-box-popup .list-view .list-cell:selected {
+    -fx-background-color: #757583;  /* Fondo de la opción seleccionada */
+    -fx-text-fill: #fff;  /* Texto blanco en la opción seleccionada */
+}
+
