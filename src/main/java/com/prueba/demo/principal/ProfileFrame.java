@@ -85,13 +85,13 @@ public class ProfileFrame {
     @FXML
     private void handleMouseEntered(MouseEvent event) {
         Button button = (Button) event.getSource();
-        button.setStyle("-fx-background-color: #A3D13C;");
+        button.setStyle("-fx-background-color: #595959;");
     }
 
     @FXML
     private void handleMouseExited(MouseEvent event) {
         Button button = (Button) event.getSource();
-        button.setStyle("-fx-background-color: #7DA12D;");
+        button.setStyle("-fx-background-color:  #262626;");
     }
 
 
