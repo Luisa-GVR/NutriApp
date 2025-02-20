@@ -242,8 +242,6 @@ public class SetYourPreferencesExercise {
         }
     }
 
-
-
     @Autowired
     private DashboardFrame dashboardFrame;
     public SetYourPreferencesExercise(DashboardFrame dashboardFrame) {
@@ -255,6 +253,4 @@ public class SetYourPreferencesExercise {
         Stage stage = (Stage) saveButton.getScene().getWindow();
         stage.close();
     }
-
-
 }

@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 import javafx.fxml.FXMLLoader;
 import java.io.IOException;
 
+
+//PARA LA VERSION 2, CADA QUE SE ABRA UNA SCENE DEL FXML, PARA AHORRAR LINEAS DE CODIGO
 @Component
 public class SpringFXMLoader {
 

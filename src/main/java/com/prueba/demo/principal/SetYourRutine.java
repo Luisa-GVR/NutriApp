@@ -180,8 +180,6 @@ public class SetYourRutine {
             });
 
         });
-
-
     }
 
     private void setupListViewWithDeleteButton(ListView<String> listView) {
@@ -254,25 +252,8 @@ public class SetYourRutine {
         AccountData accountData = account.get().getAccountData();
 
         dayExcerciseRepository.save(dayExcercise);
-
-
     }
 
-
-/*
-    private void searchExercise(String query) {
-        List<String> suggestions = apiConsumption.getExerciseSuggestionsByMuscleGroup(query); //API busqueda
-
-        Platform.runLater(() -> {
-            suggestionsComboBox.getItems().clear();
-            suggestionsComboBox.getItems().addAll(suggestions); // Agregar nuevas sugerencias
-            suggestionsComboBox.show();
-
-        });
-
-    }
-
- */
 
     private void closeCurrentWindow() {
 

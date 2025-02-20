@@ -19,9 +19,7 @@ import com.prueba.demo.repository.*;
 import com.prueba.demo.service.APIConsumption;
 import com.prueba.demo.service.IEmailService;
 import com.prueba.demo.service.dto.EmailDTO;
-import jakarta.mail.Authenticator;
 import jakarta.mail.MessagingException;
-import jakarta.mail.Session;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
@@ -1227,8 +1225,6 @@ public class DashboardFrame {
                 //Quitamos la capacidad de agregar cosas si ya existe un reporte
                 Report report = reportRepository.findByDate(Date.valueOf(targetDate));
                 if (report != null && report.getDayMeals() != null) {
-
-                    System.out.println("row: " + row + ", col: " + col);
                     // Si el reporte existe y tiene un DayMeal asociado, deshabilitamos el botón
                     if (button.getGraphic() == null) {
                         button.setDisable(true);
@@ -2015,10 +2011,6 @@ public class DashboardFrame {
             }
         });
     }
-
-
-    private Stage setYourRutineStage;
-
     private Stage preferencesExcerciseStage;
 
     private void openSetYourPreferencesExcercise() {
@@ -2150,8 +2142,6 @@ public class DashboardFrame {
 
         return sb.toString().trim();
     }
-
-
 
     /**
      reportes
@@ -2496,6 +2486,7 @@ public class DashboardFrame {
         nutriappImage.setFitWidth(newWidth);
         nutriappImage.setFitHeight(newHeight);
     }
+
 
     @Autowired
     private ApplicationContext applicationContext;
