@@ -185,39 +185,6 @@ public class SetYourPreferencesDiet {
 
         }
 
-        // Procesar alimentos que no gustan
-        if (dislikeFods.size() == 1 && dislikeFods.get(0).equals("Ninguna")) {
-            if (bothNull) {
-                closeCurrentWindow();
-                dashboardFrame.hidePreferencesUI();
-                dashboardFrame.refreshContent();
-            }
-        } else {
-            AccountDislikes accountDislikes = new AccountDislikes();
-            accountDislikes.setAccountData(accountData);
-            accountDislikesRepository.save(accountDislikes);
-
-            for (String dislike : dislikeFods) {
-                Food food = apiConsumption.getFoodInfo(dislike);
-
-                if (food != null) {
-                    Food existingFood = foodRepository.findFirstByFoodName(food.getFoodName());
-                    if (existingFood != null) {
-                        food = existingFood;  // Usar el alimento encontrado
-                    } else {
-                        foodRepository.save(food); // Guardar nuevo alimento
-                    }
-
-                    dislikeFoodList.add(food);
-
-                    AccountDislikesFood accountDislikesFood = new AccountDislikesFood();
-                    accountDislikesFood.setFood(food);
-                    accountDislikesFood.setAccountDislikes(accountDislikes);
-                    accountDislikesFoodRepository.save(accountDislikesFood);
-                }
-            }
-
-        }
 
         String filePath = "preferencesState.properties";
         Properties properties = new Properties();
@@ -251,6 +218,40 @@ public class SetYourPreferencesDiet {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+
+        // Procesar alimentos que no gustan
+        if (dislikeFods.size() == 1 && dislikeFods.get(0).equals("Ninguna")) {
+            if (bothNull) {
+                closeCurrentWindow();
+                dashboardFrame.hidePreferencesUI();
+                dashboardFrame.refreshContent();
+            }
+        } else {
+            AccountDislikes accountDislikes = new AccountDislikes();
+            accountDislikes.setAccountData(accountData);
+            accountDislikesRepository.save(accountDislikes);
+
+            for (String dislike : dislikeFods) {
+                Food food = apiConsumption.getFoodInfo(dislike);
+
+                if (food != null) {
+                    Food existingFood = foodRepository.findFirstByFoodName(food.getFoodName());
+                    if (existingFood != null) {
+                        food = existingFood;  // Usar el alimento encontrado
+                    } else {
+                        foodRepository.save(food); // Guardar nuevo alimento
+                    }
+
+                    dislikeFoodList.add(food);
+
+                    AccountDislikesFood accountDislikesFood = new AccountDislikesFood();
+                    accountDislikesFood.setFood(food);
+                    accountDislikesFood.setAccountDislikes(accountDislikes);
+                    accountDislikesFoodRepository.save(accountDislikesFood);
+                }
+            }
+
         }
 
     }

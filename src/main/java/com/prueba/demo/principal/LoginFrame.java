@@ -84,7 +84,7 @@ public class LoginFrame {
 
     @FXML
     private void validateFields() {
-        String email = emailField.getText().trim();
+        String email = emailField.getText().trim().toLowerCase();
         String name = nameField.getText().trim();
 
         boolean isValidEmail = email.matches("^[\\w-\\.]+@(?:gmail\\.com|hotmail\\.com|outlook\\.com)$");

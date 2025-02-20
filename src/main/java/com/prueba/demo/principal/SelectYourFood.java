@@ -10,12 +10,11 @@ import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +65,7 @@ public class SelectYourFood {
 
     @FXML
     private void initialize(){
-
+        setupListViewWithDeleteButton(suggestionsListView);
 
         Platform.runLater(() -> {
             Stage stage = (Stage) suggestionsComboBox.getScene().getWindow();
@@ -81,12 +80,28 @@ public class SelectYourFood {
         //Buscar comidas
 
         // Evitar que Enter agregue elementos automáticamente
-        suggestionsComboBox.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER) {
-                event.consume(); // Evita que Enter agregue la informacioon al listview
+        // Buscar alimentos cuando el usuario presiona Enter y limpiar el texto
+        suggestionsComboBox.getEditor().setOnKeyTyped(event -> {
+            String query = suggestionsComboBox.getEditor().getText().trim(); // Eliminar espacios vacíos
+
+            if (event.getCharacter().equals("\r")) { // Enter presionado
+                if (!query.isEmpty()) {
+                    // Asegurar que no haya cadenas vacías antes de agregar un nuevo valor
+                    suggestionsComboBox.getItems().removeIf(String::isEmpty);
+
+                    // Evitar que se agreguen duplicados
+                    if (!suggestionsComboBox.getItems().contains(query)) {
+                        suggestionsComboBox.getItems().add(query);
+                    }
+
+                    // Ejecutar la búsqueda
+                    searchFood(query);
+                }
+
+                // Limpiar el campo de entrada en el siguiente ciclo de ejecución
+                Platform.runLater(() -> suggestionsComboBox.getEditor().clear());
             }
         });
-
 
 
         // Listener para manejar la selección SOLO desde el dropdown
@@ -164,6 +179,43 @@ public class SelectYourFood {
 
     }
 
+    private void setupListViewWithDeleteButton(ListView<String> listView) {
+        listView.setCellFactory(lv -> new ListCell<String>() {
+            private final Button deleteButton = new Button("X");
+            private final HBox hbox = new HBox(5);
+            private final Label label = new Label();
+
+            {
+                // Agregar las clases CSS
+                deleteButton.getStyleClass().add("delete-button");
+                label.getStyleClass().add("list-item-label");
+                hbox.getStyleClass().add("hbox-container");
+
+                deleteButton.setOnAction(event -> {
+                    String item = getItem();
+                    if (item != null) {
+                        getListView().getItems().remove(item);
+                    }
+                });
+
+                hbox.getChildren().addAll(deleteButton, label);
+            }
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null || item.isEmpty()) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    label.setText(Character.toUpperCase(item.charAt(0)) + item.substring(1));
+                    setGraphic(hbox);
+                }
+            }
+
+        });
+    }
     private void refreshParentFrame() {
         if (dashboardFrame != null) {
             Platform.runLater(() -> {
@@ -321,7 +373,8 @@ public class SelectYourFood {
 
     private void searchFood(String query) {
         List<String> suggestions = apiConsumption.getFoodSuggestionsNeutral(query); //API busqueda
-
+        System.out.println("meow meow meow");
+        System.out.println(suggestions.get(0));
 
         Platform.runLater(() -> {
             suggestionsComboBox.getItems().clear();

@@ -253,7 +253,6 @@ public class SetYourPreferencesExercise {
 
     private void closeCurrentWindow() {
         Stage stage = (Stage) saveButton.getScene().getWindow();
-        dashboardFrame.refreshExcerciseContent();
         stage.close();
     }
 

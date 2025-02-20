@@ -48,12 +48,15 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <HBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="250.0" style="-fx-border-color: #c9c9c9; -fx-border-width: 1; -fx-border-radius: 4;" GridPane.columnIndex="1">
+            <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="250.0" style="-fx-border-color: #c9c9c9; -fx-border-width: 1; -fx-border-radius: 4;" GridPane.columnIndex="1">
                <children>
-                  <ListView fx:id="breakfastListView" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="125.0" style="-fx-background-color: transparent; -fx-border-color: transparent;" />
-                  <ComboBox fx:id="breakfastComboBox" editable="true" prefWidth="125.0" style="-fx-background-color: transparent; -fx-background-color: transparent;" />
+                  <ListView fx:id="breakfastListView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-border-color: transparent;" />
+                  <ComboBox fx:id="breakfastComboBox" editable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-background-color: transparent;">
+                     <VBox.margin>
+                        <Insets top="-15.0" />
+                     </VBox.margin></ComboBox>
                </children>
-            </HBox>
+            </VBox>
             <Label text="Desayuno">
                <font>
                   <Font name="System Bold" size="14.0" />
@@ -79,30 +82,42 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <HBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="250.0" style="-fx-border-color: #c9c9c9; -fx-border-width: 1; -fx-border-radius: 4;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="250.0" style="-fx-border-color: #c9c9c9; -fx-border-width: 1; -fx-border-radius: 4;" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
-                  <ListView fx:id="lunchListView" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="125.0" style="-fx-background-color: transparent; -fx-border-color: transparent;" />
-                  <ComboBox fx:id="lunchComboBox" editable="true" prefWidth="125.0" style="-fx-background-color: transparent; -fx-background-color: transparent;" />
+                  <ListView fx:id="lunchListView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-border-color: transparent;" />
+                  <ComboBox fx:id="lunchComboBox" editable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-background-color: transparent;">
+                     <VBox.margin>
+                        <Insets top="-15.0" />
+                     </VBox.margin></ComboBox>
                </children>
-            </HBox>
-            <HBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="250.0" style="-fx-border-color: #c9c9c9; -fx-border-width: 1; -fx-border-radius: 4;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            </VBox>
+            <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="250.0" style="-fx-border-color: #c9c9c9; -fx-border-width: 1; -fx-border-radius: 4;" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
-                  <ListView fx:id="dinnerListView" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="125.0" style="-fx-background-color: transparent; -fx-border-color: transparent;" />
-                  <ComboBox fx:id="dinnerComboBox" editable="true" prefWidth="125.0" style="-fx-background-color: transparent; -fx-background-color: transparent;" />
+                  <ListView fx:id="dinnerListView" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-border-color: transparent;" />
+                  <ComboBox fx:id="dinnerComboBox" editable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-background-color: transparent;">
+                     <VBox.margin>
+                        <Insets top="-15.0" />
+                     </VBox.margin></ComboBox>
                </children>
-            </HBox>
-            <HBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="250.0" style="-fx-border-color: #c9c9c9; -fx-border-width: 1; -fx-border-radius: 4;" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            </VBox>
+            <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="250.0" style="-fx-border-color: #c9c9c9; -fx-border-width: 1; -fx-border-radius: 4;" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <children>
-                  <ListView fx:id="snackListView" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="125.0" style="-fx-background-color: transparent; -fx-border-color: transparent;" />
-                  <ComboBox fx:id="snackComboBox" editable="true" prefWidth="125.0" style="-fx-background-color: transparent; -fx-background-color: transparent;" />
+                  <ListView fx:id="snackListView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-border-color: transparent;" />
+                  <ComboBox fx:id="snackComboBox" editable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-background-color: transparent;">
+                     <VBox.margin>
+                        <Insets top="-15.0" />
+                     </VBox.margin></ComboBox>
                </children>
-            </HBox>
-            <HBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="250.0" style="-fx-border-color: #c9c9c9; -fx-border-width: 1; -fx-border-radius: 4;" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            </VBox>
+            <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="250.0" style="-fx-border-color: #c9c9c9; -fx-border-width: 1; -fx-border-radius: 4;" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <children>
-                  <ListView fx:id="optionalListView" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="125.0" style="-fx-background-color: transparent; -fx-border-color: transparent;" />
-                  <ComboBox fx:id="optionalComboBox" editable="true" prefWidth="125.0" style="-fx-background-color: transparent; -fx-background-color: transparent;" />
+                  <ListView fx:id="optionalListView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-border-color: transparent;" />
+                  <ComboBox fx:id="optionalComboBox" editable="true" prefHeight="25.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-background-color: transparent;">
+                     <padding>
+                        <Insets top="-15.0" />
+                     </padding></ComboBox>
                </children>
-            </HBox>
+            </VBox>
          </children>
       </GridPane>
         <Button fx:id="saveButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #7da12d;" text="Guardar" textFill="WHITE">

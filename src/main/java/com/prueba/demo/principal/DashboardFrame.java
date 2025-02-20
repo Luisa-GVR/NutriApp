@@ -1252,41 +1252,14 @@ public class DashboardFrame {
                         showNutrimentalInfo(targetDate, finalRow);
                     } else if (button.getGraphic() == null){
                         Report report2 = reportRepository.findByDate(Date.valueOf(targetDate));
-                        if (report2.getDayMeals() == null) {
-                            handleCellClick(clickedButton,finalRow, finalCol);
+                        if (report2 == null || report2.getDayMeals() == null) {
+                                handleCellClick(clickedButton,finalRow, finalCol);
+
                         }
                     }
                 });
             }
         }
-
-        ObservableList<String> options = FXCollections.observableArrayList("Sí", "No");
-
-        choiceBox1.setItems(options);
-        choiceBox2.setItems(options);
-        choiceBox3.setItems(options);
-        choiceBox4.setItems(options);
-        choiceBox5.setItems(options);
-
-        Date finalDate = date1;
-        choiceBox1.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate));
-        if (reportRepository.findByDate(finalDate).getDayMeal() != null) choiceBox1.setDisable(true);
-
-        Date finalDate1 = date2;
-        choiceBox2.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate1));
-        if (reportRepository.findByDate(finalDate1).getDayMeal() != null) choiceBox2.setDisable(true);
-
-        Date finalDate2 = date3;
-        choiceBox3.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate2));
-        if (reportRepository.findByDate(finalDate2).getDayMeal() != null) choiceBox3.setDisable(true);
-
-        Date finalDate3 = date4;
-        choiceBox4.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate3));
-        if (reportRepository.findByDate(finalDate3).getDayMeal() != null) choiceBox4.setDisable(true);
-
-        Date finalDate4 = date5;
-        choiceBox5.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate4));
-        if (reportRepository.findByDate(finalDate4).getDayMeal() != null) choiceBox5.setDisable(true);
 
         Properties properties = new Properties();
         try (FileInputStream in = new FileInputStream("preferencesState.properties")) {
@@ -1304,8 +1277,37 @@ public class DashboardFrame {
             //e.printStackTrace();
         }
 
+        ObservableList<String> options = FXCollections.observableArrayList("Sí", "No");
 
+        choiceBox1.setItems(options);
+        choiceBox2.setItems(options);
+        choiceBox3.setItems(options);
+        choiceBox4.setItems(options);
+        choiceBox5.setItems(options);
 
+        try{
+            Date finalDate = date1;
+            choiceBox1.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate));
+            if (reportRepository.findByDate(finalDate).getDayMeal() != null) choiceBox1.setDisable(true);
+
+            Date finalDate1 = date2;
+            choiceBox2.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate1));
+            if (reportRepository.findByDate(finalDate1).getDayMeal() != null) choiceBox2.setDisable(true);
+
+            Date finalDate2 = date3;
+            choiceBox3.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate2));
+            if (reportRepository.findByDate(finalDate2).getDayMeal() != null) choiceBox3.setDisable(true);
+
+            Date finalDate3 = date4;
+            choiceBox4.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate3));
+            if (reportRepository.findByDate(finalDate3).getDayMeal() != null) choiceBox4.setDisable(true);
+
+            Date finalDate4 = date5;
+            choiceBox5.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate4));
+            if (reportRepository.findByDate(finalDate4).getDayMeal() != null) choiceBox5.setDisable(true);
+
+        }catch(Exception ignored){
+        }
     }
 
     @FXML
@@ -1431,6 +1433,7 @@ public class DashboardFrame {
                     loader.setControllerFactory(applicationContext::getBean);
 
                     Scene scene = new Scene(loader.load(), 600, 600); // Limitar tamaño de la escena
+                    scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
 
                     goalsCheckStage = new Stage();
 
@@ -1542,8 +1545,6 @@ public class DashboardFrame {
     private static Stage selectYourFoodStage;
 
     private void handleCellClick(Button clickedButton, int row, int col) {
-
-
         Platform.runLater(() -> {
             try {
 
@@ -1556,6 +1557,7 @@ public class DashboardFrame {
                     loader.setControllerFactory(applicationContext::getBean);
 
                     Scene scene = new Scene(loader.load());
+                    scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
                     selectYourFoodController = loader.getController();
                     selectYourFoodController.setCol(col);
                     selectYourFoodController.setRow(row);
@@ -1816,12 +1818,9 @@ public class DashboardFrame {
                 // Aquí puedes manejar la lógica del clic, dependiendo de si se quiere mostrar más detalles o realizar alguna acción
                 if (clickedButton.getText().contains("No hay ejercicios")) {
                     handleCellClickForExercise(finalRow);
-                    refreshExcerciseContent();
                 } else {
                     // Lógica para cuando sí hay ejercicios
                     showCheckYourRutine(targetDate);
-                    refreshExcerciseContent();
-
                 }
             });
         }
@@ -1941,6 +1940,7 @@ public class DashboardFrame {
                     loader.setControllerFactory(applicationContext::getBean);
 
                     Parent root = loader.load(); // Cargar el FXML
+                    root.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
                     SetYourRutine controller = loader.getController(); // Obtener el controlador
                     controller.setRow(row);
 
@@ -2038,6 +2038,7 @@ public class DashboardFrame {
                 SetYourPreferencesExercise controller = loader.getController();
 
                 Scene scene = new Scene(loader.load(), 400, 500); // Limitar tamaño de la escena
+                scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
 
                 preferencesExcerciseStage = new Stage();
                 preferencesExcerciseStage.setTitle("Elije tus preferencias en ejercicio");
