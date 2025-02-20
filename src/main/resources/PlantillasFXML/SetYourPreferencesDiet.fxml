@@ -46,14 +46,14 @@
          <children>
             <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="295.0" GridPane.columnIndex="1">
                <children>
-                  <ListView fx:id="favsFoodsListView" maxHeight="-Infinity" minHeight="-Infinity" orientation="HORIZONTAL" prefHeight="40.0" prefWidth="120.0" style="-fx-border-color: white; -fx-background-color: white; -fx-border-width: 1;">
+                  <ListView fx:id="favsFoodsListView" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="120.0" style="-fx-border-color: white; -fx-background-color: white; -fx-border-width: 1;">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
                   </ListView>
                   <ComboBox fx:id="favsFoodsComboBox" editable="true" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="25.0" prefWidth="120.0" style="-fx-background-color: white; -fx-border-color: white; -fx-border-radius: 4;" visibleRowCount="5">
                      <VBox.margin>
-                        <Insets top="-15.0" />
+                        <Insets />
                      </VBox.margin></ComboBox>
                   <Label fx:id="favsFoodsErrorLabel" text="Label de mensaje de error" textFill="#b30000">
                      <font>
@@ -70,10 +70,10 @@
             </VBox>
             <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
-                  <ListView fx:id="noFavsFoodsListView" maxHeight="-Infinity" minHeight="-Infinity" orientation="HORIZONTAL" prefHeight="40.0" prefWidth="120.0" style="-fx-border-color: white; -fx-background-color: white; -fx-border-width: 1;" />
+                  <ListView fx:id="noFavsFoodsListView" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="120.0" style="-fx-border-color: white; -fx-background-color: white; -fx-border-width: 1;" />
                   <ComboBox fx:id="noFavsFoodsComboBox" editable="true" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="25.0" prefWidth="120.0" style="-fx-background-color: white; -fx-border-color: white; -fx-border-radius: 4;" visibleRowCount="5">
                      <VBox.margin>
-                        <Insets top="-15.0" />
+                        <Insets />
                      </VBox.margin></ComboBox>
                   <Label fx:id="noFavsFoodsErrorLabel" text="Label de mensaje de error" textFill="#b30000">
                      <font>
