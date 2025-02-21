@@ -237,6 +237,9 @@ public class SetYourPreferencesDiet {
                 }
             }
 
+            closeCurrentWindow();
+            dashboardFrame.hidePreferencesUI();
+            dashboardFrame.refreshContent();
         }
 
     }
