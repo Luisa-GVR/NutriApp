@@ -361,7 +361,7 @@
             <Line endX="-100.82843017578125" endY="-196.0843963623047" startX="-100.0" GridPane.columnIndex="1" />
          </children>
       </GridPane>
-      <Button id="profileButton" fx:id="profileButton" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="143.0" style="-fx-background-color: #262626;" text="Completar perfil" textAlignment="CENTER" textFill="WHITE">
+      <Button id="profileButton" fx:id="profileButton" contentDisplay="CENTER" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseExited" prefHeight="25.0" prefWidth="143.0" style="-fx-background-color: #262626;" text="Completar perfil" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>

@@ -19,9 +19,7 @@ import com.prueba.demo.repository.*;
 import com.prueba.demo.service.APIConsumption;
 import com.prueba.demo.service.IEmailService;
 import com.prueba.demo.service.dto.EmailDTO;
-import jakarta.mail.Authenticator;
 import jakarta.mail.MessagingException;
-import jakarta.mail.Session;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
@@ -35,6 +33,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -272,6 +271,29 @@ public class DashboardFrame {
         iniciar con datos
      */
 
+
+    @FXML
+    private void handleMouseEnteredDiet(MouseEvent event) {
+        Button button = (Button) event.getSource();
+        button.setStyle("-fx-background-color: #A3D13C;");
+    }
+
+    @FXML
+    private void handleMouseExitedDiet(MouseEvent event) {
+        Button button = (Button) event.getSource();
+        button.setStyle("-fx-background-color:   #7da12d;");
+    }
+    @FXML
+    private void handleMouseEnteredConfigure(MouseEvent event) {
+        Button button = (Button) event.getSource();
+        button.setStyle("-fx-background-color: #595959;");
+    }
+
+    @FXML
+    private void handleMouseExitedConfigure(MouseEvent event) {
+        Button button = (Button) event.getSource();
+        button.setStyle("-fx-background-color:  #262626;");
+    }
     public void uploadFoodsFromCSV() {
         // Verificar y actualizar el estado de creación de la base de datos
         File propertiesFile = new File("preferencesState.properties");
@@ -1227,8 +1249,6 @@ public class DashboardFrame {
                 //Quitamos la capacidad de agregar cosas si ya existe un reporte
                 Report report = reportRepository.findByDate(Date.valueOf(targetDate));
                 if (report != null && report.getDayMeals() != null) {
-
-                    System.out.println("row: " + row + ", col: " + col);
                     // Si el reporte existe y tiene un DayMeal asociado, deshabilitamos el botón
                     if (button.getGraphic() == null) {
                         button.setDisable(true);
@@ -1258,6 +1278,10 @@ public class DashboardFrame {
                         }
                     }
                 });
+                button.setStyle("-fx-background-color: transparent;");
+
+                button.setOnMouseEntered(e -> button.setStyle("-fx-background-color:#d4e7b1 ")); // Cambia el color al pasar el mouse
+                button.setOnMouseExited(e -> button.setStyle("-fx-background-color: transparent;")); // Vuelve a transparente al salir
             }
         }
 
@@ -1356,22 +1380,6 @@ public class DashboardFrame {
         showDiet();
     }
 
-    private Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
-        for (Node node : gridPane.getChildren()) {
-            Integer columnIndex = GridPane.getColumnIndex(node);
-            Integer rowIndex = GridPane.getRowIndex(node);
-
-            // Si el índice de columna o fila es null, asignamos un valor por defecto
-            columnIndex = (columnIndex == null) ? 0 : columnIndex; // valor por defecto 0
-            rowIndex = (rowIndex == null) ? 0 : rowIndex; // valor por defecto 0
-
-            // Verificamos si el nodo está en la celda correcta
-            if (columnIndex == col && rowIndex == row) {
-                return node;
-            }
-        }
-        return null;
-    }
 
     @Autowired
     ReportRepository reportRepository;
@@ -1825,6 +1833,10 @@ public class DashboardFrame {
                     showCheckYourRutine(targetDate);
                 }
             });
+            exerciseButton.setStyle("-fx-background-color: transparent;");
+
+            exerciseButton.setOnMouseEntered(e -> exerciseButton.setStyle("-fx-background-color:#d4e7b1 ")); // Cambia el color al pasar el mouse
+            exerciseButton.setOnMouseExited(e -> exerciseButton.setStyle("-fx-background-color: transparent;")); // Vuelve a transparente al salir
         }
 
 
@@ -2015,10 +2027,6 @@ public class DashboardFrame {
             }
         });
     }
-
-
-    private Stage setYourRutineStage;
-
     private Stage preferencesExcerciseStage;
 
     private void openSetYourPreferencesExcercise() {
@@ -2150,8 +2158,6 @@ public class DashboardFrame {
 
         return sb.toString().trim();
     }
-
-
 
     /**
      reportes
@@ -2496,6 +2502,7 @@ public class DashboardFrame {
         nutriappImage.setFitWidth(newWidth);
         nutriappImage.setFitHeight(newHeight);
     }
+
 
     @Autowired
     private ApplicationContext applicationContext;

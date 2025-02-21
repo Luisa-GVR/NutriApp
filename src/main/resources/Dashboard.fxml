@@ -353,7 +353,7 @@
                                           </VBox>
                                        </children>
                                     </HBox>
-                                    <Button fx:id="updateButton" mnemonicParsing="false" style="-fx-background-color: #7da12d;" text="Actualizar perfil" textFill="#f9f9f9">
+                                    <Button fx:id="updateButton" mnemonicParsing="false" onMouseEntered="#handleMouseEnteredDiet" onMouseExited="#handleMouseExitedDiet" style="-fx-background-color: #7da12d;" text="Actualizar perfil" textFill="#f9f9f9">
                                        <VBox.margin>
                                           <Insets bottom="40.0" />
                                        </VBox.margin>
@@ -414,7 +414,7 @@
                                                 <Insets left="10.0" right="10.0" />
                                              </HBox.margin>
                                           </HBox>
-                                          <Button fx:id="setYourPreferencesButtonDiet" alignment="CENTER" mnemonicParsing="false" style="-fx-background-color: #262626;" text="Configurar tus preferencias" textAlignment="CENTER" textFill="WHITE">
+                                          <Button fx:id="setYourPreferencesButtonDiet" alignment="CENTER" mnemonicParsing="false" onMouseEntered="#handleMouseEnteredConfigure" onMouseExited="#handleMouseExitedConfigure" style="-fx-background-color: #262626;" text="Configurar tus preferencias" textAlignment="CENTER" textFill="WHITE">
                                              <font>
                                                 <Font name="System Bold" size="14.0" />
                                              </font>
@@ -753,7 +753,7 @@
                                                 <Insets left="10.0" right="10.0" />
                                              </HBox.margin>
                                           </HBox>
-                                          <Button fx:id="setYourPreferencesButtonExercise" alignment="CENTER" mnemonicParsing="false" style="-fx-background-color: #262626;" text="Configurar tus preferencias" textAlignment="CENTER" textFill="WHITE">
+                                          <Button fx:id="setYourPreferencesButtonExercise" alignment="CENTER" mnemonicParsing="false" onMouseEntered="#handleMouseEnteredConfigure" onMouseExited="#handleMouseExitedConfigure" style="-fx-background-color: #262626;" text="Configurar tus preferencias" textAlignment="CENTER" textFill="WHITE">
                                              <font>
                                                 <Font name="System Bold" size="14.0" />
                                              </font>
@@ -1364,7 +1364,7 @@
                                           </VBox>
                                        </children>
                                     </HBox>
-                                    <Button fx:id="sendReportButton" mnemonicParsing="false" style="-fx-background-color: #7da12d;" text="Enviar Reporte" textFill="WHITE">
+                                    <Button fx:id="sendReportButton" mnemonicParsing="false" onMouseEntered="#handleMouseEnteredDiet" onMouseExited="#handleMouseExitedDiet" style="-fx-background-color: #7da12d;" text="Enviar Reporte" textFill="WHITE">
                                        <VBox.margin>
                                           <Insets bottom="20.0" />
                                        </VBox.margin>

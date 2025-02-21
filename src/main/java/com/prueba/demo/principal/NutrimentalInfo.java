@@ -3,7 +3,6 @@ package com.prueba.demo.principal;
 import com.prueba.demo.model.DayMeal;
 import com.prueba.demo.model.Food;
 import com.prueba.demo.repository.DayMealRepository;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -12,7 +11,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -41,8 +39,6 @@ public class NutrimentalInfo {
     @FXML
     private Label foodNameLabel;
 
-    public LocalDate passedDate;
-    public int passedFoodType;
     private List<Food> foodsForMeal;
     private int currentFoodIndex = 0;
 

@@ -3,7 +3,6 @@ package com.prueba.demo.principal;
 import com.prueba.demo.model.*;
 import com.prueba.demo.repository.*;
 import com.prueba.demo.service.APIConsumption;
-import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,13 +10,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -88,13 +85,13 @@ public class ProfileFrame {
     @FXML
     private void handleMouseEntered(MouseEvent event) {
         Button button = (Button) event.getSource();
-        button.setStyle("-fx-background-color: #A3D13C;");
+        button.setStyle("-fx-background-color: #595959;");
     }
 
     @FXML
     private void handleMouseExited(MouseEvent event) {
         Button button = (Button) event.getSource();
-        button.setStyle("-fx-background-color: #7DA12D;");
+        button.setStyle("-fx-background-color:  #262626;");
     }
 
 

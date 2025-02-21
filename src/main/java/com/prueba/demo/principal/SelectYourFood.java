@@ -13,7 +13,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -232,10 +231,6 @@ public class SelectYourFood {
     }
 
 
-    public void setDashboardFrame(DashboardFrame dashboardFrame) {
-        this.dashboardFrame = dashboardFrame;
-    }
-
     private void closeCurrentWindow() {
 
         Stage stage = (Stage) suggestionsListView.getScene().getWindow();
@@ -303,8 +298,6 @@ public class SelectYourFood {
 
             if (selectedFood != null) {
                 foodRepository.save(selectedFood);
-            } else {
-                System.out.println("Food not found: " + selectedItem);
             }
 
             switch (getRow()) {
@@ -355,11 +348,6 @@ public class SelectYourFood {
         return food;
     }
 
-    public FoodPreferencesDTO getFoodPreferences(Long accountId) {
-        AccountDataService accountDataService = new AccountDataService(accountDataRepository, accountAllergyFoodRepository, accountLikedFoodRepository, accountDislikedFoodRepository);
-
-        return accountDataService.getFoodPreferences(accountId);
-    }
     @Autowired
     private AccountDataRepository accountDataRepository;
     @Autowired
@@ -370,11 +358,9 @@ public class SelectYourFood {
     private AccountDislikesFoodRepository accountDislikedFoodRepository;
 
 
-
     private void searchFood(String query) {
         List<String> suggestions = apiConsumption.getFoodSuggestionsNeutral(query); //API busqueda
         System.out.println("meow meow meow");
-        System.out.println(suggestions.get(0));
 
         Platform.runLater(() -> {
             suggestionsComboBox.getItems().clear();
@@ -382,12 +368,7 @@ public class SelectYourFood {
             suggestionsComboBox.show();
 
         });
-
-
-
     }
-
-
 
     private List<String> searchFood2() {
         AccountDataService accountDataService = new AccountDataService(accountDataRepository, accountAllergyFoodRepository, accountLikedFoodRepository, accountDislikedFoodRepository);
@@ -436,13 +417,4 @@ public class SelectYourFood {
         return suggestions;
 
     }
-
-    @Autowired
-    AccountDislikesFoodRepository accountDislikesFoodRepository;
-
-    @Autowired
-    AccountLikesFoodRepository accountLikesFoodRepository;
-
-
-
 }

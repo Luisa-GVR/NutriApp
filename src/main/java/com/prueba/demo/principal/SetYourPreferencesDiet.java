@@ -3,20 +3,14 @@ package com.prueba.demo.principal;
 import com.prueba.demo.model.*;
 import com.prueba.demo.repository.*;
 import com.prueba.demo.service.APIConsumption;
-import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +20,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Properties;
 
 @Component
@@ -45,10 +38,6 @@ public class SetYourPreferencesDiet {
     private ComboBox<String> noFavsFoodsComboBox;
     @FXML
     private Button saveButton;
-
-
-
-
 
     @FXML
     private void initialize(){
@@ -115,10 +104,6 @@ public class SetYourPreferencesDiet {
             }
         });
     }
-
-
-
-
 
 
     @Autowired
@@ -393,6 +378,4 @@ public class SetYourPreferencesDiet {
         Stage stage = (Stage) saveButton.getScene().getWindow();
         stage.close();
     }
-
-
 }

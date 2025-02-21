@@ -2,7 +2,6 @@ package com.prueba.demo.principal;
 
 import com.prueba.demo.model.DayExcercise;
 import com.prueba.demo.model.Excercise;
-import com.prueba.demo.model.Food;
 import com.prueba.demo.repository.DayExcerciseRepository;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
