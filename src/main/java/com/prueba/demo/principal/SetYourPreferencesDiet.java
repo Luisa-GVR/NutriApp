@@ -73,6 +73,7 @@ public class SetYourPreferencesDiet {
             try {
                 if (validateFields()) {
                     completeProfile();
+                    closeCurrentWindow();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -248,6 +249,9 @@ public class SetYourPreferencesDiet {
                 }
             }
 
+            closeCurrentWindow();
+            dashboardFrame.hidePreferencesUI();
+            dashboardFrame.refreshContent();
         }
 
     }
