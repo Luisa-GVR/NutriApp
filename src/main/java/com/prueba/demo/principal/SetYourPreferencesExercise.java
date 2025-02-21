@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
+
 
 @Component
 public class SetYourPreferencesExercise {
@@ -51,6 +53,17 @@ public class SetYourPreferencesExercise {
     // Mapa para almacenar la selección de cada día
     private final Map<ChoiceBox<String>, String> selectedExercises = new HashMap<>();
 
+    @FXML
+    private void handleMouseEntered(MouseEvent event) {
+        Button button = (Button) event.getSource();
+        button.setStyle("-fx-background-color: #A3D13C;");
+    }
+
+    @FXML
+    private void handleMouseExited(MouseEvent event) {
+        Button button = (Button) event.getSource();
+        button.setStyle("-fx-background-color:   #7da12d;");
+    }
     @FXML
     private void initialize() {
 

@@ -94,7 +94,7 @@
             <TextArea fx:id="timeTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="100.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5; -fx-border-radius: 4;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
       </GridPane>
-        <Button fx:id="saveButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #7da12d;" text="Guardar" textFill="WHITE">
+        <Button fx:id="saveButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseExited" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #7da12d;" text="Guardar" textFill="WHITE">
             <VBox.margin>
                 <Insets bottom="20.0" top="10.0" />
             </VBox.margin>

@@ -1833,10 +1833,15 @@ public class DashboardFrame {
                     showCheckYourRutine(targetDate);
                 }
             });
-            exerciseButton.setStyle("-fx-background-color: transparent;");
+            // Guarda el estilo original del botón antes de modificarlo
 
-            exerciseButton.setOnMouseEntered(e -> exerciseButton.setStyle("-fx-background-color:#d4e7b1 ")); // Cambia el color al pasar el mouse
-            exerciseButton.setOnMouseExited(e -> exerciseButton.setStyle("-fx-background-color: transparent;")); // Vuelve a transparente al salir
+            exerciseButton.setStyle("-fx-background-color: #f5f5f5; -fx-border-color: #d4e7b1; -fx-border-width: 1.5;");
+            String originalStyle = exerciseButton.getStyle();
+            exerciseButton.setOnMouseEntered(e -> exerciseButton.setStyle("-fx-background-color:#d4e7b1")); // Cambia el color al pasar el mouse
+            exerciseButton.setOnMouseExited(e -> {
+                exerciseButton.setStyle(originalStyle); // Restaura el estilo original
+            });
+
         }
 
 

@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -39,6 +40,17 @@ public class CheckYourRutine {
     private List<Excercise> currentExercises;
 
 
+    @FXML
+    private void handleMouseEntered(MouseEvent event) {
+        Button button = (Button) event.getSource();
+        button.setStyle("-fx-background-color: #A3D13C;");
+    }
+
+    @FXML
+    private void handleMouseExited(MouseEvent event) {
+        Button button = (Button) event.getSource();
+        button.setStyle("-fx-background-color:   #7da12d;");
+    }
     @FXML
     private void initialize() {
         backButton.setVisible(false);
