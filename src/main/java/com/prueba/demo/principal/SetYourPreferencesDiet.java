@@ -249,10 +249,12 @@ public class SetYourPreferencesDiet {
                 }
             }
 
-            closeCurrentWindow();
-            dashboardFrame.hidePreferencesUI();
-            dashboardFrame.refreshContent();
+
         }
+
+        closeCurrentWindow();
+        dashboardFrame.hidePreferencesUI();
+        dashboardFrame.refreshContent();
 
     }
 
@@ -264,15 +266,28 @@ public class SetYourPreferencesDiet {
     private boolean validateFields() {
         boolean validInputs = true;
 
-        if (favsFoodsListView.getItems().isEmpty()){
-            favsFoodsErrorLabel.setText("Por favor, intrduce un valor válido.");
+        if (favsFoodsListView.getItems().isEmpty()) {
+            favsFoodsErrorLabel.setText("Por favor, introduce un valor válido.");
             favsFoodsErrorLabel.setVisible(true);
             validInputs = false;
+        } else if (favsFoodsListView.getItems().size() > 5) {
+            favsFoodsErrorLabel.setText("No puedes agregar más de 5 elementos.");
+            favsFoodsErrorLabel.setVisible(true);
+            validInputs = false;
+        } else {
+            favsFoodsErrorLabel.setVisible(false); // Ocultar error si es válido
         }
-        if (noFavsFoodsListView.getItems().isEmpty()){
-            noFavsFoodsErrorLabel.setText("Por favor, intrduce un valor válido.");
+        // Validar que la lista de comidas no favoritas no esté vacía y que no tenga más de 5 elementos
+        if (noFavsFoodsListView.getItems().isEmpty()) {
+            noFavsFoodsErrorLabel.setText("Por favor, introduce un valor válido.");
             noFavsFoodsErrorLabel.setVisible(true);
             validInputs = false;
+        } else if (noFavsFoodsListView.getItems().size() > 5) {
+            noFavsFoodsErrorLabel.setText("No puedes agregar más de 5 elementos.");
+            noFavsFoodsErrorLabel.setVisible(true);
+            validInputs = false;
+        } else {
+            noFavsFoodsErrorLabel.setVisible(false); // Ocultar error si es válido
         }
 
         return validInputs;
@@ -309,7 +324,7 @@ public class SetYourPreferencesDiet {
                     errorLabel.setVisible(true);
                     return;
                 }
-                if (items.size() >= 5) {
+                if (items.size() > 5) {
                     errorLabel.setText("No se pueden agregar más de 5 elementos.");
                     errorLabel.setVisible(true);
                     return;
@@ -385,10 +400,7 @@ public class SetYourPreferencesDiet {
             comboBox.show();
 
         });
-
-
     }
-
     private void closeCurrentWindow() {
         Stage stage = (Stage) saveButton.getScene().getWindow();
         stage.close();

@@ -88,7 +88,6 @@ public class APIConsumption {
 
         // Convertimos la respuesta a un String
         String jsonResponse = response.body();
-        System.out.println(jsonResponse);  // Para depurar y ver la respuesta completa
 
         try {
             // Usamos ObjectMapper de Jackson para convertir el JSON en un objeto de tipo FoodsResponse

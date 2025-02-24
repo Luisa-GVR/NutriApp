@@ -44,8 +44,8 @@
 <body>
 <div class="container">
     <h1>Código de Verificación</h1>
-    <p>Hola,</p>
-    <p>Gracias por registrarte. Por favor, usa el siguiente código para verificar tu aplicacion:</p>
+    <p>Hola <span th:text="${name}">Nombre</span>,</p>
+    <p>Gracias por registrarte con el correo <span th:text="${email}"></span>. Por favor, usa el siguiente código para verificar tu aplicación:</p>
     <p class="code" th:text="${verificationCode}">Código de verificación aquí</p>
     <p>Si no solicitaste este código, por favor ignora este correo.</p>
     <p>Gracias,<br>El equipo de NutriApp</p>

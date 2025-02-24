@@ -2058,7 +2058,7 @@ public class DashboardFrame {
                 scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
 
                 preferencesExcerciseStage = new Stage();
-                preferencesExcerciseStage.setTitle("Elije tus preferencias en ejercicio");
+                preferencesExcerciseStage.setTitle("Elige tus preferencias en ejercicio");
                 preferencesExcerciseStage.setScene(scene);
 
                 // Establecer límites para la ventana

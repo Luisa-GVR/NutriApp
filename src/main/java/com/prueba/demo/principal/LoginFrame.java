@@ -180,6 +180,8 @@ public class LoginFrame {
         // Enviar email
         Context context = new Context();
         context.setVariable("verificationCode", verificationCode);
+        context.setVariable("name", nameField.getText().trim());
+        context.setVariable("email", emailField.getText().trim().toLowerCase());
         String contentHTML = templateEngine.process("email", context);
 
         EmailDTO emailDTO = new EmailDTO();

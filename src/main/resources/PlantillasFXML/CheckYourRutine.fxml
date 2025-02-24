@@ -66,7 +66,8 @@
       <GridPane hgap="10.0" vgap="5.0">
         <columnConstraints>
           <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="236.99998779296874" minWidth="10.0" prefWidth="190.8" />
-          <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="299.40001220703124" minWidth="10.0" prefWidth="198.79999999999998" />
+          <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="299.40001220703124" minWidth="10.0" prefWidth="122.0" />
+            <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="299.40001220703124" minWidth="10.0" prefWidth="137.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -92,6 +93,7 @@
             <TextArea fx:id="repetitionsTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="100.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5; -fx-border-radius: 4;" GridPane.columnIndex="1" />
             <TextArea fx:id="seriesTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="100.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5; -fx-border-radius: 4;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextArea fx:id="timeTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="100.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 1.5; -fx-border-radius: 4;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="Minutos" GridPane.columnIndex="2" GridPane.rowIndex="2" />
          </children>
       </GridPane>
         <Button fx:id="saveButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseExited" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #7da12d;" text="Guardar" textFill="WHITE">

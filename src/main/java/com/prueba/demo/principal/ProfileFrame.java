@@ -180,7 +180,7 @@ public class ProfileFrame {
                 }
 
                 // Verificar si hay más de 5 elementos diferentes
-                if (items.size() >= 5) {
+                if (items.size() > 5) {
                     allergiesErrorLabel.setText("No se puede agregar mas de 5 elementos");
                     allergiesErrorLabel.setVisible(true);
                     //allergiesComboBox.setValue("");
@@ -195,6 +195,7 @@ public class ProfileFrame {
                 // Agregar solo si no está duplicado
                 if (!items.contains(selectedItem)) {
                     items.add(selectedItem);
+                    allergiesErrorLabel.setVisible(false); // Oculta error si la selección es válida
                     //allergiesComboBox.setValue("");
                 }
 

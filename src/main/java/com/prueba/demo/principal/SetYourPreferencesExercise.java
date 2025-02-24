@@ -69,7 +69,7 @@ public class SetYourPreferencesExercise {
 
         //exerciseErrorLabel.setVisible(false);
 
-        objetiveChoiceBox.setItems(FXCollections.observableArrayList("Deficit",
+        objetiveChoiceBox.setItems(FXCollections.observableArrayList("Deficit calórico",
                 "Mantenimiento", "Volumen"));
 
         // Inicializar ComboBoxes con todos los ejercicios
@@ -183,6 +183,9 @@ public class SetYourPreferencesExercise {
                 accountData.setFriday(getValidExerciseType(fridayChoiceBox.getValue()));
 
                 String selectedGoal = objetiveChoiceBox.getValue();
+                if (selectedGoal.equals("Deficit calórico")){
+                    selectedGoal = "Deficit";
+                }
                 accountData.setGoal(Goal.fromString(selectedGoal));
                 // Guardar cambios en la base de datos
                 accountDataRepository.save(accountData);
