@@ -1213,15 +1213,9 @@ public class DashboardFrame {
                 button.setMaxWidth(Double.MAX_VALUE);
                 button.setMaxHeight(Double.MAX_VALUE);
 
-/**
-
-                DESHABILITEN ESTO SI VAN A TESTEAR EN UN FIN DE SEMANA O QUIEREN
-                TESTEAR, BLOQUEA LAS COLUMNAS ANTERIORES AL DIA DE HOY
-
                 if (targetDate.isBefore(today)) {
                     button.setDisable(true); // Deshabilita el botón si la fecha es anterior a hoy
                 }
-*/
 
 
                 if (foodForCell != null) {
@@ -1309,30 +1303,33 @@ public class DashboardFrame {
         choiceBox4.setItems(options);
         choiceBox5.setItems(options);
 
-        try{
-            Date finalDate = date1;
-            choiceBox1.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate));
-            if (reportRepository.findByDate(finalDate).getDayMeal() != null) choiceBox1.setDisable(true);
-
-            Date finalDate1 = date2;
-            choiceBox2.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate1));
-            if (reportRepository.findByDate(finalDate1).getDayMeal() != null) choiceBox2.setDisable(true);
-
-            Date finalDate2 = date3;
-            choiceBox3.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate2));
-            if (reportRepository.findByDate(finalDate2).getDayMeal() != null) choiceBox3.setDisable(true);
-
-            Date finalDate3 = date4;
-            choiceBox4.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate3));
-            if (reportRepository.findByDate(finalDate3).getDayMeal() != null) choiceBox4.setDisable(true);
-
-            Date finalDate4 = date5;
-            choiceBox5.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate4));
-            if (reportRepository.findByDate(finalDate4).getDayMeal() != null) choiceBox5.setDisable(true);
-
-        }catch(Exception ignored){
+        try {
+            setupChoiceBox(choiceBox1, date1, today);
+            setupChoiceBox(choiceBox2, date2, today);
+            setupChoiceBox(choiceBox3, date3, today);
+            setupChoiceBox(choiceBox4, date4, today);
+            setupChoiceBox(choiceBox5, date5, today);
+        } catch (Exception ignored) {
         }
     }
+
+    private void setupChoiceBox(ChoiceBox<String> choiceBox, Date date, LocalDate today) {
+        if (date == null) return;
+
+        LocalDate localDate = date.toLocalDate();
+
+        choiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) ->
+                handleChoiceBoxSelection(newValue, date)
+        );
+
+        Report report = reportRepository.findByDate(date);
+
+        boolean hasMeal = report != null && report.getDayMeal() != null;
+        boolean isToday = localDate.equals(today);
+
+        choiceBox.setDisable(hasMeal || !isToday);
+    }
+
 
     @FXML
     public void resetAndLoadDiet() {
@@ -1763,24 +1760,26 @@ public class DashboardFrame {
             switch (row) {
                 case 1:
                     if (reportIsNull || (!goalMet && !hasDayExcercise)) {
-                        if (existDayExcercises[0]){
+                        if (existDayExcercises[0] && targetDate.isEqual(today)){
                             choiceBoxDisabled1 = false;
                         }
                          // Se puede crear el reporte
                     }
                     break;
                 case 2:
-                    if (reportIsNull || (!goalMet && !hasDayExcercise)) {
-                        if (existDayExcercises[1]){
+                    if (reportIsNull || (!goalMet && !hasDayExcercise) ) {
+                        if (existDayExcercises[1] && targetDate.isEqual(today)){
+                            System.out.println("entr2");
                             choiceBoxDisabled2 = false;
 
                         }
 
                     }
+
                     break;
                 case 3:
                     if (reportIsNull ||(!goalMet && !hasDayExcercise)) {
-                        if (existDayExcercises[2]){
+                        if (existDayExcercises[2] && targetDate.isEqual(today)){
                             choiceBoxDisabled3 = false;
                         }
 
@@ -1788,7 +1787,7 @@ public class DashboardFrame {
                     break;
                 case 4:
                     if (reportIsNull || (!goalMet && !hasDayExcercise)) {
-                        if (existDayExcercises[3]){
+                        if (existDayExcercises[3] && targetDate.isEqual(today)){
                             choiceBoxDisabled4 = false;
 
                         }
@@ -1797,7 +1796,7 @@ public class DashboardFrame {
                     break;
                 case 5:
                     if (reportIsNull || (!goalMet && !hasDayExcercise)) {
-                        if (existDayExcercises[4]){
+                        if (existDayExcercises[4] && targetDate.isEqual(today)){
                             choiceBoxDisabled5 = false;
 
                         }
