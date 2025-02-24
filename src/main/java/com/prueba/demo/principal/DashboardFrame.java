@@ -2516,4 +2516,11 @@ public class DashboardFrame {
         showExercise();
         showDiet();
     }
+
+
+    public void refreshContentExcercise() {
+        showDiet();
+        showExercise();
+
+    }
 }

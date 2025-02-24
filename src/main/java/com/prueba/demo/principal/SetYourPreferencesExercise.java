@@ -192,6 +192,7 @@ public class SetYourPreferencesExercise {
                 savePreferencesState();
 
                 closeCurrentWindow();
+                dashboardFrame.refreshContentExcercise();
 
             } catch (IllegalArgumentException e) {
                 System.out.println("Error: Opción inválida seleccionada en el ChoiceBox.");
