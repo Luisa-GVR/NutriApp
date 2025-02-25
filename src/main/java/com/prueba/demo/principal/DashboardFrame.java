@@ -1468,10 +1468,10 @@ public class DashboardFrame {
                     goalsCheckStage.setScene(scene);
 
                     // Establecer límites para la ventana
-                    goalsCheckStage.setMinWidth(600);
-                    goalsCheckStage.setMinHeight(600);
-                    goalsCheckStage.setMaxWidth(600);
-                    goalsCheckStage.setMaxHeight(600);
+                    goalsCheckStage.setMinWidth(650);
+                    goalsCheckStage.setMinHeight(650);
+                    goalsCheckStage.setMaxWidth(650);
+                    goalsCheckStage.setMaxHeight(650);
 
                     goalsCheckStage.setOnCloseRequest(event -> {
                         goalsCheckStage = null;
@@ -1521,10 +1521,10 @@ public class DashboardFrame {
                 nutrimentalInfoStage.setScene(scene);
 
                 // Establecer límites para la ventana
-                nutrimentalInfoStage.setMinWidth(600);
-                nutrimentalInfoStage.setMinHeight(600);
-                nutrimentalInfoStage.setMaxWidth(600);
-                nutrimentalInfoStage.setMaxHeight(600);
+                nutrimentalInfoStage.setMinWidth(650);
+                nutrimentalInfoStage.setMinHeight(650);
+                nutrimentalInfoStage.setMaxWidth(650);
+                nutrimentalInfoStage.setMaxHeight(650);
 
                 nutrimentalInfoStage.setOnCloseRequest(event -> nutrimentalInfoStage = null); // Reset when closed
 
@@ -1588,10 +1588,10 @@ public class DashboardFrame {
                     selectYourFoodStage = new Stage();
                     selectYourFoodStage.setTitle("Selecciona tu comida");
                     selectYourFoodStage.setScene(scene);
-                    selectYourFoodStage.setMinWidth(400);
-                    selectYourFoodStage.setMinHeight(550);
-                    selectYourFoodStage.setMaxWidth(400);
-                    selectYourFoodStage.setMaxHeight(550);
+                    selectYourFoodStage.setMinWidth(450);
+                    selectYourFoodStage.setMinHeight(600);
+                    selectYourFoodStage.setMaxWidth(450);
+                    selectYourFoodStage.setMaxHeight(600);
 
                     selectYourFoodStage.setOnCloseRequest(event -> {
                         selectYourFoodStage = null;
@@ -1652,7 +1652,7 @@ public class DashboardFrame {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlantillasFXML/SetYourPreferencesDiet.fxml"));
                 loader.setControllerFactory(applicationContext::getBean);
 
-                Scene scene = new Scene(loader.load(), 600, 360); // Limitar tamaño de la escena
+                Scene scene = new Scene(loader.load(), 650, 400); // Limitar tamaño de la escena
                 scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
 
                 preferencesDietStage = new Stage();
@@ -1660,10 +1660,10 @@ public class DashboardFrame {
                 preferencesDietStage.setScene(scene);
 
                 // Establecer límites para la ventana
-                preferencesDietStage.setMinWidth(600);
-                preferencesDietStage.setMinHeight(360);
-                preferencesDietStage.setMaxWidth(600);
-                preferencesDietStage.setMaxHeight(360);
+                preferencesDietStage.setMinWidth(650);
+                preferencesDietStage.setMinHeight(400);
+                preferencesDietStage.setMaxWidth(650);
+                preferencesDietStage.setMaxHeight(400);
 
                 preferencesDietStage.setOnCloseRequest(event -> preferencesDietStage = null); // Reset when closed
 
@@ -1984,10 +1984,10 @@ public class DashboardFrame {
                     showSetYourRutine = new Stage();
                     showSetYourRutine.setTitle("Selecciona tu rutina");
                     showSetYourRutine.setScene(new Scene(root));
-                    showSetYourRutine.setMinWidth(400);
-                    showSetYourRutine.setMinHeight(550);
-                    showSetYourRutine.setMaxWidth(400);
-                    showSetYourRutine.setMaxHeight(550);
+                    showSetYourRutine.setMinWidth(450);
+                    showSetYourRutine.setMinHeight(600);
+                    showSetYourRutine.setMaxWidth(450);
+                    showSetYourRutine.setMaxHeight(600);
 
                     showSetYourRutine.setOnCloseRequest(event -> showSetYourRutine = null);
 
@@ -2035,10 +2035,10 @@ public class DashboardFrame {
                 checkYourRutineStage.setScene(scene);
 
                 // Set window size restrictions
-                checkYourRutineStage.setMinWidth(400);
-                checkYourRutineStage.setMinHeight(500);
-                checkYourRutineStage.setMaxWidth(400);
-                checkYourRutineStage.setMaxHeight(500);
+                checkYourRutineStage.setMinWidth(450);
+                checkYourRutineStage.setMinHeight(550);
+                checkYourRutineStage.setMaxWidth(450);
+                checkYourRutineStage.setMaxHeight(550);
 
                 // Reset checkYourRutineStage when closed
                 checkYourRutineStage.setOnCloseRequest(event -> checkYourRutineStage = null);
@@ -2079,10 +2079,10 @@ public class DashboardFrame {
                 preferencesExcerciseStage.setScene(scene);
 
                 // Establecer límites para la ventana
-                preferencesExcerciseStage.setMinWidth(400);
-                preferencesExcerciseStage.setMinHeight(500);
-                preferencesExcerciseStage.setMaxWidth(400);
-                preferencesExcerciseStage.setMaxHeight(500);
+                preferencesExcerciseStage.setMinWidth(450);
+                preferencesExcerciseStage.setMinHeight(550);
+                preferencesExcerciseStage.setMaxWidth(450);
+                preferencesExcerciseStage.setMaxHeight(550);
 
                 preferencesExcerciseStage.setOnCloseRequest(event -> preferencesExcerciseStage = null); // Reset cuando se cierra
 

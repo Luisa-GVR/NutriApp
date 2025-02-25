@@ -37,6 +37,8 @@ public class SetYourPreferencesExercise {
     private ChoiceBox<String> thursdayChoiceBox;
     @FXML
     private ChoiceBox<String> fridayChoiceBox;
+    @FXML
+    private Label errorLabel;
 
 
     @Autowired
@@ -66,8 +68,7 @@ public class SetYourPreferencesExercise {
     }
     @FXML
     private void initialize() {
-
-        //exerciseErrorLabel.setVisible(false);
+        errorLabel.setVisible(false);
 
         objetiveChoiceBox.setItems(FXCollections.observableArrayList("Deficit calórico",
                 "Mantenimiento", "Volumen"));
@@ -92,6 +93,8 @@ public class SetYourPreferencesExercise {
                     completeProfile();
                 }else {
                     System.out.println("entre a save y no valido desde else");
+                    errorLabel.setVisible(true);
+
                 }
             } catch (Exception e) {
                 e.printStackTrace();

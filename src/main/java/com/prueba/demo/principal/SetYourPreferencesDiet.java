@@ -98,6 +98,9 @@ public class SetYourPreferencesDiet {
                     if (item != null) {
                         getListView().getItems().remove(item);
                     }
+                    favsFoodsErrorLabel.setVisible(false);
+                    noFavsFoodsErrorLabel.setVisible(false);
+
                 });
 
                 hbox.getChildren().addAll(deleteButton, label);

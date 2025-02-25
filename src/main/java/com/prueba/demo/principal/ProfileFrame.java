@@ -173,9 +173,10 @@ public class ProfileFrame {
 
                 // Verificar si "Ninguna" ya está en la lista
                 if (items.contains("Ninguna")) {
-                    allergiesErrorLabel.setText("No puedes agregar más elementos porque 'Ninguna' ya está seleccionado.");
+                    allergiesErrorLabel.setText("Elimina 'Ninguna' para agregar más elementos.");
                     allergiesErrorLabel.setVisible(true);
                     //allergiesComboBox.setValue("");
+
                     return;
                 }
 
@@ -184,8 +185,10 @@ public class ProfileFrame {
                     allergiesErrorLabel.setText("No se puede agregar mas de 5 elementos");
                     allergiesErrorLabel.setVisible(true);
                     //allergiesComboBox.setValue("");
+
                     return;
                 }
+
 
                 if (!items.isEmpty() && selectedItem.equals("Ninguna")){
                     //allergiesComboBox.setValue("");
@@ -203,6 +206,9 @@ public class ProfileFrame {
             Platform.runLater(() -> allergiesComboBox.getEditor().clear()); // Borra el texto después de la búsqueda
 
         });
+        allergiesComboBox.setOnMouseClicked(event -> allergiesErrorLabel.setVisible(false));
+
+
 
 
         //Listener para manejar el borrado de alergias
@@ -248,7 +254,9 @@ public class ProfileFrame {
                     if (item != null) {
                         getListView().getItems().remove(item);
                     }
+                    allergiesErrorLabel.setVisible(false);
                 });
+
 
                 hbox.getChildren().addAll(deleteButton, label);
             }
@@ -398,6 +406,8 @@ public class ProfileFrame {
 
         // Validar sexo
         validInputs &= isChoiceBoxSelected(sexChoiceBox, "Sexo", sexErrorLabel);
+        sexChoiceBox.setOnMouseClicked(event -> sexErrorLabel.setVisible(false));
+
 
         // Validar estatura (90 - 300 cm)
         validInputs &= isValidNumber(heightTextArea, 90, 300, "Estatura", heightErrorLabel, 0);
@@ -408,6 +418,8 @@ public class ProfileFrame {
         if (allergiesListView.getItems().isEmpty()){
             allergiesErrorLabel.setText("Por favor, intrduce un valor válido.");
             allergiesErrorLabel.setVisible(true);
+            allergiesComboBox.setOnMouseClicked(event -> allergiesErrorLabel.setVisible(false));
+
             validInputs = false;
         }
 
@@ -446,7 +458,10 @@ public class ProfileFrame {
             label.setText("El campo es obligatorio");
             label.setVisible(true);
             return false;
+
         }
+        textArea.setOnMouseClicked(event -> label.setVisible(false));
+
         try {
             int value = Integer.parseInt(textArea.getText().trim());
             if (value < min || value > max) {
@@ -459,7 +474,7 @@ public class ProfileFrame {
 
             return true;
         } catch (NumberFormatException e) {
-            label.setText("Por favor, intrduce un valor válido.");
+            label.setText("Por favor, introduce un valor válido.");
             label.setVisible(true);
 
             return false;
