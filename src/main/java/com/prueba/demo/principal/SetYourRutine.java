@@ -53,6 +53,8 @@ public class SetYourRutine {
     private ImageView exerciseImageView;
     @FXML
     private ListView<String> suggestionsListView;
+    @FXML
+    private Label errorLabel;
 
     private List<String> cachedSuggestions = null;
 
@@ -82,6 +84,9 @@ public class SetYourRutine {
     }
     @FXML
     private void initialize() {
+
+        errorLabel.setVisible(false);
+
         setupListViewWithDeleteButton(suggestionsListView);
 
         Platform.runLater(() -> {
@@ -185,11 +190,17 @@ public class SetYourRutine {
                         cachedSuggestions = null;
                         addExcercise(suggestionsListView);
                         closeCurrentWindow();
+                    } else {
+                        errorLabel.setText("Debe elegir entre 3 y 5 ejercicios");
+                        errorLabel.setVisible(true);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+
                 }
             });
+            suggestionsComboBox.setOnMouseClicked(actionEvent -> {errorLabel.setVisible(false);});
+
 
         });
     }
@@ -211,7 +222,9 @@ public class SetYourRutine {
                     if (item != null) {
                         getListView().getItems().remove(item);
                     }
+                    errorLabel.setVisible(false);
                 });
+
 
                 hbox.getChildren().addAll(deleteButton, label);
             }

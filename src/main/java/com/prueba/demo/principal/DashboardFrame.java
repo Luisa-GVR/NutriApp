@@ -1107,33 +1107,51 @@ public class DashboardFrame {
 
         // Validar edad (13 - 120) (Solo enteros)
         validInputs &= isValidNumber(ageTextArea, 13, 120, "Edad", ageErrorLabel, 0, true);
+        ageTextArea.setOnMouseClicked(event -> ageErrorLabel.setVisible(false));
+
 
         // Validar estatura (90 - 300 cm)
         validInputs &= isValidNumber(heightTextArea, 90, 300, "Estatura", heightErrorLabel, 0, false);
+        heightTextArea.setOnMouseClicked(event -> heightErrorLabel.setVisible(false));
+
 
         // Validar peso inicial (30 - 300 kg)
         validInputs &= isValidNumber(weightTextArea, 30, 300, "Peso inicial", weightErrorLabel, 0, false);
+        weightTextArea.setOnMouseClicked(event -> weightErrorLabel.setVisible(false));
+
 
         // Validar abdomen ((40 - 170 cm)
         validInputs &= isValidNumber(abdomenTextArea, 40, 170, "Abdomen", abdomenErrorLabel, 1, false);
+        abdomenTextArea.setOnMouseClicked(event -> abdomenErrorLabel.setVisible(false));
+
 
         // Validar cadera (50 - 170 cm)
         validInputs &= isValidNumber(hipTextArea, 50, 170, "Cadera", hipErrorLabel, 1, false);
+        hipTextArea.setOnMouseClicked(event -> hipErrorLabel.setVisible(false));
+
 
         // Validar cintura (35 - 170 cm)
         validInputs &= isValidNumber(waistTextArea, 35, 170, "Cintura", waistErrorLabel, 1, false);
+        waistTextArea.setOnMouseClicked(event -> waistErrorLabel.setVisible(false));
+
 
         // Validar cuello ((15 - 170 cm)
         validInputs &= isValidNumber(neckTextArea, 15, 170, "Cuello", neckErrorLabel, 1, false);
+        neckTextArea.setOnMouseClicked(event -> neckErrorLabel.setVisible(false));
+
 
         // Validar brazo (10 - 170 cm)
         validInputs &= isValidNumber(armTextArea, 10, 170, "Brazo", armErrorLabel, 1, false);
+        armTextArea.setOnMouseClicked(event -> armErrorLabel.setVisible(false));
+
 
         // Validar pecho (50 - 170 cm)
         validInputs &= isValidNumber(chestTextArea, 50, 170, "Pecho", chestErrorLabel, 1, false);
+        chestTextArea.setOnMouseClicked(event -> chestErrorLabel.setVisible(false));
 
         return validInputs;
     }
+
 
     private boolean isValidNumber(TextArea textArea, double min, double max, String fieldName, Label label, int type, boolean isInteger) {
         String text = textArea.getText().trim();
