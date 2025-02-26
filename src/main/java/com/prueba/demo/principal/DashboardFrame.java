@@ -28,6 +28,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import java.time.Period;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -579,7 +580,24 @@ public class DashboardFrame {
             Date monday = Date.valueOf(today.with(DayOfWeek.MONDAY));
             Date friday = Date.valueOf(today.with(DayOfWeek.FRIDAY));
 
-            List<Report> weeklyReport = reportRepository.findReportsForWeek(1L, monday, friday);
+            List<Report> reportsFound = reportRepository.findReportsForWeek(1L, monday, friday);
+
+            List<Report> weeklyReport = new ArrayList<>();
+            for (int i = 0; i < 5; i++) {
+                weeklyReport.add(new Report());
+            }
+
+            // Llenar la lista en la posición correcta
+            for (Report report : reportsFound) {
+                LocalDate reportDate = report.getDate().toLocalDate();
+                LocalDate mondayLocal = monday.toLocalDate();
+
+                int dayIndex = Period.between(mondayLocal, reportDate).getDays();
+                if (dayIndex >= 0 && dayIndex < 5) {
+                    weeklyReport.set(dayIndex, report);
+                }
+            }
+
             double consumedCalories = 0;
             double consumedProtein = 0;
             double consumedFat = 0;
