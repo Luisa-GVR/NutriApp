@@ -2,6 +2,7 @@ package com.prueba.demo.principal;
 
 import com.prueba.demo.model.*;
 import com.prueba.demo.repository.*;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -52,6 +53,18 @@ public class SetYourPreferencesExercise {
             "Pecho y Brazo", "Pierna Completa", "Hombro y Espalda", "Abdomen y Cardio"
     );
 
+    private final List<String> originalExercises = new ArrayList<>(allExercises); // Copia de la lista original
+
+    private void restoreExercises() {
+        // Restaurar los ejercicios originales en la lista
+        allExercises.clear();
+        allExercises.addAll(originalExercises);
+        selectedExercises.clear();
+        // Actualizar los ChoiceBoxes con los ejercicios restaurados
+        updateAvailableExercises();
+    }
+
+
     // Mapa para almacenar la selección de cada día
     private final Map<ChoiceBox<String>, String> selectedExercises = new HashMap<>();
 
@@ -80,6 +93,7 @@ public class SetYourPreferencesExercise {
         thursdayChoiceBox.setItems(FXCollections.observableArrayList(allExercises));
         fridayChoiceBox.setItems(FXCollections.observableArrayList(allExercises)); // Viernes tiene todos siempre
 
+        System.out.println(allExercises);
 
         // Agregar listeners para detectar cambios y actualizar los demás días
         setupChoiceBox(mondayChoiceBox);
@@ -101,6 +115,17 @@ public class SetYourPreferencesExercise {
                 //showAlert("Error", "No se pudo completar el perfil.");
             }
         });
+
+        Platform.runLater(() -> {
+            Stage stage = (Stage) saveButton.getScene().getWindow();
+
+            // Añadir el manejador para el evento de cierre de la ventana (X)
+            stage.setOnCloseRequest(event -> {
+                event.consume();  // Evitar que la ventana se cierre inmediatamente
+                closeCurrentWindow();  // Llamar a tu método para restaurar ejercicios y cerrar la ventana
+            });
+        });
+
     }
 
 
@@ -270,7 +295,9 @@ public class SetYourPreferencesExercise {
 
 
     private void closeCurrentWindow() {
+        restoreExercises(); // Restaurar los ejercicios al cerrar la ventana
         Stage stage = (Stage) saveButton.getScene().getWindow();
         stage.close();
     }
+
 }
