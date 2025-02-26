@@ -2326,8 +2326,10 @@ public class DashboardFrame {
         Double chest = account.get().getChest();
         Double neck = account.get().getNeck();
 
-        List<String> accountAllergies = accountAllergyFoodRepository.findFoodNamesByAccountDataId(1L);
 
+
+        List<String> accountAllergies = accountAllergyFoodRepository.findFoodNamesByAccountDataId(account.get().getId());
+        
         double imc = Math.round((weight / Math.pow(height / 100.0, 2)) * 10.0) / 10.0;
 
         // Encabezado
