@@ -14,14 +14,13 @@
 /* Estilos para el texto de los elementos de la lista */
 .list-item-label {
     -fx-text-fill: #757583;
-    -fx-font-size: 10px;
+    -fx-font-size: 9px;
 
 }
 
 /* Estilos para el contenedor HBox (solo para la lista) */
 .hbox-container {
-    -fx-padding: 0 5px 0 5px;
-    -fx-spacing: 5px;
+    -fx-spacing: 0px;
     -fx-alignment: center;
     -fx-background-color: #dcdcdc;
     -fx-border-color: #b7b8b8;
