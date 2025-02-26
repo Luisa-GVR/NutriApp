@@ -200,12 +200,15 @@
                                  <font>
                                     <Font name="System Bold" size="10.0" />
                                  </font>
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" />
+                                 </VBox.margin>
                               </Label>
                            </children>
                         </VBox>
                         <VBox alignment="CENTER_LEFT" minWidth="-Infinity" prefHeight="200.0" prefWidth="180.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                            <children>
-                              <ListView fx:id="allergiesListView" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: white; -fx-border-color: transparent; -fx-border-width: 0.5; -fx-border-radius: 4;" />
+                              <ListView fx:id="allergiesListView" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="HORIZONTAL" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: white; -fx-border-color: transparent; -fx-border-width: 0.5; -fx-border-radius: 4;" />
                               <ComboBox fx:id="allergiesComboBox" editable="true" minWidth="-Infinity" prefHeight="15.0" prefWidth="200.0" style="-fx-background-color: white; -fx-border-color: white; -fx-border-width: 1.5; -fx-border-radius: 4;" visibleRowCount="5">
                                  <VBox.margin>
                                     <Insets />
