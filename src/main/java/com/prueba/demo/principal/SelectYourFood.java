@@ -80,12 +80,28 @@ public class SelectYourFood {
         //Buscar comidas
 
         // Evitar que Enter agregue elementos automáticamente
-        suggestionsComboBox.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER) {
-                event.consume(); // Evita que Enter agregue la informacioon al listview
+        // Buscar alimentos cuando el usuario presiona Enter y limpiar el texto
+        suggestionsComboBox.getEditor().setOnKeyTyped(event -> {
+            String query = suggestionsComboBox.getEditor().getText().trim(); // Eliminar espacios vacíos
+
+            if (event.getCharacter().equals("\r")) { // Enter presionado
+                if (!query.isEmpty()) {
+                    // Asegurar que no haya cadenas vacías antes de agregar un nuevo valor
+                    suggestionsComboBox.getItems().removeIf(String::isEmpty);
+
+                    // Evitar que se agreguen duplicados
+                    if (!suggestionsComboBox.getItems().contains(query)) {
+                        suggestionsComboBox.getItems().add(query);
+                    }
+
+                    // Ejecutar la búsqueda
+                    searchFood(query);
+                }
+
+                // Limpiar el campo de entrada en el siguiente ciclo de ejecución
+                Platform.runLater(() -> suggestionsComboBox.getEditor().clear());
             }
         });
-
 
 
         // Listener para manejar la selección SOLO desde el dropdown

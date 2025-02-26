@@ -1285,30 +1285,29 @@ public class DashboardFrame {
         choiceBox4.setItems(options);
         choiceBox5.setItems(options);
 
-        Date finalDate = date1;
-        choiceBox1.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate));
-        if (reportRepository.findByDate(finalDate).getDayMeal() != null) choiceBox1.setDisable(true);
+        try{
+            Date finalDate = date1;
+            choiceBox1.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate));
+            if (reportRepository.findByDate(finalDate).getDayMeal() != null) choiceBox1.setDisable(true);
 
-        Date finalDate1 = date2;
-        choiceBox2.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate1));
-        if (reportRepository.findByDate(finalDate1).getDayMeal() != null) choiceBox2.setDisable(true);
+            Date finalDate1 = date2;
+            choiceBox2.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate1));
+            if (reportRepository.findByDate(finalDate1).getDayMeal() != null) choiceBox2.setDisable(true);
 
-        Date finalDate2 = date3;
-        choiceBox3.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate2));
-        if (reportRepository.findByDate(finalDate2).getDayMeal() != null) choiceBox3.setDisable(true);
+            Date finalDate2 = date3;
+            choiceBox3.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate2));
+            if (reportRepository.findByDate(finalDate2).getDayMeal() != null) choiceBox3.setDisable(true);
 
-        Date finalDate3 = date4;
-        choiceBox4.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate3));
-        if (reportRepository.findByDate(finalDate3).getDayMeal() != null) choiceBox4.setDisable(true);
+            Date finalDate3 = date4;
+            choiceBox4.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate3));
+            if (reportRepository.findByDate(finalDate3).getDayMeal() != null) choiceBox4.setDisable(true);
 
-        Date finalDate4 = date5;
-        choiceBox5.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate4));
-        if (reportRepository.findByDate(finalDate4).getDayMeal() != null) choiceBox5.setDisable(true);
+            Date finalDate4 = date5;
+            choiceBox5.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleChoiceBoxSelection(newValue, finalDate4));
+            if (reportRepository.findByDate(finalDate4).getDayMeal() != null) choiceBox5.setDisable(true);
 
-
-
-
-
+        }catch(Exception ignored){
+        }
     }
 
     @FXML
