@@ -1565,8 +1565,10 @@ public class DashboardFrame {
                     selectYourFoodStage = new Stage();
                     selectYourFoodStage.setTitle("Selecciona tu comida");
                     selectYourFoodStage.setScene(scene);
-                    selectYourFoodStage.setMinWidth(900);
-                    selectYourFoodStage.setMinHeight(520);
+                    selectYourFoodStage.setMinWidth(400);
+                    selectYourFoodStage.setMinHeight(550);
+                    selectYourFoodStage.setMaxWidth(400);
+                    selectYourFoodStage.setMaxHeight(550);
 
                     selectYourFoodStage.setOnCloseRequest(event -> {
                         selectYourFoodStage = null;
@@ -1948,8 +1950,10 @@ public class DashboardFrame {
                     showSetYourRutine = new Stage();
                     showSetYourRutine.setTitle("Selecciona tu rutina");
                     showSetYourRutine.setScene(new Scene(root));
-                    showSetYourRutine.setMinWidth(900);
-                    showSetYourRutine.setMinHeight(520);
+                    showSetYourRutine.setMinWidth(400);
+                    showSetYourRutine.setMinHeight(550);
+                    showSetYourRutine.setMaxWidth(400);
+                    showSetYourRutine.setMaxHeight(550);
 
                     showSetYourRutine.setOnCloseRequest(event -> showSetYourRutine = null);
 
