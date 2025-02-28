@@ -129,9 +129,8 @@ public class GoalsCheck {
         if (!breakfastListView.getItems().contains("Cumplí mi meta")) {
             for (String selectedItem : breakfastListView.getItems()) {
                 Food selectedFood = getFoodByName(selectedItem);
-                if (dayMeal.getBreakfast() == null) {
-                    dayMeal.setBreakfast(new ArrayList<>());
-                }
+                dayMeal.setBreakfast(new ArrayList<>());
+
                 dayMeal.getBreakfast().add(selectedFood);
             }
         }
@@ -140,9 +139,8 @@ public class GoalsCheck {
         if (!lunchListView.getItems().contains("Cumplí mi meta")) {
             for (String selectedItem : lunchListView.getItems()) {
                 Food selectedFood = getFoodByName(selectedItem);
-                if (dayMeal.getLunch() == null) {
-                    dayMeal.setLunch(new ArrayList<>());
-                }
+                dayMeal.setLunch(new ArrayList<>());
+
                 dayMeal.getLunch().add(selectedFood);
             }
         }
@@ -151,9 +149,8 @@ public class GoalsCheck {
         if (!dinnerListView.getItems().contains("Cumplí mi meta")) {
             for (String selectedItem : dinnerListView.getItems()) {
                 Food selectedFood = getFoodByName(selectedItem);
-                if (dayMeal.getDinner() == null) {
-                    dayMeal.setDinner(new ArrayList<>());
-                }
+                dayMeal.setDinner(new ArrayList<>());
+
                 dayMeal.getDinner().add(selectedFood);
             }
         }
@@ -162,9 +159,8 @@ public class GoalsCheck {
         if (!snackListView.getItems().contains("Cumplí mi meta")) {
             for (String selectedItem : snackListView.getItems()) {
                 Food selectedFood = getFoodByName(selectedItem);
-                if (dayMeal.getSnack() == null) {
-                    dayMeal.setSnack(new ArrayList<>());
-                }
+                dayMeal.setSnack(new ArrayList<>());
+
                 dayMeal.getSnack().add(selectedFood);
             }
         }
@@ -173,9 +169,8 @@ public class GoalsCheck {
         if (!optionalListView.getItems().contains("Cumplí mi meta")) {
             for (String selectedItem : optionalListView.getItems()) {
                 Food selectedFood = getFoodByName(selectedItem);
-                if (dayMeal.getOptional() == null) {
-                    dayMeal.setOptional(new ArrayList<>());
-                }
+                dayMeal.setOptional(new ArrayList<>());
+
                 dayMeal.getOptional().add(selectedFood);
             }
         }
