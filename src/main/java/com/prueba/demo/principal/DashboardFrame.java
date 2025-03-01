@@ -451,14 +451,6 @@ public class DashboardFrame {
             }
         });
 
-        /*
-            Quitar comentario cuando
-
-
-         */
-
-
-
         //Dieta
         setYourPreferencesButtonDiet.setOnAction(event -> openSetYourPreferencesDiet());
 
@@ -1213,6 +1205,7 @@ public class DashboardFrame {
 
     @FXML
     public void showDiet() {
+
         uploadFoodsFromCSV();
 
         hideAll();
@@ -1249,14 +1242,14 @@ public class DashboardFrame {
                 button.setMaxWidth(Double.MAX_VALUE);
                 button.setMaxHeight(Double.MAX_VALUE);
 
+
                 if (targetDate.isBefore(today)) {
                     button.setDisable(true); // Deshabilita el botón si la fecha es anterior a hoy
                 }
 
-
                 if (foodForCell != null) {
                     String imagePath = foodForCell.getPhoto().getThumb();
-
+                    button.setGraphic(null); // Limpiar el gráfico antes de agregar el nuevo
 
                     if (imagePath != null && !imagePath.isEmpty()) {
                         Image foodImage = new Image(imagePath, true); // Load in background if needed
@@ -1266,15 +1259,20 @@ public class DashboardFrame {
                         imageView.setFitWidth(60);
                         imageView.setFitHeight(60);
                         imageView.setPreserveRatio(false); // <--- Crucial change
-
+                        button.setDisable(false);
 
                         button.setGraphic(imageView);
-                        button.setContentDisplay(ContentDisplay.GRAPHIC_ONLY); // Important for correct sizing
+                        button.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 
                     } else {
+                        button.setGraphic(null);
                         System.out.println("Invalid or missing image path: " + imagePath);
                     }
+                } else {
+                    button.setGraphic(null);
                 }
+
+                System.out.println("food for cell: " + foodForCell + ", imagen: " + button.getGraphic() + ",fecha del lunes: " + date1);
 
                 //Quitamos la capacidad de agregar cosas si ya existe un reporte
                 Report report = reportRepository.findByDate(Date.valueOf(targetDate));
@@ -1291,19 +1289,20 @@ public class DashboardFrame {
                 GridPane.setHgrow(button, Priority.ALWAYS);
                 GridPane.setVgrow(button, Priority.ALWAYS);
 
+                if (button.getGraphic() != null){ //quitar el disable en caso de que tenga informacion
+                    button.setDisable(false);
+                }
 
                 int finalRow = row;
                 int finalCol = col;
                 button.setOnMouseClicked(event -> {
-
                     Button clickedButton = (Button) event.getSource();
-
                     if (button.getGraphic() != null) {
                         showNutrimentalInfo(targetDate, finalRow);
                     } else if (button.getGraphic() == null){
                         Report report2 = reportRepository.findByDate(Date.valueOf(targetDate));
                         if (report2 == null || report2.getDayMeals() == null) {
-                                handleCellClick(clickedButton,finalRow, finalCol);
+                            handleCellClick(clickedButton,finalRow, finalCol);
 
                         }
                     }
@@ -1312,6 +1311,8 @@ public class DashboardFrame {
 
                 button.setOnMouseEntered(e -> button.setStyle("-fx-background-color:#d4e7b1 ")); // Cambia el color al pasar el mouse
                 button.setOnMouseExited(e -> button.setStyle("-fx-background-color: transparent;")); // Vuelve a transparente al salir
+
+
             }
         }
 
@@ -1347,6 +1348,12 @@ public class DashboardFrame {
             setupChoiceBox(choiceBox5, date5, today);
         } catch (Exception ignored) {
         }
+
+        date1 = null;
+        date2 = null;
+        date3 = null;
+        date4 = null;
+        date5 = null; //los valores se resetean
     }
 
     private void setupChoiceBox(ChoiceBox<String> choiceBox, Date date, LocalDate today) {
@@ -1805,7 +1812,6 @@ public class DashboardFrame {
                 case 2:
                     if (reportIsNull || (!goalMet && !hasDayExcercise) ) {
                         if (existDayExcercises[1] && targetDate.isEqual(today)){
-                            System.out.println("entr2");
                             choiceBoxDisabled2 = false;
 
                         }
@@ -2329,7 +2335,7 @@ public class DashboardFrame {
 
 
         List<String> accountAllergies = accountAllergyFoodRepository.findFoodNamesByAccountDataId(account.get().getId());
-        
+
         double imc = Math.round((weight / Math.pow(height / 100.0, 2)) * 10.0) / 10.0;
 
         // Encabezado
