@@ -159,7 +159,6 @@ public class SetYourPreferencesExercise {
     }
 
     private void updateAvailableExercises() {
-        System.out.println("lol3");
 
         // Obtener los ejercicios seleccionados
         Set<String> usedExercises = new HashSet<>(selectedExercises.values());
@@ -177,7 +176,7 @@ public class SetYourPreferencesExercise {
     }
 
     private void updateComboBox(ChoiceBox<String> choiceBox, Set<String> usedExercises) {
-        System.out.println("lol2");
+
 
         // Verificar si realmente es necesario actualizar el ComboBox
         String selected = selectedExercises.get(choiceBox);
@@ -196,8 +195,6 @@ public class SetYourPreferencesExercise {
 
 
     private boolean validateFields() {
-
-        System.out.println("lol1");
 
         boolean validInputs = true;
 

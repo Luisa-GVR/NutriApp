@@ -268,6 +268,7 @@ public class APIConsumption {
                         }
 
                         exercise.setReps(selectedReps);
+                        exercise.setSeries(5);
 
                         int totalTime = (int) Math.round((selectedReps * time * series) / 60.0);
                         exercise.setTime(totalTime);

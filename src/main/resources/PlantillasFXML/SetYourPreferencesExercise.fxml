@@ -54,8 +54,9 @@
       </VBox>
       <GridPane hgap="10.0" vgap="10.0">
         <columnConstraints>
-          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="189.4000244140625" minWidth="10.0" prefWidth="111.1999755859375" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.5999755859375" minWidth="10.0" prefWidth="279.2000244140625" />
+          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="189.4000244140625" minWidth="10.0" prefWidth="143.59996337890624" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.5999755859375" minWidth="10.0" prefWidth="108.79999999999998" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.5999755859375" minWidth="10.0" prefWidth="160.00000000000003" />
         </columnConstraints>
         <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -65,7 +66,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <ChoiceBox fx:id="mondayChoiceBox" prefWidth="250.0" style="-fx-background-color: white; -fx-border-color: #cdcdcd; -fx-border-width: 2; -fx-border-radius: 4;" GridPane.columnIndex="1" />
+            <ChoiceBox fx:id="mondayChoiceBox" prefHeight="30.0" prefWidth="146.0" style="-fx-background-color: white; -fx-border-color: #cdcdcd; -fx-border-width: 2; -fx-border-radius: 4;" GridPane.columnIndex="1" />
             <ChoiceBox fx:id="tuesdayChoiceBox" prefWidth="250.0" style="-fx-background-color: white; -fx-border-color: #cdcdcd; -fx-border-width: 2; -fx-border-radius: 4;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <ChoiceBox fx:id="wednesdayChoiceBox" prefWidth="250.0" style="-fx-background-color: white; -fx-border-color: #cdcdcd; -fx-border-width: 2; -fx-border-radius: 4;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <ChoiceBox fx:id="thursdayChoiceBox" prefWidth="250.0" style="-fx-background-color: white; -fx-border-color: #cdcdcd; -fx-border-width: 2; -fx-border-radius: 4;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
@@ -95,6 +96,11 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
+            <ChoiceBox fx:id="mondayChoiceBox2" prefHeight="30.0" prefWidth="146.0" style="-fx-background-color: white; -fx-border-color: #cdcdcd; -fx-border-width: 2; -fx-border-radius: 4;" GridPane.columnIndex="2" />
+            <ChoiceBox fx:id="tuesdayChoiceBox2" prefWidth="250.0" style="-fx-background-color: white; -fx-border-color: #cdcdcd; -fx-border-width: 2; -fx-border-radius: 4;" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <ChoiceBox fx:id="wednesdayChoiceBox2" prefWidth="250.0" style="-fx-background-color: white; -fx-border-color: #cdcdcd; -fx-border-width: 2; -fx-border-radius: 4;" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <ChoiceBox fx:id="thursdayChoiceBox2" prefWidth="250.0" style="-fx-background-color: white; -fx-border-color: #cdcdcd; -fx-border-width: 2; -fx-border-radius: 4;" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <ChoiceBox fx:id="fridayChoiceBox2" prefWidth="250.0" style="-fx-background-color: white; -fx-border-color: #cdcdcd; -fx-border-width: 2; -fx-border-radius: 4;" GridPane.columnIndex="2" GridPane.rowIndex="4" />
          </children>
       </GridPane>
       <Label fx:id="errorLabel" text="Debes seleccionar un objetivo y un ejercicio para cada día" textFill="#b30000">
