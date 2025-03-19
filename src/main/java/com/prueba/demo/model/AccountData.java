@@ -2,6 +2,8 @@ package com.prueba.demo.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "AccountData")
 public class AccountData {
@@ -22,25 +24,30 @@ public class AccountData {
     @Column
     private Goal goal;
 
-    @Enumerated(EnumType.STRING)
-    @Column
-    private ExcerciseType monday;
+    @ElementCollection(targetClass = ExcerciseType.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "account_data_monday", joinColumns = @JoinColumn(name = "account_data_id"))
+    @Column(name = "monday_exercise")
+    private List<ExcerciseType> monday;
 
-    @Enumerated(EnumType.STRING)
-    @Column
-    private ExcerciseType tuesday;
+    @ElementCollection(targetClass = ExcerciseType.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "account_data_tuesday", joinColumns = @JoinColumn(name = "account_data_id"))
+    @Column(name = "tuesday_exercise")
+    private List<ExcerciseType> tuesday;
 
-    @Enumerated(EnumType.STRING)
-    @Column
-    private ExcerciseType wednesday;
+    @ElementCollection(targetClass = ExcerciseType.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "account_data_wednesday", joinColumns = @JoinColumn(name = "account_data_id"))
+    @Column(name = "wednesday_exercise")
+    private List<ExcerciseType> wednesday;
 
-    @Enumerated(EnumType.STRING)
-    @Column
-    private ExcerciseType thursday;
+    @ElementCollection(targetClass = ExcerciseType.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "account_data_thursday", joinColumns = @JoinColumn(name = "account_data_id"))
+    @Column(name = "thursday_exercise")
+    private List<ExcerciseType> thursday;
 
-    @Enumerated(EnumType.STRING)
-    @Column
-    private ExcerciseType friday;
+    @ElementCollection(targetClass = ExcerciseType.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "account_data_friday", joinColumns = @JoinColumn(name = "account_data_id"))
+    @Column(name = "friday_exercise")
+    private List<ExcerciseType> friday;
 
     @Column(name = "weight", nullable = false)
     private Double weight;
@@ -77,43 +84,43 @@ public class AccountData {
     //Getters y setters...
 
 
-    public ExcerciseType getMonday() {
+    public List<ExcerciseType> getMonday() {
         return monday;
     }
 
-    public void setMonday(ExcerciseType monday) {
+    public void setMonday(List<ExcerciseType> monday) {
         this.monday = monday;
     }
 
-    public ExcerciseType getTuesday() {
+    public List<ExcerciseType> getTuesday() {
         return tuesday;
     }
 
-    public void setTuesday(ExcerciseType tuesday) {
+    public void setTuesday(List<ExcerciseType> tuesday) {
         this.tuesday = tuesday;
     }
 
-    public ExcerciseType getWednesday() {
+    public List<ExcerciseType> getWednesday() {
         return wednesday;
     }
 
-    public void setWednesday(ExcerciseType wednesday) {
+    public void setWednesday(List<ExcerciseType> wednesday) {
         this.wednesday = wednesday;
     }
 
-    public ExcerciseType getThursday() {
+    public List<ExcerciseType> getThursday() {
         return thursday;
     }
 
-    public void setThursday(ExcerciseType thursday) {
+    public void setThursday(List<ExcerciseType> thursday) {
         this.thursday = thursday;
     }
 
-    public ExcerciseType getFriday() {
+    public List<ExcerciseType> getFriday() {
         return friday;
     }
 
-    public void setFriday(ExcerciseType friday) {
+    public void setFriday(List<ExcerciseType> friday) {
         this.friday = friday;
     }
 

@@ -52,6 +52,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class DashboardFrame {
@@ -798,11 +799,11 @@ public class DashboardFrame {
             gridPaneDashboard.add(thursdayLabel, 3, 1);   // Columna 3, Fila 1
             gridPaneDashboard.add(fridayLabel, 4, 1);     // Columna 4, Fila 1
 
-            Label mondayExerciseLabel = new Label(formatExerciseName(accountData.get().getMonday()));
-            Label tuesdayExerciseLabel = new Label(formatExerciseName(accountData.get().getTuesday()));
-            Label wednesdayExerciseLabel = new Label(formatExerciseName(accountData.get().getWednesday()));
-            Label thursdayExerciseLabel = new Label(formatExerciseName(accountData.get().getThursday()));
-            Label fridayExerciseLabel = new Label(formatExerciseName(accountData.get().getFriday()));
+            Label mondayExerciseLabel = new Label(formatExerciseList(accountData.get().getMonday()));
+            Label tuesdayExerciseLabel = new Label(formatExerciseList(accountData.get().getTuesday()));
+            Label wednesdayExerciseLabel = new Label(formatExerciseList(accountData.get().getWednesday()));
+            Label thursdayExerciseLabel = new Label(formatExerciseList(accountData.get().getThursday()));
+            Label fridayExerciseLabel = new Label(formatExerciseList(accountData.get().getFriday()));
 
             gridPaneDashboard.add(mondayExerciseLabel, 0, 2);
             gridPaneDashboard.add(tuesdayExerciseLabel, 1, 2);
@@ -2474,19 +2475,27 @@ public class DashboardFrame {
         return foodNames.length() > 0 ? foodNames.substring(0, foodNames.length() - 2) : "";  // Eliminar la última coma
     }
 
+    private String formatExerciseList(List<ExcerciseType> exercises) {
+        if (exercises == null || exercises.isEmpty()) {
+            return "";
+        }
+        return exercises.stream()
+                .map(exercise -> exercise.toString().replace("_", " "))  // Reemplaza el guion bajo por un espacio
+                .collect(Collectors.joining(", ")); // Une con comas
+    }
+
+
     private String formatExerciseName(ExcerciseType exerciseType) {
         if (exerciseType == null) {
             return "";
         }
         String formattedName;
-        if (exerciseType == ExcerciseType.piernacompleta) {
-            formattedName = "pierna completa";
-        } else {
-            formattedName = exerciseType.name()
-                    .replaceAll("y", " y ")  // Agrega espacios antes y después de "y"
-                    .replaceAll("(?<!^)([A-Z])", " $1") // Agrega espacio antes de mayúsculas
-                    .toLowerCase();
-        }
+
+        formattedName = exerciseType.name()
+                .replaceAll("y", " y ")  // Agrega espacios antes y después de "y"
+                .replaceAll("(?<!^)([A-Z])", " $1") // Agrega espacio antes de mayúsculas
+                .toLowerCase();
+
         // Convertir la primera letra en mayúscula
         return formattedName.substring(0, 1).toUpperCase() + formattedName.substring(1);
     }

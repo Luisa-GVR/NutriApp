@@ -20,8 +20,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.prueba.demo.model.ExcerciseType.piernacompleta;
-
 @Service
 public class APIConsumption {
 
@@ -243,13 +241,7 @@ public class APIConsumption {
                         exercise.setExcerciseType(insertedExcerciseType);
 
                         int series = 5;
-                        if(insertedExcerciseType == piernacompleta){
-                            series =4;
-                            exercise.setSeries(series);
-                        } else {
-                            exercise.setSeries(series);
-                        }
-
+                        
                         Random random = new Random();
                         int selectedReps = 0;
                         int time = 5;  // Valor por defecto

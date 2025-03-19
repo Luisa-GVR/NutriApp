@@ -98,7 +98,7 @@ public class SetYourRutine {
             });
 
             int row = getRow();
-            ExcerciseType dayType = null;
+            List<ExcerciseType> dayType = null;
 
             Optional<Account> account = accountRepository.findById(1L);
             AccountData accountData = account.get().getAccountData();
@@ -120,32 +120,12 @@ public class SetYourRutine {
                     dayType = accountData.getFriday();
                     break;
             }
-
             List<String> exercises = new ArrayList<>();
+            for (int i = 0; i < dayType.size(); i++) {
+                String dayTypeValue = dayType.get(i).toString();
+                String formattedDayTypeValue = dayTypeValue.replace(" ", "%20");
+                exercises.add(formattedDayTypeValue);
 
-            if (dayType != null) {
-
-                switch (dayType) {
-                    case pechoybrazo:
-                        exercises.add("chest");
-                        exercises.add("lower%20arms");
-                        exercises.add("upper%20arms");
-                        break;
-                    case piernacompleta:
-                        exercises.add("upper%20legs");
-                        exercises.add("lower%20legs");
-                        break;
-                    case hombroyespalda:
-                        exercises.add("back");
-                        exercises.add("shoulders");
-                        break;
-                    case abdomenycardio:
-                        exercises.add("cardio");
-                        exercises.add("waist");
-                        break;
-                    default:
-                        break;
-                }
             }
 
             List<String> allSuggestions = new ArrayList<>();
@@ -153,7 +133,7 @@ public class SetYourRutine {
             if (cachedSuggestions == null){
                 for (String muscleGroup : exercises) {
                     Goal goal = accountData.getGoal();
-                    List<String> suggestions = apiConsumption.getExerciseSuggestionsByMuscleGroup(muscleGroup, dayType, goal);
+                    List<String> suggestions = apiConsumption.getExerciseSuggestionsByMuscleGroup(muscleGroup, dayType.get(0), goal);
                     allSuggestions.addAll(suggestions); // Añadimos todas las sugerencias al mismo list
                 }
 

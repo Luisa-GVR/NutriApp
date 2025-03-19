@@ -16,6 +16,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -38,6 +39,17 @@ public class SetYourPreferencesExercise {
     private ChoiceBox<String> thursdayChoiceBox;
     @FXML
     private ChoiceBox<String> fridayChoiceBox;
+
+    @FXML
+    private ChoiceBox<String> mondayChoiceBox2;
+    @FXML
+    private ChoiceBox<String> tuesdayChoiceBox2;
+    @FXML
+    private ChoiceBox<String> wednesdayChoiceBox2;
+    @FXML
+    private ChoiceBox<String> thursdayChoiceBox2;
+    @FXML
+    private ChoiceBox<String> fridayChoiceBox2;
     @FXML
     private Label errorLabel;
 
@@ -49,8 +61,8 @@ public class SetYourPreferencesExercise {
     DayExcerciseRepository dayExcerciseRepository;
 
 
-    private final ObservableList<String> allExercises = FXCollections.observableArrayList(
-            "Pecho y Brazo", "Pierna Completa", "Hombro y Espalda", "Abdomen y Cardio"
+    public static final ObservableList<String> allExercises = FXCollections.observableArrayList(
+            "Back", "Cardio", "Chest", "Lower Arms", "Lower Legs", "Neck", "Shoulders", "Upper Arms", "Upper Legs", "Waist"
     );
 
     private final List<String> originalExercises = new ArrayList<>(allExercises); // Copia de la lista original
@@ -93,13 +105,23 @@ public class SetYourPreferencesExercise {
         thursdayChoiceBox.setItems(FXCollections.observableArrayList(allExercises));
         fridayChoiceBox.setItems(FXCollections.observableArrayList(allExercises)); // Viernes tiene todos siempre
 
-        System.out.println(allExercises);
+        mondayChoiceBox2.setItems(FXCollections.observableArrayList(allExercises));
+        tuesdayChoiceBox2.setItems(FXCollections.observableArrayList(allExercises));
+        wednesdayChoiceBox2.setItems(FXCollections.observableArrayList(allExercises));
+        thursdayChoiceBox2.setItems(FXCollections.observableArrayList(allExercises));
+        fridayChoiceBox2.setItems(FXCollections.observableArrayList(allExercises));
+
 
         // Agregar listeners para detectar cambios y actualizar los demás días
         setupChoiceBox(mondayChoiceBox);
         setupChoiceBox(tuesdayChoiceBox);
         setupChoiceBox(wednesdayChoiceBox);
         setupChoiceBox(thursdayChoiceBox);
+
+        setupChoiceBox(mondayChoiceBox2);
+        setupChoiceBox(tuesdayChoiceBox2);
+        setupChoiceBox(wednesdayChoiceBox2);
+        setupChoiceBox(thursdayChoiceBox2);
 
         saveButton.setOnAction(actionEvent -> {
             try {
@@ -137,36 +159,53 @@ public class SetYourPreferencesExercise {
     }
 
     private void updateAvailableExercises() {
+        System.out.println("lol3");
+
         // Obtener los ejercicios seleccionados
         Set<String> usedExercises = new HashSet<>(selectedExercises.values());
 
-        // Actualizar todos los ComboBoxes excepto el viernes
-        updateComboBox(mondayChoiceBox, usedExercises);
-        updateComboBox(tuesdayChoiceBox, usedExercises);
-        updateComboBox(wednesdayChoiceBox, usedExercises);
-        updateComboBox(thursdayChoiceBox, usedExercises);
+        // Lista de todos los ChoiceBoxes a actualizar
+        List<ChoiceBox<String>> allChoiceBoxes = Arrays.asList(
+                mondayChoiceBox, tuesdayChoiceBox, wednesdayChoiceBox, thursdayChoiceBox,
+                mondayChoiceBox2, tuesdayChoiceBox2, wednesdayChoiceBox2, thursdayChoiceBox2
+        );
+
+        // Actualizar todos los ComboBoxes
+        for (ChoiceBox<String> choiceBox : allChoiceBoxes) {
+            updateComboBox(choiceBox, usedExercises);
+        }
     }
 
     private void updateComboBox(ChoiceBox<String> choiceBox, Set<String> usedExercises) {
+        System.out.println("lol2");
+
+        // Verificar si realmente es necesario actualizar el ComboBox
         String selected = selectedExercises.get(choiceBox);
         ObservableList<String> updatedList = FXCollections.observableArrayList(allExercises);
 
         // Eliminar ejercicios ya usados, excepto si es el seleccionado actualmente
         updatedList.removeIf(exercise -> usedExercises.contains(exercise) && !exercise.equals(selected));
 
-        // Actualizar los items disponibles
-        choiceBox.setItems(updatedList);
-        choiceBox.setValue(selected); // Mantener la selección
+        // Solo actualizar si la lista ha cambiado
+        if (!choiceBox.getItems().equals(updatedList)) {
+            // Actualizar los items disponibles
+            choiceBox.setItems(updatedList);
+            choiceBox.setValue(selected); // Mantener la selección
+        }
     }
 
 
     private boolean validateFields() {
+
+        System.out.println("lol1");
+
         boolean validInputs = true;
 
         // Lista con todos los ComboBox a validar
         List<ChoiceBox<String>> choiceBoxes = Arrays.asList(
                 mondayChoiceBox, tuesdayChoiceBox, wednesdayChoiceBox,
-                thursdayChoiceBox, fridayChoiceBox
+                thursdayChoiceBox, fridayChoiceBox, mondayChoiceBox2, tuesdayChoiceBox2, wednesdayChoiceBox2,
+                thursdayChoiceBox2, fridayChoiceBox2
         );
 
         // Validar que todos los ComboBox tengan una selección
@@ -203,22 +242,43 @@ public class SetYourPreferencesExercise {
             }
 
             try {
-                // Validar y asignar los ejercicios seleccionados
-                accountData.setMonday(getValidExerciseType(mondayChoiceBox.getValue()));
-                accountData.setTuesday(getValidExerciseType(tuesdayChoiceBox.getValue()));
-                accountData.setWednesday(getValidExerciseType(wednesdayChoiceBox.getValue()));
-                accountData.setThursday(getValidExerciseType(thursdayChoiceBox.getValue()));
-                accountData.setFriday(getValidExerciseType(fridayChoiceBox.getValue()));
+
+                List<ExcerciseType> mondayTypes = new ArrayList<>();
+                mondayTypes.addAll(getValidExerciseTypes(Collections.singletonList(mondayChoiceBox.getValue())));
+                mondayTypes.addAll(getValidExerciseTypes(Collections.singletonList(mondayChoiceBox2.getValue())));
+
+                List<ExcerciseType> tuesdayTypes = new ArrayList<>();
+                tuesdayTypes.addAll(getValidExerciseTypes(Collections.singletonList(tuesdayChoiceBox.getValue())));
+                tuesdayTypes.addAll(getValidExerciseTypes(Collections.singletonList(tuesdayChoiceBox2.getValue())));
+
+                List<ExcerciseType> wednesdayTypes = new ArrayList<>();
+                wednesdayTypes.addAll(getValidExerciseTypes(Collections.singletonList(wednesdayChoiceBox.getValue())));
+                wednesdayTypes.addAll(getValidExerciseTypes(Collections.singletonList(wednesdayChoiceBox2.getValue())));
+
+                List<ExcerciseType> thursdayTypes = new ArrayList<>();
+                thursdayTypes.addAll(getValidExerciseTypes(Collections.singletonList(thursdayChoiceBox.getValue())));
+                thursdayTypes.addAll(getValidExerciseTypes(Collections.singletonList(thursdayChoiceBox2.getValue())));
+
+                List<ExcerciseType> fridayTypes = new ArrayList<>();
+                fridayTypes.addAll(getValidExerciseTypes(Collections.singletonList(fridayChoiceBox.getValue())));
+                fridayTypes.addAll(getValidExerciseTypes(Collections.singletonList(fridayChoiceBox2.getValue())));
+
+                accountData.setMonday(mondayTypes);
+                accountData.setTuesday(tuesdayTypes);
+                accountData.setWednesday(wednesdayTypes);
+                accountData.setThursday(thursdayTypes);
+                accountData.setFriday(fridayTypes);
+
 
                 String selectedGoal = objetiveChoiceBox.getValue();
                 if (selectedGoal.equals("Deficit calórico")){
                     selectedGoal = "Deficit";
                 }
+
                 accountData.setGoal(Goal.fromString(selectedGoal));
                 // Guardar cambios en la base de datos
                 accountDataRepository.save(accountData);
                 accountRepository.save(account);
-
                 // Guardar estado de preferencias en un archivo
                 savePreferencesState();
 
@@ -238,21 +298,31 @@ public class SetYourPreferencesExercise {
     /**
      * Método para validar y convertir valores del ChoiceBox en ExerciseType
      */
-    private ExcerciseType getValidExerciseType(String value) {
-        if (value == null || value.trim().isEmpty()) {
-            throw new IllegalArgumentException("El valor del ChoiceBox no puede estar vacío");
+    private List<ExcerciseType> getValidExerciseTypes(List<String> values) {
+        if (values == null || values.isEmpty()) {
+            return Collections.emptyList(); // Devuelve una lista vacía en lugar de lanzar excepción
         }
 
-        // Normalizar el valor: quitar espacios y convertir a minúsculas
-        String formattedValue = value.replace(" ", "").toLowerCase();
+        return values.stream()
+                .map(value -> {
+                    if (value == null || value.trim().isEmpty()) {
+                        throw new IllegalArgumentException("El valor del ChoiceBox no puede estar vacío");
+                    }
 
-        // Convertir el valor formateado al enum
-        try {
-            return ExcerciseType.fromString(formattedValue); // Usar el método fromString del enum
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("El valor seleccionado no es válido para el ejercicio.");
-        }
+                    // Reemplazar los espacios por guiones bajos y convertir a minúsculas
+                    String formattedValue = value.replace(" ", "_").toUpperCase(); // Cambiar a mayúsculas y guión bajo
+
+                    try {
+                        // Intentar convertir el valor a un valor del enum ExcerciseType
+                        return ExcerciseType.valueOf(formattedValue);
+                    } catch (IllegalArgumentException e) {
+                        // Si no es válido, lanzar una excepción personalizada
+                        throw new IllegalArgumentException("El valor '" + value + "' no es válido para el ejercicio.");
+                    }
+                })
+                .collect(Collectors.toList());
     }
+
 
 
     /**

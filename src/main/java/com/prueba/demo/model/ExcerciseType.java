@@ -2,10 +2,16 @@ package com.prueba.demo.model;
 
 public enum ExcerciseType {
 
-    pechoybrazo("pechoybrazo"),
-    piernacompleta("piernacompleta"),
-    hombroyespalda("hombroyespalda"),
-    abdomenycardio("abdomenycardio");
+    BACK("back"),
+    CARDIO("cardio"),
+    CHEST("chest"),
+    LOWER_ARMS("lower arms"),
+    LOWER_LEGS("lower legs"),
+    NECK("neck"),
+    SHOULDERS("shoulders"),
+    UPPER_ARMS("upper arms"),
+    UPPER_LEGS("upper legs"),
+    WAIST("waist");
 
     private String value;
 
