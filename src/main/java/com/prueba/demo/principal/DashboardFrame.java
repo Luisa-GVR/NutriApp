@@ -17,6 +17,7 @@ import com.opencsv.exceptions.CsvException;
 import com.prueba.demo.model.*;
 import com.prueba.demo.repository.*;
 import com.prueba.demo.service.APIConsumption;
+import com.prueba.demo.service.DatabaseService;
 import com.prueba.demo.service.IEmailService;
 import com.prueba.demo.service.dto.EmailDTO;
 import jakarta.mail.MessagingException;
@@ -41,11 +42,10 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Duration;
-import org.hibernate.annotations.Check;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-
 import java.io.*;
 import java.sql.Date;
 import java.time.DayOfWeek;
@@ -1203,9 +1203,18 @@ public class DashboardFrame {
      dieta
      */
 
+    @Autowired
+    DatabaseService databaseService;
+
 
     @FXML
     public void showDiet() {
+
+        System.out.println("ahre" + databaseService.getAWSDatabaseName());
+        System.out.println("ahre2" + databaseService.getAWSDatabaseTime());
+        System.out.println("ahre3" + databaseService.getAllTables());
+
+
 
         uploadFoodsFromCSV();
 
@@ -1273,7 +1282,7 @@ public class DashboardFrame {
                     button.setGraphic(null);
                 }
 
-                System.out.println("food for cell: " + foodForCell + ", imagen: " + button.getGraphic() + ",fecha del lunes: " + date1);
+                //System.out.println("food for cell: " + foodForCell + ", imagen: " + button.getGraphic() + ",fecha del lunes: " + date1);
 
                 //Quitamos la capacidad de agregar cosas si ya existe un reporte
                 Report report = reportRepository.findByDate(Date.valueOf(targetDate));
