@@ -1,7 +1,9 @@
 package com.prueba.demo.principal;
 
 import com.prueba.demo.model.Account;
+import com.prueba.demo.modelAWS.AccountAWS;
 import com.prueba.demo.repository.AccountRepository;
+import com.prueba.demo.repositoryAWS.AccountAWSRepository;
 import com.prueba.demo.service.IEmailService;
 import com.prueba.demo.service.dto.EmailDTO;
 import javafx.application.Platform;
@@ -87,9 +89,23 @@ public class LoginFrame {
         String email = emailField.getText().trim().toLowerCase();
         String name = nameField.getText().trim();
 
+        Optional<AccountAWS> existingAccount = accountAWSRepository.findByEmail(email);
+
+
+
         boolean isValidEmail = email.matches("^[\\w-\\.]+@(?:gmail\\.com|hotmail\\.com|outlook\\.com)$");
 
         boolean isValidName = name.matches("^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$") && name.length() <= 70;
+
+        if (existingAccount.isPresent()) {
+            // Si ya existe una cuenta con este correo, mostramos un mensaje de error
+            labelMessage.setStyle("-fx-text-fill: #b30000;");
+            labelMessage.setText("Este correo electrónico ya está registrado. Por favor, ingresa otro.");
+
+            emailField.setStyle(originalStyleEmail + " -fx-border-color: #b30000;");
+            return;
+        }
+
 
         if (email.isEmpty() || name.isEmpty() || !isValidEmail || !isValidName) {
             labelMessage.setStyle("-fx-text-fill: #b30000;");
@@ -140,6 +156,9 @@ public class LoginFrame {
 
         }
 
+
+
+
         // Configurar evento en el campo de generación de código
         generateCodeField.setOnAction(event -> {
             try {
@@ -159,6 +178,8 @@ public class LoginFrame {
         });
     }
 
+    @Autowired
+    AccountAWSRepository accountAWSRepository;
 
     private void generateCodeVerification() throws MessagingException {
         Random random = new Random();
@@ -190,6 +211,19 @@ public class LoginFrame {
         emailDTO.setMessage(contentHTML);
 
         iEmailService.sendMail(emailDTO);
+
+        Account account = new Account();
+        account.setEmail(emailField.getText());
+        account.setName(nameField.getText());
+
+        accountRepository.save(account);
+
+        AccountAWS accountAWS = new AccountAWS();
+        accountAWS.setEmail(emailField.getText());
+        accountAWS.setName(nameField.getText());
+
+        accountAWSRepository.save(accountAWS);
+
 
         // Cerrar la ventana actual y abrir la de validación
         closeCurrentWindow();

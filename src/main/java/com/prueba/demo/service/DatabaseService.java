@@ -6,7 +6,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class DatabaseService {
@@ -37,34 +36,24 @@ public class DatabaseService {
         String sql = "SHOW TABLES";
         return awsJdbcTemplate.queryForList(sql, String.class);  // Ejecutar la consulta y devolver una lista de nombres de tablas
     }
+}
+
 
     /*
 
-    Ejemplo de como se hara en el futuro para inyectar repos:)
-
-    private final AWSUserRepository awsUserRepository;
-    private final AWSFoodRepository awsFoodRepository;
-    private final AWSReportRepository awsReportRepository;
+    AccountAWSRepository accountAWSRepository;
+    AccountDataAWSRepository accountDataAWSRepository;
 
     @Autowired
     public DatabaseService(
-            @Qualifier("awsUserRepository") AWSUserRepository awsUserRepository,
-            @Qualifier("awsFoodRepository") AWSFoodRepository awsFoodRepository,
-            @Qualifier("awsReportRepository") AWSReportRepository awsReportRepository) {
-        this.awsUserRepository = awsUserRepository;
-        this.awsFoodRepository = awsFoodRepository;
-        this.awsReportRepository = awsReportRepository;
+            @Qualifier("accountAWS") AccountAWSRepository accountAWSRepository,
+            @Qualifier("accountDataAWS") AccountDataAWSRepository accountDataAWSRepository{
+        this.accountAWSRepository = accountAWSRepository;
+        this.accountDataAWSRepository = accountDataAWSRepository;
     }
 
-
-    Los repos se verian algo asi
-
-    @Repository
-    public interface YourAWSRepository extends JpaRepository<YourAWSModel, Long> {
-        // Métodos
-    }
 
 
      */
 
-}
+
