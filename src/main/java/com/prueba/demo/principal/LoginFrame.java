@@ -84,6 +84,9 @@ public class LoginFrame {
         emailField.setStyle(originalStyleEmail);
     }
 
+    @Autowired
+    AccountAWSRepository accountAWSRepository;
+
     @FXML
     private void validateFields() {
         String email = emailField.getText().trim().toLowerCase();
@@ -143,17 +146,16 @@ public class LoginFrame {
         // Verificar si ya existe un usuario validado
         Optional<Account> existingUser = accountRepository.findAll().stream().findFirst();
         File encryptedCodeFile = new File("src/main/resources/encrypted_code.txt");
-
-        if (existingUser.isPresent() && existingUser.get().getAccountData() != null) {
-            closeCurrentWindow();
-            openDashboard();
-        } else if (existingUser.isPresent() && existingUser.get().getAccountData() == null) {
-            closeCurrentWindow();
-            openProfileFrame();
-        } else if (encryptedCodeFile.exists()) {
+        if (encryptedCodeFile.exists()) {
             closeCurrentWindow();
             openValidationFrame();
 
+        } else if (existingUser.isPresent() && existingUser.get().getAccountData() == null) {
+            closeCurrentWindow();
+            openProfileFrame();
+        } else if (existingUser.isPresent() && existingUser.get().getAccountData() != null) {
+            closeCurrentWindow();
+            openDashboard();
         }
 
 
@@ -178,8 +180,7 @@ public class LoginFrame {
         });
     }
 
-    @Autowired
-    AccountAWSRepository accountAWSRepository;
+
 
     private void generateCodeVerification() throws MessagingException {
         Random random = new Random();
@@ -218,11 +219,6 @@ public class LoginFrame {
 
         accountRepository.save(account);
 
-        AccountAWS accountAWS = new AccountAWS();
-        accountAWS.setEmail(emailField.getText());
-        accountAWS.setName(nameField.getText());
-
-        accountAWSRepository.save(accountAWS);
 
 
         // Cerrar la ventana actual y abrir la de validación

@@ -1,7 +1,11 @@
 package com.prueba.demo.principal;
 
 import com.prueba.demo.model.*;
+import com.prueba.demo.modelAWS.AccountAWS;
+import com.prueba.demo.modelAWS.AccountDataAWS;
 import com.prueba.demo.repository.*;
+import com.prueba.demo.repositoryAWS.AccountAWSRepository;
+import com.prueba.demo.repositoryAWS.AccountDataAWSRepository;
 import com.prueba.demo.service.APIConsumption;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -305,6 +309,10 @@ public class ProfileFrame {
     private AccountAllergyFoodRepository accountAllergyFoodRepository;
     @Autowired
     private AccountAllergyRepository accountAllergyRepository;
+    @Autowired
+    private AccountAWSRepository accountAWSRepository;
+    @Autowired
+    private AccountDataAWSRepository accountDataAWSRepository;
 
     private void completeProfile() {
         AccountData accountData = new AccountData();
@@ -322,7 +330,6 @@ public class ProfileFrame {
 
         // Guardar AccountData
         accountDataRepository.save(accountData);
-
 
         // Obtener la lista de alergias
         ObservableList<String> allergies = allergiesListView.getItems();
@@ -368,22 +375,73 @@ public class ProfileFrame {
             openDashboard();
         }
 
-        // Obtener cuenta asociada y actualizar la relación
+        System.out.println("llegue aca lol");
+
+// Obtener cuenta asociada
         Optional<Account> optionalAccount = accountRepository.findAll().stream().findFirst();
 
+        System.out.println("problemas?");
         if (optionalAccount.isPresent()) {
             Account account = optionalAccount.get();
+            System.out.println("si, muchos");
 
-            if (account.getAccountData() != null) {
-                accountDataRepository.delete(account.getAccountData());  // Eliminar datos previos
+            // Obtener AccountData existente
+            AccountData existingAccountData = account.getAccountData();
+
+            if (existingAccountData != null) {
+                System.out.println("Actualizando AccountData existente");
+                existingAccountData.setAge(accountData.getAge());
+                existingAccountData.setWeight(accountData.getWeight());
+                existingAccountData.setHeight(accountData.getHeight());
+                existingAccountData.setGender(accountData.getGender());
+                existingAccountData.setAccountAllergy(accountData.getAccountAllergy());
+                existingAccountData.setGoal(accountData.getGoal());
+                existingAccountData.setNeck(accountData.getNeck());
+                existingAccountData.setArm(accountData.getArm());
+                existingAccountData.setAbdomen(accountData.getAbdomen());
+                existingAccountData.setHips(accountData.getHips());
+                existingAccountData.setWaist(accountData.getWaist());
+                existingAccountData.setChest(accountData.getChest());
+
+                accountData = accountDataRepository.save(existingAccountData);  // Actualizar en BD
+            } else {
+                System.out.println("Creando nuevo AccountData");
+                accountData.setAccount(account);
+                accountData = accountDataRepository.save(accountData);  // Guardar nuevo AccountData
+                account.setAccountData(accountData);
             }
 
-            accountData.setAccount(account);  // Asociar AccountData con Account
-            accountData = accountDataRepository.save(accountData);  // Guardar AccountData
-
-            account.setAccountData(accountData);  // Actualizar relación en Account
-            accountRepository.save(account);  // Guardar Account
+            accountRepository.save(account);
         }
+
+
+        System.out.println("aws inicia");
+        //subir la cuenta a AWS
+        Optional<Account> accountOpt = accountRepository.findById(1L);
+
+        Optional<AccountAWS> accountAWSOptional = accountAWSRepository.findByEmail(accountOpt.get().getEmail());
+        System.out.println("aws optional : " + accountAWSOptional.isPresent());
+
+        if (accountAWSOptional.isPresent()) {
+            AccountAWS accountAWS = accountAWSOptional.get();
+
+            AccountDataAWS accountDataAWS = new AccountDataAWS();
+            accountDataAWS.setAccountAWS(accountAWS);
+
+            // Actualizar valores
+            accountDataAWS.setAge(accountData.getAge());
+            accountDataAWS.setHeight(accountData.getHeight() != null ? accountData.getHeight() : 0);
+            accountDataAWS.setWeight(accountData.getWeight() != null ? accountData.getWeight() : 0);
+            accountDataAWS.setAbdomen(accountData.getAbdomen() != null ? accountData.getAbdomen() : 0);
+            accountDataAWS.setHips(accountData.getHips() != null ? accountData.getHips() : 0);
+            accountDataAWS.setWaist(accountData.getWaist() != null ? accountData.getWaist() : 0);
+            accountDataAWS.setArm(accountData.getArm() != null ? accountData.getArm() : 0);
+            accountDataAWS.setChest(accountData.getChest() != null ? accountData.getChest() : 0);
+            accountDataAWS.setNeck(accountData.getNeck() != null ? accountData.getNeck() : 0);
+
+            accountDataAWSRepository.save(accountDataAWS);
+        }
+
     }
 
     private double parseOrDefault(TextArea textArea, double defaultValue) {

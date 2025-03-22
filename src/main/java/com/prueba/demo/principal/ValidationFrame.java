@@ -2,8 +2,12 @@ package com.prueba.demo.principal;
 
 import com.prueba.demo.model.Account;
 import com.prueba.demo.model.AccountData;
+import com.prueba.demo.modelAWS.AccountAWS;
+import com.prueba.demo.modelAWS.AccountDataAWS;
 import com.prueba.demo.repository.AccountDataRepository;
 import com.prueba.demo.repository.AccountRepository;
+import com.prueba.demo.repositoryAWS.AccountAWSRepository;
+import com.prueba.demo.repositoryAWS.AccountDataAWSRepository;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,6 +33,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+import java.util.Optional;
 
 @Component
 public class ValidationFrame {
@@ -107,6 +112,11 @@ public class ValidationFrame {
         loginButton.setOnAction(event -> verifyCode());
     }
 
+    @Autowired
+    AccountAWSRepository accountAWSRepository;
+    @Autowired
+    AccountDataAWSRepository accountDataAWSRepository;
+
     private void verifyCode() {
         String inputCode = codeField.getText();
 
@@ -114,14 +124,18 @@ public class ValidationFrame {
             verificationCode = readAndDecryptCode();
         }
 
+
+
         if (inputCode.equals(verificationCode)) {
 
             // Crear el objeto User
-            Account account = new Account();
-            AccountData accountData = new AccountData();
-
-            account.setName(getName());
-            account.setEmail(getEmail());
+            Optional<Account> accountOpt = accountRepository.findById(1L);
+            Account account = accountOpt.get();
+            AccountData accountData = account.getAccountData();
+            if (accountData == null){
+                accountData = new AccountData();
+                accountData.setAccount(account);
+            }
 
             // Si tienes datos para UserData, crearlos y asociarlos
             accountData.setWeight(0.0);
@@ -138,6 +152,13 @@ public class ValidationFrame {
             account.setAccountData(accountData);
 
             accountRepository.save(account);
+
+            //subir la cuenta a AWS
+            AccountAWS accountAWS = new AccountAWS();
+            accountAWS.setName(account.getName());
+            accountAWS.setEmail(account.getEmail());
+            accountAWSRepository.save(accountAWS);
+
 
             // Guarda UserData después de haber asociado
 
