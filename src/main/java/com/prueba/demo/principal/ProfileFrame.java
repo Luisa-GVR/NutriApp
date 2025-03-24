@@ -375,21 +375,16 @@ public class ProfileFrame {
             openDashboard();
         }
 
-        System.out.println("llegue aca lol");
-
 // Obtener cuenta asociada
         Optional<Account> optionalAccount = accountRepository.findAll().stream().findFirst();
 
-        System.out.println("problemas?");
         if (optionalAccount.isPresent()) {
             Account account = optionalAccount.get();
-            System.out.println("si, muchos");
 
             // Obtener AccountData existente
             AccountData existingAccountData = account.getAccountData();
 
             if (existingAccountData != null) {
-                System.out.println("Actualizando AccountData existente");
                 existingAccountData.setAge(accountData.getAge());
                 existingAccountData.setWeight(accountData.getWeight());
                 existingAccountData.setHeight(accountData.getHeight());
@@ -405,7 +400,6 @@ public class ProfileFrame {
 
                 accountData = accountDataRepository.save(existingAccountData);  // Actualizar en BD
             } else {
-                System.out.println("Creando nuevo AccountData");
                 accountData.setAccount(account);
                 accountData = accountDataRepository.save(accountData);  // Guardar nuevo AccountData
                 account.setAccountData(accountData);
@@ -415,12 +409,10 @@ public class ProfileFrame {
         }
 
 
-        System.out.println("aws inicia");
         //subir la cuenta a AWS
         Optional<Account> accountOpt = accountRepository.findById(1L);
 
         Optional<AccountAWS> accountAWSOptional = accountAWSRepository.findByEmail(accountOpt.get().getEmail());
-        System.out.println("aws optional : " + accountAWSOptional.isPresent());
 
         if (accountAWSOptional.isPresent()) {
             AccountAWS accountAWS = accountAWSOptional.get();

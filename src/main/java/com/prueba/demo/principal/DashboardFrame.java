@@ -15,7 +15,11 @@ import com.itextpdf.layout.properties.TextAlignment;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 import com.prueba.demo.model.*;
+import com.prueba.demo.modelAWS.AccountAWS;
+import com.prueba.demo.modelAWS.AccountDataAWS;
 import com.prueba.demo.repository.*;
+import com.prueba.demo.repositoryAWS.AccountAWSRepository;
+import com.prueba.demo.repositoryAWS.AccountDataAWSRepository;
 import com.prueba.demo.service.APIConsumption;
 import com.prueba.demo.service.DatabaseService;
 import com.prueba.demo.service.IEmailService;
@@ -44,7 +48,6 @@ import javafx.util.Callback;
 import javafx.util.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import java.io.*;
 import java.sql.Date;
@@ -1015,6 +1018,11 @@ public class DashboardFrame {
     @Autowired
     AccountAllergyFoodRepository accountAllergyFoodRepository;
 
+    @Autowired
+    AccountAWSRepository accountAWSRepository;
+    @Autowired
+    AccountDataAWSRepository accountDataAWSRepository;
+
     @FXML
     private void showProfile() {
         hideAll();
@@ -1045,16 +1053,23 @@ public class DashboardFrame {
 
 
     private void updateProfileFields(AccountData accountData) {
+
+        Optional<AccountAWS> accountAWS = accountAWSRepository.findByEmail(accountData.getAccount().getEmail());
+        Optional<AccountDataAWS> accountDataAWS = accountDataAWSRepository.findByAccountAWS_Id(accountAWS.get().getId());
+
+
+
+
         sexTextArea.setText(accountData.getGender() != null && accountData.getGender() ? "Masculino" : "Femenino");
-        ageTextArea.setText(String.valueOf(accountData.getAge()));
-        heightTextArea.setText(String.valueOf(accountData.getHeight()));
-        weightTextArea.setText(String.valueOf(accountData.getWeight()));
-        abdomenTextArea.setText(String.valueOf(accountData.getAbdomen()));
-        hipTextArea.setText(String.valueOf(accountData.getHips()));
-        waistTextArea.setText(String.valueOf(accountData.getWaist()));
-        chestTextArea.setText(String.valueOf(accountData.getChest()));
-        neckTextArea.setText(String.valueOf(accountData.getNeck()));
-        armTextArea.setText(String.valueOf(accountData.getArm()));
+        ageTextArea.setText(String.valueOf(accountDataAWS.get().getAge()));
+        heightTextArea.setText(String.valueOf(accountDataAWS.get().getHeight()));
+        weightTextArea.setText(String.valueOf(accountDataAWS.get().getWeight()));
+        abdomenTextArea.setText(String.valueOf(accountDataAWS.get().getAbdomen()));
+        hipTextArea.setText(String.valueOf(accountDataAWS.get().getHips()));
+        waistTextArea.setText(String.valueOf(accountDataAWS.get().getWaist()));
+        chestTextArea.setText(String.valueOf(accountDataAWS.get().getChest()));
+        neckTextArea.setText(String.valueOf(accountDataAWS.get().getNeck()));
+        armTextArea.setText(String.valueOf(accountDataAWS.get().getArm()));
 
         // Actualizar alergias
         List<String> allergicFoodNames = accountAllergyFoodRepository.findFoodNamesByAccountDataId(accountData.getId());
