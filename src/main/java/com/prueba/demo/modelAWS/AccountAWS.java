@@ -2,6 +2,8 @@ package com.prueba.demo.modelAWS;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "AccountAWS")
 public class AccountAWS {
@@ -18,7 +20,20 @@ public class AccountAWS {
 
     @OneToOne(mappedBy = "accountAWS", cascade = CascadeType.ALL)
     private AccountDataAWS accountDataAWS;
+
+    @OneToMany(mappedBy = "accountAWS", cascade = CascadeType.ALL)
+    private List<AccountDataAWSHistory> accountDataAWSHistory;
+
+
     //Getters y setters...
+
+    public List<AccountDataAWSHistory> getAccountDataAWSHistory() {
+        return accountDataAWSHistory;
+    }
+
+    public void setAccountDataAWSHistory(List<AccountDataAWSHistory> accountDataAWSHistory) {
+        this.accountDataAWSHistory = accountDataAWSHistory;
+    }
 
     public Long getId() {
         return id;
