@@ -30,6 +30,8 @@ import jakarta.mail.MessagingException;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -43,6 +45,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
@@ -527,6 +531,9 @@ public class DashboardFrame {
 
 
     //Funcionalidades visuales
+
+
+
     @FXML
     private void mouseEntered(javafx.scene.input.MouseEvent event) {
         // Aquí puedes cambiar el color de fondo del HBox, por ejemplo
@@ -540,6 +547,9 @@ public class DashboardFrame {
         Node node = (Node) event.getSource();  // Obtiene la referencia al HBox clickeado
         node.setStyle("-fx-background-color: #262626;");  // Cambia el color de fondo a gris
     }
+
+
+
     private void setTooltipForProgressBar(ProgressBar progressBar, Tooltip tooltip) {
         Tooltip.install(progressBar, tooltip); // Instalar el Tooltip en la ProgressBar
 
@@ -555,6 +565,37 @@ public class DashboardFrame {
             }
         });
     }
+
+    private void changeProgressBarColor(ProgressBar progressBar, double progress) {
+        // Obtiene el nodo de la barra interna de progreso (la parte llena)
+        Region bar = (Region) progressBar.lookup(".bar");
+
+        // Cambiar el color de la barra de progreso según el valor
+        if (bar != null) {
+            if (progress <= 0.25) {
+                bar.setStyle("-fx-background-color: #FF9933;");  // Naranja si el progreso es menor o igual a 25%
+            } else if (progress > 0.25 && progress <= 0.50) {
+                bar.setStyle("-fx-background-color: #ffd24d;");  // Amarillo si el progreso es entre 25% y 50%
+            } else if (progress > 0.50 && progress <= 0.75) {
+                bar.setStyle("-fx-background-color: #A7C942;");  // Verde si el progreso es entre 50% y 75%
+            } else {
+                bar.setStyle("-fx-background-color: #b30000;");  // Rojo si el progreso es mayor a 75%
+            }
+        }
+    }
+    private Color getProgressColor(double progress) {
+        if (progress <= 0.25) {
+            return Color.web("#FF9933"); // Naranja
+        } else if (progress > 0.25 && progress <= 0.50) {
+            return Color.web("#ffd24d"); // Amarillo
+        } else if (progress > 0.50 && progress <= 0.75) {
+            return Color.web("#A7C942"); // Verde
+        } else {
+            return Color.web("#b30000"); // Rojo
+        }
+    }
+
+
 
     /**
      Dashboard
@@ -826,10 +867,25 @@ public class DashboardFrame {
 
             waterLabel.setText("Hoy deberías tomar " + calculateWater(1L) + " litros de agua.");
 
-            caloriesProgressBar.setProgress(consumedCalories/totalCalories);
-            proteinsProgressBar.setProgress(consumedProtein/totalProtein);
-            fatsProgressBar.setProgress(consumedFat/totalFat);
-            carbohydratesProgressBar.setProgress(consumedCarbs/totalCarbs);
+            caloriesProgressBar.setProgress(consumedCalories / totalCalories);
+            changeProgressBarColor(caloriesProgressBar, consumedCalories / totalCalories);
+            getProgressColor(consumedCalories / totalCalories);
+
+            proteinsProgressBar.setProgress(consumedProtein / totalProtein);
+            changeProgressBarColor(proteinsProgressBar, consumedProtein / totalProtein);
+            getProgressColor(consumedProtein / totalProtein);
+
+
+            fatsProgressBar.setProgress(consumedFat / totalFat);
+            changeProgressBarColor(fatsProgressBar, consumedFat / totalFat);
+            getProgressColor(consumedFat / totalFat);
+
+
+            carbohydratesProgressBar.setProgress(consumedCarbs / totalCarbs);
+            changeProgressBarColor(carbohydratesProgressBar, consumedCarbs / totalCarbs);
+            getProgressColor(consumedCarbs / totalCarbs);
+
+
 
             int totalTimeToExcercise = 150;
             if (accountData.isPresent() && accountData.get().getGoal() != null) {
@@ -875,31 +931,149 @@ public class DashboardFrame {
 
 
 
-            // Crear tooltips para cada ProgressBar
-            Tooltip caloriesTooltip = new Tooltip("Calorías\n" +
-                    "⬜ Meta semanal: " + Math.floor(totalCalories) + "\n" +
-                    "🟩 Consumo al día: " + Math.floor(consumedCalories));
+            // Crear Tooltip personalizado para calorías
+            // Crear Tooltip para calorías
+            Tooltip caloriesTooltip = new Tooltip();
+            {
+                // Color dinámico basado en el progreso
+                double progress = consumedCalories / totalCalories;
+                Color dynamicColor = getProgressColor(progress);
 
-            Tooltip proteinsTooltip = new Tooltip("Proteínas\n" +
-                    "⬜ Meta semanal: " + Math.floor(totalProtein) + "\n" +
-                    "🟩 Consumo al día: " + Math.floor(consumedProtein));
+                Rectangle whiteBox = new Rectangle(10, 10);
+                whiteBox.setFill(Color.WHITE); // Recuadro blanco para "Meta semanal"
 
-            Tooltip fatsTooltip = new Tooltip("Grasas\n" +
-                    "⬜ Meta semanal: " + Math.floor(totalFat) + "\n" +
-                    "🟩 Consumo al día: " + Math.floor(consumedFat));
+                Rectangle progressBox = new Rectangle(10, 10);
+                progressBox.setFill(dynamicColor); // Recuadro dinámico para "Consumo al día"
 
-            Tooltip carbohydratesTooltip = new Tooltip("Carbohidratos\n" +
-                    "⬜ Meta semanal: " + Math.floor(totalCarbs) + "\n" +
-                    "🟩 Consumo al día: " + Math.floor(consumedCarbs));
+                Label metaLabel = new Label("Meta semanal: " + Math.floor(totalCalories));
+                Label dailyLabel = new Label("Consumo al día: " + Math.floor(consumedCalories));
+
+                HBox metaHBox = new HBox(5, whiteBox, metaLabel);
+                HBox dailyHBox = new HBox(5, progressBox, dailyLabel);
+
+                VBox tooltipContent = new VBox(5, metaHBox, dailyHBox);
+                caloriesTooltip.setGraphic(tooltipContent);
+            }
+
+// Crear Tooltip para proteínas
+            Tooltip proteinsTooltip = new Tooltip();
+            {
+                double progress = consumedProtein / totalProtein;
+                Color dynamicColor = getProgressColor(progress);
+
+                Rectangle whiteBox = new Rectangle(10, 10);
+                whiteBox.setFill(Color.WHITE);
+
+                Rectangle progressBox = new Rectangle(10, 10);
+                progressBox.setFill(dynamicColor);
+
+                Label metaLabel = new Label("Meta semanal: " + Math.floor(totalProtein));
+                Label dailyLabel = new Label("Consumo al día: " + Math.floor(consumedProtein));
+
+                HBox metaHBox = new HBox(5, whiteBox, metaLabel);
+                HBox dailyHBox = new HBox(5, progressBox, dailyLabel);
+
+                VBox tooltipContent = new VBox(5, metaHBox, dailyHBox);
+                proteinsTooltip.setGraphic(tooltipContent);
+            }
+
+// Crear Tooltip para grasas
+            Tooltip fatsTooltip = new Tooltip();
+            {
+                double progress = consumedFat / totalFat;
+                Color dynamicColor = getProgressColor(progress);
+
+                Rectangle whiteBox = new Rectangle(10, 10);
+                whiteBox.setFill(Color.WHITE);
+
+                Rectangle progressBox = new Rectangle(10, 10);
+                progressBox.setFill(dynamicColor);
+
+                Label metaLabel = new Label("Meta semanal: " + Math.floor(totalFat));
+                Label dailyLabel = new Label("Consumo al día: " + Math.floor(consumedFat));
+
+                HBox metaHBox = new HBox(5, whiteBox, metaLabel);
+                HBox dailyHBox = new HBox(5, progressBox, dailyLabel);
+
+                VBox tooltipContent = new VBox(5, metaHBox, dailyHBox);
+                fatsTooltip.setGraphic(tooltipContent);
+            }
+
+// Crear Tooltip para carbohidratos
+            Tooltip carbohydratesTooltip = new Tooltip();
+            {
+                double progress = consumedCarbs / totalCarbs;
+                Color dynamicColor = getProgressColor(progress);
+
+                Rectangle whiteBox = new Rectangle(10, 10);
+                whiteBox.setFill(Color.WHITE);
+
+                Rectangle progressBox = new Rectangle(10, 10);
+                progressBox.setFill(dynamicColor);
+
+                Label metaLabel = new Label("Meta semanal: " + Math.floor(totalCarbs));
+                Label dailyLabel = new Label("Consumo al día: " + Math.floor(consumedCarbs));
+
+                HBox metaHBox = new HBox(5, whiteBox, metaLabel);
+                HBox dailyHBox = new HBox(5, progressBox, dailyLabel);
+
+                VBox tooltipContent = new VBox(5, metaHBox, dailyHBox);
+                carbohydratesTooltip.setGraphic(tooltipContent);
+            }
+
+// Crear Tooltip para calorias quemadas
+            Tooltip caloriesBurnedTooltip = new Tooltip();
+            {
+                double progress = caloriesExcercise / totalCaloriesExcercise; // Calcula el progreso
+                Color dynamicColor = Color.web("#67AB9F"); // Color azul progress bar
+
+                Rectangle whiteBox = new Rectangle(10, 10);
+                whiteBox.setFill(Color.WHITE); // Recuadro blanco para "Meta semanal"
+
+                Rectangle progressBox = new Rectangle(10, 10);
+                progressBox.setFill(dynamicColor); // Recuadro dinámico para "Calorías al día"
+
+                Label metaLabel = new Label("Meta semanal: " + Math.floor(totalCaloriesExcercise));
+                Label dailyLabel = new Label("Calorías al día: " + Math.floor(caloriesExcercise));
+
+                HBox metaHBox = new HBox(5, whiteBox, metaLabel);
+                HBox dailyHBox = new HBox(5, progressBox, dailyLabel);
+
+                VBox tooltipContent = new VBox(5, metaHBox, dailyHBox);
+                caloriesBurnedTooltip.setGraphic(tooltipContent);
+            }
+
+// Crear Tooltip para tiempo de actividad
+            Tooltip timeActivityTooltip = new Tooltip();
+            {
+                double progress = timeExcercise / totalTimeToExcercise; // Calcula el progreso
+                Color dynamicColor = Color.web("#67AB9F"); // Color azul progress bar
+
+                Rectangle whiteBox = new Rectangle(10, 10);
+                whiteBox.setFill(Color.WHITE); // Recuadro blanco para "Meta semanal"
+
+                Rectangle progressBox = new Rectangle(10, 10);
+                progressBox.setFill(dynamicColor); // Recuadro dinámico para "Tiempo al día"
+
+                Label metaLabel = new Label("Meta semanal: " + Math.floor(totalTimeToExcercise));
+                Label dailyLabel = new Label("Tiempo al día: " + Math.floor(timeExcercise));
+
+                HBox metaHBox = new HBox(5, whiteBox, metaLabel);
+                HBox dailyHBox = new HBox(5, progressBox, dailyLabel);
+
+                VBox tooltipContent = new VBox(5, metaHBox, dailyHBox);
+                timeActivityTooltip.setGraphic(tooltipContent);
+            }
 
 
-            Tooltip caloriesBurnedTooltip = new Tooltip("Calorias quemadas\n" +
-                    "⬜ Meta semanal: " + Math.floor(totalCaloriesExcercise) + "\n" +
-                    "🟩 Calorias al día: " + Math.floor(caloriesExcercise));
 
-            Tooltip timeActivityTooltip = new Tooltip("Tiempo de actividad\n" +
-                    "⬜ Meta semanal: " + Math.floor(totalTimeToExcercise) + "\n" +
-                    "🟩 Tiempo al día: " + Math.floor(timeExcercise));
+
+// Asignar Tooltips a las ProgressBars
+            caloriesProgressBar.setTooltip(caloriesTooltip);
+            proteinsProgressBar.setTooltip(proteinsTooltip);
+            fatsProgressBar.setTooltip(fatsTooltip);
+            carbohydratesProgressBar.setTooltip(carbohydratesTooltip);
+
 
 
             // Asociar cada Tooltip con su ProgressBar
