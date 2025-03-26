@@ -3,8 +3,10 @@ package com.prueba.demo.principal;
 import com.prueba.demo.model.*;
 import com.prueba.demo.modelAWS.AccountAWS;
 import com.prueba.demo.modelAWS.AccountDataAWS;
+import com.prueba.demo.modelAWS.AccountDataAWSHistory;
 import com.prueba.demo.repository.*;
 import com.prueba.demo.repositoryAWS.AccountAWSRepository;
+import com.prueba.demo.repositoryAWS.AccountDataAWSHistoryRepository;
 import com.prueba.demo.repositoryAWS.AccountDataAWSRepository;
 import com.prueba.demo.service.APIConsumption;
 import javafx.application.Platform;
@@ -23,8 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -314,6 +316,9 @@ public class ProfileFrame {
     @Autowired
     private AccountDataAWSRepository accountDataAWSRepository;
 
+    @Autowired
+    private AccountDataAWSHistoryRepository accountDataAWSHistoryRepository;
+
     private void completeProfile() {
         AccountData accountData = new AccountData();
 
@@ -433,6 +438,34 @@ public class ProfileFrame {
 
             accountDataAWSRepository.save(accountDataAWS);
         }
+
+        //subir la cuenta a AWS con historial
+
+
+        if (accountAWSOptional.isPresent()) {
+            AccountAWS accountAWS = accountAWSOptional.get();
+
+            AccountDataAWSHistory accountDataAWSHistory = new AccountDataAWSHistory();
+            accountDataAWSHistory.setAccountAWS(accountAWS);
+
+            // Actualizar valores
+            accountDataAWSHistory.setAge(accountData.getAge());
+            accountDataAWSHistory.setHeight(accountData.getHeight() != null ? accountData.getHeight() : 0);
+            accountDataAWSHistory.setWeight(accountData.getWeight() != null ? accountData.getWeight() : 0);
+            accountDataAWSHistory.setAbdomen(accountData.getAbdomen() != null ? accountData.getAbdomen() : 0);
+            accountDataAWSHistory.setHips(accountData.getHips() != null ? accountData.getHips() : 0);
+            accountDataAWSHistory.setWaist(accountData.getWaist() != null ? accountData.getWaist() : 0);
+            accountDataAWSHistory.setArm(accountData.getArm() != null ? accountData.getArm() : 0);
+            accountDataAWSHistory.setChest(accountData.getChest() != null ? accountData.getChest() : 0);
+            accountDataAWSHistory.setNeck(accountData.getNeck() != null ? accountData.getNeck() : 0);
+            Date now = new Date();
+            java.sql.Date sqlDate = new java.sql.Date(now.getTime());
+
+            accountDataAWSHistory.setDate(sqlDate);
+
+            accountDataAWSHistoryRepository.save(accountDataAWSHistory);
+        }
+
 
     }
 
