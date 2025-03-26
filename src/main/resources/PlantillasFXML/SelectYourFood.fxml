@@ -8,23 +8,33 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
 <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="400.0" spacing="20.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.prueba.demo.principal.SelectYourFood">
    <children>
-      <VBox prefHeight="68.0" prefWidth="600.0">
+      <VBox fillWidth="false">
          <children>
-            <Label text="Elige tu comida">
-               <font>
-                  <Font name="System Bold" size="24.0" />
-               </font>
-               <VBox.margin>
-                  <Insets bottom="10.0" left="20.0" top="20.0" />
-               </VBox.margin>
-            </Label>
-            <HBox prefHeight="2.0" prefWidth="200.0" style="-fx-background-color: #d4e7b1;" />
+            <HBox prefHeight="77.0" prefWidth="400.0" style="-fx-background-color: white;">
+               <children>
+                  <Label prefHeight="35.0" prefWidth="195.0" text="Elige tu comida">
+                     <font>
+                        <Font name="System Bold" size="23.0" />
+                     </font>
+                     <padding>
+                        <Insets left="20.0" top="20.0" />
+                     </padding>
+                  </Label>
+                  <VBox alignment="TOP_RIGHT" prefHeight="54.0" prefWidth="156.0" style="-fx-background-color: #D4E7B1; -fx-border-color: #7da12d;" HBox.hgrow="NEVER">
+                     <children>
+                        <Label id="labelTotalCalories" fx:id="labelTotalCalories" alignment="CENTER" prefHeight="17.0" prefWidth="156.0" text="Llevas 0 calorias" />
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="en tu comida" />
+                     </children>
+                  </VBox>
+               </children></HBox>
          </children>
       </VBox>
+      <Line endX="300.5" startX="-100.0" stroke="#7da12d" />
       <Label text="¡Tenemos algunas sugerencias para ti!" textFill="#7da12d">
          <font>
             <Font name="System Bold" size="16.0" />

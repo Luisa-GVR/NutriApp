@@ -8,6 +8,7 @@ import com.prueba.demo.service.AccountDataService;
 import com.prueba.demo.service.dto.FoodPreferencesDTO;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -40,6 +41,8 @@ public class SelectYourFood {
     private ImageView foodImageView;
     @FXML
     private ListView<String> suggestionsListView;
+    @FXML
+    private Label labelTotalCalories;
 
     private int row;
     private int col;
@@ -75,6 +78,20 @@ public class SelectYourFood {
         button.setStyle("-fx-background-color:   #7da12d;");
     }
 
+    Double caloriesTotal = 0.0;
+    private void updateListStatus() {
+        caloriesTotal = 0.0;
+
+        for (String selectedItem : suggestionsListView.getItems()) {
+            Food selectedFood = getFoodByName(selectedItem);
+            caloriesTotal += selectedFood.getCalories();
+        }
+
+        int caloriesInt = (int) Math.round(caloriesTotal);
+        labelTotalCalories.setText("Llevas " + caloriesInt + " calorías");
+    }
+
+
     @FXML
     private void initialize(){
         setupListViewWithDeleteButton(suggestionsListView);
@@ -89,6 +106,10 @@ public class SelectYourFood {
 
         suggestionsComboBox.setMaxHeight(400);
 
+        //updatear label de calorias que lleva
+        suggestionsListView.getItems().addListener((ListChangeListener<String>) change -> {
+            Platform.runLater(() -> updateListStatus());
+        });
         //Buscar comidas
 
         // Evitar que Enter agregue elementos automáticamente
@@ -181,6 +202,8 @@ public class SelectYourFood {
             try {
                 cachedSuggestions = null;
                 addFood(suggestionsListView);
+                caloriesTotal = 0.0;
+
                 closeCurrentWindow();
                 refreshParentFrame();
 
@@ -188,6 +211,8 @@ public class SelectYourFood {
                 e.printStackTrace();
             }
         });
+
+
 
     }
 

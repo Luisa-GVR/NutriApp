@@ -57,9 +57,20 @@ public class DayMeal {
     @Column(name = "date", nullable = false, length = 120)
     private Date date;
 
+    @Column(name = "reason", nullable = true, length = 300)
+    private String reason;
+
 
     //Getters y setters...
 
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
 
     public Long getId() {
         return id;
