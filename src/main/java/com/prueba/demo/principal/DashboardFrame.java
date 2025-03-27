@@ -1227,11 +1227,6 @@ public class DashboardFrame {
     @FXML
     public void showDiet() {
 
-        System.out.println("ahre" + databaseService.getAWSDatabaseName());
-        System.out.println("ahre2" + databaseService.getAWSDatabaseTime());
-        System.out.println("ahre3" + databaseService.getAllTables());
-
-
 
         uploadFoodsFromCSV();
 
@@ -1813,6 +1808,7 @@ public class DashboardFrame {
                 // Establecer el texto del botón con los nombres de los ejercicios
                 exerciseButton.setText(exerciseNames.toString());
 
+
             } else {
                 exerciseButton.setText("No hay ejercicios"); // Si no hay ejercicios, mostrar este texto
             }
@@ -2208,7 +2204,14 @@ public class DashboardFrame {
             }
         }, () -> System.out.println("Error: No se encontró la cuenta con ID 2"));
     }
+
+
+
     private String formatExerciseLabel(String exercise) {
+
+        if (exercise.equals("[]")){
+            return "No asignado";
+        }
         // Reemplaza los valores en minúsculas y sin espacios, añadiendo los espacios correctos
         String formatted = exercise.replaceAll("([a-z])([A-Z])", "$1 $2");
 
@@ -2217,6 +2220,8 @@ public class DashboardFrame {
 
         // Reemplaza la palabra "completa" y añade un espacio después
         formatted = formatted.replaceAll("completa", " completa");
+
+        formatted = formatted.replaceAll("[\\[\\]]", "");
 
         // Capitaliza la primera letra de cada palabra, excepto la "y"
         String[] words = formatted.split(" ");

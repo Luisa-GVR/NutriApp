@@ -203,7 +203,6 @@ public class SetYourPreferencesDiet {
                         properties.store(out, null);
                     }
                 } else {
-                    System.out.println("El archivo ya contiene preferencesCompleted=true");
                 }
 
             } catch (IOException e) {
@@ -214,7 +213,6 @@ public class SetYourPreferencesDiet {
             properties.setProperty("preferencesCompleted", "true");
             try (FileOutputStream out = new FileOutputStream(propertiesFile)) {
                 properties.store(out, null);
-                System.out.println("Archivo creado con preferencesCompleted=true");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -362,7 +360,6 @@ public class SetYourPreferencesDiet {
 
         if (!items.contains(selectedItem)) {
             items.add(selectedItem);
-            System.out.println("Added item: " + selectedItem);
         }
     }
 

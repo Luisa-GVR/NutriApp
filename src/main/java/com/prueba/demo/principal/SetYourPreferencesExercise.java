@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +64,7 @@ public class SetYourPreferencesExercise {
             "Back", "Cardio", "Chest", "Lower Arms", "Lower Legs", "Neck", "Shoulders", "Upper Arms", "Upper Legs", "Waist"
     );
 
+
     private final List<String> originalExercises = new ArrayList<>(allExercises); // Copia de la lista original
 
     private void restoreExercises() {
@@ -76,7 +78,7 @@ public class SetYourPreferencesExercise {
 
 
     // Mapa para almacenar la selección de cada día
-    private final Map<ChoiceBox<String>, String> selectedExercises = new HashMap<>();
+    private final HashSet<String> selectedExercises = new HashSet<>();
 
     @FXML
     private void handleMouseEntered(MouseEvent event) {
@@ -105,10 +107,18 @@ public class SetYourPreferencesExercise {
 
 
         // Agregar listeners para detectar cambios y actualizar los demás días
-        setupChoiceBox(mondayChoiceBox);
-        setupChoiceBox(tuesdayChoiceBox);
-        setupChoiceBox(wednesdayChoiceBox);
-        setupChoiceBox(thursdayChoiceBox);
+        setupChoiceBox(mondayChoiceBox, mondayListView);
+        setupChoiceBox(tuesdayChoiceBox, tuesdayListView);
+        setupChoiceBox(wednesdayChoiceBox, wednesdayListView);
+        setupChoiceBox(thursdayChoiceBox, thursdayListView);
+        setupChoiceBoxFriday(fridayChoiceBox, fridayListView);
+
+        configureListView(mondayListView);
+        configureListView(tuesdayListView);
+        configureListView(wednesdayListView);
+        configureListView(thursdayListView);
+        configureListView(fridayListView);
+
 
 
         saveButton.setOnAction(actionEvent -> {
@@ -139,61 +149,91 @@ public class SetYourPreferencesExercise {
     }
 
 
-    private void setupChoiceBox(ChoiceBox<String> choiceBox) {
+    private void setupChoiceBox(ChoiceBox<String> choiceBox, ListView<String> listView) {
         choiceBox.setOnAction(event -> {
-            selectedExercises.put(choiceBox, choiceBox.getValue());
-            updateAvailableExercises();
+            String selectedItem = choiceBox.getValue();
+            ObservableList<String> items = listView.getItems();
+
+            if (selectedItem != null && !items.contains(selectedItem)) {
+                if (items.size() < 2) {
+                    items.add(selectedItem);
+                    selectedExercises.add(selectedItem);
+                    updateAvailableExercises();
+
+                }
+            }
+        });
+    }
+
+
+    private void setupChoiceBoxFriday(ChoiceBox<String> choiceBox, ListView<String> listView) {
+        choiceBox.setOnAction(event -> {
+            String selectedItem = choiceBox.getValue();
+            ObservableList<String> items = listView.getItems();
+            if (items.size() < 2) {
+                items.add(selectedItem);
+                selectedExercises.add(selectedItem);
+            }
+
         });
     }
 
     private void updateAvailableExercises() {
-
-        // Obtener los ejercicios seleccionados
-        Set<String> usedExercises = new HashSet<>(selectedExercises.values());
-
         // Lista de todos los ChoiceBoxes a actualizar
         List<ChoiceBox<String>> allChoiceBoxes = Arrays.asList(
                 mondayChoiceBox, tuesdayChoiceBox, wednesdayChoiceBox, thursdayChoiceBox);
 
         // Actualizar todos los ComboBoxes
         for (ChoiceBox<String> choiceBox : allChoiceBoxes) {
-            updateComboBox(choiceBox, usedExercises);
+            updateComboBox(choiceBox, selectedExercises);
         }
     }
 
     private void updateComboBox(ChoiceBox<String> choiceBox, Set<String> usedExercises) {
+        ObservableList<String> filteredExercises = FXCollections.observableArrayList();
 
-
-        // Verificar si realmente es necesario actualizar el ComboBox
-        String selected = selectedExercises.get(choiceBox);
-        ObservableList<String> updatedList = FXCollections.observableArrayList(allExercises);
-
-        // Eliminar ejercicios ya usados, excepto si es el seleccionado actualmente
-        updatedList.removeIf(exercise -> usedExercises.contains(exercise) && !exercise.equals(selected));
-
-        // Solo actualizar si la lista ha cambiado
-        if (!choiceBox.getItems().equals(updatedList)) {
-            // Actualizar los items disponibles
-            choiceBox.setItems(updatedList);
-            choiceBox.setValue(selected); // Mantener la selección
+        for (String exercise : allExercises) {
+            if (!usedExercises.contains(exercise)) {
+                filteredExercises.add(exercise);
+            }
         }
+
+        // Update the ChoiceBox with the filtered list
+        choiceBox.setItems(filteredExercises);
     }
 
+    private void configureListView(ListView<String> listView) {
+        listView.setOnMouseClicked(event -> {
+            String selectedItem = listView.getSelectionModel().getSelectedItem();
+            if (selectedItem != null) {
+                listView.getItems().remove(selectedItem);
+                selectedExercises.remove(selectedItem);
+                updateAvailableExercises();
 
+            }
+        });
+
+        listView.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                event.consume();
+
+            }
+        });
+
+    }
     private boolean validateFields() {
-
         boolean validInputs = true;
 
-        // Lista con todos los ComboBox a validar
-        List<ChoiceBox<String>> choiceBoxes = Arrays.asList(
-                mondayChoiceBox, tuesdayChoiceBox, wednesdayChoiceBox,
-                thursdayChoiceBox, fridayChoiceBox
+        // Lista con todos los ListView a validar
+        List<ListView<String>> listViews = Arrays.asList(
+                mondayListView, tuesdayListView, wednesdayListView,
+                thursdayListView, fridayListView
         );
 
-        // Validar que todos los ComboBox tengan una selección
-        for (ChoiceBox<String> box : choiceBoxes) {
-            if (box.getValue() == null) { // Verifica si el usuario seleccionó algo
-                //exerciseErrorLabel.setText("Por favor, selecciona un grupo muscular para cada día.");
+        // Validar que cada ListView tenga exactamente 2 elementos
+        for (ListView<String> listView : listViews) {
+            if (listView.getItems().size() != 2) { // Verifica si tiene exactamente 2 elementos
+                //exerciseErrorLabel.setText("Por favor, selecciona exactamente 2 ejercicios para cada día.");
                 //exerciseErrorLabel.setVisible(true);
                 validInputs = false;
             }
@@ -208,6 +248,7 @@ public class SetYourPreferencesExercise {
 
         return validInputs;
     }
+
 
     @Autowired
     private AccountDataRepository accountDataRepository;
@@ -226,19 +267,25 @@ public class SetYourPreferencesExercise {
             try {
 
                 List<ExcerciseType> mondayTypes = new ArrayList<>();
-                mondayTypes.addAll(getValidExerciseTypes(Collections.singletonList(mondayChoiceBox.getValue())));
+                mondayTypes.addAll(getValidExerciseTypes(Collections.singletonList(mondayListView.getItems().get(0))));
+                mondayTypes.addAll(getValidExerciseTypes(Collections.singletonList(mondayListView.getItems().get(1))));
 
                 List<ExcerciseType> tuesdayTypes = new ArrayList<>();
-                tuesdayTypes.addAll(getValidExerciseTypes(Collections.singletonList(tuesdayChoiceBox.getValue())));
+                tuesdayTypes.addAll(getValidExerciseTypes(Collections.singletonList(tuesdayListView.getItems().get(0))));
+                tuesdayTypes.addAll(getValidExerciseTypes(Collections.singletonList(tuesdayListView.getItems().get(1))));
+
 
                 List<ExcerciseType> wednesdayTypes = new ArrayList<>();
-                wednesdayTypes.addAll(getValidExerciseTypes(Collections.singletonList(wednesdayChoiceBox.getValue())));
+                wednesdayTypes.addAll(getValidExerciseTypes(Collections.singletonList(wednesdayListView.getItems().get(0))));
+                wednesdayTypes.addAll(getValidExerciseTypes(Collections.singletonList(wednesdayListView.getItems().get(1))));
 
                 List<ExcerciseType> thursdayTypes = new ArrayList<>();
-                thursdayTypes.addAll(getValidExerciseTypes(Collections.singletonList(thursdayChoiceBox.getValue())));
+                thursdayTypes.addAll(getValidExerciseTypes(Collections.singletonList(thursdayListView.getItems().get(0))));
+                thursdayTypes.addAll(getValidExerciseTypes(Collections.singletonList(thursdayListView.getItems().get(1))));
 
                 List<ExcerciseType> fridayTypes = new ArrayList<>();
-                fridayTypes.addAll(getValidExerciseTypes(Collections.singletonList(fridayChoiceBox.getValue())));
+                fridayTypes.addAll(getValidExerciseTypes(Collections.singletonList(fridayListView.getItems().get(0))));
+                fridayTypes.addAll(getValidExerciseTypes(Collections.singletonList(fridayListView.getItems().get(1))));
 
                 accountData.setMonday(mondayTypes);
                 accountData.setTuesday(tuesdayTypes);

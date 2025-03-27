@@ -192,7 +192,6 @@ public class GoalsCheck {
 
     private void saveToReport(Date reportDate) {
 
-        System.out.println(reportDate);
 
         Report existingReport = reportRepository.findByDate(reportDate);
 
