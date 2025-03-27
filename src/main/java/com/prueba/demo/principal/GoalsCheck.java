@@ -177,6 +177,7 @@ public class GoalsCheck {
             }
         }
 
+        dayMeal.setReason(reasonTextArea.getText());
         dayMealRepository.save(dayMeal);
 
         saveToReport(date);

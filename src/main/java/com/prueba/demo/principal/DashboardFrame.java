@@ -1,6 +1,8 @@
 package com.prueba.demo.principal;
 
 import com.itextpdf.io.font.constants.StandardFonts;
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
@@ -2362,6 +2364,14 @@ public class DashboardFrame {
         List<String> accountAllergies = accountAllergyFoodRepository.findFoodNamesByAccountDataId(account.get().getId());
 
         double imc = Math.round((weight / Math.pow(height / 100.0, 2)) * 10.0) / 10.0;
+        String imagePath = "src/main/resources/images/NutriApp256x256.png";
+        ImageData imageData = ImageDataFactory.create(imagePath);
+        com.itextpdf.layout.element.Image logo = new com.itextpdf.layout.element.Image(imageData);
+        logo.setHeight(128);
+        logo.setWidth(128);
+        logo.setFixedPosition(PageSize.A4.getWidth() - 140, PageSize.A4.getHeight() - 140); // Right-top corner
+
+        document.add(logo);
 
         // Encabezado
         document.add(new Paragraph("Reporte Nutricional").setFont(boldFont).setFontSize(18).setTextAlignment(TextAlignment.CENTER));
@@ -2439,6 +2449,7 @@ public class DashboardFrame {
         exerciseTable.addHeaderCell(new Cell().add(new Paragraph("Ejercicio").setFont(boldFont)).setBackgroundColor(ColorConstants.LIGHT_GRAY));
         exerciseTable.addHeaderCell(new Cell().add(new Paragraph("Duración").setFont(boldFont)).setBackgroundColor(ColorConstants.LIGHT_GRAY));
 
+
         for (Report result : results) {
             exerciseTable.addCell(new Cell().add(new Paragraph(result.getDate().toString())));
 
@@ -2461,6 +2472,24 @@ public class DashboardFrame {
         }
 
         document.add(exerciseTable);
+
+
+        document.add(new Paragraph("Desafios de dieta a la semana").setFont(boldFont).setFontSize(14));
+
+
+        Table reasonsTable = new Table(new float[]{3, 3}).useAllAvailableWidth(); // 2 columnas
+        reasonsTable.addHeaderCell(new Cell().add(new Paragraph("Fecha").setFont(boldFont)).setBackgroundColor(ColorConstants.LIGHT_GRAY));
+        reasonsTable.addHeaderCell(new Cell().add(new Paragraph("Desafío").setFont(boldFont)).setBackgroundColor(ColorConstants.LIGHT_GRAY));
+
+        for (Report result : results) {
+            reasonsTable.addCell(new Cell().add(new Paragraph(result.getDate().toString())));
+            DayMeal dayMeals = result.getDayMeals();
+            String challenge = (dayMeals != null && dayMeals.getReason() != null) ? dayMeals.getReason() : "No disponible";
+            reasonsTable.addCell(new Cell().add(new Paragraph(challenge)));
+
+        }
+
+        document.add(reasonsTable);
 
         document.close();
 
