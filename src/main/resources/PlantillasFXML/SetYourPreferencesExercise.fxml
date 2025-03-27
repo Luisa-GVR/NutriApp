@@ -91,67 +91,51 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <VBox alignment="BOTTOM_LEFT" style="-fx-border-color: #cdcdcd; -fx-border-width: 2; -fx-border-radius: 4;" GridPane.columnIndex="1">
+            <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="200.0" style="-fx-border-color: #cdcdcd; -fx-border-width: 2; -fx-border-radius: 4;" GridPane.columnIndex="1">
                <children>
-                  <ListView fx:id="suggestionsListView" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" orientation="HORIZONTAL" prefHeight="20.0" prefWidth="200.0" style="-fx-background-color: transparent; -fx-border-color: transparent;">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </ListView>
-                  <ChoiceBox fx:id="mondayChoiceBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="20.0" prefWidth="200.0" style="-fx-background-color: white; -fx-border-width: 2; -fx-border-radius: 4;" />
+                  <ListView fx:id="mondayListView" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" orientation="HORIZONTAL" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: transparent; -fx-border-color: transparent;" />
+                  <ChoiceBox fx:id="mondayChoiceBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="23.0" prefWidth="150.0" style="-fx-background-color: white; -fx-border-width: 2; -fx-border-radius: 4;" />
                </children>
                <GridPane.margin>
                   <Insets right="20.0" />
                </GridPane.margin>
-            </VBox>
-            <VBox alignment="BOTTOM_LEFT" prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: #cdcdcd; -fx-border-width: 2; -fx-border-radius: 4;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            </HBox>
+            <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="200.0" style="-fx-border-color: #cdcdcd; -fx-border-width: 2; -fx-border-radius: 4;" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
-                  <ListView fx:id="suggestionsListView1" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" orientation="HORIZONTAL" prefHeight="20.0" prefWidth="200.0" style="-fx-background-color: transparent; -fx-border-color: transparent;" />
-                  <ChoiceBox fx:id="tuesdayChoiceBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="20.0" prefWidth="110.0" style="-fx-background-color: white; -fx-border-width: 2; -fx-border-radius: 4;" />
+                  <ListView fx:id="tuesdayListView" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" orientation="HORIZONTAL" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: transparent; -fx-border-color: transparent;" />
+                  <ChoiceBox fx:id="tuesdayChoiceBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="23.0" prefWidth="150.0" style="-fx-background-color: white; -fx-border-width: 2; -fx-border-radius: 4;" />
                </children>
                <GridPane.margin>
                   <Insets right="20.0" />
                </GridPane.margin>
-            </VBox>
-            <VBox alignment="BOTTOM_LEFT" style="-fx-border-color: #cdcdcd; -fx-border-width: 2; -fx-border-radius: 4;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            </HBox>
+            <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="200.0" style="-fx-border-color: #cdcdcd; -fx-border-width: 2; -fx-border-radius: 4;" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
-                  <ListView fx:id="suggestionsListView2" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" orientation="HORIZONTAL" prefHeight="20.0" prefWidth="200.0" style="-fx-background-color: transparent; -fx-border-color: transparent;">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </ListView>
-                  <ChoiceBox fx:id="wednesdayChoiceBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="20.0" prefWidth="110.0" style="-fx-background-color: white; -fx-border-width: 2; -fx-border-radius: 4;" />
+                  <ListView fx:id="wednesdayListView" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" orientation="HORIZONTAL" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: transparent; -fx-border-color: transparent;" />
+                  <ChoiceBox fx:id="wednesdayChoiceBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="23.0" prefWidth="150.0" style="-fx-background-color: white; -fx-border-width: 2; -fx-border-radius: 4;" />
                </children>
                <GridPane.margin>
                   <Insets right="20.0" />
                </GridPane.margin>
-            </VBox>
-            <VBox alignment="BOTTOM_LEFT" style="-fx-border-color: #cdcdcd; -fx-border-width: 2; -fx-border-radius: 4;" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            </HBox>
+            <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="200.0" style="-fx-border-color: #cdcdcd; -fx-border-width: 2; -fx-border-radius: 4;" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <children>
-                  <ListView fx:id="suggestionsListView21" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" orientation="HORIZONTAL" prefHeight="20.0" prefWidth="200.0" style="-fx-background-color: transparent; -fx-border-color: transparent;">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </ListView>
-                  <ChoiceBox fx:id="thursdayChoiceBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="20.0" prefWidth="110.0" style="-fx-background-color: white; -fx-border-width: 2; -fx-border-radius: 4;" />
+                  <ListView fx:id="thursdayListView" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" orientation="HORIZONTAL" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: transparent; -fx-border-color: transparent;" />
+                  <ChoiceBox fx:id="thursdayChoiceBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="23.0" prefWidth="150.0" style="-fx-background-color: white; -fx-border-width: 2; -fx-border-radius: 4;" />
                </children>
                <GridPane.margin>
                   <Insets right="20.0" />
                </GridPane.margin>
-            </VBox>
-            <VBox alignment="BOTTOM_LEFT" style="-fx-border-color: #cdcdcd; -fx-border-width: 2; -fx-border-radius: 4;" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            </HBox>
+            <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="200.0" style="-fx-border-color: #cdcdcd; -fx-border-width: 2; -fx-border-radius: 4;" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <children>
-                  <ListView fx:id="suggestionsListView22" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" orientation="HORIZONTAL" prefHeight="20.0" prefWidth="200.0" style="-fx-background-color: transparent; -fx-border-color: transparent;">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </ListView>
-                  <ChoiceBox fx:id="fridayChoiceBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="20.0" prefWidth="110.0" style="-fx-background-color: white; -fx-border-width: 2; -fx-border-radius: 4;" />
+                  <ListView fx:id="fridayListView" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" orientation="HORIZONTAL" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: transparent; -fx-border-color: transparent;" />
+                  <ChoiceBox fx:id="fridayChoiceBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="23.0" prefWidth="150.0" style="-fx-background-color: white; -fx-border-width: 2; -fx-border-radius: 4;" />
                </children>
                <GridPane.margin>
                   <Insets right="20.0" />
                </GridPane.margin>
-            </VBox>
+            </HBox>
          </children>
       </GridPane>
       <Label fx:id="errorLabel" text="Debes seleccionar un objetivo y un ejercicio para cada día" textFill="#b30000">

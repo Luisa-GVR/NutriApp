@@ -28,7 +28,15 @@ public class SetYourPreferencesExercise {
     @FXML
     private ChoiceBox<String> objetiveChoiceBox;
     @FXML
-    private ListView<String> exerciseListView;
+    private ListView<String> mondayListView;
+    @FXML
+    private ListView<String> tuesdayListView;
+    @FXML
+    private ListView<String> wednesdayListView;
+    @FXML
+    private ListView<String> thursdayListView;
+    @FXML
+    private ListView<String> fridayListView;
     @FXML
     private ChoiceBox<String> mondayChoiceBox;
     @FXML
@@ -40,16 +48,6 @@ public class SetYourPreferencesExercise {
     @FXML
     private ChoiceBox<String> fridayChoiceBox;
 
-    @FXML
-    private ChoiceBox<String> mondayChoiceBox2;
-    @FXML
-    private ChoiceBox<String> tuesdayChoiceBox2;
-    @FXML
-    private ChoiceBox<String> wednesdayChoiceBox2;
-    @FXML
-    private ChoiceBox<String> thursdayChoiceBox2;
-    @FXML
-    private ChoiceBox<String> fridayChoiceBox2;
     @FXML
     private Label errorLabel;
 
@@ -105,12 +103,6 @@ public class SetYourPreferencesExercise {
         thursdayChoiceBox.setItems(FXCollections.observableArrayList(allExercises));
         fridayChoiceBox.setItems(FXCollections.observableArrayList(allExercises)); // Viernes tiene todos siempre
 
-        mondayChoiceBox2.setItems(FXCollections.observableArrayList(allExercises));
-        tuesdayChoiceBox2.setItems(FXCollections.observableArrayList(allExercises));
-        wednesdayChoiceBox2.setItems(FXCollections.observableArrayList(allExercises));
-        thursdayChoiceBox2.setItems(FXCollections.observableArrayList(allExercises));
-        fridayChoiceBox2.setItems(FXCollections.observableArrayList(allExercises));
-
 
         // Agregar listeners para detectar cambios y actualizar los demás días
         setupChoiceBox(mondayChoiceBox);
@@ -118,10 +110,6 @@ public class SetYourPreferencesExercise {
         setupChoiceBox(wednesdayChoiceBox);
         setupChoiceBox(thursdayChoiceBox);
 
-        setupChoiceBox(mondayChoiceBox2);
-        setupChoiceBox(tuesdayChoiceBox2);
-        setupChoiceBox(wednesdayChoiceBox2);
-        setupChoiceBox(thursdayChoiceBox2);
 
         saveButton.setOnAction(actionEvent -> {
             try {
@@ -165,9 +153,7 @@ public class SetYourPreferencesExercise {
 
         // Lista de todos los ChoiceBoxes a actualizar
         List<ChoiceBox<String>> allChoiceBoxes = Arrays.asList(
-                mondayChoiceBox, tuesdayChoiceBox, wednesdayChoiceBox, thursdayChoiceBox,
-                mondayChoiceBox2, tuesdayChoiceBox2, wednesdayChoiceBox2, thursdayChoiceBox2
-        );
+                mondayChoiceBox, tuesdayChoiceBox, wednesdayChoiceBox, thursdayChoiceBox);
 
         // Actualizar todos los ComboBoxes
         for (ChoiceBox<String> choiceBox : allChoiceBoxes) {
@@ -201,8 +187,7 @@ public class SetYourPreferencesExercise {
         // Lista con todos los ComboBox a validar
         List<ChoiceBox<String>> choiceBoxes = Arrays.asList(
                 mondayChoiceBox, tuesdayChoiceBox, wednesdayChoiceBox,
-                thursdayChoiceBox, fridayChoiceBox, mondayChoiceBox2, tuesdayChoiceBox2, wednesdayChoiceBox2,
-                thursdayChoiceBox2, fridayChoiceBox2
+                thursdayChoiceBox, fridayChoiceBox
         );
 
         // Validar que todos los ComboBox tengan una selección
@@ -242,23 +227,18 @@ public class SetYourPreferencesExercise {
 
                 List<ExcerciseType> mondayTypes = new ArrayList<>();
                 mondayTypes.addAll(getValidExerciseTypes(Collections.singletonList(mondayChoiceBox.getValue())));
-                mondayTypes.addAll(getValidExerciseTypes(Collections.singletonList(mondayChoiceBox2.getValue())));
 
                 List<ExcerciseType> tuesdayTypes = new ArrayList<>();
                 tuesdayTypes.addAll(getValidExerciseTypes(Collections.singletonList(tuesdayChoiceBox.getValue())));
-                tuesdayTypes.addAll(getValidExerciseTypes(Collections.singletonList(tuesdayChoiceBox2.getValue())));
 
                 List<ExcerciseType> wednesdayTypes = new ArrayList<>();
                 wednesdayTypes.addAll(getValidExerciseTypes(Collections.singletonList(wednesdayChoiceBox.getValue())));
-                wednesdayTypes.addAll(getValidExerciseTypes(Collections.singletonList(wednesdayChoiceBox2.getValue())));
 
                 List<ExcerciseType> thursdayTypes = new ArrayList<>();
                 thursdayTypes.addAll(getValidExerciseTypes(Collections.singletonList(thursdayChoiceBox.getValue())));
-                thursdayTypes.addAll(getValidExerciseTypes(Collections.singletonList(thursdayChoiceBox2.getValue())));
 
                 List<ExcerciseType> fridayTypes = new ArrayList<>();
                 fridayTypes.addAll(getValidExerciseTypes(Collections.singletonList(fridayChoiceBox.getValue())));
-                fridayTypes.addAll(getValidExerciseTypes(Collections.singletonList(fridayChoiceBox2.getValue())));
 
                 accountData.setMonday(mondayTypes);
                 accountData.setTuesday(tuesdayTypes);
