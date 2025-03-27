@@ -655,7 +655,7 @@
                                           </StackPane>
                                           <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #e8f2d1; -fx-border-color: #d4e7b1; -fx-border-width: 1.5;" GridPane.rowIndex="6">
                                              <children>
-                                                <Label text="¿Lograste tus metas?" textFill="#7da12d">
+                                                <Label text="¿Comiste según tu plan?" textFill="#7da12d">
                                                    <font>
                                                       <Font name="System Bold" size="10.0" />
                                                    </font>

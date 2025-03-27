@@ -49,6 +49,8 @@ public class GoalsCheck {
     private ListView<String> snackListView;
     @FXML
     private ListView<String> optionalListView;
+    @FXML
+    private TextArea reasonTextArea;
 
     @FXML
     private void handleMouseEntered(MouseEvent event) {

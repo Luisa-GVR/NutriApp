@@ -5,6 +5,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -12,11 +13,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="400.0" spacing="20.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.prueba.demo.principal.GoalsCheck">
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="500.0" spacing="20.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.prueba.demo.principal.GoalsCheck">
     <children>
         <VBox prefHeight="68.0" prefWidth="600.0">
             <children>
-                <Label text="¿Comiste algo distinto a">
+                <Label text="¿Comiste algo distinto a lo indicado?">
                     <font>
                         <Font name="System Bold" size="24.0" />
                     </font>
@@ -24,15 +25,10 @@
                         <Insets bottom="10.0" left="20.0" top="20.0" />
                     </VBox.margin>
                 </Label>
-            <Label text="lo indicado?">
-               <font>
-                  <Font name="System Bold" size="24.0" />
-               </font>
+                <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="2.0" prefWidth="200.0" style="-fx-background-color: #d4e7b1;">
                <VBox.margin>
-                  <Insets left="20.0" />
-               </VBox.margin>
-            </Label>
-                <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="2.0" prefWidth="200.0" style="-fx-background-color: #d4e7b1;" />
+                  <Insets bottom="20.0" />
+               </VBox.margin></HBox>
             </children>
         </VBox>
       <GridPane hgap="10.0" vgap="30.0">
@@ -50,42 +46,42 @@
          <children>
             <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="250.0" style="-fx-border-color: #c9c9c9; -fx-border-width: 1; -fx-border-radius: 4;" GridPane.columnIndex="1">
                <children>
-                  <ListView fx:id="breakfastListView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-border-color: transparent;" />
-                  <ComboBox fx:id="breakfastComboBox" editable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-background-color: transparent;">
+                  <ListView fx:id="breakfastListView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-border-color: transparent;" />
+                  <ComboBox fx:id="breakfastComboBox" editable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-background-color: transparent;">
                      <VBox.margin>
                         <Insets top="-15.0" />
                      </VBox.margin></ComboBox>
                </children>
             </VBox>
-            <Label text="Desayuno">
+            <Label text="Desayuno" textFill="#6d6d6d">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label text="Almuerzo" GridPane.rowIndex="1">
+            <Label text="Almuerzo" textFill="#6d6d6d" GridPane.rowIndex="1">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label text="Cena" GridPane.rowIndex="2">
+            <Label text="Cena" textFill="#6d6d6d" GridPane.rowIndex="2">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label text="Snack" GridPane.rowIndex="3">
+            <Label text="Snack" textFill="#6d6d6d" GridPane.rowIndex="3">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label text="Opcional" GridPane.rowIndex="4">
+            <Label text="Opcional" textFill="#6d6d6d" GridPane.rowIndex="4">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
             <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="250.0" style="-fx-border-color: #c9c9c9; -fx-border-width: 1; -fx-border-radius: 4;" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
-                  <ListView fx:id="lunchListView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-border-color: transparent;" />
-                  <ComboBox fx:id="lunchComboBox" editable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-background-color: transparent;">
+                  <ListView fx:id="lunchListView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="35.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-border-color: transparent;" />
+                  <ComboBox fx:id="lunchComboBox" editable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-background-color: transparent;">
                      <VBox.margin>
                         <Insets top="-15.0" />
                      </VBox.margin></ComboBox>
@@ -93,8 +89,8 @@
             </VBox>
             <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="250.0" style="-fx-border-color: #c9c9c9; -fx-border-width: 1; -fx-border-radius: 4;" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
-                  <ListView fx:id="dinnerListView" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-border-color: transparent;" />
-                  <ComboBox fx:id="dinnerComboBox" editable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-background-color: transparent;">
+                  <ListView fx:id="dinnerListView" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-border-color: transparent;" />
+                  <ComboBox fx:id="dinnerComboBox" editable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-background-color: transparent;">
                      <VBox.margin>
                         <Insets top="-15.0" />
                      </VBox.margin></ComboBox>
@@ -102,8 +98,8 @@
             </VBox>
             <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="250.0" style="-fx-border-color: #c9c9c9; -fx-border-width: 1; -fx-border-radius: 4;" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <children>
-                  <ListView fx:id="snackListView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-border-color: transparent;" />
-                  <ComboBox fx:id="snackComboBox" editable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-background-color: transparent;">
+                  <ListView fx:id="snackListView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="35.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-border-color: transparent;" />
+                  <ComboBox fx:id="snackComboBox" editable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-background-color: transparent;">
                      <VBox.margin>
                         <Insets top="-15.0" />
                      </VBox.margin></ComboBox>
@@ -111,18 +107,39 @@
             </VBox>
             <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="250.0" style="-fx-border-color: #c9c9c9; -fx-border-width: 1; -fx-border-radius: 4;" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <children>
-                  <ListView fx:id="optionalListView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-border-color: transparent;" />
-                  <ComboBox fx:id="optionalComboBox" editable="true" prefHeight="25.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-background-color: transparent;">
-                     <padding>
+                  <ListView fx:id="optionalListView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="35.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-border-color: transparent;" />
+                  <ComboBox fx:id="optionalComboBox" editable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-background-color: transparent;">
+                     <VBox.margin>
                         <Insets top="-15.0" />
-                     </padding></ComboBox>
+                     </VBox.margin></ComboBox>
                </children>
             </VBox>
          </children>
       </GridPane>
+      <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="2.0" prefWidth="200.0" style="-fx-background-color: #d4e7b1;">
+         <VBox.margin>
+            <Insets top="20.0" />
+         </VBox.margin>
+      </HBox>
+      <Label text="Desafíos  de la semana: Cuéntanos qué pasó" textFill="#6d6d6d">
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+         <padding>
+            <Insets right="120.0" />
+         </padding>
+      </Label>
+      <TextArea fx:id="reasonTextArea" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" style="-fx-background-radius: 4; -fx-border-radius: 4; -fx-border-color: #c9c9c9;">
+         <VBox.margin>
+            <Insets left="60.0" right="60.0" />
+         </VBox.margin>
+      </TextArea>
         <Button fx:id="saveButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseExited" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #7da12d;" text="Guardar" textFill="WHITE">
             <VBox.margin>
-                <Insets top="20.0" />
+                <Insets bottom="20.0" />
             </VBox.margin>
             <font>
                 <Font name="System Bold" size="14.0" />

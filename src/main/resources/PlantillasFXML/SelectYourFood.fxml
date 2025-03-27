@@ -15,7 +15,7 @@
    <children>
       <VBox fillWidth="false">
          <children>
-            <HBox prefHeight="77.0" prefWidth="400.0" style="-fx-background-color: white;">
+            <HBox prefHeight="77.0" prefWidth="400.0" spacing="20.0" style="-fx-background-color: white;">
                <children>
                   <Label prefHeight="35.0" prefWidth="195.0" text="Elige tu comida">
                      <font>
@@ -24,12 +24,24 @@
                      <padding>
                         <Insets left="20.0" top="20.0" />
                      </padding>
+                     <HBox.margin>
+                        <Insets top="10.0" />
+                     </HBox.margin>
                   </Label>
-                  <VBox alignment="TOP_RIGHT" prefHeight="54.0" prefWidth="156.0" style="-fx-background-color: #D4E7B1; -fx-border-color: #7da12d;" HBox.hgrow="NEVER">
+                  <VBox alignment="CENTER" prefHeight="54.0" prefWidth="156.0" style="-fx-background-color: #D4E7B1; -fx-border-color: #7da12d;">
                      <children>
-                        <Label id="labelTotalCalories" fx:id="labelTotalCalories" alignment="CENTER" prefHeight="17.0" prefWidth="156.0" text="Llevas 0 calorias" />
-                        <Label alignment="CENTER" contentDisplay="CENTER" text="en tu comida" />
+                        <Label id="labelTotalCalories" fx:id="labelTotalCalories" alignment="CENTER" prefHeight="17.0" prefWidth="156.0" text="Llevas 0 calorias" textFill="#7da12d">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font></Label>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="en tu comida" textFill="#7da12d">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font></Label>
                      </children>
+                     <HBox.margin>
+                        <Insets top="20.0" />
+                     </HBox.margin>
                   </VBox>
                </children></HBox>
          </children>
@@ -65,7 +77,7 @@
       </VBox>
       <Button fx:id="selectButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseExited" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #7da12d;" text="Elegir" textFill="WHITE">
          <VBox.margin>
-            <Insets bottom="20.0" top="20.0" />
+            <Insets bottom="20.0" />
          </VBox.margin>
          <font>
             <Font name="System Bold" size="14.0" />
