@@ -173,7 +173,13 @@ public class SelectYourFood {
             String selectedItem = suggestionsComboBox.getSelectionModel().getSelectedItem();
             ObservableList<String> items = suggestionsListView.getItems();
 
+
             if (selectedItem != null) {
+
+                if (selectedItem.contains("No se encontraron comidas")) {
+                    return;
+                }
+
                 items.add(selectedItem);
                 Optional<String> foodURL = foodRepository.findThumbnailURLByFoodName(selectedItem);
 
@@ -400,6 +406,14 @@ public class SelectYourFood {
         List<String> suggestions = apiConsumption.getFoodSuggestionsNeutral(query); //API busqueda
 
         Platform.runLater(() -> {
+
+            if (suggestions.isEmpty()){
+                suggestionsComboBox.getItems().clear();
+                suggestionsComboBox.getItems().add("No se encontraron comidas");
+                suggestionsComboBox.show();
+                return;
+            }
+
             suggestionsComboBox.getItems().clear();
             suggestionsComboBox.getItems().addAll(suggestions); // Agregar nuevas sugerencias
             suggestionsComboBox.show();

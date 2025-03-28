@@ -177,6 +177,10 @@ public class ProfileFrame {
 
             if (selectedItem != null) {
 
+                if (selectedItem.contains("No se encontraron comidas")) {
+                    return;
+                }
+
                 // Verificar si "Ninguna" ya está en la lista
                 if (items.contains("Ninguna")) {
                     allergiesErrorLabel.setText("Elimina 'Ninguna' para agregar más elementos.");
@@ -287,6 +291,15 @@ public class ProfileFrame {
     private APIConsumption apiConsumption;
     private void searchAllergies(String query) {
         List<String> suggestions = apiConsumption.getFoodSuggestionsNeutral(query); //API busqueda
+
+        if (suggestions.isEmpty()){
+            allergiesComboBox.getItems().clear();
+            allergiesComboBox.getItems().add("No se encontraron comidas");
+            allergiesComboBox.getItems().add("Ninguna");
+            allergiesComboBox.show();
+            return;
+        }
+
 
         Platform.runLater(() -> {
             allergiesComboBox.getItems().clear();

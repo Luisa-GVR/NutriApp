@@ -320,6 +320,10 @@ public class SetYourPreferencesDiet {
                     return;
                 }
 
+                if (selectedItem.contains("No se encontraron comidas")) {
+                    return;
+                }
+
                 if (items.contains("Ninguna")) {
                     errorLabel.setText("Elimina 'Ninguna' para agregar más elementos.");
                     errorLabel.setVisible(true);
@@ -387,6 +391,14 @@ public class SetYourPreferencesDiet {
         TextField editor = comboBox.getEditor();
 
         List<String> suggestions = apiConsumption.getFoodSuggestionsNeutral(query); //API busqueda
+
+        if (suggestions.isEmpty()){
+            comboBox.getItems().clear();
+            comboBox.getItems().add("No se encontraron comidas");
+            comboBox.getItems().add("Ninguna");
+            comboBox.show();
+            return;
+        }
 
         Platform.runLater(() -> {
 

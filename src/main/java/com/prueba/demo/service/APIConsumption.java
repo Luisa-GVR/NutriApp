@@ -100,7 +100,6 @@ public class APIConsumption {
                 // Devolvemos el objeto Food
                 return food;
             } else {
-                System.out.println("No se encontraron alimentos.");
                 return null;  // Si no hay alimentos en la lista
             }
         } catch (IOException e) {

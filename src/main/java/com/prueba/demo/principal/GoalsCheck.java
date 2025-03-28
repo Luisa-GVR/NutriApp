@@ -283,6 +283,11 @@ public class GoalsCheck {
             ObservableList<String> items = listView.getItems();
 
             if (selectedItem != null) {
+
+                if (selectedItem.contains("No se encontraron comidas")) {
+                    return;
+                }
+
                 if (items.contains("Cumplí mi meta") || (items.size() >= 5) ||
                         (!items.isEmpty() && selectedItem.equals("Cumplí mi meta"))) {
 
@@ -355,6 +360,15 @@ public class GoalsCheck {
 
     private void searchFood(String query, ComboBox comboBox) {
         List<String> suggestions = apiConsumption.getFoodSuggestionsNeutral(query); //API busqueda
+
+        if (suggestions.isEmpty()){
+            comboBox.getItems().clear();
+            comboBox.getItems().add("No se encontraron comidas");
+            comboBox.getItems().add("Cumplí mi meta");
+            comboBox.show();
+            return;
+        }
+
 
         Platform.runLater(() -> {
             comboBox.getItems().clear();
