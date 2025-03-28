@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -93,6 +94,13 @@ public class SetYourPreferencesExercise {
     }
     @FXML
     private void initialize() {
+        setupListViewWithDeleteButton(mondayListView);
+        setupListViewWithDeleteButton(tuesdayListView);
+        setupListViewWithDeleteButton(wednesdayListView);
+        setupListViewWithDeleteButton(thursdayListView);
+        setupListViewWithDeleteButton(fridayListView);
+
+
         errorLabel.setVisible(false);
 
         objetiveChoiceBox.setItems(FXCollections.observableArrayList("Deficit calórico",
@@ -146,6 +154,44 @@ public class SetYourPreferencesExercise {
             });
         });
 
+    }
+    private void setupListViewWithDeleteButton(ListView<String> listView) {
+        listView.setCellFactory(lv -> new ListCell<String>() {
+            private final Button deleteButton = new Button("X");
+            private final HBox hbox = new HBox(5);
+            private final Label label = new Label();
+
+            {
+                // Agregar las clases CSS
+                deleteButton.getStyleClass().add("delete-button");
+                label.getStyleClass().add("list-item-label");
+                hbox.getStyleClass().add("hbox-container");
+
+                deleteButton.setOnAction(event -> {
+                    String item = getItem();
+                    if (item != null) {
+                        getListView().getItems().remove(item);
+                    }
+                    errorLabel.setVisible(false);
+                    exerciseErrorLabel.setVisible(false);
+
+                });
+
+                hbox.getChildren().addAll(deleteButton, label);
+            }
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    label.setText(Character.toUpperCase(item.charAt(0)) + item.substring(1));
+                    setGraphic(hbox);
+                }
+            }
+        });
     }
 
 
