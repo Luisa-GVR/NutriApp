@@ -93,11 +93,15 @@ public class AccountDataService {
 
         List<String> allergies = new ArrayList<>();
 
+
         List<AccountAllergyFood> allergyFoods = accountAllergyFoodRepository.findAllByAccountAllergyId(accountDataOpt.get().getAccountAllergy().getId());
 
-        for (AccountAllergyFood allergyFood : allergyFoods) {
-            allergies.add(allergyFood.getFood().getFoodName());
+        if (!allergyFoods.isEmpty()){
+            for (AccountAllergyFood allergyFood : allergyFoods) {
+                allergies.add(allergyFood.getFood().getFoodName());
+            }
         }
+        
 
 
         // Obtener comidas que NO le gustan
