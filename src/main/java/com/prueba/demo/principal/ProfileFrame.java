@@ -349,6 +349,7 @@ public class ProfileFrame {
         // Guardar AccountData
         accountDataRepository.save(accountData);
 
+
         // Obtener la lista de alergias
         ObservableList<String> allergies = allergiesListView.getItems();
         List<Food> foodList = new ArrayList<>();
@@ -417,10 +418,13 @@ public class ProfileFrame {
                 existingAccountData.setChest(accountData.getChest());
 
                 accountData = accountDataRepository.save(existingAccountData);  // Actualizar en BD
+
+
             } else {
                 accountData.setAccount(account);
                 accountData = accountDataRepository.save(accountData);  // Guardar nuevo AccountData
                 account.setAccountData(accountData);
+
             }
 
             accountRepository.save(account);
