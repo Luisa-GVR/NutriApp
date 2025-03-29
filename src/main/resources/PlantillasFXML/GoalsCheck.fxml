@@ -121,7 +121,7 @@
             <Insets top="20.0" />
          </VBox.margin>
       </HBox>
-      <Label text="Desafíos de la semana: Cuéntanos qué pasó" textFill="#6d6d6d">
+      <Label text="Desafíos de la semana: Cuéntanos qué pasó " textFill="#6d6d6d">
          <VBox.margin>
             <Insets />
          </VBox.margin>

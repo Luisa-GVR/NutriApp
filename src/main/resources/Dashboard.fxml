@@ -353,7 +353,7 @@
                                           </VBox>
                                        </children>
                                     </HBox>
-                                    <Button fx:id="updateButton" mnemonicParsing="false" onMouseEntered="#handleMouseEnteredDiet" onMouseExited="#handleMouseExitedDiet" style="-fx-background-color: #7da12d;" text="Actualizar perfil" textFill="#f9f9f9">
+                                    <Button fx:id="updateButton" mnemonicParsing="false" onMouseEntered="#handleMouseEnteredDiet" onMouseExited="#handleMouseExitedDiet" style="-fx-background-color: #7da12d;" text="Actualizar perfil " textFill="#f9f9f9">
                                        <VBox.margin>
                                           <Insets bottom="40.0" />
                                        </VBox.margin>
