@@ -1074,7 +1074,14 @@ public class DashboardFrame {
         armTextArea.setText(String.valueOf(accountDataAWS.get().getArm()));
 
         // Actualizar alergias
-        List<String> allergicFoodNames = accountAllergyFoodRepository.findFoodNamesByAccountDataId(accountData.getId());
+        List<String> allergicFoodNames = new ArrayList<>();
+
+        List<AccountAllergyFood> allergyFoods = accountAllergyFoodRepository.findAllByAccountAllergyId(accountData.getAccountAllergy().getId());
+
+        for (AccountAllergyFood allergyFood : allergyFoods) {
+            allergicFoodNames.add(allergyFood.getFood().getFoodName());
+        }
+
         if (allergicFoodNames.isEmpty()){
             allergiesTextArea.setText("Ninguna");
         } else {
@@ -2295,7 +2302,14 @@ public class DashboardFrame {
         armReportTextArea.setText(String.valueOf(accountData.getArm()));
 
         // Actualizar alergias
-        List<String> allergicFoodNames = accountAllergyFoodRepository.findFoodNamesByAccountDataId(accountData.getId());
+        List<String> allergicFoodNames = new ArrayList<>();
+
+        List<AccountAllergyFood> allergyFoods = accountAllergyFoodRepository.findAllByAccountAllergyId(accountData.getAccountAllergy().getId());
+
+        for (AccountAllergyFood allergyFood : allergyFoods) {
+            allergicFoodNames.add(allergyFood.getFood().getFoodName());
+        }
+
         if (allergicFoodNames.isEmpty()){
             allergiesReportTextArea.setText("Ninguna");
         } else {
@@ -2364,9 +2378,13 @@ public class DashboardFrame {
         Double chest = account.get().getChest();
         Double neck = account.get().getNeck();
 
+        List<String> accountAllergies = new ArrayList<>();
 
+        List<AccountAllergyFood> allergyFoods = accountAllergyFoodRepository.findAllByAccountAllergyId(account.get().getAccountAllergy().getId());
 
-        List<String> accountAllergies = accountAllergyFoodRepository.findFoodNamesByAccountDataId(account.get().getId());
+        for (AccountAllergyFood allergyFood : allergyFoods) {
+            accountAllergies.add(allergyFood.getFood().getFoodName());
+        }
 
         double imc = Math.round((weight / Math.pow(height / 100.0, 2)) * 10.0) / 10.0;
         String imagePath = "src/main/resources/images/NutriApp256x256.png";

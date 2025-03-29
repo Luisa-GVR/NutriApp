@@ -1,5 +1,6 @@
 package com.prueba.demo.service;
 
+import com.prueba.demo.model.AccountAllergyFood;
 import com.prueba.demo.model.AccountData;
 import com.prueba.demo.model.Goal;
 import com.prueba.demo.repository.AccountAllergyFoodRepository;
@@ -10,6 +11,7 @@ import com.prueba.demo.service.dto.FoodPreferencesDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -88,8 +90,15 @@ public class AccountDataService {
 
         Long accountDataId = accountDataOpt.get().getId();
 
-        // Obtener alergias
-        List<String> allergies = accountAllergyFoodRepository.findFoodNamesByAccountDataId(accountDataId);
+
+        List<String> allergies = new ArrayList<>();
+
+        List<AccountAllergyFood> allergyFoods = accountAllergyFoodRepository.findAllByAccountAllergyId(accountDataOpt.get().getAccountAllergy().getId());
+
+        for (AccountAllergyFood allergyFood : allergyFoods) {
+            allergies.add(allergyFood.getFood().getFoodName());
+        }
+
 
         // Obtener comidas que NO le gustan
         List<String> dislikedFoods = accountDislikedFoodRepository.findFoodNamesByAccountDataId(accountDataId);
