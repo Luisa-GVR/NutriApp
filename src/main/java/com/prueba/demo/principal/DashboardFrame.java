@@ -1102,12 +1102,12 @@ public class DashboardFrame {
     }
 
     public double calculateWater(Long accountId) {
-
         Optional<AccountData> accountDataOpt = accountDataRepository.findByAccountId(accountId);
         double totalWater = (accountDataOpt.get().getWeight() * 35);
 
-        return Math.round(totalWater/ 1000.0) ;
+        return Double.parseDouble(String.format("%.2f", totalWater / 1000.0));
     }
+
 
 
     public double calculateCalories(Long accountId) {
