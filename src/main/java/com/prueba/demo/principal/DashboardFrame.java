@@ -578,23 +578,23 @@ public class DashboardFrame {
 
         // Cambiar el color de la barra de progreso según el valor
         if (bar != null) {
-            if (progress <= 0.25) {
-                bar.setStyle("-fx-background-color: #FF9933;");  // Naranja si el progreso es menor o igual a 25%
-            } else if (progress > 0.25 && progress <= 0.50) {
-                bar.setStyle("-fx-background-color: #ffd24d;");  // Amarillo si el progreso es entre 25% y 50%
-            } else if (progress > 0.50 && progress <= 0.75) {
-                bar.setStyle("-fx-background-color: #A7C942;");  // Verde si el progreso es entre 50% y 75%
+            if (progress <= 0.40) {
+                bar.setStyle("-fx-background-color: #FF9933;");  // Naranja si el progreso es menor o igual a 45%
+            } else if (progress > 0.40 && progress <= 0.80) {
+                bar.setStyle("-fx-background-color: #ffd24d;");  // Amarillo si el progreso es entre 40% y 80%
+            } else if (progress > 0.80 && progress <= 1.00) {
+                bar.setStyle("-fx-background-color: #A7C942;");  // Verde si el progreso es entre 80% y 100%
             } else {
-                bar.setStyle("-fx-background-color: #b30000;");  // Rojo si el progreso es mayor a 75%
+                bar.setStyle("-fx-background-color: #b30000;");  // Rojo si el progreso es mayor a 100%
             }
         }
     }
     private Color getProgressColor(double progress) {
-        if (progress <= 0.25) {
+        if (progress <= 0.40) {
             return Color.web("#FF9933"); // Naranja
-        } else if (progress > 0.25 && progress <= 0.50) {
+        } else if (progress > 0.40 && progress <= 0.80) {
             return Color.web("#ffd24d"); // Amarillo
-        } else if (progress > 0.50 && progress <= 0.75) {
+        } else if (progress > 0.80 && progress <= 1.00) {
             return Color.web("#A7C942"); // Verde
         } else {
             return Color.web("#b30000"); // Rojo
