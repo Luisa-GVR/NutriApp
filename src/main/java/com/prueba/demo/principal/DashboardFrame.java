@@ -1076,7 +1076,16 @@ public class DashboardFrame {
         // Actualizar alergias
         List<String> allergicFoodNames = new ArrayList<>();
 
-        List<AccountAllergyFood> allergyFoods = accountAllergyFoodRepository.findAllByAccountAllergyId(accountData.getAccountAllergy().getId());
+        Long accountAllergyId = null;
+        if (accountData.getAccountAllergy() != null) {
+            accountAllergyId = accountData.getAccountAllergy().getId();
+        }
+
+        List<AccountAllergyFood> allergyFoods = new ArrayList<>();
+
+        if (accountAllergyId != null) {
+            allergyFoods = accountAllergyFoodRepository.findAllByAccountAllergyId(accountAllergyId);
+        }
 
         if (!allergyFoods.isEmpty()){
             for (AccountAllergyFood allergyFood : allergyFoods) {
@@ -2307,14 +2316,22 @@ public class DashboardFrame {
         // Actualizar alergias
         List<String> allergicFoodNames = new ArrayList<>();
 
-        List<AccountAllergyFood> allergyFoods = accountAllergyFoodRepository.findAllByAccountAllergyId(accountData.getAccountAllergy().getId());
+        Long accountAllergyId = null;
+        if (accountData.getAccountAllergy() != null) {
+            accountAllergyId = accountData.getAccountAllergy().getId();
+        }
+
+        List<AccountAllergyFood> allergyFoods = new ArrayList<>();
+
+        if (accountAllergyId != null) {
+            allergyFoods = accountAllergyFoodRepository.findAllByAccountAllergyId(accountAllergyId);
+        }
 
         if (!allergyFoods.isEmpty()){
             for (AccountAllergyFood allergyFood : allergyFoods) {
                 allergicFoodNames.add(allergyFood.getFood().getFoodName());
             }
         }
-
 
         if (allergicFoodNames.isEmpty()){
             allergiesReportTextArea.setText("Ninguna");
@@ -2386,8 +2403,16 @@ public class DashboardFrame {
 
         List<String> accountAllergies = new ArrayList<>();
 
-        List<AccountAllergyFood> allergyFoods = accountAllergyFoodRepository.findAllByAccountAllergyId(account.get().getAccountAllergy().getId());
+        Long accountAllergyId = null;
+        if (account.get().getAccountAllergy() != null) {
+            accountAllergyId = account.get().getAccountAllergy().getId();
+        }
 
+        List<AccountAllergyFood> allergyFoods = new ArrayList<>();
+
+        if (accountAllergyId != null) {
+            allergyFoods = accountAllergyFoodRepository.findAllByAccountAllergyId(accountAllergyId);
+        }
 
         if (!allergyFoods.isEmpty()){
             for (AccountAllergyFood allergyFood : allergyFoods) {

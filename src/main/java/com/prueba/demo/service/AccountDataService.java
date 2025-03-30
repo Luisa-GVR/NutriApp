@@ -90,18 +90,24 @@ public class AccountDataService {
 
         Long accountDataId = accountDataOpt.get().getId();
 
-
         List<String> allergies = new ArrayList<>();
 
+        Long accountAllergyId = null;
+        if (accountDataOpt.get().getAccountAllergy() != null) {
+            accountAllergyId = accountDataOpt.get().getAccountAllergy().getId();
+        }
 
-        List<AccountAllergyFood> allergyFoods = accountAllergyFoodRepository.findAllByAccountAllergyId(accountDataOpt.get().getAccountAllergy().getId());
+        List<AccountAllergyFood> allergyFoods = new ArrayList<>();
+
+        if (accountAllergyId != null) {
+            allergyFoods = accountAllergyFoodRepository.findAllByAccountAllergyId(accountAllergyId);
+        }
 
         if (!allergyFoods.isEmpty()){
             for (AccountAllergyFood allergyFood : allergyFoods) {
                 allergies.add(allergyFood.getFood().getFoodName());
             }
         }
-        
 
 
         // Obtener comidas que NO le gustan
