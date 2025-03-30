@@ -37,10 +37,15 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+
+import java.awt.*;
 import java.time.Period;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -61,6 +66,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
@@ -1412,13 +1418,20 @@ public class DashboardFrame {
     /**
      dieta
      */
-
     @Autowired
     DatabaseService databaseService;
 
 
     @FXML
     public void showDiet() {
+
+        for (Node node : gridPaneDiet.getChildren()) {
+            if (node instanceof Button) {
+                Button button = (Button) node;
+                button.setGraphic(null);  // Clear the existing graphic (image)
+            }
+        }
+
 
 
         uploadFoodsFromCSV();
@@ -1462,6 +1475,7 @@ public class DashboardFrame {
                     button.setDisable(true); // Deshabilita el botón si la fecha es anterior a hoy
                 }
 
+
                 if (foodForCell != null) {
                     String imagePath = foodForCell.getPhoto().getThumb();
                     button.setGraphic(null); // Limpiar el gráfico antes de agregar el nuevo
@@ -1486,6 +1500,7 @@ public class DashboardFrame {
                 } else {
                     button.setGraphic(null);
                 }
+
 
                 //System.out.println("food for cell: " + foodForCell + ", imagen: " + button.getGraphic() + ",fecha del lunes: " + date1);
 
