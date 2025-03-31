@@ -2033,7 +2033,7 @@ public class DashboardFrame {
 
             switch (row) {
                 case 1:
-                    if (reportIsNull || (!goalMet && !hasDayExcercise)) {
+                    if (reportIsNull || (!hasDayExcercise)) {
                         if (existDayExcercises[0] && targetDate.isEqual(today)){
                             choiceBoxDisabled1 = false;
                         }
@@ -2041,7 +2041,7 @@ public class DashboardFrame {
                     }
                     break;
                 case 2:
-                    if (reportIsNull || (!goalMet && !hasDayExcercise) ) {
+                    if (reportIsNull || (!hasDayExcercise) ) {
                         if (existDayExcercises[1] && targetDate.isEqual(today)){
                             choiceBoxDisabled2 = false;
 
@@ -2051,7 +2051,8 @@ public class DashboardFrame {
 
                     break;
                 case 3:
-                    if (reportIsNull ||(!goalMet && !hasDayExcercise)) {
+
+                    if (reportIsNull ||(!hasDayExcercise)) {
                         if (existDayExcercises[2] && targetDate.isEqual(today)){
                             choiceBoxDisabled3 = false;
                         }
@@ -2059,7 +2060,7 @@ public class DashboardFrame {
                     }
                     break;
                 case 4:
-                    if (reportIsNull || (!goalMet && !hasDayExcercise)) {
+                    if (reportIsNull || (!hasDayExcercise)) {
                         if (existDayExcercises[3] && targetDate.isEqual(today)){
                             choiceBoxDisabled4 = false;
 
@@ -2068,7 +2069,7 @@ public class DashboardFrame {
                     }
                     break;
                 case 5:
-                    if (reportIsNull || (!goalMet && !hasDayExcercise)) {
+                    if (reportIsNull || (!hasDayExcercise)) {
                         if (existDayExcercises[4] && targetDate.isEqual(today)){
                             choiceBoxDisabled5 = false;
 
