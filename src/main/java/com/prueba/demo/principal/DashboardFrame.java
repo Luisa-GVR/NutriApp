@@ -329,9 +329,14 @@ public class DashboardFrame {
 
             if ("false".equals(createdDatabaseValue)) {
                 // Subir los alimentos desde el CSV
-                try (CSVReader reader = new CSVReader(new FileReader("src/main/resources/foods.csv"))) {
-                    // Leer el archivo CSV
-                    List<String[]> rows = reader.readAll();
+                try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("foods.csv")) {
+                    if (inputStream == null) {
+                        throw new FileNotFoundException("foods.csv not found in classpath");
+                    }
+
+                    try (InputStreamReader reader = new InputStreamReader(inputStream);
+                         CSVReader csvReader = new CSVReader(reader)) {                    // Leer el archivo CSV
+                    List<String[]> rows = csvReader.readAll();
 
                     for (String[] row : rows) {
                         if (row.length >= 8) {
@@ -372,7 +377,8 @@ public class DashboardFrame {
                         properties.store(outputStream, null);
                     }
 
-                } catch (IOException e) {
+                }
+            }catch (IOException e) {
                     e.printStackTrace();
                 } catch (CsvException e) {
                     throw new RuntimeException(e);
@@ -2612,8 +2618,16 @@ public class DashboardFrame {
 
 
         double imc = Math.round((weight / Math.pow(height / 100.0, 2)) * 10.0) / 10.0;
-        String imagePath = "src/main/resources/images/NutriApp256x256.png";
-        ImageData imageData = ImageDataFactory.create(imagePath);
+
+        InputStream imageStream = getClass().getClassLoader().getResourceAsStream("images/NutriApp256x256.png");
+
+        if (imageStream == null) {
+            throw new FileNotFoundException("images/NutriApp256x256.png not found in classpath");
+        }
+
+        byte[] imageBytes = imageStream.readAllBytes();
+        ImageData imageData = ImageDataFactory.create(imageBytes);
+
         com.itextpdf.layout.element.Image logo = new com.itextpdf.layout.element.Image(imageData);
         logo.setHeight(128);
         logo.setWidth(128);
