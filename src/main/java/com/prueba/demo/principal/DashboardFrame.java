@@ -1926,7 +1926,25 @@ public class DashboardFrame {
                 preferencesDietStage.setMaxWidth(650);
                 preferencesDietStage.setMaxHeight(400);
 
-                preferencesDietStage.setOnCloseRequest(event -> preferencesDietStage = null); // Reset when closed
+                preferencesDietStage.setOnCloseRequest(event -> {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Confirmación de salida");
+                    alert.setGraphic(null);
+                    alert.setHeaderText(null);
+                    alert.setContentText("¿Seguro que deseas salir?");
+
+                    ButtonType yesButton = new ButtonType("Sí", ButtonBar.ButtonData.YES);
+                    ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
+
+                    alert.getButtonTypes().setAll(yesButton, noButton);
+
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.isEmpty() || result.get() == noButton) {
+                        event.consume(); // Cancela el cierre
+                    } else {
+                        preferencesDietStage = null; // Solo se resetea si el usuario acepta salir
+                    }
+                });
 
                 preferencesDietStage.show();
             } catch (Exception e) {
@@ -2331,8 +2349,6 @@ public class DashboardFrame {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlantillasFXML/SetYourPreferencesExercise.fxml"));
                 loader.setControllerFactory(applicationContext::getBean);
 
-                SetYourPreferencesExercise controller = loader.getController();
-
                 Scene scene = new Scene(loader.load(), 400, 500); // Limitar tamaño de la escena
                 scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
 
@@ -2346,7 +2362,25 @@ public class DashboardFrame {
                 preferencesExcerciseStage.setMaxWidth(450);
                 preferencesExcerciseStage.setMaxHeight(550);
 
-                preferencesExcerciseStage.setOnCloseRequest(event -> preferencesExcerciseStage = null); // Reset cuando se cierra
+                preferencesExcerciseStage.setOnCloseRequest(event -> {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Confirmación de salida");
+                    alert.setGraphic(null);
+                    alert.setHeaderText(null);
+                    alert.setContentText("¿Seguro que deseas salir?");
+
+                    ButtonType yesButton = new ButtonType("Sí", ButtonBar.ButtonData.YES);
+                    ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
+
+                    alert.getButtonTypes().setAll(yesButton, noButton);
+
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.isEmpty() || result.get() == noButton) {
+                        event.consume(); // Cancela el cierre
+                    } else {
+                        preferencesExcerciseStage = null; // Solo se resetea si el usuario acepta salir
+                    }
+                });
 
                 preferencesExcerciseStage.show();
             } catch (Exception e) {

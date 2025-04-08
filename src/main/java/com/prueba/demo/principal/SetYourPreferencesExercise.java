@@ -147,12 +147,27 @@ public class SetYourPreferencesExercise {
         Platform.runLater(() -> {
             Stage stage = (Stage) saveButton.getScene().getWindow();
 
-            // Añadir el manejador para el evento de cierre de la ventana (X)
             stage.setOnCloseRequest(event -> {
-                event.consume();  // Evitar que la ventana se cierre inmediatamente
-                closeCurrentWindow();  // Llamar a tu método para restaurar ejercicios y cerrar la ventana
+                event.consume(); // Previene el cierre inmediato
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirmación de salida");
+                alert.setGraphic(null);
+                alert.setHeaderText(null);
+                alert.setContentText("¿Seguro que deseas salir?");
+
+                ButtonType yesButton = new ButtonType("Sí", ButtonBar.ButtonData.YES);
+                ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
+
+                alert.getButtonTypes().setAll(yesButton, noButton);
+
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.isPresent() && result.get() == yesButton) {
+                    closeCurrentWindow(); // Aquí puedes restaurar y cerrar la ventana
+                }
             });
         });
+
 
     }
     private void setupListViewWithDeleteButton(ListView<String> listView) {

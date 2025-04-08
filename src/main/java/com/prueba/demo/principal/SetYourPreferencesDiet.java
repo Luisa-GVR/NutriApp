@@ -21,6 +21,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 
 @Component
@@ -80,6 +81,10 @@ public class SetYourPreferencesDiet {
                 //showAlert("Error", "No se pudo completar el perfil.");
             }
         });
+
+
+
+
     }
     private void setupListViewWithDeleteButton(ListView<String> listView) {
         listView.setCellFactory(lv -> new ListCell<String>() {
