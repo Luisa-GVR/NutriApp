@@ -21,24 +21,24 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableJpaRepositories(
-        basePackages = "com.prueba.demo.repositoryAWS",
-        entityManagerFactoryRef = "awsEntityManagerFactory",
-        transactionManagerRef = "awsTransactionManager"
+        basePackages = "com.prueba.demo.repositoryFreeSQL",
+        entityManagerFactoryRef = "freeSQLEntityManagerFactory",
+        transactionManagerRef = "freeSQLTransactionManager"
 )
-public class AWSDatabaseConfig {
+public class FreeSQLDatabaseConfig {
 
-    @Value("${aws.datasource.url}")
+    @Value("${freeSQL.datasource.url}")
     private String url;
 
-    @Value("${aws.datasource.username}")
+    @Value("${freeSQL.datasource.username}")
     private String username;
 
-    @Value("${aws.datasource.password}")
+    @Value("${freeSQL.datasource.password}")
     private String password;
 
 
-    @Bean(name = "awsDataSource")
-    public DataSource awsDataSource() {
+    @Bean(name = "freeSQLDataSource")
+    public DataSource freeSQLDataSource() {
         return DataSourceBuilder.create()
                 .url(url)
                 .username(username)
@@ -47,24 +47,24 @@ public class AWSDatabaseConfig {
                 .build();
     }
 
-    @Bean(name = "awsEntityManagerFactory")
-    public LocalContainerEntityManagerFactoryBean awsEntityManagerFactory(
+    @Bean(name = "freeSQLEntityManagerFactory")
+    public LocalContainerEntityManagerFactoryBean freeSQLEntityManagerFactory(
             EntityManagerFactoryBuilder builder) {
         return builder
-                .dataSource(awsDataSource())
-                .packages("com.prueba.demo.modelAWS")
-                .persistenceUnit("aws")
+                .dataSource(freeSQLDataSource())
+                .packages("com.prueba.demo.modelFreeSQL")
+                .persistenceUnit("freeSQL")
                 .build();
     }
 
-    @Bean(name = "awsJdbcTemplate")
-    public JdbcTemplate awsJdbcTemplate(@Qualifier("awsDataSource") DataSource awsDataSource) {
-        return new JdbcTemplate(awsDataSource);
+    @Bean(name = "freeSQLJdbcTemplate")
+    public JdbcTemplate freeSQLJdbcTemplate(@Qualifier("freeSQLDataSource") DataSource freeSQLDataSource) {
+        return new JdbcTemplate(freeSQLDataSource);
     }
 
-    @Bean(name = "awsTransactionManager")
+    @Bean(name = "freeSQLTransactionManager")
     public PlatformTransactionManager transactionManager(
-            @Qualifier("awsEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
+            @Qualifier("freeSQLEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
         return new JpaTransactionManager(entityManagerFactory);
     }
 

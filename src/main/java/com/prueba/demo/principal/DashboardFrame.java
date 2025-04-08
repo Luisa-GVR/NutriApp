@@ -17,11 +17,11 @@ import com.itextpdf.layout.properties.TextAlignment;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 import com.prueba.demo.model.*;
-import com.prueba.demo.modelAWS.AccountAWS;
-import com.prueba.demo.modelAWS.AccountDataAWS;
+import com.prueba.demo.modelFreeSQL.AccountFreeSQL;
+import com.prueba.demo.modelFreeSQL.AccountDataFreeSQL;
 import com.prueba.demo.repository.*;
-import com.prueba.demo.repositoryAWS.AccountAWSRepository;
-import com.prueba.demo.repositoryAWS.AccountDataAWSRepository;
+import com.prueba.demo.repositoryFreeSQL.AccountFreeSQLRepository;
+import com.prueba.demo.repositoryFreeSQL.AccountDataFreeSQLRepository;
 import com.prueba.demo.service.APIConsumption;
 import com.prueba.demo.service.DatabaseService;
 import com.prueba.demo.service.IEmailService;
@@ -1207,9 +1207,9 @@ public class DashboardFrame {
     AccountAllergyFoodRepository accountAllergyFoodRepository;
 
     @Autowired
-    AccountAWSRepository accountAWSRepository;
+    AccountFreeSQLRepository accountFreeSQLRepository;
     @Autowired
-    AccountDataAWSRepository accountDataAWSRepository;
+    AccountDataFreeSQLRepository accountDataFreeSQLRepository;
 
     @FXML
     private void showProfile() {
@@ -1242,22 +1242,22 @@ public class DashboardFrame {
 
     private void updateProfileFields(AccountData accountData) {
 
-        Optional<AccountAWS> accountAWS = accountAWSRepository.findByEmail(accountData.getAccount().getEmail());
-        Optional<AccountDataAWS> accountDataAWS = accountDataAWSRepository.findByAccountAWS_Id(accountAWS.get().getId());
+        Optional<AccountFreeSQL> accountFreeSQL = accountFreeSQLRepository.findByEmail(accountData.getAccount().getEmail());
+        Optional<AccountDataFreeSQL> accountDataFreeSQL = accountDataFreeSQLRepository.findByAccountFreeSQL_Id(accountFreeSQL.get().getId());
 
 
 
 
         sexTextArea.setText(accountData.getGender() != null && accountData.getGender() ? "Masculino" : "Femenino");
-        ageTextArea.setText(String.valueOf(accountDataAWS.get().getAge()));
-        heightTextArea.setText(String.valueOf(accountDataAWS.get().getHeight()));
-        weightTextArea.setText(String.valueOf(accountDataAWS.get().getWeight()));
-        abdomenTextArea.setText(String.valueOf(accountDataAWS.get().getAbdomen()));
-        hipTextArea.setText(String.valueOf(accountDataAWS.get().getHips()));
-        waistTextArea.setText(String.valueOf(accountDataAWS.get().getWaist()));
-        chestTextArea.setText(String.valueOf(accountDataAWS.get().getChest()));
-        neckTextArea.setText(String.valueOf(accountDataAWS.get().getNeck()));
-        armTextArea.setText(String.valueOf(accountDataAWS.get().getArm()));
+        ageTextArea.setText(String.valueOf(accountDataFreeSQL.get().getAge()));
+        heightTextArea.setText(String.valueOf(accountDataFreeSQL.get().getHeight()));
+        weightTextArea.setText(String.valueOf(accountDataFreeSQL.get().getWeight()));
+        abdomenTextArea.setText(String.valueOf(accountDataFreeSQL.get().getAbdomen()));
+        hipTextArea.setText(String.valueOf(accountDataFreeSQL.get().getHips()));
+        waistTextArea.setText(String.valueOf(accountDataFreeSQL.get().getWaist()));
+        chestTextArea.setText(String.valueOf(accountDataFreeSQL.get().getChest()));
+        neckTextArea.setText(String.valueOf(accountDataFreeSQL.get().getNeck()));
+        armTextArea.setText(String.valueOf(accountDataFreeSQL.get().getArm()));
 
         // Actualizar alergias
         List<String> allergicFoodNames = new ArrayList<>();
@@ -1289,18 +1289,6 @@ public class DashboardFrame {
         // Hacer que los campos de sexo y alergias sean de solo lectura
         sexTextArea.setEditable(false);
         allergiesTextArea.setEditable(false);
-        ageTextArea.setEditable(false);
-        sexTextArea.setEditable(false);
-        heightTextArea.setEditable(false);
-        weightTextArea.setEditable(false);
-        allergiesTextArea.setEditable(false);
-        abdomenTextArea.setEditable(false);
-        hipTextArea.setEditable(false);
-        waistTextArea.setEditable(false);
-        neckTextArea.setEditable(false);
-        armTextArea.setEditable(false);
-        chestTextArea.setEditable(false);
-        updateButton.setVisible(false);
     }
 
     //Lo mismo que hay en ProfileFrame, ligeramente cambiado

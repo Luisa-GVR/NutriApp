@@ -1,9 +1,9 @@
 package com.prueba.demo.principal;
 
 import com.prueba.demo.model.Account;
-import com.prueba.demo.modelAWS.AccountAWS;
+import com.prueba.demo.modelFreeSQL.AccountFreeSQL;
 import com.prueba.demo.repository.AccountRepository;
-import com.prueba.demo.repositoryAWS.AccountAWSRepository;
+import com.prueba.demo.repositoryFreeSQL.AccountFreeSQLRepository;
 import com.prueba.demo.service.IEmailService;
 import com.prueba.demo.service.dto.EmailDTO;
 import javafx.application.Platform;
@@ -85,14 +85,14 @@ public class LoginFrame {
     }
 
     @Autowired
-    AccountAWSRepository accountAWSRepository;
+    AccountFreeSQLRepository accountFreeSQLRepository;
 
     @FXML
     private void validateFields() {
         String email = emailField.getText().trim().toLowerCase();
         String name = nameField.getText().trim();
 
-        Optional<AccountAWS> existingAccount = accountAWSRepository.findByEmail(email);
+        Optional<AccountFreeSQL> existingAccount = accountFreeSQLRepository.findByEmail(email);
 
 
 

@@ -2,12 +2,12 @@ package com.prueba.demo.principal;
 
 import com.prueba.demo.model.Account;
 import com.prueba.demo.model.AccountData;
-import com.prueba.demo.modelAWS.AccountAWS;
-import com.prueba.demo.modelAWS.AccountDataAWS;
+import com.prueba.demo.modelFreeSQL.AccountFreeSQL;
+import com.prueba.demo.modelFreeSQL.AccountDataFreeSQL;
 import com.prueba.demo.repository.AccountDataRepository;
 import com.prueba.demo.repository.AccountRepository;
-import com.prueba.demo.repositoryAWS.AccountAWSRepository;
-import com.prueba.demo.repositoryAWS.AccountDataAWSRepository;
+import com.prueba.demo.repositoryFreeSQL.AccountFreeSQLRepository;
+import com.prueba.demo.repositoryFreeSQL.AccountDataFreeSQLRepository;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -113,9 +113,9 @@ public class ValidationFrame {
     }
 
     @Autowired
-    AccountAWSRepository accountAWSRepository;
+    AccountFreeSQLRepository accountFreeSQLRepository;
     @Autowired
-    AccountDataAWSRepository accountDataAWSRepository;
+    AccountDataFreeSQLRepository accountDataFreeSQLRepository;
 
     private void verifyCode() {
         String inputCode = codeField.getText();
@@ -153,11 +153,11 @@ public class ValidationFrame {
 
             accountRepository.save(account);
 
-            //subir la cuenta a AWS
-            AccountAWS accountAWS = new AccountAWS();
-            accountAWS.setName(account.getName());
-            accountAWS.setEmail(account.getEmail());
-            accountAWSRepository.save(accountAWS);
+            //subir la cuenta a FreeSQL
+            AccountFreeSQL accountFreeSQL = new AccountFreeSQL();
+            accountFreeSQL.setName(account.getName());
+            accountFreeSQL.setEmail(account.getEmail());
+            accountFreeSQLRepository.save(accountFreeSQL);
 
 
             // Guarda UserData después de haber asociado

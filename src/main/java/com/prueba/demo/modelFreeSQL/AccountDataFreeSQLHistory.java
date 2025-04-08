@@ -1,12 +1,12 @@
-package com.prueba.demo.modelAWS;
+package com.prueba.demo.modelFreeSQL;
 
 import jakarta.persistence.*;
 
 import java.sql.Date;
 
 @Entity
-@Table(name = "AccountDataAWSHistory")
-public class AccountDataAWSHistory {
+@Table(name = "AccountDataFreeSQLHistory")
+public class AccountDataFreeSQLHistory {
 
 
     @Id
@@ -14,8 +14,8 @@ public class AccountDataAWSHistory {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "accountAWS_id")
-    private AccountAWS accountAWS;
+    @JoinColumn(name = "accountFreeSQL_id")
+    private AccountFreeSQL accountFreeSQL;
 
 
     @Column(name = "weight", nullable = false)
@@ -58,12 +58,12 @@ public class AccountDataAWSHistory {
         this.id = id;
     }
 
-    public AccountAWS getAccountAWS() {
-        return accountAWS;
+    public AccountFreeSQL getAccountFreeSQL() {
+        return accountFreeSQL;
     }
 
-    public void setAccountAWS(AccountAWS accountAWS) {
-        this.accountAWS = accountAWS;
+    public void setAccountFreeSQL(AccountFreeSQL accountFreeSQL) {
+        this.accountFreeSQL = accountFreeSQL;
     }
 
     public Double getWeight() {

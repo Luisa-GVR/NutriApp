@@ -1,16 +1,16 @@
-package com.prueba.demo.modelAWS;
+package com.prueba.demo.modelFreeSQL;
 import jakarta.persistence.*;
 @Entity
-@Table(name = "AccountDataAWS")
-public class AccountDataAWS {
+@Table(name = "AccountDataFreeSQL")
+public class AccountDataFreeSQL {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "accountAWS_id")
-    private AccountAWS accountAWS;
+    @JoinColumn(name = "accountFreeSQL_id")
+    private AccountFreeSQL accountFreeSQL;
 
 
     @Column(name = "weight", nullable = false)
@@ -75,12 +75,12 @@ public class AccountDataAWS {
         this.id = id;
     }
 
-    public AccountAWS getAccountAWS() {
-        return accountAWS;
+    public AccountFreeSQL getAccountFreeSQL() {
+        return accountFreeSQL;
     }
 
-    public void setAccountAWS(AccountAWS accountAWS) {
-        this.accountAWS = accountAWS;
+    public void setAccountFreeSQL(AccountFreeSQL accountFreeSQL) {
+        this.accountFreeSQL = accountFreeSQL;
     }
 
     public int getAge() {

@@ -1,13 +1,13 @@
 package com.prueba.demo.principal;
 
 import com.prueba.demo.model.*;
-import com.prueba.demo.modelAWS.AccountAWS;
-import com.prueba.demo.modelAWS.AccountDataAWS;
-import com.prueba.demo.modelAWS.AccountDataAWSHistory;
+import com.prueba.demo.modelFreeSQL.AccountFreeSQL;
+import com.prueba.demo.modelFreeSQL.AccountDataFreeSQL;
+import com.prueba.demo.modelFreeSQL.AccountDataFreeSQLHistory;
 import com.prueba.demo.repository.*;
-import com.prueba.demo.repositoryAWS.AccountAWSRepository;
-import com.prueba.demo.repositoryAWS.AccountDataAWSHistoryRepository;
-import com.prueba.demo.repositoryAWS.AccountDataAWSRepository;
+import com.prueba.demo.repositoryFreeSQL.AccountFreeSQLRepository;
+import com.prueba.demo.repositoryFreeSQL.AccountDataFreeSQLHistoryRepository;
+import com.prueba.demo.repositoryFreeSQL.AccountDataFreeSQLRepository;
 import com.prueba.demo.service.APIConsumption;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -325,12 +325,12 @@ public class ProfileFrame {
     @Autowired
     private AccountAllergyRepository accountAllergyRepository;
     @Autowired
-    private AccountAWSRepository accountAWSRepository;
+    private AccountFreeSQLRepository accountFreeSQLRepository;
     @Autowired
-    private AccountDataAWSRepository accountDataAWSRepository;
+    private AccountDataFreeSQLRepository accountDataFreeSQLRepository;
 
     @Autowired
-    private AccountDataAWSHistoryRepository accountDataAWSHistoryRepository;
+    private AccountDataFreeSQLHistoryRepository accountDataFreeSQLHistoryRepository;
 
     private void completeProfile() {
         AccountData accountData = new AccountData();
@@ -431,56 +431,56 @@ public class ProfileFrame {
         }
 
 
-        //subir la cuenta a AWS
+        //subir la cuenta a FreeSQL
         Optional<Account> accountOpt = accountRepository.findById(1L);
 
-        Optional<AccountAWS> accountAWSOptional = accountAWSRepository.findByEmail(accountOpt.get().getEmail());
+        Optional<AccountFreeSQL> accountFreeSQLOptional = accountFreeSQLRepository.findByEmail(accountOpt.get().getEmail());
 
-        if (accountAWSOptional.isPresent()) {
-            AccountAWS accountAWS = accountAWSOptional.get();
+        if (accountFreeSQLOptional.isPresent()) {
+            AccountFreeSQL accountFreeSQL = accountFreeSQLOptional.get();
 
-            AccountDataAWS accountDataAWS = new AccountDataAWS();
-            accountDataAWS.setAccountAWS(accountAWS);
+            AccountDataFreeSQL accountDataFreeSQL = new AccountDataFreeSQL();
+            accountDataFreeSQL.setAccountFreeSQL(accountFreeSQL);
 
             // Actualizar valores
-            accountDataAWS.setAge(accountData.getAge());
-            accountDataAWS.setHeight(accountData.getHeight() != null ? accountData.getHeight() : 0);
-            accountDataAWS.setWeight(accountData.getWeight() != null ? accountData.getWeight() : 0);
-            accountDataAWS.setAbdomen(accountData.getAbdomen() != null ? accountData.getAbdomen() : 0);
-            accountDataAWS.setHips(accountData.getHips() != null ? accountData.getHips() : 0);
-            accountDataAWS.setWaist(accountData.getWaist() != null ? accountData.getWaist() : 0);
-            accountDataAWS.setArm(accountData.getArm() != null ? accountData.getArm() : 0);
-            accountDataAWS.setChest(accountData.getChest() != null ? accountData.getChest() : 0);
-            accountDataAWS.setNeck(accountData.getNeck() != null ? accountData.getNeck() : 0);
+            accountDataFreeSQL.setAge(accountData.getAge());
+            accountDataFreeSQL.setHeight(accountData.getHeight() != null ? accountData.getHeight() : 0);
+            accountDataFreeSQL.setWeight(accountData.getWeight() != null ? accountData.getWeight() : 0);
+            accountDataFreeSQL.setAbdomen(accountData.getAbdomen() != null ? accountData.getAbdomen() : 0);
+            accountDataFreeSQL.setHips(accountData.getHips() != null ? accountData.getHips() : 0);
+            accountDataFreeSQL.setWaist(accountData.getWaist() != null ? accountData.getWaist() : 0);
+            accountDataFreeSQL.setArm(accountData.getArm() != null ? accountData.getArm() : 0);
+            accountDataFreeSQL.setChest(accountData.getChest() != null ? accountData.getChest() : 0);
+            accountDataFreeSQL.setNeck(accountData.getNeck() != null ? accountData.getNeck() : 0);
 
-            accountDataAWSRepository.save(accountDataAWS);
+            accountDataFreeSQLRepository.save(accountDataFreeSQL);
         }
 
-        //subir la cuenta a AWS con historial
+        //subir la cuenta a FreeSQL con historial
 
 
-        if (accountAWSOptional.isPresent()) {
-            AccountAWS accountAWS = accountAWSOptional.get();
+        if (accountFreeSQLOptional.isPresent()) {
+            AccountFreeSQL accountFreeSQL = accountFreeSQLOptional.get();
 
-            AccountDataAWSHistory accountDataAWSHistory = new AccountDataAWSHistory();
-            accountDataAWSHistory.setAccountAWS(accountAWS);
+            AccountDataFreeSQLHistory accountDataFreeSQLHistory = new AccountDataFreeSQLHistory();
+            accountDataFreeSQLHistory.setAccountFreeSQL(accountFreeSQL);
 
             // Actualizar valores
-            accountDataAWSHistory.setAge(accountData.getAge());
-            accountDataAWSHistory.setHeight(accountData.getHeight() != null ? accountData.getHeight() : 0);
-            accountDataAWSHistory.setWeight(accountData.getWeight() != null ? accountData.getWeight() : 0);
-            accountDataAWSHistory.setAbdomen(accountData.getAbdomen() != null ? accountData.getAbdomen() : 0);
-            accountDataAWSHistory.setHips(accountData.getHips() != null ? accountData.getHips() : 0);
-            accountDataAWSHistory.setWaist(accountData.getWaist() != null ? accountData.getWaist() : 0);
-            accountDataAWSHistory.setArm(accountData.getArm() != null ? accountData.getArm() : 0);
-            accountDataAWSHistory.setChest(accountData.getChest() != null ? accountData.getChest() : 0);
-            accountDataAWSHistory.setNeck(accountData.getNeck() != null ? accountData.getNeck() : 0);
+            accountDataFreeSQLHistory.setAge(accountData.getAge());
+            accountDataFreeSQLHistory.setHeight(accountData.getHeight() != null ? accountData.getHeight() : 0);
+            accountDataFreeSQLHistory.setWeight(accountData.getWeight() != null ? accountData.getWeight() : 0);
+            accountDataFreeSQLHistory.setAbdomen(accountData.getAbdomen() != null ? accountData.getAbdomen() : 0);
+            accountDataFreeSQLHistory.setHips(accountData.getHips() != null ? accountData.getHips() : 0);
+            accountDataFreeSQLHistory.setWaist(accountData.getWaist() != null ? accountData.getWaist() : 0);
+            accountDataFreeSQLHistory.setArm(accountData.getArm() != null ? accountData.getArm() : 0);
+            accountDataFreeSQLHistory.setChest(accountData.getChest() != null ? accountData.getChest() : 0);
+            accountDataFreeSQLHistory.setNeck(accountData.getNeck() != null ? accountData.getNeck() : 0);
             Date now = new Date();
             java.sql.Date sqlDate = new java.sql.Date(now.getTime());
 
-            accountDataAWSHistory.setDate(sqlDate);
+            accountDataFreeSQLHistory.setDate(sqlDate);
 
-            accountDataAWSHistoryRepository.save(accountDataAWSHistory);
+            accountDataFreeSQLHistoryRepository.save(accountDataFreeSQLHistory);
         }
 
 

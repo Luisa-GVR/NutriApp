@@ -258,7 +258,7 @@ Chinese/Japanese Word Break Dictionary Data (cjdict.txt)
  #  on, or be attached to, the Program, which is distributed substantially
  #  in the same form as set out herein and that such intended
  #  distribution, if actually made, will neither violate or otherwise
- #  contravene any of the laws and regulations of the countries having
+ #  contravene any of the lfreeSQL and regulations of the countries having
  #  jurisdiction over the User or the intended distribution itself.
  #
  #  NO WARRANTY
