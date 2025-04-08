@@ -1289,6 +1289,18 @@ public class DashboardFrame {
         // Hacer que los campos de sexo y alergias sean de solo lectura
         sexTextArea.setEditable(false);
         allergiesTextArea.setEditable(false);
+        ageTextArea.setEditable(false);
+        sexTextArea.setEditable(false);
+        heightTextArea.setEditable(false);
+        weightTextArea.setEditable(false);
+        allergiesTextArea.setEditable(false);
+        abdomenTextArea.setEditable(false);
+        hipTextArea.setEditable(false);
+        waistTextArea.setEditable(false);
+        neckTextArea.setEditable(false);
+        armTextArea.setEditable(false);
+        chestTextArea.setEditable(false);
+        updateButton.setVisible(false);
     }
 
     //Lo mismo que hay en ProfileFrame, ligeramente cambiado
