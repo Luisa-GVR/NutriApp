@@ -35,7 +35,7 @@
                <children>
                   <StackPane alignment="TOP_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <VBox fx:id="profilePane" prefHeight="200.0" prefWidth="100.0" spacing="30.0" style="-fx-background-color: #f9f9f9;" visible="false">
+                        <VBox fx:id="profilePane" prefHeight="200.0" prefWidth="100.0" spacing="30.0" style="-fx-background-color: #f9f9f9;">
                            <children>
                               <HBox alignment="CENTER_LEFT" maxHeight="50.0" minHeight="-Infinity" prefHeight="50.0" prefWidth="700.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: white;" VBox.vgrow="ALWAYS">
                                  <children>
@@ -52,20 +52,12 @@
                                     <Insets left="20.0" right="20.0" top="20.0" />
                                  </VBox.margin>
                               </HBox>
-                              <VBox alignment="TOP_CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: white;" VBox.vgrow="ALWAYS">
+                              <VBox alignment="TOP_CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" spacing="20.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: white;" VBox.vgrow="ALWAYS">
                                  <VBox.margin>
                                     <Insets bottom="20.0" left="20.0" right="20.0" />
                                  </VBox.margin>
                                  <children>
-                                    <Label fx:id="updateLabel" text="Su perfil ha sido actualizado con éxito." textFill="#7da12d">
-                                       <font>
-                                          <Font name="System Bold" size="16.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets top="20.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                    <HBox alignment="TOP_CENTER" prefHeight="345.0" prefWidth="753.0">
+                                    <HBox alignment="CENTER" prefHeight="345.0" prefWidth="753.0">
                                        <children>
                                           <VBox alignment="TOP_CENTER" minHeight="-Infinity" prefHeight="308.0" prefWidth="380.0" spacing="20.0">
                                              <children>
@@ -77,11 +69,10 @@
                                                       <Insets top="40.0" />
                                                    </VBox.margin>
                                                 </Label>
-                                                <GridPane alignment="CENTER" hgap="10.0" prefHeight="190.0" prefWidth="308.0" vgap="20.0">
+                                                <GridPane alignment="CENTER" hgap="10.0" prefHeight="190.0" prefWidth="308.0" vgap="40.0">
                                                    <columnConstraints>
                                                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="137.0" minWidth="10.0" prefWidth="99.0" />
                                                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="245.0" minWidth="10.0" prefWidth="168.20001220703125" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="245.0" minWidth="10.0" prefWidth="48.99998779296874" />
                                                    </columnConstraints>
                                                    <rowConstraints>
                                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -136,59 +127,29 @@
                                                             </Label>
                                                          </children>
                                                       </HBox>
-                                                      <Label text="*" GridPane.columnIndex="2">
-                                                         <font>
-                                                            <Font name="System Bold" size="12.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <Label text="*" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                                                         <font>
-                                                            <Font name="System Bold" size="12.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <Label text="*" GridPane.columnIndex="2" GridPane.rowIndex="3">
-                                                         <font>
-                                                            <Font name="System Bold" size="12.0" />
-                                                         </font>
-                                                      </Label>
                                                       <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
                                                          <children>
-                                                            <TextArea fx:id="ageTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" style="-fx-border-color: #7da12d; -fx-border-width: 1; -fx-border-radius: 4;" />
-                                                            <Label fx:id="ageErrorLabel" text="Por favor, introduce un valor válido." textFill="#b30000">
-                                                               <font>
-                                                                  <Font name="System Bold" size="10.0" />
-                                                               </font>
-                                                            </Label>
+                                                            <TextArea fx:id="ageTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" style="-fx-border-color: #dfe2e6; -fx-border-width: 1; -fx-border-radius: 4;" />
                                                          </children>
                                                       </VBox>
                                                       <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                          <children>
-                                                            <TextArea fx:id="sexTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" />
+                                                            <TextArea fx:id="sexTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" style="-fx-border-color: #dfe2e6; -fx-border-width: 1; -fx-border-radius: 4;" />
                                                          </children>
                                                       </VBox>
                                                       <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                          <children>
-                                                            <TextArea fx:id="heightTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" style="-fx-border-color: #7da12d; -fx-border-width: 1; -fx-border-radius: 4;" />
-                                                            <Label fx:id="heightErrorLabel" text="Por favor, introduce un valor válido." textFill="#b30000">
-                                                               <font>
-                                                                  <Font name="System Bold" size="10.0" />
-                                                               </font>
-                                                            </Label>
+                                                            <TextArea fx:id="heightTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" style="-fx-border-color: #dfe2e6; -fx-border-width: 1; -fx-border-radius: 4;" />
                                                          </children>
                                                       </VBox>
                                                       <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                                          <children>
-                                                            <TextArea fx:id="weightTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" style="-fx-border-color: #7da12d; -fx-border-width: 1; -fx-border-radius: 4;" />
-                                                            <Label fx:id="weightErrorLabel" text="Por favor, introduce un valor válido." textFill="#b30000">
-                                                               <font>
-                                                                  <Font name="System Bold" size="10.0" />
-                                                               </font>
-                                                            </Label>
+                                                            <TextArea fx:id="weightTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" style="-fx-border-color: #dfe2e6; -fx-border-width: 1; -fx-border-radius: 4;" />
                                                          </children>
                                                       </VBox>
                                                       <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                                          <children>
-                                                            <TextArea fx:id="allergiesTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" />
+                                                            <TextArea fx:id="allergiesTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" style="-fx-border-color: #dfe2e6; -fx-border-width: 1; -fx-border-radius: 4;" />
                                                          </children>
                                                       </VBox>
                                                    </children>
@@ -216,7 +177,7 @@
                                                       <Insets top="40.0" />
                                                    </VBox.margin>
                                                 </Label>
-                                                <GridPane alignment="CENTER" hgap="10.0" prefHeight="228.0" vgap="20.0">
+                                                <GridPane alignment="CENTER" hgap="10.0" prefHeight="228.0" vgap="40.0">
                                                    <columnConstraints>
                                                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="137.0" minWidth="10.0" prefWidth="97.0" />
                                                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="245.0" minWidth="10.0" prefWidth="198.0" />
@@ -286,62 +247,32 @@
                                                       </HBox>
                                                       <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
                                                          <children>
-                                                            <TextArea fx:id="abdomenTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" style="-fx-border-color: #7da12d; -fx-border-width: 1; -fx-border-radius: 4;" />
-                                                            <Label fx:id="abdomenErrorLabel" text="Por favor, introduce un valor válido." textFill="#b30000">
-                                                               <font>
-                                                                  <Font name="System Bold" size="10.0" />
-                                                               </font>
-                                                            </Label>
+                                                            <TextArea fx:id="abdomenTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" style="-fx-border-color: #dfe2e6; -fx-border-width: 1; -fx-border-radius: 4;" />
                                                          </children>
                                                       </VBox>
                                                       <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                          <children>
-                                                            <TextArea fx:id="hipTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" style="-fx-border-color: #7da12d; -fx-border-width: 1; -fx-border-radius: 4;" />
-                                                            <Label fx:id="hipErrorLabel" text="Por favor, introduce un valor válido." textFill="#b30000">
-                                                               <font>
-                                                                  <Font name="System Bold" size="10.0" />
-                                                               </font>
-                                                            </Label>
+                                                            <TextArea fx:id="hipTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" style="-fx-border-color: #dfe2e6; -fx-border-width: 1; -fx-border-radius: 4;" />
                                                          </children>
                                                       </VBox>
                                                       <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                          <children>
-                                                            <TextArea fx:id="waistTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" style="-fx-border-color: #7da12d; -fx-border-width: 1; -fx-border-radius: 4;" />
-                                                            <Label fx:id="waistErrorLabel" text="Por favor, introduce un valor válido." textFill="#b30000">
-                                                               <font>
-                                                                  <Font name="System Bold" size="10.0" />
-                                                               </font>
-                                                            </Label>
+                                                            <TextArea fx:id="waistTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" style="-fx-border-color: #dfe2e6; -fx-border-width: 1; -fx-border-radius: 4;" />
                                                          </children>
                                                       </VBox>
                                                       <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                                          <children>
-                                                            <TextArea fx:id="neckTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" style="-fx-border-color: #7da12d; -fx-border-width: 1; -fx-border-radius: 4;" />
-                                                            <Label fx:id="neckErrorLabel" text="Por favor, introduce un valor válido." textFill="#b30000">
-                                                               <font>
-                                                                  <Font name="System Bold" size="10.0" />
-                                                               </font>
-                                                            </Label>
+                                                            <TextArea fx:id="neckTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" style="-fx-border-color: #dfe2e6; -fx-border-width: 1; -fx-border-radius: 4;" />
                                                          </children>
                                                       </VBox>
                                                       <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                                          <children>
-                                                            <TextArea fx:id="armTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" style="-fx-border-color: #7da12d; -fx-border-width: 1; -fx-border-radius: 4;" />
-                                                            <Label fx:id="armErrorLabel" text="Por favor, introduce un valor válido." textFill="#b30000">
-                                                               <font>
-                                                                  <Font name="System Bold" size="10.0" />
-                                                               </font>
-                                                            </Label>
+                                                            <TextArea fx:id="armTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" style="-fx-border-color: #dfe2e6; -fx-border-width: 1; -fx-border-radius: 4;" />
                                                          </children>
                                                       </VBox>
                                                       <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                                          <children>
-                                                            <TextArea fx:id="chestTextArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" style="-fx-border-color: #7da12d; -fx-border-width: 1; -fx-border-radius: 4;" />
-                                                            <Label fx:id="chestErrorLabel" text="Por favor, introduce un valor válido." textFill="#b30000">
-                                                               <font>
-                                                                  <Font name="System Bold" size="10.0" />
-                                                               </font>
-                                                            </Label>
+                                                            <TextArea fx:id="chestTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" style="-fx-border-color: #dfe2e6; -fx-border-width: 1; -fx-border-radius: 4;" />
                                                          </children>
                                                       </VBox>
                                                    </children>
@@ -352,15 +283,34 @@
                                              </children>
                                           </VBox>
                                        </children>
-                                    </HBox>
-                                    <Button fx:id="updateButton" mnemonicParsing="false" onMouseEntered="#handleMouseEnteredDiet" onMouseExited="#handleMouseExitedDiet" style="-fx-background-color: #7da12d;" text="Actualizar perfil " textFill="#f9f9f9">
                                        <VBox.margin>
-                                          <Insets bottom="40.0" />
+                                          <Insets />
                                        </VBox.margin>
-                                       <font>
-                                          <Font name="System Bold" size="14.0" />
-                                       </font>
-                                    </Button>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" maxWidth="600.0" minWidth="600.0" prefHeight="30.0" prefWidth="600.0" style="-fx-background-color: #d4e7b1; -fx-background-radius: 5; -fx-border-color: #7da12d; -fx-border-radius: 4;">
+                                       <children>
+                                          <HBox alignment="CENTER" prefHeight="30.0" prefWidth="29.0" style="-fx-background-color: #7da12d; -fx-background-radius: 5;">
+                                             <children>
+                                                <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="15.0" prefWidth="15.0" style="-fx-background-radius: 100; -fx-background-color: #e5e5e5;" text="i" textAlignment="CENTER" textFill="#7da12d">
+                                                   <font>
+                                                      <Font name="System Bold Italic" size="12.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                          <Label text="Solo tu nutrióloga puede actualizar tu perfil. Por favor, consúltalo con ella para realizar cualquier cambio." textFill="#7da12d">
+                                             <HBox.margin>
+                                                <Insets left="5.0" />
+                                             </HBox.margin>
+                                             <font>
+                                                <Font name="System Bold" size="11.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets left="80.0" right="80.0" />
+                                       </VBox.margin>
+                                    </HBox>
                                  </children>
                               </VBox>
                            </children>
@@ -1376,7 +1326,7 @@
                               </VBox>
                            </children>
                         </VBox>
-                        <VBox fx:id="dashboardPane" minHeight="-Infinity" prefHeight="520.0" prefWidth="750.0" style="-fx-background-color: #f9f9f9;">
+                        <VBox fx:id="dashboardPane" minHeight="-Infinity" prefHeight="520.0" prefWidth="750.0" style="-fx-background-color: #f9f9f9;" visible="false">
                            <children>
                               <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="631.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-color: white;">
                                  <children>
@@ -1564,6 +1514,11 @@
                                                       <Insets />
                                                    </VBox.margin>
                                                 </VBox>
+                                                <Label style="-fx-background-color: #d7e9e5; -fx-border-color: #66ab9f;" text="  Peso (Kg) * 35 = X ml  " textFill="#66ab9f">
+                                                   <font>
+                                                      <Font name="System Bold Italic" size="12.0" />
+                                                   </font>
+                                                </Label>
                                                 <Label fx:id="waterLabel" text="Hoy deberías de tomar 2 litros de agua.">
                                                    <font>
                                                       <Font name="System Bold" size="12.0" />

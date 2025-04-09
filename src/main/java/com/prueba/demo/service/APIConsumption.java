@@ -38,7 +38,7 @@ public class APIConsumption {
 
 
 
-     /*
+
 
     private static final String API_KEY = "602d0e1d856a6e905686723221befb1e";
     private static final String API_ID = "7fe9ac29";
@@ -46,12 +46,14 @@ public class APIConsumption {
 
 
 
-*/
+
+
+    /*
  //otro personal XD
     private static final String API_KEY = "5489f0b2ecbc6bfd795e90ce6d2c09d0";
     private static final String API_ID = "d1ca182a";
     private static final String URL_BASE = "https://trackapi.nutritionix.com/v2/natural/nutrients";
-
+/*
 
     /*
 
