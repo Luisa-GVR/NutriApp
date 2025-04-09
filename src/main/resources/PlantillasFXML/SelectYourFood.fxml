@@ -30,11 +30,11 @@
                   </Label>
                   <VBox alignment="CENTER" prefHeight="54.0" prefWidth="156.0" style="-fx-background-color: #D4E7B1; -fx-border-color: #7da12d;">
                      <children>
-                        <Label id="labelTotalCalories" fx:id="labelTotalCalories" alignment="CENTER" prefHeight="17.0" prefWidth="156.0" text="Llevas 0 calorias" textFill="#7da12d">
+                        <Label id="labelTotalCalories" fx:id="labelTotalCalories" alignment="CENTER" prefHeight="17.0" prefWidth="156.0" text="Llevas: 0 cal" textFill="#7da12d">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font></Label>
-                        <Label alignment="CENTER" contentDisplay="CENTER" text="en tu comida" textFill="#7da12d">
+                        <Label id="goalCalories" fx:id="goalCalories" alignment="CENTER" contentDisplay="CENTER" text="Meta: 0" textFill="#7da12d">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font></Label>

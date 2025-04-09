@@ -43,6 +43,8 @@ public class SelectYourFood {
     private ListView<String> suggestionsListView;
     @FXML
     private Label labelTotalCalories;
+    @FXML
+    private Label goalCalories;
 
     private int row;
     private int col;
@@ -80,6 +82,7 @@ public class SelectYourFood {
 
     Double caloriesTotal = 0.0;
     private void updateListStatus() {
+
         caloriesTotal = 0.0;
 
         for (String selectedItem : suggestionsListView.getItems()) {
@@ -88,12 +91,14 @@ public class SelectYourFood {
         }
 
         int caloriesInt = (int) Math.round(caloriesTotal);
-        labelTotalCalories.setText("Llevas " + caloriesInt + " calorías");
+        labelTotalCalories.setText("Llevas: " + caloriesInt + " cal");
+
     }
 
 
     @FXML
     private void initialize(){
+
         setupListViewWithDeleteButton(suggestionsListView);
 
         Platform.runLater(() -> {
@@ -102,7 +107,35 @@ public class SelectYourFood {
                     stage.setOnCloseRequest(event -> {
                         cachedSuggestions = null;
                     });
-                });
+
+
+            AccountDataService accountDataService = new AccountDataService(accountDataRepository, accountAllergyFoodRepository, accountLikedFoodRepository, accountDislikedFoodRepository);
+            double calories = accountDataService.calculateCalories(1L);
+
+            double adjustedCalories = 0.0;
+            Integer mealType = getRow();
+
+            switch (mealType) {
+                case 1:
+                    adjustedCalories = calories * 0.2;
+                    break;
+                case 2:
+                    adjustedCalories = calories * 0.3;
+                    break;
+                case 3:
+                    adjustedCalories = calories * 0.25;
+                    break;
+                case 4:
+                    adjustedCalories = calories * 0.125;
+                    break;
+                case 5:
+                    adjustedCalories = calories * 0.125;
+                    break;
+            }
+
+            goalCalories.setText("Meta: " + (int) adjustedCalories);
+
+        });
 
         suggestionsComboBox.setMaxHeight(400);
 
