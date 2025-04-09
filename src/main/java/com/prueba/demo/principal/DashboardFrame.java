@@ -2603,6 +2603,11 @@ public class DashboardFrame {
         pause.play();
     }
 
+    private boolean isNullOrEmpty(String str) {
+        return str == null || str.trim().isEmpty();
+    }
+
+
     public void generateReport() throws FileNotFoundException, IOException {
         String dest = "toSendPDF.pdf";
         PdfWriter writer = new PdfWriter(dest);
@@ -2722,12 +2727,23 @@ public class DashboardFrame {
 
             DayMeal dayMeals = result.getDayMeals();
             if (dayMeals != null) {
-                table.addCell(new Cell().add(new Paragraph(getFoodNames(dayMeals.getBreakfast()))));
-                table.addCell(new Cell().add(new Paragraph(getFoodNames(dayMeals.getLunch()))));
-                table.addCell(new Cell().add(new Paragraph(getFoodNames(dayMeals.getDinner()))));
-                table.addCell(new Cell().add(new Paragraph(getFoodNames(dayMeals.getSnack()))));
-                table.addCell(new Cell().add(new Paragraph(getFoodNames(dayMeals.getOptional()))));
-            } else {
+                table.addCell(new Cell().add(new Paragraph(
+                        isNullOrEmpty(getFoodNames(dayMeals.getBreakfast())) ? "No comió." : getFoodNames(dayMeals.getBreakfast())
+                )));
+                table.addCell(new Cell().add(new Paragraph(
+                        isNullOrEmpty(getFoodNames(dayMeals.getLunch())) ? "No comió." : getFoodNames(dayMeals.getLunch())
+                )));
+                table.addCell(new Cell().add(new Paragraph(
+                        isNullOrEmpty(getFoodNames(dayMeals.getDinner())) ? "No comió." : getFoodNames(dayMeals.getDinner())
+                )));
+                table.addCell(new Cell().add(new Paragraph(
+                        isNullOrEmpty(getFoodNames(dayMeals.getSnack())) ? "No comió." : getFoodNames(dayMeals.getSnack())
+                )));
+                table.addCell(new Cell().add(new Paragraph(
+                        isNullOrEmpty(getFoodNames(dayMeals.getOptional())) ? "No comió." : getFoodNames(dayMeals.getOptional())
+                )));
+            }
+            else {
                 // Si dayMeals es nulo, llenar todas las celdas con "No disponible"
                 for (int i = 0; i < 5; i++) {
                     table.addCell(new Cell().add(new Paragraph("No disponible")));
@@ -2759,18 +2775,18 @@ public class DashboardFrame {
                 }
 
                 // Agregar a la tabla el nombre del ejercicio y la duración
-                exerciseTable.addCell(new Cell().add(new Paragraph(exerciseNames.length() > 0 ? exerciseNames.substring(0, exerciseNames.length() - 2) : "No disponible")));
+                exerciseTable.addCell(new Cell().add(new Paragraph(exerciseNames.length() > 0 ? exerciseNames.substring(0, exerciseNames.length() - 2) : "No realizado.")));
                 exerciseTable.addCell(new Cell().add(new Paragraph(exercise.getTime() + " mins")));
             } else {
-                exerciseTable.addCell(new Cell().add(new Paragraph("No disponible")));
-                exerciseTable.addCell(new Cell().add(new Paragraph("No disponible")));
+                exerciseTable.addCell(new Cell().add(new Paragraph("No realizado.")));
+                exerciseTable.addCell(new Cell().add(new Paragraph("No realizado.")));
             }
         }
 
         document.add(exerciseTable);
 
 
-        document.add(new Paragraph("Desafios de dieta a la semana").setFont(boldFont).setFontSize(14));
+        document.add(new Paragraph("Razón de incumplimiento").setFont(boldFont).setFontSize(14));
 
 
         Table reasonsTable = new Table(new float[]{3, 3}).useAllAvailableWidth(); // 2 columnas
@@ -2780,7 +2796,7 @@ public class DashboardFrame {
         for (Report result : results) {
             reasonsTable.addCell(new Cell().add(new Paragraph(result.getDate().toString())));
             DayMeal dayMeals = result.getDayMeals();
-            String challenge = (dayMeals != null && dayMeals.getReason() != null) ? dayMeals.getReason() : "No disponible";
+            String challenge = (dayMeals != null && dayMeals.getReason() != null) ? dayMeals.getReason() : "Satisfactorio.";
             reasonsTable.addCell(new Cell().add(new Paragraph(challenge)));
 
         }
