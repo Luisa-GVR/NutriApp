@@ -121,6 +121,8 @@ public class GoalsCheck {
 
         DayMeal dayMeal = getDayMealForDate(date);
 
+        StringBuilder notDone = new StringBuilder();
+
         if (dayMeal == null) {
             // If DayMeal does not exist for this date, create a new one
             dayMeal = new DayMeal();
@@ -135,6 +137,8 @@ public class GoalsCheck {
 
                 dayMeal.getBreakfast().add(selectedFood);
             }
+            notDone.append(" (Sin cumplir desayuno)");
+
         }
 
         // Update lunch
@@ -145,6 +149,8 @@ public class GoalsCheck {
 
                 dayMeal.getLunch().add(selectedFood);
             }
+            notDone.append(" (Sin cumplir comida)");
+
         }
 
         // Update dinner
@@ -155,6 +161,8 @@ public class GoalsCheck {
 
                 dayMeal.getDinner().add(selectedFood);
             }
+            notDone.append(" (Sin cumplir cena)");
+
         }
 
         // Update snacks
@@ -165,6 +173,8 @@ public class GoalsCheck {
 
                 dayMeal.getSnack().add(selectedFood);
             }
+            notDone.append(" (Sin cumplir snack)");
+
         }
 
         // Update optional
@@ -175,9 +185,13 @@ public class GoalsCheck {
 
                 dayMeal.getOptional().add(selectedFood);
             }
+            notDone.append(" (Sin cumplir opcional)");
+
         }
 
-        dayMeal.setReason(reasonTextArea.getText());
+        String fullReason = reasonTextArea.getText() + notDone;
+
+        dayMeal.setReason(fullReason);
         dayMealRepository.save(dayMeal);
 
         saveToReport(date);
