@@ -1,0 +1,837 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox fx:id="rootPane" maxWidth="-Infinity" minHeight="660.0" minWidth="1000.0" prefHeight="660.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.prueba.demo.principal.DashboardFrame">
+   <children>
+      <GridPane maxWidth="1.7976931348623157E308" prefWidth="600.0" VBox.vgrow="ALWAYS">
+         <columnConstraints>
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="295.0" minWidth="10.0" prefWidth="151.0" />
+            <ColumnConstraints hgrow="ALWAYS" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="400.0" valignment="CENTER" vgrow="ALWAYS" />
+         </rowConstraints>
+         <children>
+            <AnchorPane prefWidth="254.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+               <children>
+                  <StackPane alignment="TOP_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <VBox fx:id="profilePaneEdit" prefHeight="200.0" prefWidth="100.0" spacing="30.0" style="-fx-background-color: #f9f9f9;">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" maxHeight="50.0" minHeight="-Infinity" prefHeight="50.0" prefWidth="700.0" spacing="20.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: white;" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <Label fx:id="userNameLabel" text="Nombre del Usuario">
+                                       <font>
+                                          <Font name="System Bold" size="24.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="20.0" right="200.0" />
+                                       </padding>
+                                    </Label>
+                                    <Button fx:id="selectUserButton" mnemonicParsing="false" style="-fx-background-color: #7da12d;" text="Regresar a elegir usuario" textFill="WHITE">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Button>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="20.0" right="20.0" top="20.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <VBox alignment="TOP_CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" spacing="20.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: white;" VBox.vgrow="ALWAYS">
+                                 <VBox.margin>
+                                    <Insets bottom="20.0" left="20.0" right="20.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <HBox alignment="CENTER" prefHeight="345.0" prefWidth="753.0">
+                                       <children>
+                                          <VBox alignment="TOP_CENTER" minHeight="-Infinity" prefHeight="308.0" prefWidth="380.0" spacing="20.0">
+                                             <children>
+                                                <Label text="Datos Generales">
+                                                   <font>
+                                                      <Font name="System Bold" size="16.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets top="40.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <GridPane alignment="CENTER" hgap="10.0" prefHeight="190.0" prefWidth="308.0" vgap="40.0">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="137.0" minWidth="10.0" prefWidth="99.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="245.0" minWidth="10.0" prefWidth="177.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="245.0" minWidth="10.0" prefWidth="62.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
+                                                         <children>
+                                                            <Label text="Edad">
+                                                               <font>
+                                                                  <Font name="System Bold" size="12.0" />
+                                                               </font>
+                                                            </Label>
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                                         <children>
+                                                            <Label text="Sexo">
+                                                               <font>
+                                                                  <Font name="System Bold" size="12.0" />
+                                                               </font>
+                                                            </Label>
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+                                                         <children>
+                                                            <Label text="Estatura (cm)">
+                                                               <font>
+                                                                  <Font name="System Bold" size="12.0" />
+                                                               </font>
+                                                            </Label>
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
+                                                         <children>
+                                                            <Label text="Peso Actual (kg)">
+                                                               <font>
+                                                                  <Font name="System Bold" size="12.0" />
+                                                               </font>
+                                                            </Label>
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4">
+                                                         <children>
+                                                            <Label text="Alergias">
+                                                               <font>
+                                                                  <Font name="System Bold" size="12.0" />
+                                                               </font>
+                                                            </Label>
+                                                         </children>
+                                                      </HBox>
+                                                      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+                                                         <children>
+                                                            <TextArea fx:id="ageTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" style="-fx-border-color: #7da12d; -fx-border-width: 1; -fx-border-radius: 4;" />
+                                                         </children>
+                                                      </VBox>
+                                                      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                         <children>
+                                                            <TextArea fx:id="sexTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" style="-fx-border-color: #dfe2e6; -fx-border-width: 1; -fx-border-radius: 4;" />
+                                                         </children>
+                                                      </VBox>
+                                                      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                         <children>
+                                                            <TextArea fx:id="heightTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" style="-fx-border-color: #7da12d; -fx-border-width: 1; -fx-border-radius: 4;" />
+                                                         </children>
+                                                      </VBox>
+                                                      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                         <children>
+                                                            <TextArea fx:id="weightTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" style="-fx-border-color: #7da12d; -fx-border-width: 1; -fx-border-radius: 4;" />
+                                                         </children>
+                                                      </VBox>
+                                                      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                                         <children>
+                                                            <TextArea fx:id="allergiesTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" style="-fx-border-color: #dfe2e6; -fx-border-width: 1; -fx-border-radius: 4;" />
+                                                         </children>
+                                                      </VBox>
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="*" GridPane.columnIndex="2" />
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="*" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="*" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                                   </children>
+                                                   <VBox.margin>
+                                                      <Insets left="20.0" />
+                                                   </VBox.margin>
+                                                </GridPane>
+                                             </children>
+                                             <HBox.margin>
+                                                <Insets right="20.0" />
+                                             </HBox.margin>
+                                          </VBox>
+                                          <Line endX="-100.0" endY="320.0" startX="-100.0" startY="50.0">
+                                             <HBox.margin>
+                                                <Insets top="45.0" />
+                                             </HBox.margin>
+                                          </Line>
+                                          <VBox alignment="TOP_CENTER" prefHeight="308.0" prefWidth="380.0" spacing="20.0">
+                                             <children>
+                                                <Label text="Medidas Corporales (cm)">
+                                                   <font>
+                                                      <Font name="System Bold" size="16.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets top="40.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <GridPane alignment="CENTER" hgap="10.0" prefHeight="228.0" vgap="40.0">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="137.0" minWidth="10.0" prefWidth="97.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="245.0" minWidth="10.0" prefWidth="198.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
+                                                         <children>
+                                                            <Label text="Abdomen">
+                                                               <font>
+                                                                  <Font name="System Bold" size="12.0" />
+                                                               </font>
+                                                            </Label>
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                                         <children>
+                                                            <Label text="Cadera">
+                                                               <font>
+                                                                  <Font name="System Bold" size="12.0" />
+                                                               </font>
+                                                            </Label>
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+                                                         <children>
+                                                            <Label text="Cintura">
+                                                               <font>
+                                                                  <Font name="System Bold" size="12.0" />
+                                                               </font>
+                                                            </Label>
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
+                                                         <children>
+                                                            <Label text="Cuello">
+                                                               <font>
+                                                                  <Font name="System Bold" size="12.0" />
+                                                               </font>
+                                                            </Label>
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4">
+                                                         <children>
+                                                            <Label text="Brazo">
+                                                               <font>
+                                                                  <Font name="System Bold" size="12.0" />
+                                                               </font>
+                                                            </Label>
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5">
+                                                         <children>
+                                                            <Label text="Pecho">
+                                                               <font>
+                                                                  <Font name="System Bold" size="12.0" />
+                                                               </font>
+                                                            </Label>
+                                                         </children>
+                                                      </HBox>
+                                                      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+                                                         <children>
+                                                            <TextArea fx:id="abdomenTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" style="-fx-border-color: #7da12d; -fx-border-width: 1; -fx-border-radius: 4;" />
+                                                         </children>
+                                                      </VBox>
+                                                      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                         <children>
+                                                            <TextArea fx:id="hipTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" style="-fx-border-color: #7da12d; -fx-border-width: 1; -fx-border-radius: 4;" />
+                                                         </children>
+                                                      </VBox>
+                                                      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                         <children>
+                                                            <TextArea fx:id="waistTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" style="-fx-border-color: #7da12d; -fx-border-width: 1; -fx-border-radius: 4;" />
+                                                         </children>
+                                                      </VBox>
+                                                      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                         <children>
+                                                            <TextArea fx:id="neckTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" style="-fx-border-color: #7da12d; -fx-border-width: 1; -fx-border-radius: 4;" />
+                                                         </children>
+                                                      </VBox>
+                                                      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                                         <children>
+                                                            <TextArea fx:id="armTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" style="-fx-border-color: #7da12d; -fx-border-width: 1; -fx-border-radius: 4;" />
+                                                         </children>
+                                                      </VBox>
+                                                      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                                         <children>
+                                                            <TextArea fx:id="chestTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" style="-fx-border-color: #7da12d; -fx-border-width: 1; -fx-border-radius: 4;" />
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                   <VBox.margin>
+                                                      <Insets top="-7.0" />
+                                                   </VBox.margin>
+                                                </GridPane>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </HBox>
+                                    <StackPane maxWidth="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="250.0">
+                                       <children>
+                                          <HBox fx:id="infoHbox" alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="250.0" style="-fx-background-color: #d4e7b1; -fx-background-radius: 5; -fx-border-color: #7da12d; -fx-border-radius: 4;" visible="false">
+                                             <children>
+                                                <HBox alignment="CENTER" prefHeight="30.0" prefWidth="29.0" style="-fx-background-color: #7da12d; -fx-background-radius: 5;">
+                                                   <children>
+                                                      <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="15.0" prefWidth="15.0" style="-fx-background-radius: 100; -fx-background-color: #e5e5e5;" text="i" textAlignment="CENTER" textFill="#7da12d">
+                                                         <font>
+                                                            <Font name="System Bold Italic" size="12.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </HBox>
+                                                <Label text="El perfil del usuario ha sido actualizado" textFill="#7da12d">
+                                                   <HBox.margin>
+                                                      <Insets left="5.0" />
+                                                   </HBox.margin>
+                                                   <font>
+                                                      <Font name="System Bold" size="11.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                          <Button fx:id="updateButton" mnemonicParsing="false" style="-fx-background-color: #7da12d;" text="Actualizar perfil" textFill="WHITE">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+                                             </padding>
+                                          </Button>
+                                       </children>
+                                    </StackPane>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </VBox>
+                        <VBox fx:id="profilePaneSelect" prefHeight="200.0" prefWidth="100.0" spacing="30.0" style="-fx-background-color: #f9f9f9;" visible="false">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" maxHeight="50.0" minHeight="-Infinity" prefHeight="50.0" prefWidth="700.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: white;" VBox.vgrow="ALWAYS">
+                                 <VBox.margin>
+                                    <Insets left="20.0" right="20.0" top="20.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" maxWidth="600.0" minWidth="600.0" prefHeight="30.0" prefWidth="600.0" style="-fx-background-color: #d4e7b1; -fx-background-radius: 5; -fx-border-color: #7da12d; -fx-border-radius: 4;">
+                                       <children>
+                                          <HBox alignment="CENTER" prefHeight="30.0" prefWidth="29.0" style="-fx-background-color: #7da12d; -fx-background-radius: 5;">
+                                             <children>
+                                                <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="15.0" prefWidth="15.0" style="-fx-background-radius: 100; -fx-background-color: #e5e5e5;" text="i" textAlignment="CENTER" textFill="#7da12d">
+                                                   <font>
+                                                      <Font name="System Bold Italic" size="12.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                          <Label text="Elige un usuario de la lista para generar un reporte de medidas corporales." textFill="#7da12d">
+                                             <HBox.margin>
+                                                <Insets left="5.0" />
+                                             </HBox.margin>
+                                             <font>
+                                                <Font name="System Bold" size="11.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets bottom="10.0" left="20.0" top="10.0" />
+                                       </HBox.margin>
+                                    </HBox>
+                                 </children>
+                              </HBox>
+                              <VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" spacing="20.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: white;" VBox.vgrow="ALWAYS">
+                                 <VBox.margin>
+                                    <Insets bottom="20.0" left="20.0" right="20.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <GridPane>
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <Label fx:id="userNameLabel" text="Elige a un usuario">
+                                             <font>
+                                                <Font name="System Bold" size="24.0" />
+                                             </font>
+                                             <GridPane.margin>
+                                                <Insets left="40.0" />
+                                             </GridPane.margin>
+                                          </Label>
+                                          <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+                                             <children>
+                                                <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="20.0" prefHeight="28.0" prefWidth="180.0" style="-fx-border-color: #aeaeae; -fx-border-width: 1.5; -fx-border-radius: 4;">
+                                                   <children>
+                                                      <TextField fx:id="searchField" promptText="Buscar..." style="-fx-background-color: white; -fx-border-color: white; -fx-border-width: 0.1;">
+                                                         <HBox.margin>
+                                                            <Insets />
+                                                         </HBox.margin>
+                                                      </TextField>
+                                                      <ImageView fitHeight="20.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@images/search.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </children>
+                                                   <HBox.margin>
+                                                      <Insets right="40.0" />
+                                                   </HBox.margin>
+                                                </HBox>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets top="20.0" />
+                                       </VBox.margin>
+                                    </GridPane>
+                                    <ListView fx:id="usersListView" prefHeight="400.0" prefWidth="200.0" style="-fx-border-color: #d4e7b1; -fx-border-width: 2; -fx-border-radius: 4; -fx-background-radius: 4;">
+                                       <VBox.margin>
+                                          <Insets left="40.0" right="40.0" />
+                                       </VBox.margin>
+                                    </ListView>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </VBox>
+                        <VBox fx:id="reportsPane" minHeight="-Infinity" prefHeight="520.0" prefWidth="750.0" spacing="30.0" visible="false">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="631.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: white;">
+                                 <children>
+                                    <Label text="Reportes">
+                                       <font>
+                                          <Font name="System Bold" size="24.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="20.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="20.0" right="20.0" top="20.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="487.0" spacing="10.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: white;" VBox.vgrow="ALWAYS">
+                                 <VBox.margin>
+                                    <Insets bottom="20.0" left="20.0" right="20.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="26.0" prefWidth="733.0" spacing="20.0">
+                                       <children>
+                                          <DatePicker fx:id="startDatePicker" promptText="Fecha de inicio" style="-fx-border-color: #7da12d; -fx-border-width: 1.5; -fx-border-radius: 4;" />
+                                          <Label text="-" textFill="#7da12d">
+                                             <font>
+                                                <Font name="System Bold" size="24.0" />
+                                             </font>
+                                          </Label>
+                                          <DatePicker fx:id="endDatePicker" promptText="Fecha de termino" style="-fx-border-color: #7da12d; -fx-border-width: 1.5; -fx-border-radius: 4;" />
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets left="20.0" top="20.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                    <HBox fillHeight="false">
+                                       <children>
+                                          <StackPane maxHeight="60.0" prefHeight="60.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <HBox fx:id="infoReportHbox" alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="611.0" style="-fx-background-color: #e5e5e5; -fx-background-radius: 5;">
+                                                   <children>
+                                                      <HBox alignment="CENTER" prefHeight="30.0" prefWidth="29.0" style="-fx-background-color: #606060; -fx-background-radius: 5;">
+                                                         <children>
+                                                            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="15.0" prefWidth="15.0" style="-fx-background-radius: 100; -fx-background-color: #e5e5e5;" text="i" textAlignment="CENTER" textFill="#606060">
+                                                               <font>
+                                                                  <Font name="System Bold Italic" size="12.0" />
+                                                               </font>
+                                                            </Label>
+                                                         </children>
+                                                      </HBox>
+                                                      <Label prefHeight="16.0" prefWidth="646.0" text="Por favor, verifique que los datos sean correcto. Gestione el perfil de su usuario para actualizar la información." textFill="#606060">
+                                                         <HBox.margin>
+                                                            <Insets left="5.0" />
+                                                         </HBox.margin>
+                                                         <font>
+                                                            <Font name="System Bold" size="11.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </HBox>
+                                                <HBox fx:id="errorReportHbox" alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="611.0" style="-fx-background-color: #ffebee; -fx-background-radius: 5;" visible="false">
+                                                   <children>
+                                                      <HBox alignment="CENTER" prefHeight="30.0" prefWidth="29.0" style="-fx-background-color: #d55d61; -fx-background-radius: 5;">
+                                                         <children>
+                                                            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="15.0" prefWidth="15.0" style="-fx-background-radius: 100; -fx-background-color: #e5e5e5;" text="i" textAlignment="CENTER" textFill="#606060">
+                                                               <font>
+                                                                  <Font name="System Bold Italic" size="12.0" />
+                                                               </font>
+                                                            </Label>
+                                                         </children>
+                                                      </HBox>
+                                                      <Label prefWidth="569.0" text="Ha ocurrido un error con el envío. Por favor, inténtelo de nuevo." textFill="#d55d61">
+                                                         <HBox.margin>
+                                                            <Insets left="5.0" />
+                                                         </HBox.margin>
+                                                         <font>
+                                                            <Font name="System Bold" size="11.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </HBox>
+                                                <HBox fx:id="successReportHbox" alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="611.0" style="-fx-background-color: #e8f5e9; -fx-background-radius: 5;" visible="false">
+                                                   <children>
+                                                      <HBox alignment="CENTER" prefHeight="30.0" prefWidth="29.0" style="-fx-background-color: #85c487; -fx-background-radius: 5;">
+                                                         <children>
+                                                            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="15.0" prefWidth="15.0" style="-fx-background-radius: 100; -fx-background-color: #e5e5e5;" text="i" textAlignment="CENTER" textFill="#606060">
+                                                               <font>
+                                                                  <Font name="System Bold Italic" size="12.0" />
+                                                               </font>
+                                                            </Label>
+                                                         </children>
+                                                      </HBox>
+                                                      <Label prefWidth="569.0" text="Su reporte se ha enviado correctamente." textFill="#356f46">
+                                                         <HBox.margin>
+                                                            <Insets left="5.0" />
+                                                         </HBox.margin>
+                                                         <font>
+                                                            <Font name="System Bold" size="11.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                             <HBox.margin>
+                                                <Insets right="20.0" />
+                                             </HBox.margin>
+                                          </StackPane>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets left="20.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                    <HBox alignment="TOP_CENTER" prefHeight="345.0" prefWidth="753.0">
+                                       <children>
+                                          <VBox alignment="TOP_CENTER" minHeight="-Infinity" prefHeight="308.0" prefWidth="380.0" spacing="20.0">
+                                             <children>
+                                                <Label text="Datos Generales">
+                                                   <font>
+                                                      <Font name="System Bold" size="16.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets top="40.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <GridPane alignment="CENTER" hgap="10.0" prefHeight="190.0" prefWidth="308.0" vgap="20.0">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="137.0" minWidth="10.0" prefWidth="99.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="245.0" minWidth="10.0" prefWidth="168.20001220703125" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
+                                                         <children>
+                                                            <Label text="Edad">
+                                                               <font>
+                                                                  <Font name="System Bold" size="12.0" />
+                                                               </font>
+                                                            </Label>
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                                         <children>
+                                                            <Label text="Sexo">
+                                                               <font>
+                                                                  <Font name="System Bold" size="12.0" />
+                                                               </font>
+                                                            </Label>
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+                                                         <children>
+                                                            <Label text="Estatura (cm)">
+                                                               <font>
+                                                                  <Font name="System Bold" size="12.0" />
+                                                               </font>
+                                                            </Label>
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
+                                                         <children>
+                                                            <Label text="Peso Actual (kg)">
+                                                               <font>
+                                                                  <Font name="System Bold" size="12.0" />
+                                                               </font>
+                                                            </Label>
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4">
+                                                         <children>
+                                                            <Label text="Alergias">
+                                                               <font>
+                                                                  <Font name="System Bold" size="12.0" />
+                                                               </font>
+                                                            </Label>
+                                                         </children>
+                                                      </HBox>
+                                                      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+                                                         <children>
+                                                            <TextArea fx:id="ageReportTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" />
+                                                         </children>
+                                                      </VBox>
+                                                      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                         <children>
+                                                            <TextArea fx:id="sexReportTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" />
+                                                         </children>
+                                                      </VBox>
+                                                      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                         <children>
+                                                            <TextArea fx:id="heightReportTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" />
+                                                         </children>
+                                                      </VBox>
+                                                      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                         <children>
+                                                            <TextArea fx:id="weightReportTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" />
+                                                         </children>
+                                                      </VBox>
+                                                      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                                         <children>
+                                                            <TextArea fx:id="allergiesReportTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" />
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                   <VBox.margin>
+                                                      <Insets left="20.0" />
+                                                   </VBox.margin>
+                                                </GridPane>
+                                             </children>
+                                             <HBox.margin>
+                                                <Insets right="20.0" />
+                                             </HBox.margin>
+                                          </VBox>
+                                          <Line endX="-100.0" endY="320.0" startX="-100.0" startY="50.0">
+                                             <HBox.margin>
+                                                <Insets top="45.0" />
+                                             </HBox.margin>
+                                          </Line>
+                                          <VBox alignment="TOP_CENTER" prefHeight="308.0" prefWidth="380.0" spacing="20.0">
+                                             <children>
+                                                <Label text="Medidas Corporales (cm)">
+                                                   <font>
+                                                      <Font name="System Bold" size="16.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets top="40.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <GridPane alignment="CENTER" hgap="10.0" prefHeight="228.0" vgap="20.0">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="137.0" minWidth="10.0" prefWidth="97.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="245.0" minWidth="10.0" prefWidth="198.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
+                                                         <children>
+                                                            <Label text="Abdomen">
+                                                               <font>
+                                                                  <Font name="System Bold" size="12.0" />
+                                                               </font>
+                                                            </Label>
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                                         <children>
+                                                            <Label text="Cadera">
+                                                               <font>
+                                                                  <Font name="System Bold" size="12.0" />
+                                                               </font>
+                                                            </Label>
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+                                                         <children>
+                                                            <Label text="Cintura">
+                                                               <font>
+                                                                  <Font name="System Bold" size="12.0" />
+                                                               </font>
+                                                            </Label>
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
+                                                         <children>
+                                                            <Label text="Cuello">
+                                                               <font>
+                                                                  <Font name="System Bold" size="12.0" />
+                                                               </font>
+                                                            </Label>
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4">
+                                                         <children>
+                                                            <Label text="Brazo">
+                                                               <font>
+                                                                  <Font name="System Bold" size="12.0" />
+                                                               </font>
+                                                            </Label>
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5">
+                                                         <children>
+                                                            <Label text="Pecho">
+                                                               <font>
+                                                                  <Font name="System Bold" size="12.0" />
+                                                               </font>
+                                                            </Label>
+                                                         </children>
+                                                      </HBox>
+                                                      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+                                                         <children>
+                                                            <TextArea fx:id="abdomenReportTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" />
+                                                         </children>
+                                                      </VBox>
+                                                      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                         <children>
+                                                            <TextArea fx:id="hipReportTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" />
+                                                         </children>
+                                                      </VBox>
+                                                      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                         <children>
+                                                            <TextArea fx:id="waistReportTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" />
+                                                         </children>
+                                                      </VBox>
+                                                      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                         <children>
+                                                            <TextArea fx:id="neckReportTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" />
+                                                         </children>
+                                                      </VBox>
+                                                      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                                         <children>
+                                                            <TextArea fx:id="armReportTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" />
+                                                         </children>
+                                                      </VBox>
+                                                      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                                         <children>
+                                                            <TextArea fx:id="chestReportTextArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="180.0" />
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                   <VBox.margin>
+                                                      <Insets top="-7.0" />
+                                                   </VBox.margin>
+                                                </GridPane>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                    <Button fx:id="sendReportButton" mnemonicParsing="false" onMouseEntered="#handleMouseEnteredDiet" onMouseExited="#handleMouseExitedDiet" style="-fx-background-color: #7da12d;" text="Enviar Reporte" textFill="WHITE">
+                                       <VBox.margin>
+                                          <Insets bottom="20.0" />
+                                       </VBox.margin>
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+                                       </padding>
+                                    </Button>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </StackPane>
+               </children>
+            </AnchorPane>
+            <VBox fx:id="menuVbox" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" spacing="10.0" style="-fx-background-color: #262626;" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+               <children>
+                  <HBox fx:id="logoHBox" alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="50.0" prefWidth="150.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <ImageView fx:id="nutriappImage" fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" style=": ;" HBox.hgrow="ALWAYS">
+                           <image>
+                              <Image url="@images/NutriApp64x64.png" />
+                           </image>
+                        </ImageView>
+                        <Label fx:id="nutriappLabel" text="NutriApp" textFill="#f9f9f9" HBox.hgrow="ALWAYS">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="1.0" prefWidth="150.0" style="-fx-border-color: #7da12d;" />
+                  <Button fx:id="profileButton" mnemonicParsing="false" onMouseEntered="#mouseEntered" onMouseExited="#mouseExited" style="-fx-background-color: transparent;" text="Perfiles" textFill="#f9f9f9">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/profile.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <VBox.margin>
+                        <Insets left="20.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="reportsButton" mnemonicParsing="false" onMouseEntered="#mouseEntered" onMouseExited="#mouseExited" style="-fx-background-color: transparent;" text="Reportes" textFill="#f9f9f9">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/reportsIcon.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <VBox.margin>
+                        <Insets left="20.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </GridPane>
+   </children>
+</VBox>
