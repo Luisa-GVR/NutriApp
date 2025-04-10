@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -10,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #262626;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.prueba.demo.principal.LoginFrame">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #262626;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.prueba.demo.principal.LoginAdminFrame">
     <children>
         <VBox alignment="TOP_CENTER" layoutX="250.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="15.0" style="-fx-scale-x: 1; -fx-scale-y: 1;" AnchorPane.bottomAnchor="-50.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="-30.0">
             <children>
@@ -19,7 +20,7 @@
                         <Image url="@images/NutriApp.png" />
                     </image>
                 </ImageView>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="600.0" style="-fx-scale-x: 1; -fx-scale-y: 1;" text="¡Únete ahora y personaliza tu experiencia!" textAlignment="CENTER" textFill="WHITE" VBox.vgrow="ALWAYS">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="600.0" style="-fx-scale-x: 1; -fx-scale-y: 1;" text="Iniciar sesión como administrador" textAlignment="CENTER" textFill="WHITE" VBox.vgrow="ALWAYS">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
@@ -29,24 +30,27 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-                <TextField fx:id="nameField" maxWidth="-Infinity" minHeight="25.0" minWidth="300.0" promptText="Nombre completo" style="-fx-border-color: #7da12d; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-color: #262626; -fx-text-fill: #f9f9f9;" VBox.vgrow="ALWAYS">
+                <TextField fx:id="emailField" maxWidth="-Infinity" minHeight="25.0" minWidth="300.0" promptText="Correo" style="-fx-border-color: #7da12d; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-color: #262626; -fx-text-fill: #f9f9f9;" VBox.vgrow="ALWAYS">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </TextField>
-                <TextField id="emailField" fx:id="emailField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="25.0" minWidth="300.0" promptText="Correo" style="-fx-border-color: #7da12d; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-color: #262626; -fx-text-fill: #f9f9f9;" VBox.vgrow="ALWAYS">
+            <PasswordField fx:id="passwordField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="25.0" minWidth="300.0" promptText="Contraseña" style="-fx-border-color: #7da12d; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-color: #262626; -fx-text-fill: #f9f9f9;">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
-            </TextField>
-                <Button fx:id="generateCodeField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseExited" style="-fx-background-color: #7DA12D;" text="Solicitar código de verificación" VBox.vgrow="ALWAYS">
+            </PasswordField>
+                <Button fx:id="loginButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseExited" style="-fx-background-color: #7DA12D;" text="Iniciar Sesión" VBox.vgrow="ALWAYS">
                     <font>
                         <Font name="System Bold" size="12.0" />
                     </font>
+               <padding>
+                  <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+               </padding>
                 </Button>
             </children>
         </VBox>
-      <Button fx:id="adminButton" layoutX="943.0" layoutY="8.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseExited" style="-fx-background-color: #7DA12D;" text="Acceso admin" textFill="#f0f0f0" AnchorPane.rightAnchor="-60.0" AnchorPane.topAnchor="-20.0">
+      <Button fx:id="backButton" layoutX="943.0" layoutY="8.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseExited" style="-fx-background-color: #7DA12D;" text="Regresar" textFill="#f0f0f0" AnchorPane.leftAnchor="-60.0" AnchorPane.topAnchor="-20.0">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>

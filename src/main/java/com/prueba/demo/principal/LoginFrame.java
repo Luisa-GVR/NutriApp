@@ -41,6 +41,7 @@ public class LoginFrame {
     //---Variables LoginFrame---
     //Botones
     @FXML private Button generateCodeField;
+    @FXML private Button adminButton;
     //Labels
     @FXML private Label labelMessage;
 
@@ -157,7 +158,10 @@ public class LoginFrame {
             closeCurrentWindow();
             openDashboard();
         }
-
+        adminButton.setOnAction(event ->{
+            closeCurrentWindow();
+            openLoginAdminFrame();
+        });
 
 
 
@@ -264,6 +268,41 @@ public class LoginFrame {
             Stage stage = (Stage) generateCodeField.getScene().getWindow();
             if (stage != null) {
                 stage.close();
+            }
+        });
+    }
+    private void openLoginAdminFrame() {
+        Platform.runLater(() -> {
+            try {
+                // Obtener la ventana actual desde el stage principal
+                Stage stage = (Stage) generateCodeField.getScene().getWindow();
+
+                if (stage != null) {
+                    stage.close(); // Cerrar la ventana actual
+                }
+
+                // Cargar la nueva ventana
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/LoginAdminFrame.fxml"));
+                loader.setControllerFactory(applicationContext::getBean); // *** Crucial Line ***
+
+
+                Scene scene = new Scene(loader.load());
+
+                // Crear un nuevo Stage para la ventana principal
+                Stage newStage = new Stage();
+                newStage.setTitle("Inicio");
+                newStage.setScene(scene);
+
+                // Establecer el tamaño mínimo de la ventana principal
+                newStage.setMinWidth(1000);  // Ancho mínimo de la ventana
+                newStage.setMinHeight(660); // Alto mínimo de la ventana
+
+                // Mostrar la nueva ventana
+                newStage.show();
+
+            } catch (Exception e) {
+                e.printStackTrace();  // Para obtener más detalles sobre el error
+                showAlert("Error", "No se pudo abrir la ventana principal.");
             }
         });
     }
