@@ -1,12 +1,7 @@
 package com.prueba.demo.principal;
 
-import com.prueba.demo.model.Account;
 import com.prueba.demo.modelFreeSQL.AccountFreeSQL;
-import com.prueba.demo.repository.AccountRepository;
 import com.prueba.demo.repositoryFreeSQL.AccountFreeSQLRepository;
-import com.prueba.demo.service.IEmailService;
-import com.prueba.demo.service.dto.EmailDTO;
-import jakarta.mail.MessagingException;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,21 +15,11 @@ import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
-
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
+import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.security.SecureRandom;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Optional;
-import java.util.Random;
 
 @Component
 public class LoginAdminFrame {
@@ -54,17 +39,6 @@ public class LoginAdminFrame {
     //AUTOWIRED
     @Autowired
     private ApplicationContext applicationContext;
-    @Autowired
-    private IEmailService iEmailService;
-    @Autowired
-
-    private TemplateEngine templateEngine;
-    @Autowired
-    private AccountRepository accountRepository;
-
-
-    private String verificationCode;
-    private boolean generatedCode = false;
 
     //Métodos front
     @FXML
@@ -89,148 +63,45 @@ public class LoginAdminFrame {
     AccountFreeSQLRepository accountFreeSQLRepository;
 
     @FXML
-    private void validateFields() {
-        String email = passwordField.getText().trim().toLowerCase();
-        String name = emailField.getText().trim();
+    private boolean validateFields() {
+        String inputPassword = passwordField.getText().trim();
+        String email = emailField.getText().trim();
 
         Optional<AccountFreeSQL> existingAccount = accountFreeSQLRepository.findByEmail(email);
 
-
-
-        boolean isValidEmail = email.matches("^[\\w-\\.]+@(?:gmail\\.com|hotmail\\.com|outlook\\.com)$");
-
-        boolean isValidName = name.matches("^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$") && name.length() <= 70;
-
         if (existingAccount.isPresent()) {
-            // Si ya existe una cuenta con este correo, mostramos un mensaje de error
-            labelMessage.setStyle("-fx-text-fill: #b30000;");
-            labelMessage.setText("Este correo electrónico ya está registrado. Por favor, ingresa otro.");
-
-            passwordField.setStyle(originalStyleEmail + " -fx-border-color: #b30000;");
-            return;
+            String storedEncryptedPassword = existingAccount.get().getName();
+            return compareEncryptedPassword(inputPassword, storedEncryptedPassword);
         }
 
-
-        if (email.isEmpty() || name.isEmpty() || !isValidEmail || !isValidName) {
-            labelMessage.setStyle("-fx-text-fill: #b30000;");
-            labelMessage.setText("Nombre o correo electrónico inválidos. Por favor, verifica e intenta nuevamente");
-
-            if (name.isEmpty() || !isValidName) {
-                emailField.setStyle(originalStyleName + " -fx-border-color: #b30000;");
-            } else {
-                emailField.setStyle(originalStyleName);
-            }
-
-            if (email.isEmpty() || !isValidEmail) {
-                passwordField.setStyle(originalStyleEmail + " -fx-border-color: #b30000;");
-            } else {
-                passwordField.setStyle(originalStyleEmail);
-            }
-
-            return;
-        }
-
-        emailField.setStyle(originalStyleName);
-        passwordField.setStyle(originalStyleEmail);
-        labelMessage.setText(""); // Limpiar mensaje de error si los datos son correctos
+        return false;
     }
+
 
 
     @FXML
     private void initialize() {
-        //Variables de estilos originales
 
         //Llamar metodos, para cambiar estilos mediante eventos
         passwordField.setOnMouseClicked(event -> handleFieldClick());
         emailField.setOnMouseClicked(event -> handleFieldClick());
         // Verificar si ya existe un usuario validado
 
-
         // Configurar evento en el campo de generación de código
         loginButton.setOnAction(event -> {
-            try {
-                validateFields(); // Llama la validación
 
-                if (!labelMessage.getText().isEmpty()) {
-                    return;
-                }
-                validateFields();
-
-
-
-                generateCodeVerification();
-            } catch (MessagingException e) {
-                showAlert("Error", "No se pudo enviar el correo.");
+            if(validateFields()){
+                closeCurrentWindow();
+                openDashboardAdminFrame();
+            } else {
+                //aqui pon el errorlabel con el "contraseña o correo incorrecto" / setvisible uwu
             }
+
         });
         backButton.setOnAction(event ->{
             closeCurrentWindow();
             openLoginFrame();
         });
-    }
-
-
-
-    private void generateCodeVerification() throws MessagingException {
-        Random random = new Random();
-        int code = 10000 + random.nextInt(90000);
-        verificationCode = String.valueOf(code);
-        generatedCode = true;
-
-        showAlert("Código Generado", "Se ha enviado el código a tu nutrióloga.");
-
-        // Encriptar y guardar el código
-        try {
-            SecretKey secretKey = getOrCreateKey();
-            String encryptedCode = encrypt(verificationCode, secretKey);
-            saveToFile(CODE_FILE, encryptedCode);
-        } catch (Exception e) {
-            showAlert("Error", "No se pudo guardar el código de verificación.");
-        }
-
-        // Enviar email
-        Context context = new Context();
-        context.setVariable("verificationCode", verificationCode);
-        context.setVariable("name", emailField.getText().trim());
-        context.setVariable("email", passwordField.getText().trim().toLowerCase());
-        String contentHTML = templateEngine.process("email", context);
-
-        EmailDTO emailDTO = new EmailDTO();
-        emailDTO.setAddressee("nutriappunison@gmail.com");
-        emailDTO.setSubject("Código de verificación");
-        emailDTO.setMessage(contentHTML);
-
-        iEmailService.sendMail(emailDTO);
-
-        Account account = new Account();
-        account.setEmail(passwordField.getText());
-        account.setName(emailField.getText());
-
-        accountRepository.save(account);
-
-
-
-        // Cerrar la ventana actual y abrir la de validación
-        closeCurrentWindow();
-        openValidationFrame();
-    }
-
-    private static final String AES_KEY_FILE = "src/main/resources/encryption_key.txt";
-    private static final String CODE_FILE = "src/main/resources/encrypted_code.txt";
-
-    //Metodos para guardar el codigo en caso de cerrar la aplicacion
-    private SecretKey getOrCreateKey() throws Exception {
-        File keyFile = new File(AES_KEY_FILE);
-        if (keyFile.exists()) {
-            byte[] keyBytes = Files.readAllBytes(Paths.get(AES_KEY_FILE));
-            return new SecretKeySpec(keyBytes, "AES");
-        } else {
-            KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
-            keyGenerator.init(128, new SecureRandom());
-            SecretKey secretKey = keyGenerator.generateKey();
-            saveToFile(AES_KEY_FILE, Base64.getEncoder().encodeToString(secretKey.getEncoded()));
-            return secretKey;
-        }
     }
 
     // Método para encriptar un texto con AES
@@ -241,12 +112,23 @@ public class LoginAdminFrame {
         return Base64.getEncoder().encodeToString(encryptedData);
     }
 
-    // Método para guardar texto en un archivo
-    private void saveToFile(String filePath, String content) throws Exception {
-        try (FileOutputStream fos = new FileOutputStream(filePath)) {
-            fos.write(content.getBytes());
+    private SecretKey getAESKey() throws Exception {
+        String keyString = "1234567890123456"; // Clave de 16 caracteres (AES-128)
+        byte[] keyBytes = keyString.getBytes(StandardCharsets.UTF_8);
+        return new SecretKeySpec(keyBytes, "AES");
+    }
+
+    private boolean compareEncryptedPassword(String inputPassword, String storedEncryptedPassword) {
+        try {
+            SecretKey key = getAESKey();
+            String encryptedInput = encrypt(inputPassword, key);
+            return encryptedInput.equals(storedEncryptedPassword);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
+
 
     private void closeCurrentWindow() {
         Platform.runLater(() -> {
@@ -292,106 +174,26 @@ public class LoginAdminFrame {
             }
         });
     }
-    private void openValidationFrame() {
+    private void openDashboardAdminFrame() {
         Platform.runLater(() -> {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ValidationFrame.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/DashboardAdmin.fxml"));
                 loader.setControllerFactory(applicationContext::getBean); // *** Crucial Line ***
                 Scene scene = new Scene(loader.load());
 
-                ValidationFrame validationFrame = loader.getController();
+                Stage dashboardAdminStage = new Stage();
+                dashboardAdminStage.setTitle("Dashboard administración");
+                dashboardAdminStage.setScene(scene);
 
-                validationFrame.setVerificationCode(verificationCode);
-                validationFrame.setName(emailField.getText());
-                validationFrame.setEmail(passwordField.getText());
-
-                Stage validationStage = new Stage();
-                validationStage.setTitle("Validación");
-                validationStage.setScene(scene);
-
-                validationStage.show();
+                dashboardAdminStage.show();
 
             } catch (Exception e) {
                 e.printStackTrace();
-                showAlert("Error", "No se pudo abrir la ventana de validación.");
+                showAlert("Error", "No se pudo abrir la ventana de dashboard.");
             }
         });
     }
 
-    private void openProfileFrame() {
-        Platform.runLater(() -> {
-            try {
-                // Obtener la ventana actual desde el stage principal
-                Stage stage = (Stage) loginButton.getScene().getWindow();
-
-                if (stage != null) {
-                    stage.close(); // Cerrar la ventana actual
-                }
-
-                // Cargar la nueva ventana
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ProfileFrame.fxml"));
-                loader.setControllerFactory(applicationContext::getBean); // *** Crucial Line ***
-
-
-
-                Scene scene = new Scene(loader.load());
-                scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
-
-
-                // Crear un nuevo Stage para la ventana principal
-                Stage newStage = new Stage();
-                newStage.setTitle("Perfil de usuario");
-                newStage.setScene(scene);
-
-                // Establecer el tamaño mínimo de la ventana principal
-                newStage.setMinWidth(900);  // Ancho mínimo de la ventana
-                newStage.setMinHeight(520); // Alto mínimo de la ventana
-
-                // Mostrar la nueva ventana
-                newStage.show();
-
-            } catch (Exception e) {
-                e.printStackTrace();  // Para obtener más detalles sobre el error
-                showAlert("Error", "No se pudo abrir la ventana principal.");
-            }
-        });
-    }
-
-    private void openDashboard() {
-        Platform.runLater(() -> {
-            try {
-                // Obtener la ventana actual desde el stage principal
-                Stage stage = (Stage) loginButton.getScene().getWindow();
-
-                if (stage != null) {
-                    stage.close(); // Cerrar la ventana actual
-                }
-
-                // Cargar la nueva ventana
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Dashboard.fxml"));
-                loader.setControllerFactory(applicationContext::getBean); // *** Crucial Line ***
-
-
-                Scene scene = new Scene(loader.load());
-
-                // Crear un nuevo Stage para la ventana principal
-                Stage newStage = new Stage();
-                newStage.setTitle("Inicio");
-                newStage.setScene(scene);
-
-                // Establecer el tamaño mínimo de la ventana principal
-                newStage.setMinWidth(1000);  // Ancho mínimo de la ventana
-                newStage.setMinHeight(660); // Alto mínimo de la ventana
-
-                // Mostrar la nueva ventana
-                newStage.show();
-
-            } catch (Exception e) {
-                e.printStackTrace();  // Para obtener más detalles sobre el error
-                showAlert("Error", "No se pudo abrir la ventana principal.");
-            }
-        });
-    }
 
     private void showAlert(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
