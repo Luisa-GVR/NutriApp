@@ -39,19 +39,40 @@
                            <children>
                               <HBox alignment="CENTER_LEFT" maxHeight="50.0" minHeight="-Infinity" prefHeight="50.0" prefWidth="700.0" spacing="20.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: white;" VBox.vgrow="ALWAYS">
                                  <children>
-                                    <Label fx:id="userNameLabel" text="Nombre del Usuario">
-                                       <font>
-                                          <Font name="System Bold" size="24.0" />
-                                       </font>
-                                       <padding>
-                                          <Insets left="20.0" right="200.0" />
-                                       </padding>
-                                    </Label>
-                                    <Button fx:id="selectUserButton" mnemonicParsing="false" style="-fx-background-color: #7da12d;" text="Regresar a elegir usuario" textFill="WHITE">
-                                       <font>
-                                          <Font name="System Bold" size="12.0" />
-                                       </font>
-                                    </Button>
+                                    <GridPane HBox.hgrow="ALWAYS">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <Label fx:id="userNameLabel" text="Nombre del Usuario">
+                                             <font>
+                                                <Font name="System Bold" size="24.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+                                             <children>
+                                                <Button fx:id="backButtonProfile" mnemonicParsing="false" style="-fx-background-color: #262626;" text="&lt;&lt; Regresar a Usuarios" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                   <HBox.margin>
+                                                      <Insets right="20.0" />
+                                                   </HBox.margin>
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+                                                   </padding>
+                                                </Button>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </GridPane>
                                  </children>
                                  <VBox.margin>
                                     <Insets left="20.0" right="20.0" top="20.0" />
@@ -333,7 +354,7 @@
                               </VBox>
                            </children>
                         </VBox>
-                        <VBox fx:id="profilePaneSelect" prefHeight="200.0" prefWidth="100.0" spacing="30.0" style="-fx-background-color: #f9f9f9;">
+                        <VBox fx:id="profilePaneSelect" prefHeight="200.0" prefWidth="100.0" spacing="30.0" style="-fx-background-color: #f9f9f9;" visible="false">
                            <children>
                               <HBox alignment="CENTER_LEFT" maxHeight="50.0" minHeight="-Infinity" prefHeight="50.0" prefWidth="700.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: white;" VBox.vgrow="ALWAYS">
                                  <VBox.margin>
@@ -423,18 +444,44 @@
                               </VBox>
                            </children>
                         </VBox>
-                        <VBox fx:id="reportsPane" minHeight="-Infinity" prefHeight="520.0" prefWidth="750.0" spacing="30.0" visible="false">
+                        <VBox fx:id="reportsPane" minHeight="-Infinity" prefHeight="520.0" prefWidth="750.0" spacing="30.0">
                            <children>
                               <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="631.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: white;">
                                  <children>
-                                    <Label text="Reportes">
-                                       <font>
-                                          <Font name="System Bold" size="24.0" />
-                                       </font>
-                                       <padding>
-                                          <Insets left="20.0" />
-                                       </padding>
-                                    </Label>
+                                    <GridPane HBox.hgrow="ALWAYS">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <Label text="Reportes">
+                                             <font>
+                                                <Font name="System Bold" size="24.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+                                             <children>
+                                                <Button fx:id="backButtonReports" mnemonicParsing="false" style="-fx-background-color: #262626;" text="&lt;&lt; Regresar a Usuarios" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+                                                   </padding>
+                                                   <HBox.margin>
+                                                      <Insets right="20.0" />
+                                                   </HBox.margin>
+                                                </Button>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </GridPane>
                                  </children>
                                  <VBox.margin>
                                     <Insets left="20.0" right="20.0" top="20.0" />
