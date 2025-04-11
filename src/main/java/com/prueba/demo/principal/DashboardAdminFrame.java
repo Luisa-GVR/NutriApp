@@ -194,104 +194,14 @@ public class DashboardAdminFrame {
         Button button = (Button) event.getSource();
         button.setStyle("-fx-background-color:  #262626;");
     }
-    public void uploadFoodsFromCSV() {
-        // Verificar y actualizar el estado de creación de la base de datos
-        File propertiesFile = new File("preferencesState.properties");
-        Properties properties = new Properties();
-
-        try {
-            if (!propertiesFile.exists()) {
-                propertiesFile.createNewFile();
-            }
-
-            try (InputStream inputStream = new FileInputStream(propertiesFile)) {
-                properties.load(inputStream);
-            }
-
-            String createdDatabaseValue = properties.getProperty("createdDatabase", "false");
-
-            if ("false".equals(createdDatabaseValue)) {
-                // Subir los alimentos desde el CSV
-                try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("foods.csv")) {
-                    if (inputStream == null) {
-                        throw new FileNotFoundException("foods.csv not found in classpath");
-                    }
-
-                    try (InputStreamReader reader = new InputStreamReader(inputStream);
-                         CSVReader csvReader = new CSVReader(reader)) {                    // Leer el archivo CSV
-                    List<String[]> rows = csvReader.readAll();
-
-                    for (String[] row : rows) {
-                        if (row.length >= 8) {
-                            Food food = new Food();
-                            food.setFoodName(row[0]);
-                            food.setCalories(Double.parseDouble(row[1]));
-                            food.setProtein(Double.parseDouble(row[2]));
-                            food.setTotalCarbohydrate(Double.parseDouble(row[3]));
-                            food.setTotalFat(Double.parseDouble(row[4]));
-                            food.setPortionWeight(Double.parseDouble(row[5]));
-                            List<Integer> newMealTypes = List.of(Integer.parseInt(row[6]));
-                            food.setMealType(newMealTypes);
-                            food.setPhoto(new Photo().setThumb(row[7]));
-
-                            // Buscar si el alimento ya existe en la base de datos
-                            Optional<Food> existingFoodOptional = foodRepository.findByFoodName(food.getFoodName());
-
-                            if (existingFoodOptional.isPresent()) {
-                                Food existingFood = existingFoodOptional.get();
-
-                                // Verificar si el nuevo mealType ya está en la lista de mealTypes de la comida existente
-                                if (!existingFood.getMealType().containsAll(newMealTypes)) {
-                                    // Si no existe, agregar el nuevo mealType
-                                    existingFood.getMealType().addAll(newMealTypes);
-                                    foodRepository.save(existingFood); // Guardar la comida existente con el nuevo mealType
-                                }
-                            } else {
-                                // Si no existe, guardar el nuevo alimento
-                                foodRepository.save(food);
-                            }
-                        }
-                    }
-
-                    properties.setProperty("createdDatabase", "true");
-
-                    // Guardamos los cambios en el archivo de propiedades
-                    try (OutputStream outputStream = new FileOutputStream(propertiesFile)) {
-                        properties.store(outputStream, null);
-                    }
-
-                }
-            }catch (IOException e) {
-                    e.printStackTrace();
-                } catch (CsvException e) {
-                    throw new RuntimeException(e);
-                }
-            } else {
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
-
     @FXML
     private void initialize() {
-        Properties properties = new Properties();
-        loadProperties(properties);
-
-        if ("true".equals(properties.getProperty("preferencesExerciseCompleted"))) {
-            // Ocultar el botón de configuración de preferencias si ya se ha completado el ejercicio
-        }
-
 
         rootPane.setMinWidth(900);  // Ancho mínimo
         rootPane.setMinHeight(520); // Alto mínimo
 
         // Asigna eventos a botones
         reportsPane.setVisible(false);
-
 
 
         // Asociar acciones a botones
@@ -301,7 +211,7 @@ public class DashboardAdminFrame {
 
 
         // Ajustar tamaño de fuente basado en el tamaño de la ventana
-        List<Button> buttons = Arrays.asList(dashboardButton, exerciseButton, dietButton, reportsButton, profileButton);
+        List<Button> buttons = Arrays.asList(reportsButton, profileButton);
 
         for (Button button : buttons) {
             button.sceneProperty().addListener((obs, oldScene, newScene) -> {
@@ -394,53 +304,6 @@ public class DashboardAdminFrame {
     }
 
 
-
-    private void setTooltipForProgressBar(ProgressBar progressBar, Tooltip tooltip) {
-        Tooltip.install(progressBar, tooltip); // Instalar el Tooltip en la ProgressBar
-
-        progressBar.setOnMouseEntered(event -> {
-            if (!tooltip.isShowing()) {
-                tooltip.show(progressBar, event.getScreenX(), event.getScreenY() + 10);
-            }
-        });
-
-        progressBar.setOnMouseExited(event -> {
-            if (tooltip.isShowing()) {
-                tooltip.hide();
-            }
-        });
-    }
-
-    private void changeProgressBarColor(ProgressBar progressBar, double progress) {
-        // Obtiene el nodo de la barra interna de progreso (la parte llena)
-        Region bar = (Region) progressBar.lookup(".bar");
-
-        // Cambiar el color de la barra de progreso según el valor
-        if (bar != null) {
-            if (progress <= 0.40) {
-                bar.setStyle("-fx-background-color: #FF9933;");  // Naranja si el progreso es menor o igual a 45%
-            } else if (progress > 0.40 && progress <= 0.80) {
-                bar.setStyle("-fx-background-color: #ffd24d;");  // Amarillo si el progreso es entre 40% y 80%
-            } else if (progress > 0.80 && progress <= 1.00) {
-                bar.setStyle("-fx-background-color: #A7C942;");  // Verde si el progreso es entre 80% y 100%
-            } else {
-                bar.setStyle("-fx-background-color: #b30000;");  // Rojo si el progreso es mayor a 100%
-            }
-        }
-    }
-    private Color getProgressColor(double progress) {
-        if (progress <= 0.40) {
-            return Color.web("#FF9933"); // Naranja
-        } else if (progress > 0.40 && progress <= 0.80) {
-            return Color.web("#ffd24d"); // Amarillo
-        } else if (progress > 0.80 && progress <= 1.00) {
-            return Color.web("#A7C942"); // Verde
-        } else {
-            return Color.web("#b30000"); // Rojo
-        }
-    }
-
-
     /**
      profile
      */
@@ -449,12 +312,6 @@ public class DashboardAdminFrame {
 
     @Autowired
     AccountRepository accountRepository;
-
-    @Autowired
-    FoodRepository foodRepository;
-
-    @Autowired
-    AccountAllergyFoodRepository accountAllergyFoodRepository;
 
     @Autowired
     AccountFreeSQLRepository accountFreeSQLRepository;
@@ -497,36 +354,8 @@ public class DashboardAdminFrame {
         neckTextArea.setText(String.valueOf(accountDataFreeSQL.get().getNeck()));
         armTextArea.setText(String.valueOf(accountDataFreeSQL.get().getArm()));
 
-        // Actualizar alergias
-        List<String> allergicFoodNames = new ArrayList<>();
-
-        Long accountAllergyId = null;
-        if (accountData.getAccountAllergy() != null) {
-            accountAllergyId = accountData.getAccountAllergy().getId();
-        }
-
-        List<AccountAllergyFood> allergyFoods = new ArrayList<>();
-
-        if (accountAllergyId != null) {
-            allergyFoods = accountAllergyFoodRepository.findAllByAccountAllergyId(accountAllergyId);
-        }
-
-        if (!allergyFoods.isEmpty()){
-            for (AccountAllergyFood allergyFood : allergyFoods) {
-                allergicFoodNames.add(allergyFood.getFood().getFoodName());
-            }
-        }
-
-
-        if (allergicFoodNames.isEmpty()){
-            allergiesTextArea.setText("Ninguna");
-        } else {
-            allergiesTextArea.setText(String.join(", ", allergicFoodNames));
-        }
-
         // Hacer que los campos de sexo y alergias sean de solo lectura
         sexTextArea.setEditable(false);
-        allergiesTextArea.setEditable(false);
     }
 
     //Lo mismo que hay en ProfileFrame, ligeramente cambiado
@@ -611,318 +440,6 @@ public class DashboardAdminFrame {
     }
 
     /**
-     dieta
-     */
-    @Autowired
-    DatabaseService databaseService;
-
-    private void setupChoiceBox(ChoiceBox<String> choiceBox, Date date, LocalDate today) {
-        if (date == null) return;
-
-        LocalDate localDate = date.toLocalDate();
-
-        choiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) ->
-                handleChoiceBoxSelection(newValue, date)
-        );
-
-        Report report = reportRepository.findByDate(date);
-
-        boolean hasMeal = report != null && report.getDayMeal() != null;
-        boolean isToday = localDate.equals(today);
-
-        choiceBox.setDisable(hasMeal || !isToday);
-    }
-
-    @Autowired
-    ReportRepository reportRepository;
-
-    private void handleChoiceBoxSelection(String selectedValue, Date localDate) {
-        // Dependiendo de la opción seleccionada y del índice del ChoiceBox, ejecutar algo
-        if ("Sí".equals(selectedValue)) {
-            saveToReport(localDate);
-        }
-        if ("No".equals(selectedValue)) {
-
-        }
-
-    }
-
-    @Autowired
-    DayMealRepository dayMealRepository;
-    private void saveToReport(Date reportDate) {
-
-        Report existingReport = reportRepository.findByDate(reportDate);
-
-        if (existingReport == null) {
-            Report report = new Report();
-            DayMeal dayMeal = dayMealRepository.findByDate(reportDate);
-            Optional<AccountData> accountData = accountDataRepository.findByAccountId(1L);
-
-            report.setDayExcercise(null);
-            report.setDayMeals(dayMeal);
-            report.setAccountData(accountData.orElse(null));
-            report.setDate(reportDate);
-
-            reportRepository.save(report);
-
-
-        } else {
-            DayMeal dayMeal = dayMealRepository.findByDate(reportDate);
-            Optional<AccountData> accountData = accountDataRepository.findByAccountId(1L);
-            existingReport.setDayMeals(dayMeal);
-            existingReport.setAccountData(accountData.orElse(null));
-            existingReport.setDate(reportDate);
-
-            reportRepository.save(existingReport);
-            }
-
-    }
-
-
-    private static SelectYourFood selectYourFoodController; // Static instance
-    private static Stage selectYourFoodStage;
-
-
-
-    private void disableGridPane(GridPane gridPane) {
-        for (Node node : gridPane.getChildren()) {
-            if (node instanceof Control) {
-                ((Control) node).setDisable(true);
-            }
-        }
-    }
-
-
-    private Stage preferencesDietStage;
-
-
-
-    @Autowired
-    DayExcerciseRepository dayExcerciseRepository;
-
-
-    private void enableNode(Node node) {
-        if (node instanceof Control) {
-            ((Control) node).setDisable(false);
-        } else if (node instanceof Parent) { // StackPane, VBox, etc.
-            for (Node child : ((Parent) node).getChildrenUnmodifiable()) {
-                enableNode(child);
-            }
-        }
-    }
-
-
-    private void disableNode(Node node) {
-        if (node instanceof Control) {
-            ((Control) node).setDisable(true);
-        } else if (node instanceof Parent) { // Parent covers containers like StackPane, VBox, HBox, etc.
-            for (Node child : ((Parent) node).getChildrenUnmodifiable()) {
-                disableNode(child);
-            }
-        }
-    }
-    private static Stage showSetYourRutine; // Stage global
-
-    private void handleCellClickForExercise(int row) {
-        Platform.runLater(() -> {
-            try {
-                if (showSetYourRutine == null || !showSetYourRutine.isShowing()) {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlantillasFXML/SetYourRutine.fxml"));
-                    loader.setControllerFactory(applicationContext::getBean);
-
-                    Parent root = loader.load(); // Cargar el FXML
-                    root.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
-                    SetYourRutine controller = loader.getController(); // Obtener el controlador
-                    controller.setRow(row);
-
-                    // Crear la ventana
-                    showSetYourRutine = new Stage();
-                    showSetYourRutine.setTitle("Selecciona tu rutina");
-                    showSetYourRutine.setScene(new Scene(root));
-                    showSetYourRutine.setMinWidth(450);
-                    showSetYourRutine.setMinHeight(600);
-                    showSetYourRutine.setMaxWidth(450);
-                    showSetYourRutine.setMaxHeight(600);
-
-                    showSetYourRutine.setOnCloseRequest(event -> showSetYourRutine = null);
-
-                    showSetYourRutine.show();
-                } else {
-                    showSetYourRutine.toFront();
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
-
-    private Stage checkYourRutineStage;
-
-    private void showCheckYourRutine(LocalDate targetDate) {
-        // Load properties
-        Properties properties = new Properties();
-        loadProperties(properties);
-
-        // If window is already open, bring it to the front
-        if (checkYourRutineStage != null && checkYourRutineStage.isShowing()) {
-            checkYourRutineStage.toFront();
-            return;
-        }
-
-        Platform.runLater(() -> {
-            try {
-                // Initialize FXMLLoader with the Spring context
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlantillasFXML/CheckYourRutine.fxml"));
-                loader.setControllerFactory(applicationContext::getBean);
-                Scene scene = new Scene(loader.load(), 400, 500);
-
-                checkYourRutineStage = new Stage();
-
-
-                // Load the controller
-                CheckYourRutine controller = loader.getController();
-                controller.setTargetDate(targetDate);  // Now the controller should not be null
-
-
-                checkYourRutineStage.setTitle("Informacion de ejercicios");
-                checkYourRutineStage.setScene(scene);
-
-                // Set window size restrictions
-                checkYourRutineStage.setMinWidth(450);
-                checkYourRutineStage.setMinHeight(550);
-                checkYourRutineStage.setMaxWidth(450);
-                checkYourRutineStage.setMaxHeight(550);
-
-                // Reset checkYourRutineStage when closed
-                checkYourRutineStage.setOnCloseRequest(event -> checkYourRutineStage = null);
-
-                checkYourRutineStage.show();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
-    private Stage preferencesExcerciseStage;
-
-    private void openSetYourPreferencesExcercise() {
-        // Cargar las propiedades
-        Properties properties = new Properties();
-        loadProperties(properties);
-
-
-        // Si la ventana ya está abierta, la traemos al frente
-        if (preferencesExcerciseStage != null && preferencesExcerciseStage.isShowing()) {
-            preferencesExcerciseStage.toFront(); // Traer la ventana existente al frente
-            return;
-        }
-
-        // Abrir la ventana de preferencias si aún no se ha completado el ejercicio
-        Platform.runLater(() -> {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlantillasFXML/SetYourPreferencesExercise.fxml"));
-                loader.setControllerFactory(applicationContext::getBean);
-
-                Scene scene = new Scene(loader.load(), 400, 500); // Limitar tamaño de la escena
-                scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
-
-                preferencesExcerciseStage = new Stage();
-                preferencesExcerciseStage.setTitle("Elige tus preferencias en ejercicio");
-                preferencesExcerciseStage.setScene(scene);
-
-                // Establecer límites para la ventana
-                preferencesExcerciseStage.setMinWidth(450);
-                preferencesExcerciseStage.setMinHeight(550);
-                preferencesExcerciseStage.setMaxWidth(450);
-                preferencesExcerciseStage.setMaxHeight(550);
-
-                preferencesExcerciseStage.setOnCloseRequest(event -> {
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle("Confirmación de salida");
-                    alert.setGraphic(null);
-                    alert.setHeaderText(null);
-                    alert.setContentText("¿Seguro que deseas salir?");
-
-                    ButtonType yesButton = new ButtonType("Sí", ButtonBar.ButtonData.YES);
-                    ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
-
-                    alert.getButtonTypes().setAll(yesButton, noButton);
-
-                    Optional<ButtonType> result = alert.showAndWait();
-                    if (result.isEmpty() || result.get() == noButton) {
-                        event.consume(); // Cancela el cierre
-                    } else {
-                        preferencesExcerciseStage = null; // Solo se resetea si el usuario acepta salir
-                    }
-                });
-
-                preferencesExcerciseStage.show();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
-    private void loadProperties(Properties properties) {
-        try (FileInputStream in = new FileInputStream("preferencesState.properties")) {
-            properties.load(in);
-        } catch (IOException e) {
-            // Si el archivo no existe, no pasa nada lol le quite el printstack porque luego asusta
-            //e.printStackTrace();
-        }
-    }
-    private void updateExerciseLabels() {
-        // Obtén los datos de la cuenta actual
-        accountRepository.findById(1L).ifPresentOrElse(account -> {
-            AccountData accountData = account.getAccountData();
-
-            if (accountData != null) {
-                // Obtén los valores de los días
-                String mondayExercise = accountData.getMonday() != null ? formatExerciseLabel(accountData.getMonday().toString()) : "No asignado";
-                String tuesdayExercise = accountData.getTuesday() != null ? formatExerciseLabel(accountData.getTuesday().toString()) : "No asignado";
-                String wednesdayExercise = accountData.getWednesday() != null ? formatExerciseLabel(accountData.getWednesday().toString()) : "No asignado";
-                String thursdayExercise = accountData.getThursday() != null ? formatExerciseLabel(accountData.getThursday().toString()) : "No asignado";
-                String fridayExercise = accountData.getFriday() != null ? formatExerciseLabel(accountData.getFriday().toString()) : "No asignado";
-
-                // Recorre los nodos dentro del GridPane
-            }
-        }, () -> System.out.println("Error: No se encontró la cuenta con ID 2"));
-    }
-
-
-
-    private String formatExerciseLabel(String exercise) {
-
-        if (exercise.equals("[]")){
-            return "No asignado";
-        }
-        // Reemplaza los valores en minúsculas y sin espacios, añadiendo los espacios correctos
-        String formatted = exercise.replaceAll("([a-z])([A-Z])", "$1 $2");
-
-        // Reemplaza la letra "y" con espacio antes y después (sin cambiar a mayúscula)
-        formatted = formatted.replaceAll("y", " y ");
-
-        // Reemplaza la palabra "completa" y añade un espacio después
-        formatted = formatted.replaceAll("completa", " completa");
-
-        formatted = formatted.replaceAll("[\\[\\]]", "");
-
-        // Capitaliza la primera letra de cada palabra, excepto la "y"
-        String[] words = formatted.split(" ");
-        StringBuilder sb = new StringBuilder();
-        for (String word : words) {
-            if (!word.equals("y")) {
-                sb.append(word.substring(0, 1).toUpperCase()).append(word.substring(1)).append(" ");
-            } else {
-                sb.append(word).append(" "); // Para "y", no se hace mayúscula
-            }
-        }
-
-        return sb.toString().trim();
-    }
-
-    /**
      reportes
      */
 
@@ -932,99 +449,6 @@ public class DashboardAdminFrame {
         reportsPane.setVisible(true);
         menuVbox.setVisible(true);
 
-        Date oldestReportDate = reportRepository.findOldestReportDate();
-
-        // Verificar si oldestReportDate es null
-        if (oldestReportDate == null) {
-            // Si no hay fecha, deshabilitar completamente el startDatePicker
-            startDatePicker.setDisable(true);
-            oldestReportDate = reportRepository.findOldestReportDate();
-
-        } else {
-            startDatePicker.setDisable(false);
-
-            // Convertir la fecha a LocalDate
-            LocalDate oldestDate = oldestReportDate.toLocalDate();
-
-            // Configurar el DatePicker para que no permita fechas anteriores a la más antigua
-            startDatePicker.setDayCellFactory(new Callback<DatePicker, DateCell>() {
-                @Override
-                public DateCell call(DatePicker datePicker) {
-                    return new DateCell() {
-                        @Override
-                        public void updateItem(LocalDate date, boolean empty) {
-                            super.updateItem(date, empty);
-                            if (date.isBefore(oldestDate)) {
-                                setDisable(true);  // Deshabilitar la fecha si es anterior a la fecha más antigua
-                                setStyle("-fx-background-color: #d3d3d3;");  // Estilo para las fechas deshabilitadas
-                            }
-                        }
-                    };
-                }
-            });
-        }
-
-
-        Optional<Account> account = accountRepository.findById(1L);
-        AccountData accountData = account.get().getAccountData();
-
-        sexReportTextArea.setText(accountData.getGender() != null && accountData.getGender() ? "Masculino" : "Femenino");
-        ageReportTextArea.setText(String.valueOf(accountData.getAge()));
-        heightReportTextArea.setText(String.valueOf(accountData.getHeight()));
-        weightReportTextArea.setText(String.valueOf(accountData.getWeight()));
-        abdomenReportTextArea.setText(String.valueOf(accountData.getAbdomen()));
-        hipReportTextArea.setText(String.valueOf(accountData.getHips()));
-        waistReportTextArea.setText(String.valueOf(accountData.getWaist()));
-        chestReportTextArea.setText(String.valueOf(accountData.getChest()));
-        neckReportTextArea.setText(String.valueOf(accountData.getNeck()));
-        armReportTextArea.setText(String.valueOf(accountData.getArm()));
-
-        // Actualizar alergias
-        List<String> allergicFoodNames = new ArrayList<>();
-
-        Long accountAllergyId = null;
-        if (accountData.getAccountAllergy() != null) {
-            accountAllergyId = accountData.getAccountAllergy().getId();
-        }
-
-        List<AccountAllergyFood> allergyFoods = new ArrayList<>();
-
-        if (accountAllergyId != null) {
-            allergyFoods = accountAllergyFoodRepository.findAllByAccountAllergyId(accountAllergyId);
-        }
-
-        if (!allergyFoods.isEmpty()){
-            for (AccountAllergyFood allergyFood : allergyFoods) {
-                allergicFoodNames.add(allergyFood.getFood().getFoodName());
-            }
-        }
-
-        if (allergicFoodNames.isEmpty()){
-            allergiesReportTextArea.setText("Ninguna");
-        } else {
-            allergiesReportTextArea.setText(String.join(", ", allergicFoodNames));
-        }
-
-        sendReportButton.setOnAction(event -> {
-            if (validateFieldsReport()) {
-                try {
-                    generateReportAndSendEmail();
-                    successReportHbox.setVisible(true);
-                    PauseTransition pause = new PauseTransition(Duration.seconds(3));
-                    pause.setOnFinished(e -> successReportHbox.setVisible(false));  // Ocultar el HBox después de la pausa
-                    pause.play();
-                } catch (MessagingException e) {
-                    throw new RuntimeException(e);
-                } catch (FileNotFoundException e) {
-                    throw new RuntimeException(e);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-
-                startCooldown();
-
-            }
-        });
 
         disableVBox(reportsPane);
 
@@ -1072,26 +496,6 @@ public class DashboardAdminFrame {
         Double chest = account.get().getChest();
         Double neck = account.get().getNeck();
 
-        List<String> accountAllergies = new ArrayList<>();
-
-        Long accountAllergyId = null;
-        if (account.get().getAccountAllergy() != null) {
-            accountAllergyId = account.get().getAccountAllergy().getId();
-        }
-
-        List<AccountAllergyFood> allergyFoods = new ArrayList<>();
-
-        if (accountAllergyId != null) {
-            allergyFoods = accountAllergyFoodRepository.findAllByAccountAllergyId(accountAllergyId);
-        }
-
-        if (!allergyFoods.isEmpty()){
-            for (AccountAllergyFood allergyFood : allergyFoods) {
-                accountAllergies.add(allergyFood.getFood().getFoodName());
-            }
-        }
-
-
         double imc = Math.round((weight / Math.pow(height / 100.0, 2)) * 10.0) / 10.0;
 
         InputStream imageStream = getClass().getClassLoader().getResourceAsStream("images/NutriApp256x256.png");
@@ -1120,7 +524,6 @@ public class DashboardAdminFrame {
         document.add(new Paragraph("Peso: " + weight + " kg"));
         document.add(new Paragraph("Altura: " + height + " m"));
         document.add(new Paragraph("Meta: " + goalString));
-        document.add(new Paragraph("Alergias: " + (accountAllergies.isEmpty() ? "Ninguna" : String.join(", ", accountAllergies))));
 
 
 
@@ -1143,101 +546,6 @@ public class DashboardAdminFrame {
 
         document.add(new Paragraph(" ")); // Espacio antes de la siguiente sección
 
-
-        // Información de Reportes
-        List<Report> results = accountRepository.findReportsByAccountAndDateRange(1L, Date.valueOf(startDatePicker.getValue()), Date.valueOf(endDatePicker.getValue()));
-
-
-        document.add(new Paragraph("Comidas").setFont(boldFont).setFontSize(14));
-
-        Table table = new Table(new float[]{3, 3, 3, 3, 3, 3}).useAllAvailableWidth(); // 6 columnas
-        table.addHeaderCell(new Cell().add(new Paragraph("Fecha").setFont(boldFont)).setBackgroundColor(ColorConstants.LIGHT_GRAY));
-        table.addHeaderCell(new Cell().add(new Paragraph("Desayuno").setFont(boldFont)).setBackgroundColor(ColorConstants.LIGHT_GRAY));
-        table.addHeaderCell(new Cell().add(new Paragraph("Comida").setFont(boldFont)).setBackgroundColor(ColorConstants.LIGHT_GRAY));
-        table.addHeaderCell(new Cell().add(new Paragraph("Cena").setFont(boldFont)).setBackgroundColor(ColorConstants.LIGHT_GRAY));
-        table.addHeaderCell(new Cell().add(new Paragraph("Snack").setFont(boldFont)).setBackgroundColor(ColorConstants.LIGHT_GRAY));
-        table.addHeaderCell(new Cell().add(new Paragraph("Opcional").setFont(boldFont)).setBackgroundColor(ColorConstants.LIGHT_GRAY));
-
-        for (Report result : results) {
-            table.addCell(new Cell().add(new Paragraph(result.getDate().toString())));
-
-            DayMeal dayMeals = result.getDayMeals();
-            if (dayMeals != null) {
-                table.addCell(new Cell().add(new Paragraph(
-                        isNullOrEmpty(getFoodNames(dayMeals.getBreakfast())) ? "No comió." : getFoodNames(dayMeals.getBreakfast())
-                )));
-                table.addCell(new Cell().add(new Paragraph(
-                        isNullOrEmpty(getFoodNames(dayMeals.getLunch())) ? "No comió." : getFoodNames(dayMeals.getLunch())
-                )));
-                table.addCell(new Cell().add(new Paragraph(
-                        isNullOrEmpty(getFoodNames(dayMeals.getDinner())) ? "No comió." : getFoodNames(dayMeals.getDinner())
-                )));
-                table.addCell(new Cell().add(new Paragraph(
-                        isNullOrEmpty(getFoodNames(dayMeals.getSnack())) ? "No comió." : getFoodNames(dayMeals.getSnack())
-                )));
-                table.addCell(new Cell().add(new Paragraph(
-                        isNullOrEmpty(getFoodNames(dayMeals.getOptional())) ? "No comió." : getFoodNames(dayMeals.getOptional())
-                )));
-            }
-            else {
-                // Si dayMeals es nulo, llenar todas las celdas con "No disponible"
-                for (int i = 0; i < 5; i++) {
-                    table.addCell(new Cell().add(new Paragraph("No disponible")));
-                }
-            }
-        }
-
-        document.add(table);
-
-        document.add(new Paragraph("Ejercicios Realizados").setFont(boldFont).setFontSize(14));
-
-
-        Table exerciseTable = new Table(new float[]{3, 3, 3}).useAllAvailableWidth(); // 3 columnas
-        exerciseTable.addHeaderCell(new Cell().add(new Paragraph("Fecha").setFont(boldFont)).setBackgroundColor(ColorConstants.LIGHT_GRAY));
-        exerciseTable.addHeaderCell(new Cell().add(new Paragraph("Ejercicio").setFont(boldFont)).setBackgroundColor(ColorConstants.LIGHT_GRAY));
-        exerciseTable.addHeaderCell(new Cell().add(new Paragraph("Duración").setFont(boldFont)).setBackgroundColor(ColorConstants.LIGHT_GRAY));
-
-
-        for (Report result : results) {
-            exerciseTable.addCell(new Cell().add(new Paragraph(result.getDate().toString())));
-
-            // Obtener la lista de ejercicios de la entidad DayExcercise
-            DayExcercise exercise = result.getDayExcercise();
-            if (exercise != null) {
-                // Mostrar el nombre del ejercicio (o ejercicios si es más de uno)
-                StringBuilder exerciseNames = new StringBuilder();
-                for (Excercise excercise : exercise.getExcercises()) {
-                    exerciseNames.append(excercise.getExcerciseName()).append(", ");
-                }
-
-                // Agregar a la tabla el nombre del ejercicio y la duración
-                exerciseTable.addCell(new Cell().add(new Paragraph(exerciseNames.length() > 0 ? exerciseNames.substring(0, exerciseNames.length() - 2) : "No realizado.")));
-                exerciseTable.addCell(new Cell().add(new Paragraph(exercise.getTime() + " mins")));
-            } else {
-                exerciseTable.addCell(new Cell().add(new Paragraph("No realizado.")));
-                exerciseTable.addCell(new Cell().add(new Paragraph("No realizado.")));
-            }
-        }
-
-        document.add(exerciseTable);
-
-
-        document.add(new Paragraph("Razón de incumplimiento").setFont(boldFont).setFontSize(14));
-
-
-        Table reasonsTable = new Table(new float[]{3, 3}).useAllAvailableWidth(); // 2 columnas
-        reasonsTable.addHeaderCell(new Cell().add(new Paragraph("Fecha").setFont(boldFont)).setBackgroundColor(ColorConstants.LIGHT_GRAY));
-        reasonsTable.addHeaderCell(new Cell().add(new Paragraph("Desafío").setFont(boldFont)).setBackgroundColor(ColorConstants.LIGHT_GRAY));
-
-        for (Report result : results) {
-            reasonsTable.addCell(new Cell().add(new Paragraph(result.getDate().toString())));
-            DayMeal dayMeals = result.getDayMeals();
-            String challenge = (dayMeals != null && dayMeals.getReason() != null) ? dayMeals.getReason() : "Satisfactorio.";
-            reasonsTable.addCell(new Cell().add(new Paragraph(challenge)));
-
-        }
-
-        document.add(reasonsTable);
 
         document.close();
 
