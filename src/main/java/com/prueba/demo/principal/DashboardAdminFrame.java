@@ -123,6 +123,10 @@ public class DashboardAdminFrame {
     @FXML
     private VBox profilePaneSelect;
     @FXML
+    private HBox infoHboxProfile;
+    @FXML
+    private HBox infoHboxReport;
+    @FXML
     private TextField searchField;
     @FXML
     private ListView usersListView;
