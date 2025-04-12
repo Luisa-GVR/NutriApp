@@ -76,16 +76,10 @@ public class DashboardAdminFrame {
     @FXML
     private ImageView nutriappImage;
     @FXML
-    private Button dashboardButton;
-    @FXML
     private Button profileButton;
-    @FXML
-    private Button dietButton;
-    @FXML
-    private Button exerciseButton;
+
     @FXML
     private Button reportsButton;
-
 
     //ProfilePaneEdit
     @FXML
@@ -176,6 +170,7 @@ public class DashboardAdminFrame {
      */
 
 
+
     @FXML
     private void handleMouseEnteredDiet(MouseEvent event) {
         Button button = (Button) event.getSource();
@@ -198,6 +193,30 @@ public class DashboardAdminFrame {
         Button button = (Button) event.getSource();
         button.setStyle("-fx-background-color:  #262626;");
     }
+
+    public Map<AccountFreeSQL, AccountDataFreeSQL> getAccountWithDataMap() {
+        Map<AccountFreeSQL, AccountDataFreeSQL> result = new HashMap<>();
+
+        List<AccountFreeSQL> accounts = accountFreeSQLRepository.findAll();
+
+        for (AccountFreeSQL account : accounts) {
+            AccountDataFreeSQL accountData = account.getAccountDataFreeSQL();
+            if (accountData != null) {
+                result.put(account, accountData);
+            }
+        }
+
+        // Remover el usuario con el correo "nutriappunison@gmail.com"
+        result.entrySet().removeIf(entry ->
+                entry.getKey().getEmail().equalsIgnoreCase("nutriappunison@gmail.com")
+        );
+
+        return result;
+    }
+
+
+    Map<AccountFreeSQL, AccountDataFreeSQL> userList;
+
     @FXML
     private void initialize() {
 
@@ -207,10 +226,18 @@ public class DashboardAdminFrame {
         // Asigna eventos a botones
         reportsPane.setVisible(false);
 
-
         // Asociar acciones a botones
         profileButton.setOnAction(event -> showProfile());
         reportsButton.setOnAction(event -> showReports());
+
+        //llenar de datos los usuarios
+        if (userList == null){
+            userList = getAccountWithDataMap();
+        }
+
+
+
+        showProfile();
 
 
 
@@ -262,17 +289,6 @@ public class DashboardAdminFrame {
             }
         });
 
-        //Dieta
-
-
-
-        //Profile
-        //Click boton de profile
-
-
-        //report
-
-
 
         // Restringir que endDatePicker no pueda seleccionar fechas futuras
         endDatePicker.setDayCellFactory(picker -> new DateCell() {
@@ -322,23 +338,109 @@ public class DashboardAdminFrame {
     @Autowired
     AccountDataFreeSQLRepository accountDataFreeSQLRepository;
 
+    private AccountFreeSQL selectedAccount;
+    private AccountDataFreeSQL selectedAccountData;
+
+
     @FXML
     private void showProfile() {
+
+        if (selectedAccount != null){
+            showProfileEdit();
+            return;
+        }
+
         hideAll();
         profilePaneSelect.setVisible(true);
         menuVbox.setVisible(true);
 
+        //agregar nombres a listview
+        ObservableList<String> userNames = FXCollections.observableArrayList();
+
+        for (AccountFreeSQL account : userList.keySet()) {
+            userNames.add(account.getName());
+        }
+
+        usersListView.setItems(userNames);
 
 
-        Optional<Account> account = accountRepository.findById(1L);
-        AccountData accountData = account.get().getAccountData();
+        //filtrar con el textfield
 
-        userNameLabel.setText(account.get().getName());
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            ObservableList<String> filteredNames = FXCollections.observableArrayList();
+
+            for (AccountFreeSQL account : userList.keySet()) {
+                if (account.getName().toLowerCase().startsWith(newValue.toLowerCase())) {
+                    filteredNames.add(account.getName());
+                }
+            }
+
+            usersListView.setItems(filteredNames);
+        });
 
 
-        // Actualizar los campos del perfil
-        updateProfileFields(accountData);
+        //al dar click
+        usersListView.setOnMouseClicked(event -> {
+
+            Object selectedName = usersListView.getSelectionModel().getSelectedItem();
+
+            selectedAccount = userList.keySet().stream()
+                    .filter(acc -> acc.getName().equals(selectedName))
+                    .findFirst()
+                    .orElse(null);
+
+            selectedAccountData = userList.get(selectedAccount);
+
+
+            if (selectedAccount != null) {
+                AccountDataFreeSQL data = userList.get(selectedAccount);
+                System.out.println(data.getAge());
+
+            }
+
+            showProfileEdit();
+
+        });
+
     }
+
+
+    @FXML
+    private void showProfileEdit() {
+        hideAll();
+        profilePaneEdit.setVisible(true);
+        menuVbox.setVisible(true);
+
+        //regresar a elegir usuario + borrar la info que se tenia adentro
+        backButtonProfile.setOnAction(event -> {
+            // Clear the selected values
+            selectedAccount = null;
+            selectedAccountData = null;
+
+            // Go back to profile view
+            showProfile();
+        });
+
+        Platform.runLater(() -> {
+            if (selectedAccount != null) {
+                userNameLabel.setText(selectedAccount.getName());
+            }
+
+            if (selectedAccountData != null) {
+                ageTextArea.setText(String.valueOf(selectedAccountData.getAge()));
+                heightTextArea.setText(String.valueOf(selectedAccountData.getHeight()));
+                weightTextArea.setText(String.valueOf(selectedAccountData.getWeight()));
+                abdomenTextArea.setText(String.valueOf(selectedAccountData.getAbdomen()));
+                hipTextArea.setText(String.valueOf(selectedAccountData.getHips()));
+                waistTextArea.setText(String.valueOf(selectedAccountData.getWaist()));
+                neckTextArea.setText(String.valueOf(selectedAccountData.getNeck()));
+                armTextArea.setText(String.valueOf(selectedAccountData.getArm()));
+                chestTextArea.setText(String.valueOf(selectedAccountData.getChest()));
+            }
+        });
+
+    }
+
 
 
     private void updateProfileFields(AccountData accountData) {
