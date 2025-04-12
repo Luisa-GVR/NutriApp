@@ -452,6 +452,7 @@ public class ProfileFrame {
             accountDataFreeSQL.setArm(accountData.getArm() != null ? accountData.getArm() : 0);
             accountDataFreeSQL.setChest(accountData.getChest() != null ? accountData.getChest() : 0);
             accountDataFreeSQL.setNeck(accountData.getNeck() != null ? accountData.getNeck() : 0);
+            accountDataFreeSQL.setGender(accountData.getGender());
 
             accountDataFreeSQLRepository.save(accountDataFreeSQL);
         }
@@ -475,6 +476,7 @@ public class ProfileFrame {
             accountDataFreeSQLHistory.setArm(accountData.getArm() != null ? accountData.getArm() : 0);
             accountDataFreeSQLHistory.setChest(accountData.getChest() != null ? accountData.getChest() : 0);
             accountDataFreeSQLHistory.setNeck(accountData.getNeck() != null ? accountData.getNeck() : 0);
+            accountDataFreeSQLHistory.setGender(accountData.getGender());
             Date now = new Date();
             java.sql.Date sqlDate = new java.sql.Date(now.getTime());
 

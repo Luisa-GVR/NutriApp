@@ -22,6 +22,16 @@ public class AccountDataFreeSQL {
     @Column(name = "height", nullable = false)
     private Double height;
 
+    public Boolean getGender() {
+        return gender;
+    }
+
+    public void setGender(Boolean gender) {
+        this.gender = gender;
+    }
+
+    @Column(name = "gender", nullable = false)
+    private Boolean gender;
     @Column(name = "abdomen", nullable = true)
     private Double abdomen;
 

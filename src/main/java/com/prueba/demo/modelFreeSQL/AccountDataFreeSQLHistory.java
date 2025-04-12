@@ -27,8 +27,19 @@ public class AccountDataFreeSQLHistory {
     @Column(name = "height", nullable = false)
     private Double height;
 
+    @Column(name = "gender", nullable = false)
+    private Boolean gender;
+
     @Column(name = "abdomen", nullable = true)
     private Double abdomen;
+
+    public Boolean getGender() {
+        return gender;
+    }
+
+    public void setGender(Boolean gender) {
+        this.gender = gender;
+    }
 
     @Column(name = "hips", nullable = true)
     private Double hips;

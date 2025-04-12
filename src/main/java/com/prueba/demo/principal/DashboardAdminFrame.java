@@ -18,8 +18,10 @@ import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 import com.prueba.demo.model.*;
 import com.prueba.demo.modelFreeSQL.AccountDataFreeSQL;
+import com.prueba.demo.modelFreeSQL.AccountDataFreeSQLHistory;
 import com.prueba.demo.modelFreeSQL.AccountFreeSQL;
 import com.prueba.demo.repository.*;
+import com.prueba.demo.repositoryFreeSQL.AccountDataFreeSQLHistoryRepository;
 import com.prueba.demo.repositoryFreeSQL.AccountDataFreeSQLRepository;
 import com.prueba.demo.repositoryFreeSQL.AccountFreeSQLRepository;
 import com.prueba.demo.service.APIConsumption;
@@ -27,6 +29,7 @@ import com.prueba.demo.service.DatabaseService;
 import com.prueba.demo.service.IEmailService;
 import com.prueba.demo.service.dto.EmailDTO;
 import jakarta.mail.MessagingException;
+import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -245,7 +248,7 @@ public class DashboardAdminFrame {
         reportsPane.setVisible(false);
 
         // Asociar acciones a botones
-        profileButton.setOnAction(event -> showProfile());
+        profileButton.setOnAction(event -> showProfileEdit());
         reportsButton.setOnAction(event -> showReports());
 
         //llenar de datos los usuarios
@@ -253,10 +256,7 @@ public class DashboardAdminFrame {
             userList = getAccountWithDataMap();
         }
 
-
-
-        showProfile();
-
+        showProfilePaneSelect();
 
 
         // Ajustar tamaño de fuente basado en el tamaño de la ventana
@@ -346,7 +346,6 @@ public class DashboardAdminFrame {
                         selectedAccountData = userList.get(selectedAccount);
 
                         if (selectedAccount != null) {
-                            System.out.println("Edad: " + selectedAccountData.getAge());
                         }
 
                         showProfileEdit();
@@ -398,23 +397,20 @@ public class DashboardAdminFrame {
     @Autowired
     AccountDataFreeSQLRepository accountDataFreeSQLRepository;
 
+    @Autowired
+    AccountDataFreeSQLHistoryRepository accountDataFreeSQLHistoryRepository;
+
     private AccountFreeSQL selectedAccount;
     private AccountDataFreeSQL selectedAccountData;
 
 
-
-
     @FXML
-    private void showProfile() {
-
-        if (selectedAccount != null){
-            showProfileEdit();
-            return;
-        }
+    private void showProfilePaneSelect(){
 
         hideAll();
         profilePaneSelect.setVisible(true);
         menuVbox.setVisible(true);
+
 
         // Agregar nombres a ListView
         ObservableList<String> userNames = FXCollections.observableArrayList();
@@ -458,21 +454,39 @@ public class DashboardAdminFrame {
 
             if (selectedAccount != null) {
                 AccountDataFreeSQL data = userList.get(selectedAccount);
-                System.out.println(data.getAge());
             }
 
-            showProfileEdit();
+            goToProfileOrReport();
         });
+
     }
 
 
+    boolean insideReport;
+    private void goToProfileOrReport(){
+
+        if (!insideReport){
+            showProfileEdit();
+            insideReport = false;
+        }else {
+            showReports();
+        }
+    }
 
 
     @FXML
     private void showProfileEdit() {
+
+        if (selectedAccount == null){
+            showProfilePaneSelect();
+            return;
+        }
+
         hideAll();
         profilePaneEdit.setVisible(true);
         menuVbox.setVisible(true);
+
+        insideReport = false;
 
         //regresar a elegir usuario + borrar la info que se tenia adentro
         backButtonProfile.setOnAction(event -> {
@@ -481,15 +495,19 @@ public class DashboardAdminFrame {
             selectedAccountData = null;
 
             // Go back to profile view
-            showProfile();
+            showProfilePaneSelect();
         });
 
         Platform.runLater(() -> {
+
+            sexTextArea.setEditable(false);
+
             if (selectedAccount != null) {
                 userNameLabel.setText(selectedAccount.getName());
             }
 
             if (selectedAccountData != null) {
+                sexTextArea.setText(selectedAccountData.getGender() != null && selectedAccountData.getGender() ? "Masculino" : "Femenino");
                 ageTextArea.setText(String.valueOf(selectedAccountData.getAge()));
                 heightTextArea.setText(String.valueOf(selectedAccountData.getHeight()));
                 weightTextArea.setText(String.valueOf(selectedAccountData.getWeight()));
@@ -500,47 +518,89 @@ public class DashboardAdminFrame {
                 armTextArea.setText(String.valueOf(selectedAccountData.getArm()));
                 chestTextArea.setText(String.valueOf(selectedAccountData.getChest()));
             }
+
+            updateButton.setOnAction(event -> {
+                try {
+                    if (validateFields()) {
+                        completeProfile();
+                    }
+                } catch (Exception ex) {
+
+                }
+            });
+
         });
 
     }
 
+    private boolean validateFields() {
+        boolean validInputs = true;
+
+        // Validar edad (13 - 120) (Solo enteros)
+        validInputs &= isValidNumber(ageTextArea, 13, 120, "Edad", ageErrorLabel, 0, true);
+        ageTextArea.setOnMouseClicked(event -> ageErrorLabel.setVisible(false));
 
 
-    private void updateProfileFields(AccountData accountData) {
+        // Validar estatura (90 - 300 cm)
+        validInputs &= isValidNumber(heightTextArea, 90, 300, "Estatura", heightErrorLabel, 0, false);
+        heightTextArea.setOnMouseClicked(event -> heightErrorLabel.setVisible(false));
 
-        Optional<AccountFreeSQL> accountFreeSQL = accountFreeSQLRepository.findByEmail(accountData.getAccount().getEmail());
-        Optional<AccountDataFreeSQL> accountDataFreeSQL = accountDataFreeSQLRepository.findByAccountFreeSQL_Id(accountFreeSQL.get().getId());
+
+        // Validar peso inicial (30 - 300 kg)
+        validInputs &= isValidNumber(weightTextArea, 30, 300, "Peso inicial", weightErrorLabel, 0, false);
+        weightTextArea.setOnMouseClicked(event -> weightErrorLabel.setVisible(false));
 
 
-        sexTextArea.setText(accountData.getGender() != null && accountData.getGender() ? "Masculino" : "Femenino");
-        ageTextArea.setText(String.valueOf(accountDataFreeSQL.get().getAge()));
-        heightTextArea.setText(String.valueOf(accountDataFreeSQL.get().getHeight()));
-        weightTextArea.setText(String.valueOf(accountDataFreeSQL.get().getWeight()));
-        abdomenTextArea.setText(String.valueOf(accountDataFreeSQL.get().getAbdomen()));
-        hipTextArea.setText(String.valueOf(accountDataFreeSQL.get().getHips()));
-        waistTextArea.setText(String.valueOf(accountDataFreeSQL.get().getWaist()));
-        chestTextArea.setText(String.valueOf(accountDataFreeSQL.get().getChest()));
-        neckTextArea.setText(String.valueOf(accountDataFreeSQL.get().getNeck()));
-        armTextArea.setText(String.valueOf(accountDataFreeSQL.get().getArm()));
+        // Validar abdomen ((40 - 170 cm)
+        validInputs &= isValidNumber(abdomenTextArea, 40, 170, "Abdomen", abdomenErrorLabel, 1, false);
+        abdomenTextArea.setOnMouseClicked(event -> abdomenErrorLabel.setVisible(false));
 
-        // Hacer que los campos de sexo y alergias sean de solo lectura
-        sexTextArea.setEditable(false);
+
+        // Validar cadera (50 - 170 cm)
+        validInputs &= isValidNumber(hipTextArea, 50, 170, "Cadera", hipErrorLabel, 1, false);
+        hipTextArea.setOnMouseClicked(event -> hipErrorLabel.setVisible(false));
+
+
+        // Validar cintura (35 - 170 cm)
+        validInputs &= isValidNumber(waistTextArea, 35, 170, "Cintura", waistErrorLabel, 1, false);
+        waistTextArea.setOnMouseClicked(event -> waistErrorLabel.setVisible(false));
+
+
+        // Validar cuello ((15 - 170 cm)
+        validInputs &= isValidNumber(neckTextArea, 15, 170, "Cuello", neckErrorLabel, 1, false);
+        neckTextArea.setOnMouseClicked(event -> neckErrorLabel.setVisible(false));
+
+
+        // Validar brazo (10 - 170 cm)
+        validInputs &= isValidNumber(armTextArea, 10, 170, "Brazo", armErrorLabel, 1, false);
+        armTextArea.setOnMouseClicked(event -> armErrorLabel.setVisible(false));
+
+
+        // Validar pecho (50 - 170 cm)
+        validInputs &= isValidNumber(chestTextArea, 50, 170, "Pecho", chestErrorLabel, 1, false);
+        chestTextArea.setOnMouseClicked(event -> chestErrorLabel.setVisible(false));
+
+        return validInputs;
     }
+
 
     //Lo mismo que hay en ProfileFrame, ligeramente cambiado
 
     private void completeProfile() {
-        Optional<Account> accountOpt = accountRepository.findById(1L);
+        Optional<AccountFreeSQL> accountOpt = accountFreeSQLRepository.findByEmail(selectedAccount.getEmail());
 
+        //Crear la informacion del usuario con la info nueva
         if (accountOpt.isPresent()) {
-            Account account = accountOpt.get();
+            //
+            AccountFreeSQL account = accountOpt.get();
 
-            AccountData accountData = account.getAccountData();
+            AccountDataFreeSQL accountData = account.getAccountDataFreeSQL();
 
             if (accountData == null) {
-                accountData = new AccountData();
-                accountData.setAccount(account);
+                accountData = new AccountDataFreeSQL();
+                accountData.setAccountFreeSQL(account);
             }
+
 
             accountData.setGender(!sexTextArea.getText().equals("Femenino"));
             accountData.setAge(Integer.parseInt(ageTextArea.getText().trim()));
@@ -553,12 +613,35 @@ public class DashboardAdminFrame {
             accountData.setChest(parseOrDefault(chestTextArea, 0.0));
             accountData.setNeck(parseOrDefault(neckTextArea, 0.0));
 
-            accountDataRepository.save(accountData);
+            accountDataFreeSQLRepository.save(accountData);
 
-            account.setAccountData(accountData);
-            accountRepository.save(account);
+            account.setAccountDataFreeSQL(accountData);
+            accountFreeSQLRepository.save(account);
+
+            //crear el historial
+            AccountDataFreeSQLHistory accountDataFreeSQLHistory = new AccountDataFreeSQLHistory();
+            accountDataFreeSQLHistory.setAccountFreeSQL(account);
+
+            // Actualizar valores
+            accountDataFreeSQLHistory.setGender(accountData.getGender());
+            accountDataFreeSQLHistory.setAge(accountData.getAge());
+            accountDataFreeSQLHistory.setHeight(accountData.getHeight() != null ? accountData.getHeight() : 0);
+            accountDataFreeSQLHistory.setWeight(accountData.getWeight() != null ? accountData.getWeight() : 0);
+            accountDataFreeSQLHistory.setAbdomen(accountData.getAbdomen() != null ? accountData.getAbdomen() : 0);
+            accountDataFreeSQLHistory.setHips(accountData.getHips() != null ? accountData.getHips() : 0);
+            accountDataFreeSQLHistory.setWaist(accountData.getWaist() != null ? accountData.getWaist() : 0);
+            accountDataFreeSQLHistory.setArm(accountData.getArm() != null ? accountData.getArm() : 0);
+            accountDataFreeSQLHistory.setChest(accountData.getChest() != null ? accountData.getChest() : 0);
+            accountDataFreeSQLHistory.setNeck(accountData.getNeck() != null ? accountData.getNeck() : 0);
+            java.util.Date now = new java.util.Date();
+            java.sql.Date sqlDate = new java.sql.Date(now.getTime());
+
+            accountDataFreeSQLHistory.setDate(sqlDate);
+
+            accountDataFreeSQLHistoryRepository.save(accountDataFreeSQLHistory);
 
         }
+
     }
 
     private double parseOrDefault(TextArea textArea, double defaultValue) {
@@ -614,12 +697,96 @@ public class DashboardAdminFrame {
 
     @FXML
     private void showReports() {
+
+        insideReport = true;
+
+        if (selectedAccount == null){
+            showProfilePaneSelect();
+            return;
+        }
+
         hideAll();
         reportsPane.setVisible(true);
         menuVbox.setVisible(true);
 
-
         disableVBox(reportsPane);
+
+        backButtonReports.setOnAction(event -> {
+            // Clear the selected values
+            selectedAccount = null;
+            selectedAccountData = null;
+
+            // Go back to profile view
+            showProfilePaneSelect();
+        });
+
+
+        Date oldestReportDate = accountDataFreeSQLHistoryRepository.findOldestDateByAccountId(selectedAccount.getId());
+
+        if (oldestReportDate == null) {
+            // Si no hay fecha, deshabilitar completamente el startDatePicker
+            startDatePicker.setDisable(true);
+
+        } else {
+            startDatePicker.setDisable(false);
+
+            // Convertir la fecha a LocalDate
+            LocalDate oldestDate = oldestReportDate.toLocalDate();
+
+            // Configurar el DatePicker para que no permita fechas anteriores a la más antigua
+            startDatePicker.setDayCellFactory(new Callback<DatePicker, DateCell>() {
+                @Override
+                public DateCell call(DatePicker datePicker) {
+                    return new DateCell() {
+                        @Override
+                        public void updateItem(LocalDate date, boolean empty) {
+                            super.updateItem(date, empty);
+                            if (date.isBefore(oldestDate)) {
+                                setDisable(true);  // Deshabilitar la fecha si es anterior a la fecha más antigua
+                                setStyle("-fx-background-color: #d3d3d3;");  // Estilo para las fechas deshabilitadas
+                            }
+                        }
+                    };
+                }
+            });
+
+        }
+
+        Optional<AccountFreeSQL> account = accountFreeSQLRepository.findByEmail(selectedAccount.getEmail());
+        AccountDataFreeSQL accountData = account.get().getAccountDataFreeSQL();
+
+        sexReportTextArea.setText(accountData.getGender() != null && accountData.getGender() ? "Masculino" : "Femenino");
+        ageReportTextArea.setText(String.valueOf(accountData.getAge()));
+        heightReportTextArea.setText(String.valueOf(accountData.getHeight()));
+        weightReportTextArea.setText(String.valueOf(accountData.getWeight()));
+        abdomenReportTextArea.setText(String.valueOf(accountData.getAbdomen()));
+        hipReportTextArea.setText(String.valueOf(accountData.getHips()));
+        waistReportTextArea.setText(String.valueOf(accountData.getWaist()));
+        chestReportTextArea.setText(String.valueOf(accountData.getChest()));
+        neckReportTextArea.setText(String.valueOf(accountData.getNeck()));
+        armReportTextArea.setText(String.valueOf(accountData.getArm()));
+
+
+        sendReportButton.setOnAction(event -> {
+            if (validateFieldsReport()) {
+                try {
+                    generateReportAndSendEmail();
+                    successReportHbox.setVisible(true);
+                    PauseTransition pause = new PauseTransition(Duration.seconds(3));
+                    pause.setOnFinished(e -> successReportHbox.setVisible(false));  // Ocultar el HBox después de la pausa
+                    pause.play();
+                } catch (MessagingException e) {
+                    throw new RuntimeException(e);
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+                startCooldown();
+
+            }
+        });
 
     }
 
@@ -638,7 +805,7 @@ public class DashboardAdminFrame {
 
 
     public void generateReport() throws FileNotFoundException, IOException {
-        String dest = "toSendPDF.pdf";
+        String dest = "toSendPDFNutriologa.pdf";
         PdfWriter writer = new PdfWriter(dest);
         PdfDocument pdf = new PdfDocument(writer);
         Document document = new Document(pdf, PageSize.A4);
@@ -647,23 +814,21 @@ public class DashboardAdminFrame {
         PdfFont normalFont = PdfFontFactory.createFont(StandardFonts.HELVETICA);
 
         // Datos del usuario
-        String name = accountRepository.findById(1L).get().getName();
-        String email = accountRepository.findById(1L).get().getEmail();
+        String name = selectedAccount.getName();
+        String email = selectedAccount.getEmail();
 
-        Optional<AccountData> account = accountDataRepository.findByAccountId(1L);
-        int age = account.get().getAge();
-        String gender = account.get().getGender() ? "Masculino" : "Femenino";
-        Double weight = account.get().getWeight();
-        Double height = account.get().getHeight();
-        Goal goal = account.get().getGoal();
-        String goalString = (goal != null) ? goal.toString() : "Mantenimiento";
+        AccountDataFreeSQL account = selectedAccount.getAccountDataFreeSQL();
+        int age = account.getAge();
+        String gender = account.getGender() ? "Masculino" : "Femenino";
+        Double weight = account.getWeight();
+        Double height = account.getHeight();
 
-        Double abdomen = account.get().getAbdomen();
-        Double hips = account.get().getHips();
-        Double waist = account.get().getWaist();
-        Double arm = account.get().getArm();
-        Double chest = account.get().getChest();
-        Double neck = account.get().getNeck();
+        Double abdomen = account.getAbdomen();
+        Double hips = account.getHips();
+        Double waist = account.getWaist();
+        Double arm = account.getArm();
+        Double chest = account.getChest();
+        Double neck = account.getNeck();
 
         double imc = Math.round((weight / Math.pow(height / 100.0, 2)) * 10.0) / 10.0;
 
@@ -685,20 +850,18 @@ public class DashboardAdminFrame {
 
         // Encabezado
         document.add(new Paragraph("Reporte Nutricional").setFont(boldFont).setFontSize(18).setTextAlignment(TextAlignment.CENTER));
-        document.add(new Paragraph("Datos del Usuario").setFont(boldFont).setFontSize(14));
+        document.add(new Paragraph("Datos del Usuario actuales").setFont(boldFont).setFontSize(14));
         document.add(new Paragraph("Nombre: " + name));
         document.add(new Paragraph("Correo: " + email));
         document.add(new Paragraph("Edad: " + age));
         document.add(new Paragraph("Género: " + gender));
         document.add(new Paragraph("Peso: " + weight + " kg"));
         document.add(new Paragraph("Altura: " + height + " m"));
-        document.add(new Paragraph("Meta: " + goalString));
-
 
 
         //document.add(new Paragraph("IMC: " + imc));
 
-        document.add(new Paragraph("Medidas Corporales").setFont(boldFont).setFontSize(14));
+        document.add(new Paragraph("Medidas Corporales actuales").setFont(boldFont).setFontSize(14));
         document.add(new Paragraph("Abdomen: " + abdomen + " cm"));
         document.add(new Paragraph("Caderas: " + hips + " cm"));
         document.add(new Paragraph("Cintura: " + waist + " cm"));
@@ -708,13 +871,13 @@ public class DashboardAdminFrame {
 
         document.add(new Paragraph(" "));
 
-        document.add(new Paragraph("Reporte de " + Date.valueOf(startDatePicker.getValue()).toString() + " a " + Date.valueOf(endDatePicker.getValue()).toString())
+        /*document.add(new Paragraph("Reporte de " + Date.valueOf(startDatePicker.getValue()).toString() + " a " + Date.valueOf(endDatePicker.getValue()).toString())
                 .setFont(boldFont)
                 .setFontSize(14)
                 .setTextAlignment(TextAlignment.CENTER));
 
         document.add(new Paragraph(" ")); // Espacio antes de la siguiente sección
-
+        */
 
         document.close();
 
@@ -725,7 +888,7 @@ public class DashboardAdminFrame {
 
     private void sendEmailWithPDFAttachment() throws MessagingException, IOException {
         // Ruta del archivo PDF que queremos adjuntar
-        String pdfFilePath = "toSendPDF.pdf";
+        String pdfFilePath = "toSendPDFNutriologa.pdf";
 
         EmailDTO emailDTO = new EmailDTO();
         emailDTO.setAddressee("nutriappunison@gmail.com");
@@ -740,42 +903,6 @@ public class DashboardAdminFrame {
     private void generateReportAndSendEmail() throws FileNotFoundException, IOException, MessagingException {
         generateReport();
         sendEmailWithPDFAttachment();
-    }
-
-    private String getFoodNames(List<Food> foodList) {
-        if (foodList == null || foodList.isEmpty()) {
-            return "";
-        }
-        StringBuilder foodNames = new StringBuilder();
-        for (Food food : foodList) {
-            foodNames.append(food.getFoodName()).append(", ");  // Agregar el nombre de cada alimento
-        }
-        return foodNames.length() > 0 ? foodNames.substring(0, foodNames.length() - 2) : "";  // Eliminar la última coma
-    }
-
-    private String formatExerciseList(List<ExcerciseType> exercises) {
-        if (exercises == null || exercises.isEmpty()) {
-            return "";
-        }
-        return exercises.stream()
-                .map(exercise -> exercise.toString().replace("_", " "))  // Reemplaza el guion bajo por un espacio
-                .collect(Collectors.joining(", ")); // Une con comas
-    }
-
-
-    private String formatExerciseName(ExcerciseType exerciseType) {
-        if (exerciseType == null) {
-            return "";
-        }
-        String formattedName;
-
-        formattedName = exerciseType.name()
-                .replaceAll("y", " y ")  // Agrega espacios antes y después de "y"
-                .replaceAll("(?<!^)([A-Z])", " $1") // Agrega espacio antes de mayúsculas
-                .toLowerCase();
-
-        // Convertir la primera letra en mayúscula
-        return formattedName.substring(0, 1).toUpperCase() + formattedName.substring(1);
     }
 
     private boolean validateFieldsReport() {
