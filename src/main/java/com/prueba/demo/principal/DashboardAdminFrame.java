@@ -140,6 +140,8 @@ public class DashboardAdminFrame {
     @FXML
     private HBox infoHboxProfile;
     @FXML
+    private HBox infoHbox;
+    @FXML
     private HBox infoHboxReport;
     @FXML
     private TextField searchField;
@@ -525,9 +527,21 @@ public class DashboardAdminFrame {
                         completeProfile();
                     }
                 } catch (Exception ex) {
-
+                    ex.printStackTrace(); // Always a good idea to log the error
                 }
+
+                // Show the info HBox
+                infoHbox.setVisible(true);
+                updateButton.setVisible(false); // Hide the button immediately
+
+                PauseTransition pause = new PauseTransition(Duration.seconds(3));
+                pause.setOnFinished(e -> {
+                    infoHbox.setVisible(false);
+                    updateButton.setVisible(true);
+                });
+                pause.play();
             });
+
 
         });
 
@@ -641,6 +655,7 @@ public class DashboardAdminFrame {
             accountDataFreeSQLHistoryRepository.save(accountDataFreeSQLHistory);
 
         }
+
 
     }
 
