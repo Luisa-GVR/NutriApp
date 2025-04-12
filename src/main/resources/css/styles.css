@@ -57,3 +57,22 @@
     -fx-text-fill: #fff;  /* Texto blanco en la opción seleccionada */
 }
 
+
+
+.name-button {
+    -fx-background-color: #f9f9f9;
+    -fx-border-color: #d4e7b1;
+    -fx-border-width: 1px;
+    -fx-text-fill: #7da12d;
+    -fx-font-size: 16px;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+    -fx-cursor: hand;
+}
+
+.name-button:hover {
+    -fx-background-color: #d4e7b1;
+    -fx-border-color: #7da12d;
+    -fx-font-weight: bold;
+}
+

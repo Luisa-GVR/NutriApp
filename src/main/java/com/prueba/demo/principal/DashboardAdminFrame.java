@@ -91,6 +91,24 @@ public class DashboardAdminFrame {
     @FXML
     private Label userNameLabel;
     @FXML
+    private Label ageErrorLabel;
+    @FXML
+    private Label heightErrorLabel;
+    @FXML
+    private Label weightErrorLabel;
+    @FXML
+    private Label abdomenErrorLabel;
+    @FXML
+    private Label hipErrorLabel;
+    @FXML
+    private Label waistErrorLabel;
+    @FXML
+    private Label neckErrorLabel;
+    @FXML
+    private Label armErrorLabel;
+    @FXML
+    private Label chestErrorLabel;
+    @FXML
     private TextArea ageTextArea;
     @FXML
     private TextArea sexTextArea;
@@ -304,9 +322,51 @@ public class DashboardAdminFrame {
 
     }
 
-
     //Funcionalidades visuales
+    private void setupListViewWithDesign(ListView<String> listView) {
+        listView.setCellFactory(lv -> new ListCell<String>() {
+            private final Button nameButton = new Button();
+            private final HBox hbox = new HBox(nameButton); // HBox como contenedor
 
+            {
+                nameButton.getStyleClass().add("name-button");
+                nameButton.setMaxWidth(Double.MAX_VALUE); // Que se expanda
+
+                // Permitir que el botón crezca dentro del HBox
+                HBox.setHgrow(nameButton, Priority.ALWAYS);
+
+                nameButton.setOnAction(event -> {
+                    String item = getItem();
+                    if (item != null) {
+                        selectedAccount = userList.keySet().stream()
+                                .filter(acc -> acc.getName().equals(item))
+                                .findFirst()
+                                .orElse(null);
+
+                        selectedAccountData = userList.get(selectedAccount);
+
+                        if (selectedAccount != null) {
+                            System.out.println("Edad: " + selectedAccountData.getAge());
+                        }
+
+                        showProfileEdit();
+                    }
+                });
+            }
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    nameButton.setText(item);
+                    setGraphic(hbox); // Usamos el contenedor como graphic
+                }
+            }
+        });
+    }
 
 
     @FXML
@@ -342,6 +402,8 @@ public class DashboardAdminFrame {
     private AccountDataFreeSQL selectedAccountData;
 
 
+
+
     @FXML
     private void showProfile() {
 
@@ -354,7 +416,7 @@ public class DashboardAdminFrame {
         profilePaneSelect.setVisible(true);
         menuVbox.setVisible(true);
 
-        //agregar nombres a listview
+        // Agregar nombres a ListView
         ObservableList<String> userNames = FXCollections.observableArrayList();
 
         for (AccountFreeSQL account : userList.keySet()) {
@@ -363,9 +425,10 @@ public class DashboardAdminFrame {
 
         usersListView.setItems(userNames);
 
+        // Aplicar el cell factory para que se muestre el botón con diseño
+        setupListViewWithDesign(usersListView);
 
-        //filtrar con el textfield
-
+        // Filtrar con el TextField
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             ObservableList<String> filteredNames = FXCollections.observableArrayList();
 
@@ -376,10 +439,12 @@ public class DashboardAdminFrame {
             }
 
             usersListView.setItems(filteredNames);
+
+            // Reaplicar el diseño después del filtro
+            setupListViewWithDesign(usersListView);
         });
 
-
-        //al dar click
+        // Al dar click en un usuario
         usersListView.setOnMouseClicked(event -> {
 
             Object selectedName = usersListView.getSelectionModel().getSelectedItem();
@@ -391,18 +456,16 @@ public class DashboardAdminFrame {
 
             selectedAccountData = userList.get(selectedAccount);
 
-
             if (selectedAccount != null) {
                 AccountDataFreeSQL data = userList.get(selectedAccount);
                 System.out.println(data.getAge());
-
             }
 
             showProfileEdit();
-
         });
-
     }
+
+
 
 
     @FXML

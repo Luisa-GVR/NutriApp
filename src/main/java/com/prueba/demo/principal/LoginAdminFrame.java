@@ -156,6 +156,7 @@ public class LoginAdminFrame {
 
                 Scene scene = new Scene(loader.load());
 
+
                 // Crear un nuevo Stage para la ventana principal
                 Stage newStage = new Stage();
                 newStage.setTitle("Inicio");
@@ -180,6 +181,7 @@ public class LoginAdminFrame {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/DashboardAdmin.fxml"));
                 loader.setControllerFactory(applicationContext::getBean); // *** Crucial Line ***
                 Scene scene = new Scene(loader.load());
+                scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
 
                 Stage dashboardAdminStage = new Stage();
                 dashboardAdminStage.setTitle("Dashboard administración");
