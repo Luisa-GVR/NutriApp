@@ -508,21 +508,21 @@ public class DashboardAdminFrame {
 
             sexTextArea.setEditable(false);
 
-            if (selectedAccount != null) {
-                userNameLabel.setText(selectedAccount.getName());
-            }
+            Optional<AccountFreeSQL> account = accountFreeSQLRepository.findByEmail(selectedAccount.getEmail());
+            AccountDataFreeSQL accountData = account.get().getAccountDataFreeSQL();
+
 
             if (selectedAccountData != null) {
-                sexTextArea.setText(selectedAccountData.getGender() != null && selectedAccountData.getGender() ? "Masculino" : "Femenino");
-                ageTextArea.setText(String.valueOf(selectedAccountData.getAge()));
-                heightTextArea.setText(String.valueOf(selectedAccountData.getHeight()));
-                weightTextArea.setText(String.valueOf(selectedAccountData.getWeight()));
-                abdomenTextArea.setText(String.valueOf(selectedAccountData.getAbdomen()));
-                hipTextArea.setText(String.valueOf(selectedAccountData.getHips()));
-                waistTextArea.setText(String.valueOf(selectedAccountData.getWaist()));
-                neckTextArea.setText(String.valueOf(selectedAccountData.getNeck()));
-                armTextArea.setText(String.valueOf(selectedAccountData.getArm()));
-                chestTextArea.setText(String.valueOf(selectedAccountData.getChest()));
+                sexTextArea.setText(accountData.getGender() != null && accountData.getGender() ? "Masculino" : "Femenino");
+                ageTextArea.setText(String.valueOf(accountData.getAge()));
+                heightTextArea.setText(String.valueOf(accountData.getHeight()));
+                weightTextArea.setText(String.valueOf(accountData.getWeight()));
+                abdomenTextArea.setText(String.valueOf(accountData.getAbdomen()));
+                hipTextArea.setText(String.valueOf(accountData.getHips()));
+                waistTextArea.setText(String.valueOf(accountData.getWaist()));
+                chestTextArea.setText(String.valueOf(accountData.getChest()));
+                neckTextArea.setText(String.valueOf(accountData.getNeck()));
+                armTextArea.setText(String.valueOf(accountData.getArm()));
             }
 
             updateButton.setOnAction(event -> {
@@ -539,6 +539,8 @@ public class DashboardAdminFrame {
                             updateButton.setVisible(true);
                         });
                         pause.play();
+
+
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace(); // Always a good idea to log the error
