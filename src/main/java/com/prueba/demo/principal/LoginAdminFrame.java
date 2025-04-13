@@ -35,7 +35,7 @@ public class LoginAdminFrame {
     @FXML private TextField emailField;
     @FXML private TextField passwordField;
     private String originalStyleEmail;
-    private String originalStyleName;
+    private String originalStylePassword;
 
 
     //AUTOWIRED
@@ -57,8 +57,8 @@ public class LoginAdminFrame {
     private void handleFieldClick() {
         labelMessage.setText("Ingresa tus datos");
         labelMessage.setStyle("-fx-text-fill: #7DA12D;");
-        emailField.setStyle(originalStyleName);
-        passwordField.setStyle(originalStyleEmail);
+        emailField.setStyle(originalStyleEmail);
+        passwordField.setStyle(originalStylePassword);
     }
 
     @Autowired
@@ -75,12 +75,18 @@ public class LoginAdminFrame {
             String storedEncryptedPassword = existingAccount.get().getName();
             return compareEncryptedPassword(inputPassword, storedEncryptedPassword);
         }
-
+        labelMessage.setStyle( "-fx-text-fill: #b30000;");
+        labelMessage.setText("Correo o contraseña incorrectos. Inténtalo nuevamente.");
+        emailField.setStyle(originalStyleEmail + " -fx-border-color: #b30000;");
+        passwordField.setStyle(originalStylePassword + " -fx-border-color: #b30000;");
         return false;
     }
 
     @FXML
     private void initialize() {
+        //Variables de estilos originales
+        originalStyleEmail = emailField.getStyle();
+        originalStylePassword = passwordField.getStyle();
 
         //Llamar metodos, para cambiar estilos mediante eventos
         passwordField.setOnMouseClicked(event -> handleFieldClick());
