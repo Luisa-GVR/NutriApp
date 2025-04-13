@@ -242,6 +242,8 @@ public class DashboardAdminFrame {
 
     @FXML
     private void initialize() {
+        infoHboxReport.setVisible(false);
+        infoHboxProfile.setVisible(true);
 
         rootPane.setMinWidth(900);  // Ancho mínimo
         rootPane.setMinHeight(520); // Alto mínimo
@@ -478,6 +480,8 @@ public class DashboardAdminFrame {
 
     @FXML
     private void showProfileEdit() {
+        infoHboxReport.setVisible(false);
+        infoHboxProfile.setVisible(true);
 
         if (selectedAccount == null){
             showProfilePaneSelect();
@@ -525,21 +529,21 @@ public class DashboardAdminFrame {
                 try {
                     if (validateFields()) {
                         completeProfile();
+                        // Show the info HBox
+                        infoHbox.setVisible(true);
+                        updateButton.setVisible(false); // Hide the button immediately
+
+                        PauseTransition pause = new PauseTransition(Duration.seconds(3));
+                        pause.setOnFinished(e -> {
+                            infoHbox.setVisible(false);
+                            updateButton.setVisible(true);
+                        });
+                        pause.play();
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace(); // Always a good idea to log the error
                 }
 
-                // Show the info HBox
-                infoHbox.setVisible(true);
-                updateButton.setVisible(false); // Hide the button immediately
-
-                PauseTransition pause = new PauseTransition(Duration.seconds(3));
-                pause.setOnFinished(e -> {
-                    infoHbox.setVisible(false);
-                    updateButton.setVisible(true);
-                });
-                pause.play();
             });
 
 
@@ -712,6 +716,8 @@ public class DashboardAdminFrame {
 
     @FXML
     private void showReports() {
+        infoHboxReport.setVisible(true);
+        infoHboxProfile.setVisible(false);
 
         insideReport = true;
 
