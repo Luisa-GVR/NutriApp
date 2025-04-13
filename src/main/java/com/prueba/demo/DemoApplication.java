@@ -27,6 +27,8 @@ public class DemoApplication extends Application {
 		Scene scene = new Scene(loader.load());
 		primaryStage.setTitle("Login");
 		primaryStage.setScene(scene);
+		primaryStage.setMinWidth(1000);  // Ancho mínimo de la ventana
+		primaryStage.setMinHeight(660); // Alto mínimo de la ventana
 		primaryStage.show();
 
 
