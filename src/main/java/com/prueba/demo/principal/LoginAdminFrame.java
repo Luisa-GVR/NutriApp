@@ -1,3 +1,4 @@
+
 package com.prueba.demo.principal;
 
 import com.prueba.demo.modelFreeSQL.AccountFreeSQL;
@@ -32,9 +33,10 @@ public class LoginAdminFrame {
 
     //Text Fields
     @FXML private TextField emailField;
-    private String originalStyleName;
     @FXML private TextField passwordField;
-    @FXML private String originalStyleEmail;
+    private String originalStyleEmail;
+    private String originalStyleName;
+
 
     //AUTOWIRED
     @Autowired
@@ -76,8 +78,6 @@ public class LoginAdminFrame {
 
         return false;
     }
-
-
 
     @FXML
     private void initialize() {
