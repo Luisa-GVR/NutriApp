@@ -352,7 +352,7 @@ public class DashboardAdminFrame {
                         if (selectedAccount != null) {
                         }
 
-                        showProfileEdit();
+                        goToProfileOrReport();
                     }
                 });
             }
@@ -460,7 +460,6 @@ public class DashboardAdminFrame {
                 AccountDataFreeSQL data = userList.get(selectedAccount);
             }
 
-            goToProfileOrReport();
         });
 
     }
