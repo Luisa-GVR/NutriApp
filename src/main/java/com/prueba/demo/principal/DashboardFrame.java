@@ -27,18 +27,14 @@ import com.prueba.demo.service.DatabaseService;
 import com.prueba.demo.service.IEmailService;
 import com.prueba.demo.service.dto.EmailDTO;
 import jakarta.mail.MessagingException;
-import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 
-import java.awt.*;
 import java.time.Period;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -369,6 +365,70 @@ public class DashboardFrame {
 
     }
 
+    public void syncAccountDataFromFreeSQL(Long accountId) {
+        Optional<AccountData> accountDataLocal = accountDataRepository.findByAccountId(accountId);
+
+        if (accountDataLocal.isEmpty()) return;
+
+        String email = accountDataLocal.get().getAccount().getEmail();
+        Optional<AccountDataFreeSQL> accountDataFreeSQLActual = accountDataFreeSQLRepository
+                .findByAccountFreeSQL_Id(accountFreeSQLRepository.findByEmail(email).get().getId());
+
+        if (accountDataFreeSQLActual.isEmpty()) return;
+
+        AccountDataFreeSQL freeSQL = accountDataFreeSQLActual.get();
+        AccountData local = accountDataLocal.get();
+        boolean updated = false;
+
+        if (!Objects.equals(local.getWeight(), freeSQL.getWeight())) {
+            local.setWeight(freeSQL.getWeight());
+            updated = true;
+        }
+        if (!Objects.equals(local.getHeight(), freeSQL.getHeight())) {
+            local.setHeight(freeSQL.getHeight());
+            updated = true;
+        }
+        if (!Objects.equals(local.getAge(), freeSQL.getAge())) {
+            local.setAge(freeSQL.getAge());
+            updated = true;
+        }
+        if (!Objects.equals(local.getGender(), freeSQL.getGender())) {
+            local.setGender(freeSQL.getGender());
+            updated = true;
+        }
+        if (!Objects.equals(local.getNeck(), freeSQL.getNeck())) {
+            local.setNeck(freeSQL.getNeck());
+            updated = true;
+        }
+        if (!Objects.equals(local.getAbdomen(), freeSQL.getAbdomen())) {
+            local.setAbdomen(freeSQL.getAbdomen());
+            updated = true;
+        }
+        if (!Objects.equals(local.getChest(), freeSQL.getChest())) {
+            local.setChest(freeSQL.getChest());
+            updated = true;
+        }
+        if (!Objects.equals(local.getWaist(), freeSQL.getWaist())) {
+            local.setWaist(freeSQL.getWaist());
+            updated = true;
+        }
+        if (!Objects.equals(local.getArm(), freeSQL.getArm())) {
+            local.setArm(freeSQL.getArm());
+            updated = true;
+        }
+        if (!Objects.equals(local.getHips(), freeSQL.getHips())) {
+            local.setHips(freeSQL.getHips());
+            updated = true;
+        }
+
+        if (updated) {
+            accountDataRepository.save(local);
+        }
+    }
+
+
+    private Optional<AccountData> accountDataLocal;
+    private Optional<AccountDataFreeSQL> accountDataFreeSQLActual;
 
     @FXML
     private void initialize() {
@@ -379,6 +439,7 @@ public class DashboardFrame {
             // Ocultar el botón de configuración de preferencias si ya se ha completado el ejercicio
             excerciseHbox.setVisible(false);  // O usar setDisable(true) si prefieres deshabilitar el botón
         }
+
 
 
         rootPane.setMinWidth(900);  // Ancho mínimo
@@ -1058,6 +1119,8 @@ public class DashboardFrame {
         Optional<AccountData> accountDataOpt = accountDataRepository.findByAccountId(accountId);
         double totalWater = (accountDataOpt.get().getWeight() * 35);
 
+        System.out.println(accountDataOpt.get().getWeight());
+
         return Double.parseDouble(String.format("%.2f", totalWater / 1000.0));
     }
 
@@ -1154,10 +1217,14 @@ public class DashboardFrame {
 
     @FXML
     private void showProfile() {
+
+        syncAccountDataFromFreeSQL(1L);
+
         hideAll();
         profilePane.setVisible(true);
         menuVbox.setVisible(true);
 
+        syncAccountDataFromFreeSQL(1L);
 
 
         Optional<Account> account = accountRepository.findById(1L);
@@ -1310,6 +1377,9 @@ public class DashboardFrame {
 
     @FXML
     public void showDiet() {
+
+        syncAccountDataFromFreeSQL(1L);
+
 
         for (Node node : gridPaneDiet.getChildren()) {
             if (node instanceof Button) {
@@ -1842,6 +1912,10 @@ public class DashboardFrame {
      */
     @FXML
     public void showExercise() {
+
+        syncAccountDataFromFreeSQL(1L);
+
+
         hideAll();
         exercisePane.setVisible(true);
         menuVbox.setVisible(true);
@@ -2372,6 +2446,9 @@ public class DashboardFrame {
 
     @FXML
     private void showReports() {
+        syncAccountDataFromFreeSQL(1L);
+
+
         hideAll();
         reportsPane.setVisible(true);
         menuVbox.setVisible(true);
