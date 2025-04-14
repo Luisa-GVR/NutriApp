@@ -510,6 +510,8 @@ public class DashboardAdminFrame {
             Optional<AccountFreeSQL> account = accountFreeSQLRepository.findByEmail(selectedAccount.getEmail());
             AccountDataFreeSQL accountData = account.get().getAccountDataFreeSQL();
 
+            userNameLabel.setText(selectedAccount.getName());
+
 
             if (selectedAccountData != null) {
                 sexTextArea.setText(accountData.getGender() != null && accountData.getGender() ? "Masculino" : "Femenino");
