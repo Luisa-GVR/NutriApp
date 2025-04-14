@@ -841,18 +841,20 @@ public class DashboardAdminFrame {
         String name = selectedAccount.getName();
         String email = selectedAccount.getEmail();
 
-        AccountDataFreeSQL account = selectedAccount.getAccountDataFreeSQL();
-        int age = account.getAge();
-        String gender = account.getGender() ? "Masculino" : "Femenino";
-        Double weight = account.getWeight();
-        Double height = account.getHeight();
+        Optional<AccountFreeSQL> account = accountFreeSQLRepository.findByEmail(email);
 
-        Double abdomen = account.getAbdomen();
-        Double hips = account.getHips();
-        Double waist = account.getWaist();
-        Double arm = account.getArm();
-        Double chest = account.getChest();
-        Double neck = account.getNeck();
+        AccountDataFreeSQL accountData = account.get().getAccountDataFreeSQL();
+        int age = accountData.getAge();
+        String gender = accountData.getGender() ? "Masculino" : "Femenino";
+        Double weight = accountData.getWeight();
+        Double height = accountData.getHeight();
+
+        Double abdomen = accountData.getAbdomen();
+        Double hips = accountData.getHips();
+        Double waist = accountData.getWaist();
+        Double arm = accountData.getArm();
+        Double chest = accountData.getChest();
+        Double neck = accountData.getNeck();
 
         double imc = Math.round((weight / Math.pow(height / 100.0, 2)) * 10.0) / 10.0;
 
