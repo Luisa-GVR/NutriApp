@@ -73,7 +73,17 @@ public class LoginAdminFrame {
 
         if (existingAccount.isPresent()) {
             String storedEncryptedPassword = existingAccount.get().getName();
-            return compareEncryptedPassword(inputPassword, storedEncryptedPassword);
+
+            if (compareEncryptedPassword(inputPassword, storedEncryptedPassword)){
+                return true;
+            } else {
+                labelMessage.setStyle( "-fx-text-fill: #b30000;");
+                labelMessage.setText("Contraseña incorrecta. Inténtalo nuevamente.");
+                emailField.setStyle(originalStyleEmail + " -fx-border-color: #b30000;");
+                passwordField.setStyle(originalStylePassword + " -fx-border-color: #b30000;");
+                return false;
+            }
+
         }
         labelMessage.setStyle( "-fx-text-fill: #b30000;");
         labelMessage.setText("Correo o contraseña incorrectos. Inténtalo nuevamente.");
@@ -100,7 +110,7 @@ public class LoginAdminFrame {
                 closeCurrentWindow();
                 openDashboardAdminFrame();
             } else {
-                //aqui pon el errorlabel con el "contraseña o correo incorrecto" / setvisible uwu
+
             }
 
         });
