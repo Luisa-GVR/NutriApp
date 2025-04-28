@@ -34,6 +34,7 @@ import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -242,6 +243,8 @@ public class DashboardAdminFrame {
 
     @FXML
     private void initialize() {
+
+
         infoHboxReport.setVisible(false);
         infoHboxProfile.setVisible(true);
 
@@ -729,6 +732,8 @@ public class DashboardAdminFrame {
             return;
         }
 
+
+
         hideAll();
         reportsPane.setVisible(true);
         menuVbox.setVisible(true);
@@ -810,6 +815,11 @@ public class DashboardAdminFrame {
                 startCooldown();
 
             }
+        });
+
+        Platform.runLater(() -> {
+            startDatePicker.getEditor().setEditable(false);
+            endDatePicker.getEditor().setEditable(false);
         });
 
     }

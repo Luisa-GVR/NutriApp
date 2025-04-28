@@ -31,6 +31,7 @@ import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -2449,6 +2450,7 @@ public class DashboardFrame {
         syncAccountDataFromFreeSQL(1L);
 
 
+
         hideAll();
         reportsPane.setVisible(true);
         menuVbox.setVisible(true);
@@ -2549,6 +2551,10 @@ public class DashboardFrame {
 
         disableVBox(reportsPane);
 
+        Platform.runLater(() -> {
+            startDatePicker.getEditor().setEditable(false);
+            endDatePicker.getEditor().setEditable(false);
+        });
     }
 
     private static final int COOLDOWN_TIME = 10;

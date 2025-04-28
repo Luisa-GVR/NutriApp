@@ -18,9 +18,11 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Optional;
+import java.util.Properties;
 
 @Component
 public class LoginAdminFrame {
@@ -202,6 +204,24 @@ public class LoginAdminFrame {
                 Stage dashboardAdminStage = new Stage();
                 dashboardAdminStage.setTitle("Dashboard administración");
                 dashboardAdminStage.setScene(scene);
+
+                File propertiesFile = new File("preferencesState.properties");
+                Properties properties = new Properties();
+
+                try {
+                    if (!propertiesFile.exists()) {
+                        propertiesFile.createNewFile();
+                    }
+
+                    properties.setProperty("logedAdmin", "true");
+                    try (OutputStream outputStream = new FileOutputStream(propertiesFile)) {
+                        properties.store(outputStream, null);
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
 
                 dashboardAdminStage.show();
 

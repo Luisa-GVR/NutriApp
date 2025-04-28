@@ -594,7 +594,7 @@
                                                             </Label>
                                                          </children>
                                                       </HBox>
-                                                      <Label prefHeight="16.0" prefWidth="646.0" text="Por favor, verifique que los datos sean correcto. Gestione el perfil de su usuario para actualizar la información." textFill="#606060">
+                                                      <Label prefHeight="16.0" prefWidth="646.0" text="Por favor, verifique que los datos sean correctos. Gestione el perfil de su usuario para actualizar la información." textFill="#606060">
                                                          <HBox.margin>
                                                             <Insets left="5.0" />
                                                          </HBox.margin>

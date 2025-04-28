@@ -27,13 +27,13 @@ import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.Random;
 
 @Component
@@ -147,6 +147,20 @@ public class LoginFrame {
         // Verificar si ya existe un usuario validado
         Optional<Account> existingUser = accountRepository.findAll().stream().findFirst();
         File encryptedCodeFile = new File("src/main/resources/encrypted_code.txt");
+
+        Properties properties = new Properties();
+        try (FileInputStream in = new FileInputStream("preferencesState.properties")) {
+            properties.load(in);
+            if ("true".equals(properties.getProperty("logedAdmin"))) {
+                closeCurrentWindow();
+                openDashboardAdmin();
+            }
+        } catch (FileNotFoundException e) {
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         if (encryptedCodeFile.exists()) {
             closeCurrentWindow();
             openValidationFrame();
@@ -404,6 +418,27 @@ public class LoginFrame {
             } catch (Exception e) {
                 e.printStackTrace();  // Para obtener más detalles sobre el error
                 showAlert("Error", "No se pudo abrir la ventana principal.");
+            }
+        });
+    }
+
+    private void openDashboardAdmin() {
+        Platform.runLater(() -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/DashboardAdmin.fxml"));
+                loader.setControllerFactory(applicationContext::getBean); // *** Crucial Line ***
+                Scene scene = new Scene(loader.load());
+                scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
+
+                Stage dashboardAdminStage = new Stage();
+                dashboardAdminStage.setTitle("Dashboard administración");
+                dashboardAdminStage.setScene(scene);
+
+                dashboardAdminStage.show();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                showAlert("Error", "No se pudo abrir la ventana de dashboard.");
             }
         });
     }
