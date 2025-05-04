@@ -995,6 +995,21 @@ public class DashboardAdminFrame {
             current = current.plusDays(1);
         }
 
+        if (dataset.getColumnCount() == 1) {
+            String onlyDate = (String) dataset.getColumnKeys().get(0);
+            LocalDate date = LocalDate.parse(onlyDate);
+            String nextDate = date.plusDays(1).toString();
+
+            // Repeat the same values on nextDate
+            if (lastAbdomen != null) dataset.addValue(lastAbdomen, "Abdomen", nextDate);
+            if (lastHips != null) dataset.addValue(lastHips, "Caderas", nextDate);
+            if (lastWaist != null) dataset.addValue(lastWaist, "Cintura", nextDate);
+            if (lastArm != null) dataset.addValue(lastArm, "Brazo", nextDate);
+            if (lastChest != null) dataset.addValue(lastChest, "Pecho", nextDate);
+            if (lastNeck != null) dataset.addValue(lastNeck, "Cuello", nextDate);
+        }
+
+
 
         JFreeChart lineChart = ChartFactory.createLineChart(
                 "Histórico de Medidas Corporales",
