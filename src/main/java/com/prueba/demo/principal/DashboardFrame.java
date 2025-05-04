@@ -9,10 +9,12 @@ import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.element.AreaBreak;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.properties.AreaBreakType;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
@@ -2857,6 +2859,8 @@ public class DashboardFrame {
 
         com.itextpdf.layout.element.Image chart = new com.itextpdf.layout.element.Image(chartImage);
         chart.setAutoScale(true);
+
+        document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
         document.add(chart);
 
         document.close();
