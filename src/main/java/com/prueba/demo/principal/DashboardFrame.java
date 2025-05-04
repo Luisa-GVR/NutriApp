@@ -17,9 +17,11 @@ import com.itextpdf.layout.properties.TextAlignment;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 import com.prueba.demo.model.*;
+import com.prueba.demo.modelFreeSQL.AccountDataFreeSQLHistory;
 import com.prueba.demo.modelFreeSQL.AccountFreeSQL;
 import com.prueba.demo.modelFreeSQL.AccountDataFreeSQL;
 import com.prueba.demo.repository.*;
+import com.prueba.demo.repositoryFreeSQL.AccountDataFreeSQLHistoryRepository;
 import com.prueba.demo.repositoryFreeSQL.AccountFreeSQLRepository;
 import com.prueba.demo.repositoryFreeSQL.AccountDataFreeSQLRepository;
 import com.prueba.demo.service.APIConsumption;
@@ -54,6 +56,11 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Duration;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartUtils;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -2570,6 +2577,8 @@ public class DashboardFrame {
         return str == null || str.trim().isEmpty();
     }
 
+    @Autowired
+    AccountDataFreeSQLHistoryRepository accountDataFreeSQLHistoryRepository;
 
     public void generateReport() throws FileNotFoundException, IOException {
         String dest = "toSendPDF.pdf";
@@ -2765,6 +2774,90 @@ public class DashboardFrame {
         }
 
         document.add(reasonsTable);
+
+        Optional<AccountFreeSQL> accountFreeSQL = accountFreeSQLRepository.findByEmail(email);
+
+        List<AccountDataFreeSQLHistory> historyList = accountDataFreeSQLHistoryRepository
+                .findByAccountFreeSQL(accountFreeSQL.get());
+
+        historyList.sort(Comparator.comparing(AccountDataFreeSQLHistory::getDate));
+
+        LocalDate startDate = startDatePicker.getValue();
+        LocalDate endDate = endDatePicker.getValue();
+        LocalDate current = startDate;
+
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+        Double lastAbdomen = null, lastHips = null, lastWaist = null;
+        Double lastArm = null, lastChest = null, lastNeck = null;
+
+        Map<LocalDate, AccountDataFreeSQLHistory> historyMap = new HashMap<>();
+        for (AccountDataFreeSQLHistory record : historyList) {
+            historyMap.put(record.getDate().toLocalDate(), record);
+        }
+
+        while (!current.isAfter(endDate)) {
+            AccountDataFreeSQLHistory record = historyMap.get(current);
+            String dateStr = current.toString();
+
+            boolean shouldAdd = false;
+
+            // Actualizar los "últimos conocidos" si hay nuevos datos
+            if (record != null) {
+                if (record.getAbdomen() != null && !record.getAbdomen().equals(lastAbdomen)) {
+                    lastAbdomen = record.getAbdomen(); shouldAdd = true;
+                }
+                if (record.getHips() != null && !record.getHips().equals(lastHips)) {
+                    lastHips = record.getHips(); shouldAdd = true;
+                }
+                if (record.getWaist() != null && !record.getWaist().equals(lastWaist)) {
+                    lastWaist = record.getWaist(); shouldAdd = true;
+                }
+                if (record.getArm() != null && !record.getArm().equals(lastArm)) {
+                    lastArm = record.getArm(); shouldAdd = true;
+                }
+                if (record.getChest() != null && !record.getChest().equals(lastChest)) {
+                    lastChest = record.getChest(); shouldAdd = true;
+                }
+                if (record.getNeck() != null && !record.getNeck().equals(lastNeck)) {
+                    lastNeck = record.getNeck(); shouldAdd = true;
+                }
+            }
+
+            // Asegura incluir la primera y última fecha
+            if (current.equals(startDate) || current.equals(endDate)) {
+                shouldAdd = true;
+            }
+
+            if (shouldAdd) {
+                if (lastAbdomen != null) dataset.addValue(lastAbdomen, "Abdomen", dateStr);
+                if (lastHips != null) dataset.addValue(lastHips, "Caderas", dateStr);
+                if (lastWaist != null) dataset.addValue(lastWaist, "Cintura", dateStr);
+                if (lastArm != null) dataset.addValue(lastArm, "Brazo", dateStr);
+                if (lastChest != null) dataset.addValue(lastChest, "Pecho", dateStr);
+                if (lastNeck != null) dataset.addValue(lastNeck, "Cuello", dateStr);
+            }
+
+            current = current.plusDays(1);
+        }
+
+
+        JFreeChart lineChart = ChartFactory.createLineChart(
+                "Histórico de Medidas Corporales",
+                "Fecha",
+                "Medida (cm)",
+                dataset,
+                PlotOrientation.VERTICAL,
+                true, true, false);
+
+
+        ByteArrayOutputStream chartOut = new ByteArrayOutputStream();
+        ChartUtils.writeChartAsPNG(chartOut, lineChart, 600, 400);
+        ImageData chartImage = ImageDataFactory.create(chartOut.toByteArray());
+
+        com.itextpdf.layout.element.Image chart = new com.itextpdf.layout.element.Image(chartImage);
+        chart.setAutoScale(true);
+        document.add(chart);
 
         document.close();
 
