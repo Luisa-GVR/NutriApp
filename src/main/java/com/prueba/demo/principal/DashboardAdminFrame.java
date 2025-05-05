@@ -121,6 +121,8 @@ public class DashboardAdminFrame {
     @FXML
     private Label chestErrorLabel;
     @FXML
+    private Label reportUsernameLabel;
+    @FXML
     private Label reportLabel;
     @FXML
     private Label profileLabel;
@@ -534,7 +536,7 @@ public class DashboardAdminFrame {
             Optional<AccountFreeSQL> account = accountFreeSQLRepository.findByEmail(selectedAccount.getEmail());
             AccountDataFreeSQL accountData = account.get().getAccountDataFreeSQL();
 
-            userNameLabel.setText(selectedAccount.getName());
+            userNameLabel.setText("Perfiles | " +selectedAccount.getName());
 
 
             if (selectedAccountData != null) {
@@ -743,6 +745,7 @@ public class DashboardAdminFrame {
 
     @FXML
     private void showReports() {
+
         infoHboxReport.setVisible(true);
         reportLabel.setVisible(true);
         infoHboxProfile.setVisible(false);
@@ -758,6 +761,7 @@ public class DashboardAdminFrame {
 
 
         hideAll();
+        reportUsernameLabel.setText("Reportes | " + selectedAccount.getName());
         reportsPane.setVisible(true);
         menuVbox.setVisible(true);
 
