@@ -88,7 +88,7 @@ public class LoginAdminFrame {
 
     private void handleFieldClick() {
         labelMessage.setText("Ingresa tus datos");
-        labelMessage.setStyle("-fx-text-fill: #7DA12D;");
+        labelMessage.setStyle(originalStyleLabelMessage);
         emailField.setStyle(originalStyleEmail);
         passwordField.setStyle(originalStylePassword);
     }
@@ -109,7 +109,7 @@ public class LoginAdminFrame {
             if (compareEncryptedPassword(inputPassword, storedEncryptedPassword)){
                 return true;
             } else {
-                labelMessage.setStyle( "-fx-text-fill: #b30000;");
+                labelMessage.setStyle(originalStyleLabelMessage + "-fx-text-fill: #b30000;");
                 labelMessage.setText("Contraseña incorrecta. Inténtalo nuevamente.");
                 emailField.setStyle(originalStyleEmail + " -fx-border-color: #b30000;");
                 passwordField.setStyle(originalStylePassword + " -fx-border-color: #b30000;");
@@ -117,7 +117,7 @@ public class LoginAdminFrame {
             }
 
         }
-        labelMessage.setStyle( "-fx-text-fill: #b30000;");
+        labelMessage.setStyle(originalStyleLabelMessage +  "-fx-text-fill: #b30000;");
         labelMessage.setText("Correo o contraseña incorrectos. Inténtalo nuevamente.");
         emailField.setStyle(originalStyleEmail + " -fx-border-color: #b30000;");
         passwordField.setStyle(originalStylePassword + " -fx-border-color: #b30000;");
@@ -153,6 +153,9 @@ public class LoginAdminFrame {
             openLoginFrame();
         });
         forgotPasswordButton.setOnAction(event -> {
+            emailField.setStyle(originalStyleEmail);
+            passwordField.setStyle(originalStylePassword);
+            labelMessage.setStyle(originalStyleLabelMessage);
 
             labelMessage.setText("Se envió la contraseña a tu correo.");
             PauseTransition pause = new PauseTransition(Duration.seconds(3));
