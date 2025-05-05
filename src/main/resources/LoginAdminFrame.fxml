@@ -58,6 +58,14 @@
             <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
          </padding>
       </Button>
+      <Button fx:id="forgotPasswordButton" layoutX="953.0" layoutY="18.0" mnemonicParsing="false" onMouseEntered="#handleMouseEnteredB" onMouseExited="#handleMouseExitedB" style="-fx-background-color: #262626; -fx-border-color: #f0f0f0; -fx-border-radius: 4;" text="¿Olvidaste tu contraseña?" textFill="#f0f0f0" AnchorPane.bottomAnchor="-20.0" AnchorPane.rightAnchor="-60.0">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+         <padding>
+            <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+         </padding>
+      </Button>
     </children>
     <opaqueInsets>
         <Insets />

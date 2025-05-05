@@ -399,7 +399,7 @@
                               </VBox>
                            </children>
                         </VBox>
-                        <VBox fx:id="profilePaneSelect" prefHeight="200.0" prefWidth="100.0" spacing="30.0" style="-fx-background-color: #f9f9f9;" visible="false">
+                        <VBox fx:id="profilePaneSelect" prefHeight="200.0" prefWidth="100.0" spacing="30.0" style="-fx-background-color: #f9f9f9;">
                            <children>
                               <HBox alignment="CENTER_LEFT" maxHeight="50.0" minHeight="-Infinity" prefHeight="50.0" prefWidth="700.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: white;" VBox.vgrow="ALWAYS">
                                  <VBox.margin>
@@ -467,22 +467,14 @@
                                  <children>
                                     <GridPane>
                                       <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="485.5999755859375" minWidth="10.0" prefWidth="485.5999755859375" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="368.79998779296875" minWidth="10.0" prefWidth="266.4000244140625" />
                                       </columnConstraints>
                                       <rowConstraints>
                                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                       </rowConstraints>
                                        <children>
-                                          <Label text="Elige a un usuario">
-                                             <font>
-                                                <Font name="System Bold" size="24.0" />
-                                             </font>
-                                             <GridPane.margin>
-                                                <Insets left="40.0" />
-                                             </GridPane.margin>
-                                          </Label>
-                                          <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+                                          <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="336.0" GridPane.columnIndex="1">
                                              <children>
                                                 <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="20.0" prefHeight="28.0" prefWidth="180.0" style="-fx-border-color: #aeaeae; -fx-border-width: 1.5; -fx-border-radius: 4;">
                                                    <children>
@@ -503,6 +495,26 @@
                                                 </HBox>
                                              </children>
                                           </HBox>
+                                          <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0">
+                                             <children>
+                                                <Label fx:id="profileLabel" text="Perfiles | Elige a un paciente" visible="false">
+                                                   <font>
+                                                      <Font name="System Bold" size="24.0" />
+                                                   </font>
+                                                   <StackPane.margin>
+                                                      <Insets left="40.0" />
+                                                   </StackPane.margin>
+                                                </Label>
+                                                <Label fx:id="reportLabel" text="Reportes | Elige a un paciente">
+                                                   <font>
+                                                      <Font name="System Bold" size="24.0" />
+                                                   </font>
+                                                   <StackPane.margin>
+                                                      <Insets left="40.0" />
+                                                   </StackPane.margin>
+                                                </Label>
+                                             </children>
+                                          </StackPane>
                                        </children>
                                        <VBox.margin>
                                           <Insets top="20.0" />

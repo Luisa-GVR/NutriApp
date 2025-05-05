@@ -63,6 +63,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.SecretKey;
 import java.io.*;
 import java.sql.Date;
 import java.time.DayOfWeek;
@@ -119,6 +120,11 @@ public class DashboardAdminFrame {
     private Label armErrorLabel;
     @FXML
     private Label chestErrorLabel;
+    @FXML
+    private Label reportLabel;
+    @FXML
+    private Label profileLabel;
+
     @FXML
     private TextArea ageTextArea;
     @FXML
@@ -253,7 +259,9 @@ public class DashboardAdminFrame {
 
 
         infoHboxReport.setVisible(false);
+        reportLabel.setVisible(false);
         infoHboxProfile.setVisible(true);
+        profileLabel.setVisible(true);
 
         rootPane.setMinWidth(900);  // Ancho mínimo
         rootPane.setMinHeight(520); // Alto mínimo
@@ -490,7 +498,9 @@ public class DashboardAdminFrame {
     @FXML
     private void showProfileEdit() {
         infoHboxReport.setVisible(false);
+        reportLabel.setVisible(false);
         infoHboxProfile.setVisible(true);
+        profileLabel.setVisible(true);
 
         if (selectedAccount == null){
             showProfilePaneSelect();
@@ -734,7 +744,9 @@ public class DashboardAdminFrame {
     @FXML
     private void showReports() {
         infoHboxReport.setVisible(true);
+        reportLabel.setVisible(true);
         infoHboxProfile.setVisible(false);
+        profileLabel.setVisible(false);
 
         insideReport = true;
 

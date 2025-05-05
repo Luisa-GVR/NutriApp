@@ -3,6 +3,7 @@ package com.prueba.demo.principal;
 
 import com.prueba.demo.modelFreeSQL.AccountFreeSQL;
 import com.prueba.demo.repositoryFreeSQL.AccountFreeSQLRepository;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -30,6 +32,7 @@ public class LoginAdminFrame {
     //Botones
     @FXML private Button loginButton;
     @FXML private Button backButton;
+    @FXML private Button forgotPasswordButton;
     //Labels
     @FXML private Label labelMessage;
 
@@ -38,6 +41,7 @@ public class LoginAdminFrame {
     @FXML private TextField passwordField;
     private String originalStyleEmail;
     private String originalStylePassword;
+    private String originalStyleLabelMessage;
 
 
     //AUTOWIRED
@@ -56,6 +60,32 @@ public class LoginAdminFrame {
         Button button = (Button) event.getSource();
         button.setStyle("-fx-background-color: #7DA12D;");
     }
+    @FXML
+    private void handleMouseEnteredB(MouseEvent event) {
+        Button button = (Button) event.getSource();
+        String currentStyle = button.getStyle();
+
+        // Elimina cualquier estilo previo de background-color para evitar duplicados
+        String styleWithoutBackground = currentStyle.replaceAll("-fx-background-color: *[^;]+;", "").trim();
+
+        // Aplica el nuevo estilo agregando solo el background
+        button.setStyle(styleWithoutBackground + " -fx-background-color: #404040;");
+    }
+
+
+        @FXML
+        private void handleMouseExitedB(MouseEvent event) {
+            Button button = (Button) event.getSource();
+            String currentStyle = button.getStyle();
+
+            // Elimina cualquier estilo previo de background-color para evitar duplicados
+            String styleWithoutBackground = currentStyle.replaceAll("-fx-background-color: *[^;]+;", "").trim();
+
+            // Aplica el nuevo estilo agregando solo el background
+            button.setStyle(styleWithoutBackground + " -fx-background-color: #262626;");
+        }
+
+
     private void handleFieldClick() {
         labelMessage.setText("Ingresa tus datos");
         labelMessage.setStyle("-fx-text-fill: #7DA12D;");
@@ -96,7 +126,9 @@ public class LoginAdminFrame {
 
     @FXML
     private void initialize() {
-        //Variables de estilos originales
+
+        //Estilos originales
+        originalStyleLabelMessage = labelMessage.getStyle();
         originalStyleEmail = emailField.getStyle();
         originalStylePassword = passwordField.getStyle();
 
@@ -119,6 +151,13 @@ public class LoginAdminFrame {
         backButton.setOnAction(event ->{
             closeCurrentWindow();
             openLoginFrame();
+        });
+        forgotPasswordButton.setOnAction(event -> {
+
+            labelMessage.setText("Se envió la contraseña a tu correo.");
+            PauseTransition pause = new PauseTransition(Duration.seconds(3));
+            pause.setOnFinished(e -> labelMessage.setText("Ingresa tus datos")); // Borra el mensaje
+            pause.play();
         });
     }
 
