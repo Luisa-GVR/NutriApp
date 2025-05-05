@@ -1,8 +1,12 @@
 
 package com.prueba.demo.principal;
 
+import com.prueba.demo.model.Account;
 import com.prueba.demo.modelFreeSQL.AccountFreeSQL;
 import com.prueba.demo.repositoryFreeSQL.AccountFreeSQLRepository;
+import com.prueba.demo.service.IEmailService;
+import com.prueba.demo.service.dto.EmailDTO;
+import jakarta.mail.MessagingException;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -18,6 +22,9 @@ import javafx.util.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
@@ -157,11 +164,43 @@ public class LoginAdminFrame {
             passwordField.setStyle(originalStylePassword);
             labelMessage.setStyle(originalStyleLabelMessage);
 
+            try {
+                sendForgotPassword();
+            } catch (MessagingException e) {
+                throw new RuntimeException(e);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
             labelMessage.setText("Se envió la contraseña a tu correo.");
             PauseTransition pause = new PauseTransition(Duration.seconds(3));
             pause.setOnFinished(e -> labelMessage.setText("Ingresa tus datos")); // Borra el mensaje
             pause.play();
         });
+    }
+
+    @Autowired
+    private IEmailService iEmailService;
+    @Autowired
+    private TemplateEngine templateEngine;
+    private void sendForgotPassword() throws Exception {
+        // Enviar email
+        Context context = new Context();
+
+        String encryptedPassword = accountFreeSQLRepository.findByEmail("nutriappunison@gmail.com").get().getName();
+        String decryptedPassword = decrypt(encryptedPassword, getAESKey());
+
+        context.setVariable("password", decryptedPassword);
+
+        String contentHTML = templateEngine.process("forgotPassword", context);
+
+        EmailDTO emailDTO = new EmailDTO();
+        emailDTO.setAddressee("nutriappunison@gmail.com");
+        emailDTO.setSubject("Recuperación de contraseña");
+        emailDTO.setMessage(contentHTML);
+
+        iEmailService.sendMail(emailDTO);
+
     }
 
     // Método para encriptar un texto con AES
@@ -187,6 +226,16 @@ public class LoginAdminFrame {
             e.printStackTrace();
             return false;
         }
+    }
+
+    //decrypt
+
+    private String decrypt(String encryptedData, SecretKey secretKey) throws Exception {
+        Cipher cipher = Cipher.getInstance("AES");
+        cipher.init(Cipher.DECRYPT_MODE, secretKey);
+        byte[] decodedBytes = Base64.getDecoder().decode(encryptedData);
+        byte[] decryptedBytes = cipher.doFinal(decodedBytes);
+        return new String(decryptedBytes, StandardCharsets.UTF_8);
     }
 
 
