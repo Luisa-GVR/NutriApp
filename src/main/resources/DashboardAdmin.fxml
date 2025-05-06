@@ -58,7 +58,7 @@
                                           </Label>
                                           <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                                              <children>
-                                                <Button fx:id="backButtonProfile" mnemonicParsing="false" onMouseEntered="#handleMouseEnteredConfigure" onMouseExited="#handleMouseExitedConfigure" style="-fx-background-color: #262626;" text="&lt;&lt; Regresar a Usuarios" textFill="WHITE">
+                                                <Button fx:id="backButtonProfile" mnemonicParsing="false" onMouseEntered="#handleMouseEnteredConfigure" onMouseExited="#handleMouseExitedConfigure" style="-fx-background-color: #262626;" text="&lt;&lt; Regresar a Pacientes" textFill="WHITE">
                                                    <font>
                                                       <Font name="System Bold" size="12.0" />
                                                    </font>
@@ -399,7 +399,7 @@
                               </VBox>
                            </children>
                         </VBox>
-                        <VBox fx:id="profilePaneSelect" prefHeight="200.0" prefWidth="100.0" spacing="30.0" style="-fx-background-color: #f9f9f9;">
+                        <VBox fx:id="profilePaneSelect" prefHeight="200.0" prefWidth="100.0" spacing="30.0" style="-fx-background-color: #f9f9f9;" visible="false">
                            <children>
                               <HBox alignment="CENTER_LEFT" maxHeight="50.0" minHeight="-Infinity" prefHeight="50.0" prefWidth="700.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: white;" VBox.vgrow="ALWAYS">
                                  <VBox.margin>
@@ -529,7 +529,7 @@
                               </VBox>
                            </children>
                         </VBox>
-                        <VBox fx:id="reportsPane" minHeight="-Infinity" prefHeight="520.0" prefWidth="750.0" spacing="30.0" visible="false">
+                        <VBox fx:id="reportsPane" minHeight="-Infinity" prefHeight="520.0" prefWidth="750.0" spacing="30.0">
                            <children>
                               <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="631.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: white;">
                                  <children>
@@ -552,7 +552,7 @@
                                           </Label>
                                           <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                                              <children>
-                                                <Button fx:id="backButtonReports" mnemonicParsing="false" onMouseEntered="#handleMouseEnteredConfigure" onMouseExited="#handleMouseExitedConfigure" style="-fx-background-color: #262626;" text="&lt;&lt; Regresar a Usuarios" textFill="WHITE">
+                                                <Button fx:id="backButtonReports" mnemonicParsing="false" onMouseEntered="#handleMouseEnteredConfigure" onMouseExited="#handleMouseExitedConfigure" style="-fx-background-color: #262626;" text="&lt;&lt; Regresar a Pacientes" textFill="WHITE">
                                                    <font>
                                                       <Font name="System Bold" size="12.0" />
                                                    </font>
