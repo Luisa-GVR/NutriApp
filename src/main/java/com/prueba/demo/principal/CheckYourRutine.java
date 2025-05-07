@@ -88,7 +88,29 @@ public class CheckYourRutine {
         }
     }
 
+    private void showExerciseDetails(Excercise exercise) {
+        exerciseNameLabel.setText(exercise.getExcerciseName());
+        boolean isRunning = exercise.getExcerciseName().toLowerCase().contains("run");
 
+        if (isRunning) {
+            repetitionsTextArea.setText("N/A");
+            seriesTextArea.setText("N/A");
+            timeTextArea.setText(exercise.getTime() + "");
+        } else {
+            repetitionsTextArea.setText(String.valueOf(exercise.getReps()));
+            seriesTextArea.setText(String.valueOf(exercise.getSeries()));
+            timeTextArea.setText(String.valueOf(exercise.getTime()));
+        }
+
+        repetitionsTextArea.setEditable(false);
+        seriesTextArea.setEditable(false);
+        timeTextArea.setEditable(false);
+
+        Image image = new Image(exercise.getGifURL());
+        exerciseImageView.setImage(image);
+    }
+
+/*
     private void showExerciseDetails(Excercise exercise) {
         exerciseNameLabel.setText(exercise.getExcerciseName());
         repetitionsTextArea.setText(String.valueOf(exercise.getReps()));
@@ -102,6 +124,8 @@ public class CheckYourRutine {
         Image image = new Image(exercise.getGifURL());
         exerciseImageView.setImage(image);
     }
+ */
+
 
 
 
