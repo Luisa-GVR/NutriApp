@@ -266,6 +266,8 @@ public class DashboardFrame {
     private TextArea chestReportTextArea;
     @FXML
     private Button sendReportButton;
+    @FXML
+    private Label labelReportError;
 
     /*
         iniciar con datos

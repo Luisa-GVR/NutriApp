@@ -974,7 +974,7 @@
                               </VBox>
                            </children>
                         </VBox>
-                        <VBox fx:id="reportsPane" minHeight="-Infinity" prefHeight="520.0" prefWidth="750.0" spacing="30.0" visible="false">
+                        <VBox fx:id="reportsPane" minHeight="-Infinity" prefHeight="520.0" prefWidth="750.0" spacing="30.0">
                            <children>
                               <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="631.0" style="-fx-border-color: #D4E7B1; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: white;">
                                  <children>
@@ -1046,7 +1046,7 @@
                                                             </Label>
                                                          </children>
                                                       </HBox>
-                                                      <Label prefWidth="569.0" text="Ha ocurrido un error con el envío. Por favor, inténtelo de nuevo." textFill="#d55d61">
+                                                      <Label fx:id="labelReportError" prefWidth="569.0" text="Ha ocurrido un error con el envío. Por favor, inténtelo de nuevo." textFill="#d55d61">
                                                          <HBox.margin>
                                                             <Insets left="5.0" />
                                                          </HBox.margin>
