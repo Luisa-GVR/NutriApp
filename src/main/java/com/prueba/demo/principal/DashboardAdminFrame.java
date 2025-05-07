@@ -126,6 +126,8 @@ public class DashboardAdminFrame {
     private Label reportLabel;
     @FXML
     private Label profileLabel;
+    @FXML
+    private Label labelReportError;
 
     @FXML
     private TextArea ageTextArea;

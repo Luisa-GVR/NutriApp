@@ -627,7 +627,7 @@
                                                             </Label>
                                                          </children>
                                                       </HBox>
-                                                      <Label prefWidth="569.0" text="Ha ocurrido un error con el envío. Por favor, inténtelo de nuevo." textFill="#d55d61">
+                                                      <Label fx:id="labelReportError" prefWidth="569.0" text="Ha ocurrido un error con el envío. Por favor, inténtelo de nuevo." textFill="#d55d61">
                                                          <HBox.margin>
                                                             <Insets left="5.0" />
                                                          </HBox.margin>
