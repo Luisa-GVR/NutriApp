@@ -2547,6 +2547,7 @@ public class DashboardFrame {
                     PauseTransition pause = new PauseTransition(Duration.seconds(3));
                     pause.setOnFinished(e -> successReportHbox.setVisible(false));  // Ocultar el HBox después de la pausa
                     pause.play();
+
                 } catch (MessagingException e) {
                     throw new RuntimeException(e);
                 } catch (FileNotFoundException e) {
@@ -2944,24 +2945,34 @@ public class DashboardFrame {
     }
 
     private boolean validateFieldsReport() {
+        PauseTransition pause = new PauseTransition(Duration.seconds(3));
+        pause.setOnFinished(event -> errorReportHbox.setVisible(false));
         if (startDatePicker.getValue() == null) {
             errorReportHbox.setVisible(true);
+            labelReportError.setText("Por favor, selecciona una fecha de inicio.");
+            pause.play();
             return false;
         }
         if (endDatePicker.getValue() == null) {
             errorReportHbox.setVisible(true);
+            labelReportError.setText("Por favor, selecciona una fecha de fin.");
+            pause.play();
+
             return false;
         }
 
         if (endDatePicker.getValue().isBefore(startDatePicker.getValue())) {
             errorReportHbox.setVisible(true);
+            labelReportError.setText("La fecha de fin no puede ser anterior a la fecha de inicio.");
+            pause.play();
+
             return false;
         }
 
         errorReportHbox.setVisible(false);
         return true;
-
     }
+
 
     private void disableVBox(VBox reportsPane) {
         for (Node node : reportsPane.getChildren()) {
