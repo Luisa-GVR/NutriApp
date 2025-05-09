@@ -533,6 +533,8 @@ public class DashboardAdminFrame {
 
         Platform.runLater(() -> {
 
+
+
             sexTextArea.setEditable(false);
 
             Optional<AccountFreeSQL> account = accountFreeSQLRepository.findByEmail(selectedAccount.getEmail());
@@ -857,6 +859,13 @@ public class DashboardAdminFrame {
             endDatePicker.getEditor().setEditable(false);
         });
 
+        startDatePicker.showingProperty().addListener((obs, wasShowing, isNowShowing) -> {
+            startDatePicker.getEditor().setEditable(false);
+        });
+        endDatePicker.showingProperty().addListener((obs, wasShowing, isNowShowing) -> {
+            endDatePicker.getEditor().setEditable(false);
+
+        });
     }
 
     private static final int COOLDOWN_TIME = 10;

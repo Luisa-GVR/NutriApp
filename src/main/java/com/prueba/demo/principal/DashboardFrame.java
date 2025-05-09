@@ -2563,6 +2563,14 @@ public class DashboardFrame {
 
         disableVBox(reportsPane);
 
+        startDatePicker.showingProperty().addListener((obs, wasShowing, isNowShowing) -> {
+            startDatePicker.getEditor().setEditable(false);
+        });
+        endDatePicker.showingProperty().addListener((obs, wasShowing, isNowShowing) -> {
+            endDatePicker.getEditor().setEditable(false);
+
+        });
+
         Platform.runLater(() -> {
             startDatePicker.getEditor().setEditable(false);
             endDatePicker.getEditor().setEditable(false);
