@@ -505,6 +505,8 @@ public class DashboardAdminFrame {
         reportLabel.setVisible(false);
         infoHboxProfile.setVisible(true);
         profileLabel.setVisible(true);
+        insideReport = false;
+
 
         if (selectedAccount == null){
             showProfilePaneSelect();
@@ -526,6 +528,7 @@ public class DashboardAdminFrame {
             endDatePicker.setValue(null);
             startDatePicker.getEditor().clear();
             endDatePicker.getEditor().clear();
+            insideReport = false;
 
             // Go back to profile view
             showProfilePaneSelect();
@@ -775,6 +778,7 @@ public class DashboardAdminFrame {
             // Clear the selected values
             selectedAccount = null;
             selectedAccountData = null;
+            insideReport = true;
 
             startDatePicker.setValue(null);
             endDatePicker.setValue(null);
